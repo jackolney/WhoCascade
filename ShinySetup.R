@@ -11,3 +11,21 @@ require(shinyapps)
 
 # Authorize account (not so fast!)
 # Details on shinyapps.io
+
+# To deploy an app
+library(shinyapps)
+deployApp('path/to/your/app')
+
+# Get Themes
+install.packages("shinythemes")
+require(shinythemes)
+
+# ------------------------------- #
+
+# Get shiny
+# install.packages('shiny')
+require(shiny)
+
+setwd("./TestApp")
+
+runApp()
