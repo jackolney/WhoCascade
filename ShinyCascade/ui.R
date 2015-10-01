@@ -42,23 +42,26 @@ library(shinythemes)
 shinyUI(
     navbarPage("Cascade Test App",
     # theme = shinytheme("spacelab"),
-    tabPanel("Page 1",
+    tabPanel("Single Plot",
         sidebarPanel(
             sliderInput('gamma', 'ART Initiation Rate', min=0, max=10, value=0.5, step=0.01),
             # selectInput('x', 'X', "time"),
-            selectInput('y', 'Y', VariableNames)
+            selectInput('y', 'Y', VariableNames, selected="ART")
             # selectInput('color', 'Color', c('None', names(dataset))),
             # checkboxInput('jitter', 'Jitter'),
             # checkboxInput('smooth', 'Smooth'),
             # selectInput('facet_row', 'Facet Row', c(None='.', names(dataset))),
             # selectInput('facet_col', 'Facet Column', c(None='.', names(dataset)))
           ),
-
           mainPanel(
-            plotOutput('plot')
+            plotOutput('plotOne')
           )
         ),
-    tabPanel("Component 2"),
+    tabPanel("All Plots",
+          mainPanel(
+            plotOutput('plotTwo')
+          )
+        ),
     navbarMenu("More",
     tabPanel("Sub-Component A"),
     tabPanel("Sub-Component B"))
