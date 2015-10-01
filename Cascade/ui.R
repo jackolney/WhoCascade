@@ -39,29 +39,34 @@ VariableNames <- c(
 
 library(shinythemes)
 
-fluidPage(
+shinyUI(
+    navbarPage("Cascade Test App",
+    # theme = shinytheme("spacelab"),
+    tabPanel("Page 1",
+        sidebarPanel(
 
-  theme = shinytheme("spacelab"),
+            # sliderInput('sampleSize', 'Sample Size', min=1, max=nrow(dataset),
+            #             value=min(1000, nrow(dataset)), step=500, round=0),
 
-  titlePanel("Cascade Test App"),
+            # selectInput('x', 'X', "time"),
+            selectInput('y', 'Y', VariableNames)
+            # selectInput('color', 'Color', c('None', names(dataset))),
 
-  sidebarPanel(
+            # checkboxInput('jitter', 'Jitter'),
+            # checkboxInput('smooth', 'Smooth'),
 
-    # sliderInput('sampleSize', 'Sample Size', min=1, max=nrow(dataset),
-    #             value=min(1000, nrow(dataset)), step=500, round=0),
+            # selectInput('facet_row', 'Facet Row', c(None='.', names(dataset))),
+            # selectInput('facet_col', 'Facet Column', c(None='.', names(dataset)))
+          ),
 
-    # selectInput('x', 'X', "time"),
-    selectInput('y', 'Y', VariableNames)
-    # selectInput('color', 'Color', c('None', names(dataset))),
+          mainPanel(
+            plotOutput('plot')
+          )
+        ),
+    tabPanel("Component 2"),
+    navbarMenu("More",
+    tabPanel("Sub-Component A"),
+    tabPanel("Sub-Component B"))
 
-    # checkboxInput('jitter', 'Jitter'),
-    # checkboxInput('smooth', 'Smooth'),
 
-    # selectInput('facet_row', 'Facet Row', c(None='.', names(dataset))),
-    # selectInput('facet_col', 'Facet Column', c(None='.', names(dataset)))
-  ),
-
-  mainPanel(
-    plotOutput('plot')
-  )
-)
+))
