@@ -2,7 +2,8 @@ library(shiny)
 library(ggplot2)
 library(dplyr)
 library(deSolve)
-require(gridExtra)
+library(gridExtra)
+library(DT)
 
 source("TheModel.R")
 
@@ -162,5 +163,25 @@ output$plotTwo <- renderPlot({
     print(AllPlot)
 
   }, height=700)
+
+output$outputTable <- DT::renderDataTable({
+
+    Time <- seq(0,5,0.02)
+
+    out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=Parameters()))
+
+    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+    out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+    out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
+    out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
+    out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
+    out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+    out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
+    out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
+    out <- mutate(out,HivMortalityProp = HivMortality / N)
+    out <- mutate(out,NewInfProp = NewInf / N)
+
+    return(out)
+    })
 
 }

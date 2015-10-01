@@ -1,6 +1,7 @@
 library(shiny)
 library(ggplot2)
 library(shinythemes)
+library(DT)
 
 VariableNames <- c(
     "UnDx_500",
@@ -64,7 +65,10 @@ shinyUI(
         ),
     navbarMenu("More",
     tabPanel("Sub-Component A"),
-    tabPanel("Sub-Component B"))
+    tabPanel("Raw Output",
+        DT::dataTableOutput('outputTable')
+        )
+    )
 
 
 ))
