@@ -136,7 +136,7 @@ function(input, output) {
     out <- mutate(out,HivMortalityProp = HivMortality / N)
     out <- mutate(out,NewInfProp = NewInf / N)
 
-    p <- ggplot(out, aes_string(x="time",y=input$y)) + geom_line()
+    p <- ggplot(out, aes_string(x="time",y=input$y)) + geom_line() + theme_classic()
 
     # aes_string was used before, I presume to get a string from input$something
     # ggplot(dataset(), aes_string(x=input$x, y=input$y)) + geom_line()
