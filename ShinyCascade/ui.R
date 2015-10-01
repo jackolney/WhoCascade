@@ -44,7 +44,7 @@ shinyUI(
     # theme = shinytheme("spacelab"),
     tabPanel("Page 1",
         sidebarPanel(
-            # sliderInput('sampleSize', 'Sample Size', min=1, max=nrow(dataset), value=min(1000, nrow(dataset)), step=500, round=0),
+            sliderInput('gamma', 'ART Initiation Rate', min=0, max=10, value=0.5, step=0.01),
             # selectInput('x', 'X', "time"),
             selectInput('y', 'Y', VariableNames)
             # selectInput('color', 'Color', c('None', names(dataset))),
