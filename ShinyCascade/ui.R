@@ -13,6 +13,10 @@ VariableNames <- c(
     "Dx_350500",
     "Dx_200350",
     "Dx_200",
+    "Care_500",
+    "Care_350500",
+    "Care_200350",
+    "Care_200",
     "Tx_500",
     "Tx_350500",
     "Tx_200350",
@@ -32,6 +36,7 @@ VariableNames <- c(
     "ART",
     "UnDx",
     "Dx",
+    "Care",
     "Tx",
     "Vs",
     "Ltfu",
@@ -101,8 +106,9 @@ shinyUI(
             sidebarPanel(
                 h4("Help Panel"),
                 helpText("Fill in the boxes..."),
-                actionButton("resetInput", "RESET"),
-                actionButton("saveInput", "SAVE")
+                actionButton("saveInput", "SAVE"),
+                p(" "),
+                actionButton("resetInput", "RESET")
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),
