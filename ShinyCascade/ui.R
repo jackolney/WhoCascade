@@ -98,7 +98,6 @@ shinyUI(
             )
         ),
     tabPanel("Setup",
-        # img(src="HIVMC-logo.jpg",height = 72*2,width = 200*2),
         h1("Model Setup"),
         helpText("Here we will explain how to set the app up."),
         helpText("Perhaps include the WHO cascade flow diagram here?"),
@@ -147,6 +146,11 @@ shinyUI(
           mainPanel(
             plotOutput('plotOne')
           )
+        ),
+    tabPanel("Results",
+        mainPanel(
+            plotOutput('plotCascadeNow')
+         )
         ),
     tabPanel("All Plots",
           mainPanel(

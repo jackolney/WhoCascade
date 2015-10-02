@@ -6,6 +6,8 @@ library(gridExtra)
 library(DT)
 library(shinyjs)
 library(googlesheets)
+library(RColorBrewer)
+library(scales)
 
 source("TheModel.R")
 
@@ -73,20 +75,18 @@ function(input, output, session) {
     )})
 
     observeEvent(input$demoInput, {
-        updateNumericInput(session,"userPLHIV",value=round(runif(1,1,1e+04),0))
-        updateNumericInput(session,"userDx",value=round(runif(1,1,1e+04),0))
-        updateNumericInput(session,"userCare",value=round(runif(1,1,1e+04),0))
-        updateNumericInput(session,"userTx",value=round(runif(1,1,1e+04),0))
-        updateNumericInput(session,"userVs",value=round(runif(1,1,1e+04),0))
-        updateNumericInput(session,"userLtfu",value=round(runif(1,1,1e+04),0))
+        randPLHIV <- round(runif(1,100,1e+04),0)
+        updateNumericInput(session,"userPLHIV",value=randPLHIV)
+        updateNumericInput(session,"userDx",value=round(randPLHIV * 0.8,0))
+        updateNumericInput(session,"userCare",value=round(randPLHIV * 0.6,0))
+        updateNumericInput(session,"userTx",value=round(randPLHIV * 0.3,0))
+        updateNumericInput(session,"userVs",value=round(randPLHIV * 0.25,0))
+        updateNumericInput(session,"userLtfu",value=round(randPLHIV * 0.1,0))
     })
 
-    output$plotOne <- renderPlot({
-
+    out <- reactive({
         Time <- seq(0,5,0.02)
-
         out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=Parameters()))
-
         out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
         out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
         out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
@@ -98,33 +98,18 @@ function(input, output, session) {
         out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
         out <- mutate(out,HivMortalityProp = HivMortality / N)
         out <- mutate(out,NewInfProp = NewInf / N)
+        return(out)
+    })
 
-        p <- ggplot(out, aes_string(x="time",y=input$y)) + geom_line() + theme_classic()
-
+    output$plotOne <- renderPlot({
+        p <- ggplot(out(), aes_string(x="time",y=input$y)) + geom_line() + theme_classic()
         print(p)
-
         }, 
         height=700
     )
 
     output$plotTwo <- renderPlot({
-
-        Time <- seq(0,5,0.02)
-
-        out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=Parameters()))
-
-        out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-        out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-        out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-        out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-        out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-        out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-        out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-        out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-        out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-        out <- mutate(out,HivMortalityProp = HivMortality / N)
-        out <- mutate(out,NewInfProp = NewInf / N)
-
+        out <- out()
         a <- ggplot(out,aes(x=time,y=UnDx)) +
         geom_line() +
         theme_classic()
@@ -169,24 +154,43 @@ function(input, output, session) {
         height=700
     )
 
+    output$plotCascadeNow <- renderPlot({
+        out <- out()
+        t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
+        t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
+        t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
+        t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
+        t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
+        t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
+
+        t0_results <- c(t0_dx,t0_cx,t0_tx,t0_vs,t0_ltfu)
+
+        definition <- c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU")
+        t0 <- data.frame(definition,t0_results)
+
+        levels(t0$definition)
+        t0$definition <- factor(t0$definition, levels=c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU"))
+
+        fill.coll <- rev(brewer.pal(9,"Blues")[4:8])
+
+        o <- ggplot(t0,aes(definition,t0_results))
+        o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        o <- o + scale_fill_manual(values=fill.coll)
+        o <- o + ggtitle("Care Cascade in 2015\n(denominator is PLHIV)")
+        o <- o + theme_classic()
+        o <- o + theme(axis.title=element_blank())
+        o <- o + theme(axis.text.x=element_text(size=12))
+        o <- o + theme(axis.text.y=element_text(size=10))
+        o <- o + theme(legend.position="none")
+        print(o)
+
+        },
+        height=700
+    )
+
     output$outputTable <- DT::renderDataTable({
-
-        Time <- seq(0,5,0.02)
-
-        out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=Parameters()))
-
-        out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-        out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-        out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-        out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-        out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-        out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-        out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-        out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-        out <- mutate(out,HivMortalityProp = HivMortality / N)
-        out <- mutate(out,NewInfProp = NewInf / N)
-
-        return(out)
+        return(out())
 
         },
         options=list(autoWidth=TRUE,pageLength=100)
