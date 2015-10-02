@@ -96,15 +96,17 @@ shinyUI(
         # img(src="HIVMC-logo.jpg",height = 72*2,width = 200*2),
         h1("Model Setup"),
         helpText("Here we will explain how to set the app up."),
+        helpText("Perhaps include the WHO cascade flow diagram here?"),
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Help Panel"),
-                helpText("Fill in the boxes...")
+                helpText("Fill in the boxes..."),
+                actionButton("resetInput", "RESET"),
+                actionButton("saveInput", "SAVE")
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),
                 id = "setup-panel",
-                actionButton("resetInput", "Reset!"),
                 wellPanel(
                     selectInput("userCountry","Country:",CountryList,selected="Brazil")
                     ),
@@ -112,19 +114,19 @@ shinyUI(
                     numericInput("userPLHIV","Number of PLHIV:",0)
                     ),
                 wellPanel(
-                    numericInput("userDx","Number of PLHIV diagnosed:",0)
+                    numericInput("userDx","Number of PLHIV who have been diagnosed:",0)
                     ),
                 wellPanel(
-                    numericInput("userCare","Number of PLHIV in care:",0)
+                    numericInput("userCare","Number of PLHIV in HIV care (including ART):",0)
                     ),
                 wellPanel(
-                    numericInput("userTx","Number of PLHIV on ART:",0)
+                    numericInput("userTx","Number of PLHIV in HIV care and on ART:",0)
                     ),
                 wellPanel(
-                    numericInput("userVs","Number of PLHIV on ART and virally suppressed:",0)
+                    numericInput("userVs","Number of PLHIV in HIV care, on ART and virally suppressed:",0)
                     ),
                 wellPanel(
-                    numericInput("userLtfu","Number of PLHIV LTFU:",0)
+                    numericInput("userLtfu","Number of PLHIV who dropped out of ART care:",0)
                     )
                 # numericInput("rows","How many rows?",5),
                 # selectInput("letter","Which letter?",LETTERS),
