@@ -149,7 +149,9 @@ shinyUI(
         ),
     tabPanel("Results",
         mainPanel(
-            plotOutput('plotCascadeNow')
+            plotOutput('plotCascadeNow'),
+            plotOutput('plotCascadeThen'),
+            plotOutput('plot909090')
          )
         ),
     tabPanel("All Plots",

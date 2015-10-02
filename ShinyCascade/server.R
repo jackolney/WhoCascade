@@ -189,6 +189,79 @@ function(input, output, session) {
         height=700
     )
 
+    output$plotCascadeThen <- renderPlot({
+        out <- out()
+        t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
+        t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+        t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
+        t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
+        t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
+        t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+
+        t5_results <- c(t5_dx,t5_cx,t5_tx,t5_vs,t5_ltfu)
+
+        definition <- c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU")
+        t5 <- data.frame(definition,t5_results)
+
+        levels(t5$definition)
+        t5$definition <- factor(t5$definition, levels=c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU"))
+
+        fill.coll <- rev(brewer.pal(9,"Blues")[4:8])
+
+        o <- ggplot(t5,aes(definition,t5_results))
+        o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        o <- o + scale_fill_manual(values=fill.coll)
+        o <- o + ggtitle("Care Cascade in 2020\n(denominator is PLHIV)")
+        o <- o + theme_classic()
+        o <- o + theme(axis.title=element_blank())
+        o <- o + theme(axis.text.x=element_text(size=12))
+        o <- o + theme(axis.text.y=element_text(size=10))
+        o <- o + theme(legend.position="none")
+        print(o)
+        },
+        height=700
+    )
+
+    output$plot909090 <- renderPlot({
+        out <- out()
+        PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+        # dx / PLHIV
+        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+        # tx / dx
+        tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+        # vs / tx
+        vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
+
+        p_dx <- dx / PLHIV
+        p_tx <- tx / dx
+        p_vs <- vs / tx
+
+        results <- c(p_dx,p_tx,p_vs)
+        definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+        Scenario <- c("Baseline")
+        the909090 <- data.frame(definition,results,Scenario)
+
+        levels(the909090$definition)
+        the909090$definition <- factor(the909090$definition, levels=c("% Diagnosed","% On Treatment","% Suppressed"))
+
+        fill.coll <- brewer.pal(4,"Set1")
+
+        o <- ggplot(the909090,aes(definition,results))
+        o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        o <- o + scale_fill_manual(values=fill.coll)
+        o <- o + geom_abline(intercept=0.9, slope=0)
+        o <- o + theme_classic()
+        o <- o + theme(axis.title=element_blank())
+        o <- o + theme(axis.text.x=element_text(size=12))
+        o <- o + theme(axis.text.y=element_text(size=10))
+        o <- o + theme(legend.position="none")
+        print(o)
+        },
+        height=700
+    )
+
     output$outputTable <- DT::renderDataTable({
         return(out())
 
