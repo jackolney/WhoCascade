@@ -2,6 +2,7 @@ library(shiny)
 library(ggplot2)
 library(shinythemes)
 library(DT)
+library(shinyjs)
 
 VariableNames <- c(
     "UnDx_500",
@@ -101,6 +102,9 @@ shinyUI(
                 helpText("Fill in the boxes...")
                 ),
             mainPanel(
+                shinyjs::useShinyjs(),
+                id = "setup-panel",
+                actionButton("resetInput", "Reset!"),
                 wellPanel(
                     selectInput("userCountry","Country:",CountryList,selected="Brazil")
                     ),

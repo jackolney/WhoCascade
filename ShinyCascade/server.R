@@ -4,6 +4,7 @@ library(dplyr)
 library(deSolve)
 library(gridExtra)
 library(DT)
+library(shinyjs)
 
 source("TheModel.R")
 
@@ -182,6 +183,11 @@ output$outputTable <- DT::renderDataTable({
     out <- mutate(out,NewInfProp = NewInf / N)
 
     return(out)
+    })
+
+
+observeEvent(input$resetInput, {
+      shinyjs::reset("setup-panel")
     })
 
 }
