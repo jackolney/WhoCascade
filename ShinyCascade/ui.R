@@ -42,7 +42,48 @@ library(shinythemes)
 
 shinyUI(
     navbarPage("Cascade Test App",
-    # theme = shinytheme("spacelab"),
+    theme = shinytheme("Spacelab"),
+    tabPanel("Introduction",
+        # img(src="HIVMC-logo.jpg", height = 72*2, width = 200*2),
+        h1("Introduction"),
+        helpText("Welcome."),
+        sidebarLayout(position="right",
+            sidebarPanel(
+                h4("Quick Start"),
+                helpText("If you want to skip the introduction and get modelling...")
+                ),
+            mainPanel(
+                h3("Aims"),
+                p("more details."),
+                h3("The Model"),
+                p("something about the model"),
+                h3("Outcomes"),
+                p("outcomes"),
+                h3("What the model cannot do"),
+                p("lots...")
+                )
+            )
+        ),
+    tabPanel("Setup",
+        # img(src="HIVMC-logo.jpg", height = 72*2, width = 200*2),
+        titlePanel("Cascade App - Model Setup"),
+        helpText("Here we will explain how to set the app up."),
+        sidebarLayout(position="right",
+            sidebarPanel(
+                h4("Help Panel"),
+                helpText("Oh that was simple")
+                ),
+            mainPanel(
+                wellPanel(
+                    selectInput("Flip", "X-Axis:",list('Yes'=1,'No'=2),selected='No'),
+                    selectInput("Flip2", "X-Axis:",list('Yes'=1,'No'=2),selected='No')
+                    )
+                # numericInput("rows", "How many rows?", 5),
+                # selectInput("letter", "Which letter?", LETTERS),
+                # sliderInput("value", "What value?", 0, 100, 50)
+                )
+            )
+        ),
     tabPanel("Single Plot",
         sidebarPanel(
             sliderInput('gamma', 'ART Initiation Rate', min=0, max=10, value=0.5, step=0.01),
