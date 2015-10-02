@@ -5,6 +5,7 @@ library(deSolve)
 library(gridExtra)
 library(DT)
 library(shinyjs)
+library(googlesheets)
 
 source("TheModel.R")
 
@@ -185,7 +186,29 @@ output$outputTable <- DT::renderDataTable({
     return(out)
     })
 
+# Saving input values from setup tab.
 
+saveData <- function(data) {
+  # Grab the Google Sheet
+  sheet <- gs_title("WHO-Cascade-Data")
+  # Add the data as a new row
+  gs_add_row(sheet, input = data)
+}
+
+observeEvent(input$saveInput, {
+    theResult <- c(input$userCountry,
+        as.integer(input$userPLHIV),
+        as.integer(input$userDx),
+        as.integer(input$userCare),
+        as.integer(input$userTx),
+        as.integer(input$userVs),
+        as.integer(input$userLtfu))
+    print(theResult)
+    saveData(theResult)
+    })
+
+
+# Reset button stuff.
 observeEvent(input$resetInput, {
       shinyjs::reset("setup-panel")
     })
