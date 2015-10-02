@@ -108,7 +108,9 @@ shinyUI(
                 helpText("Fill in the boxes..."),
                 actionButton("saveInput", "SAVE"),
                 p(" "),
-                actionButton("resetInput", "RESET")
+                actionButton("resetInput", "RESET"),
+                p(" "),
+                actionButton("demoInput", "DEMO")
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),
@@ -117,22 +119,22 @@ shinyUI(
                     selectInput("userCountry","Country:",CountryList,selected="Brazil")
                     ),
                 wellPanel(
-                    numericInput("userPLHIV","Number of PLHIV:",0)
+                    numericInput("userPLHIV","Number of PLHIV:",0,min=0)
                     ),
                 wellPanel(
-                    numericInput("userDx","Number of PLHIV who have been diagnosed:",0)
+                    numericInput("userDx","Number of PLHIV who have been diagnosed:",0,min=0)
                     ),
                 wellPanel(
-                    numericInput("userCare","Number of PLHIV in HIV care (including ART):",0)
+                    numericInput("userCare","Number of PLHIV in HIV care (including ART):",0,min=0)
                     ),
                 wellPanel(
-                    numericInput("userTx","Number of PLHIV in HIV care and on ART:",0)
+                    numericInput("userTx","Number of PLHIV in HIV care and on ART:",0,min=0)
                     ),
                 wellPanel(
-                    numericInput("userVs","Number of PLHIV in HIV care, on ART and virally suppressed:",0)
+                    numericInput("userVs","Number of PLHIV in HIV care, on ART and virally suppressed:",0,min=0)
                     ),
                 wellPanel(
-                    numericInput("userLtfu","Number of PLHIV who dropped out of ART care:",0)
+                    numericInput("userLtfu","Number of PLHIV who dropped out of ART care:",0,min=0)
                     )
                 )
             )

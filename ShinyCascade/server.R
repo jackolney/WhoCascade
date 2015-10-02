@@ -10,7 +10,7 @@ library(googlesheets)
 source("TheModel.R")
 
 function(input, output) {
-  
+
   Parameters <- reactive({c(
         Nu_1 = 0.2139008,
         Nu_2 = 0.3379898,
@@ -35,35 +35,35 @@ function(input, output) {
     )})
 
     Initial <- reactive({c(
-        UnDx_500 = 1e+4 * 0.2 * 0.58,
-        UnDx_350500 = 1e+4 * 0.2 * 0.23,
-        UnDx_200350 = 1e+4 * 0.2 * 0.16,
-        UnDx_200 = 1e+4 * 0.2 * 0.03,
+        UnDx_500 = 1e+4 * ((input$userPLHIV - input$userDx) / input$userPLHIV) * 0.58,
+        UnDx_350500 = 1e+4 * ((input$userPLHIV - input$userDx) / input$userPLHIV) * 0.23,
+        UnDx_200350 = 1e+4 * ((input$userPLHIV - input$userDx) / input$userPLHIV) * 0.16,
+        UnDx_200 = 1e+4 * ((input$userPLHIV - input$userDx) / input$userPLHIV) * 0.03,
 
-        Dx_500 = 1e+4 * 0.23 * 0.58,
-        Dx_350500 = 1e+4 * 0.23 * 0.23,
-        Dx_200350 = 1e+4 * 0.23 * 0.16,
-        Dx_200 = 1e+4 * 0.23 * 0.03,
+        Dx_500 = 1e+4 * ((input$userDx - input$userCare - input$userLtfu) / input$userPLHIV) * 0.58,
+        Dx_350500 = 1e+4 * ((input$userDx - input$userCare - input$userLtfu) / input$userPLHIV) * 0.23,
+        Dx_200350 = 1e+4 * ((input$userDx - input$userCare - input$userLtfu) / input$userPLHIV) * 0.16,
+        Dx_200 = 1e+4 * ((input$userDx - input$userCare - input$userLtfu) / input$userPLHIV) * 0.03,
 
-        Care_500 = 1e+4 * 0.2 * 0.58,
-        Care_350500 = 1e+4 * 0.2 * 0.23,
-        Care_200350 = 1e+4 * 0.2 * 0.16,
-        Care_200 = 1e+4 * 0.2 * 0.03,
+        Care_500 = 1e+4 * ((input$userCare - input$userTx - input$userVs) / input$userPLHIV) * 0.58,
+        Care_350500 = 1e+4 * ((input$userCare - input$userTx - input$userVs) / input$userPLHIV) * 0.23,
+        Care_200350 = 1e+4 * ((input$userCare - input$userTx - input$userVs) / input$userPLHIV) * 0.16,
+        Care_200 = 1e+4 * ((input$userCare - input$userTx - input$userVs) / input$userPLHIV) * 0.03,
 
-        Tx_500 = 1e+4 * 0.2 * 0.58,
-        Tx_350500 = 1e+4 * 0.2 * 0.23,
-        Tx_200350 = 1e+4 * 0.2 * 0.16,
-        Tx_200 = 1e+4 * 0.2 * 0.03,
+        Tx_500 = 1e+4 * ((input$userTx - input$userVs) / input$userPLHIV) * 0.58,
+        Tx_350500 = 1e+4 * ((input$userTx - input$userVs) / input$userPLHIV) * 0.23,
+        Tx_200350 = 1e+4 * ((input$userTx - input$userVs) / input$userPLHIV) * 0.16,
+        Tx_200 = 1e+4 * ((input$userTx - input$userVs) / input$userPLHIV) * 0.03,
 
-        Vs_500 = 1e+4 * 0.17 * 0.58,
-        Vs_350500 = 1e+4 * 0.17 * 0.23,
-        Vs_200350 = 1e+4 * 0.17 * 0.16,
-        Vs_200 = 1e+4 * 0.17 * 0.03,
+        Vs_500 = 1e+4 * (input$userVs / input$userPLHIV) * 0.58,
+        Vs_350500 = 1e+4 * (input$userVs / input$userPLHIV) * 0.23,
+        Vs_200350 = 1e+4 * (input$userVs / input$userPLHIV) * 0.16,
+        Vs_200 = 1e+4 * (input$userVs / input$userPLHIV) * 0.03,
 
-        Ltfu_500 = 0,
-        Ltfu_350500 = 0,
-        Ltfu_200350 = 0,
-        Ltfu_200 = 0,
+        Ltfu_500 = 1e+4 * (input$userLtfu / input$userPLHIV) * 0.58,
+        Ltfu_350500 = 1e+4 * (input$userLtfu / input$userPLHIV) * 0.23,
+        Ltfu_200350 = 1e+4 * (input$userLtfu / input$userPLHIV) * 0.16,
+        Ltfu_200 = 1e+4 * (input$userLtfu / input$userPLHIV) * 0.03,
 
         NewInf = 0,
 
@@ -165,7 +165,6 @@ function(input, output) {
         geom_line() +
         theme_classic()
 
-
         AllPlot <- grid.arrange(a,b,c,d,e,f,g,h,i,nrow=3,ncol=3)
 
         print(AllPlot)
@@ -197,8 +196,7 @@ function(input, output) {
         options=list(autoWidth=TRUE,pageLength=100)
     )
 
-# Saving input values from setup tab.
-
+    # Saving input values from setup tab.
     saveData <- function(data) {
         # Grab the Google Sheet
         sheet <- gs_title("WHO-Cascade-Data")
@@ -217,7 +215,6 @@ function(input, output) {
         print(theResult)
         saveData(theResult)
     })
-
 
     # Reset button stuff.
     observeEvent(input$resetInput, {
