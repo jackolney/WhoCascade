@@ -155,7 +155,7 @@ shinyUI(
         ),
     navbarMenu("More",
     tabPanel("PDF",
-        HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhd0U2cnY3dWJMcE0/preview\"style=\"border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%\"></iframe>')
+        HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhd0U2cnY3dWJMcE0/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
         ),
     tabPanel("Raw Output",
         DT::dataTableOutput('outputTable')

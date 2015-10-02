@@ -72,6 +72,15 @@ function(input, output) {
         NaturalMortality = 0
     )})
 
+    observeEvent(input$demoInput, {
+        # input$userPLHIV 
+        # input$userDx 
+        # input$userCare 
+        # input$userTx 
+        # input$userVs 
+        # input$userLtfu 
+    })
+
     output$plotOne <- renderPlot({
 
         Time <- seq(0,5,0.02)
@@ -92,24 +101,11 @@ function(input, output) {
 
         p <- ggplot(out, aes_string(x="time",y=input$y)) + geom_line() + theme_classic()
 
-        # aes_string was used before, I presume to get a string from input$something
-        # ggplot(dataset(), aes_string(x=input$x, y=input$y)) + geom_line()
-
-        # if (input$color != 'None')
-        #   p <- p + aes_string(color=input$color)
-
-        # facets <- paste(input$facet_row, '~', input$facet_col)
-        # if (facets != '. ~ .')
-        #   p <- p + facet_grid(facets)
-
-        # if (input$jitter)
-        #   p <- p + geom_jitter()
-        # if (input$smooth)
-        #   p <- p + geom_smooth()
-
         print(p)
 
-    }, height=700)
+        }, 
+        height=700
+    )
 
     output$plotTwo <- renderPlot({
 
