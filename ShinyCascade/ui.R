@@ -38,13 +38,40 @@ VariableNames <- c(
     "HivMortalityProp",
     "NewInfProp")
 
-library(shinythemes)
+CountryList <- c(
+    "Brazil",
+    "Cambodia",
+    "Cameroon",
+    "China",
+    "Cote d'Ivoire",
+    "DRC",
+    "Ethiopia",
+    "Haiti",
+    "India",
+    "Indonesia",
+    "Jamaica",
+    "Kenya",
+    "Malawi",
+    "Mozambique",
+    "Myanmar",
+    'Nigeria',
+    "Pakistan",
+    "South Africa",
+    "South Sudan",
+    "Tanzania",
+    "Thailand",
+    "Uganda",
+    "Ukraine",
+    "Vietnam",
+    "Zambia",
+    "Zimbabwe"
+    )
 
 shinyUI(
     navbarPage("Cascade Test App",
     theme = shinytheme("Spacelab"),
     tabPanel("Introduction",
-        # img(src="HIVMC-logo.jpg", height = 72*2, width = 200*2),
+        # img(src="HIVMC-logo.jpg",height = 72*2,width = 200*2),
         h1("Introduction"),
         helpText("Welcome."),
         sidebarLayout(position="right",
@@ -65,35 +92,52 @@ shinyUI(
             )
         ),
     tabPanel("Setup",
-        # img(src="HIVMC-logo.jpg", height = 72*2, width = 200*2),
-        titlePanel("Cascade App - Model Setup"),
+        # img(src="HIVMC-logo.jpg",height = 72*2,width = 200*2),
+        h1("Model Setup"),
         helpText("Here we will explain how to set the app up."),
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Help Panel"),
-                helpText("Oh that was simple")
+                helpText("Fill in the boxes...")
                 ),
             mainPanel(
                 wellPanel(
-                    selectInput("Flip", "X-Axis:",list('Yes'=1,'No'=2),selected='No'),
-                    selectInput("Flip2", "X-Axis:",list('Yes'=1,'No'=2),selected='No')
+                    selectInput("userCountry","Country:",CountryList,selected="Brazil")
+                    ),
+                wellPanel(
+                    numericInput("userPLHIV","Number of PLHIV:",0)
+                    ),
+                wellPanel(
+                    numericInput("userDx","Number of PLHIV diagnosed:",0)
+                    ),
+                wellPanel(
+                    numericInput("userCare","Number of PLHIV in care:",0)
+                    ),
+                wellPanel(
+                    numericInput("userTx","Number of PLHIV on ART:",0)
+                    ),
+                wellPanel(
+                    numericInput("userVs","Number of PLHIV on ART and virally suppressed:",0)
+                    ),
+                wellPanel(
+                    numericInput("userLtfu","Number of PLHIV LTFU:",0)
                     )
-                # numericInput("rows", "How many rows?", 5),
-                # selectInput("letter", "Which letter?", LETTERS),
-                # sliderInput("value", "What value?", 0, 100, 50)
+                # numericInput("rows","How many rows?",5),
+                # selectInput("letter","Which letter?",LETTERS),
+                # sliderInput("value","What value?",0,100,50)
                 )
             )
         ),
     tabPanel("Single Plot",
         sidebarPanel(
-            sliderInput('gamma', 'ART Initiation Rate', min=0, max=10, value=0.5, step=0.01),
-            # selectInput('x', 'X', "time"),
-            selectInput('y', 'Y', VariableNames, selected="ART")
-            # selectInput('color', 'Color', c('None', names(dataset))),
-            # checkboxInput('jitter', 'Jitter'),
-            # checkboxInput('smooth', 'Smooth'),
-            # selectInput('facet_row', 'Facet Row', c(None='.', names(dataset))),
-            # selectInput('facet_col', 'Facet Column', c(None='.', names(dataset)))
+            sliderInput('gamma','ART Initiation Rate',min=0,max=10,value=0.5,step=0.01),
+            # selectInput('x','X',"time"),
+            selectInput('y','Y',VariableNames,selected="ART")
+            # selectInput('color','Color',c('None',names(dataset))),
+            # checkboxInput('jitter','Jitter'),
+            # checkboxInput('smooth','Smooth'),
+            # selectInput('facet_row','Facet Row',c(None='.',names(dataset))),
+            # selectInput('facet_col','Facet Column',c(None='.',names(dataset)))
           ),
           mainPanel(
             plotOutput('plotOne')
