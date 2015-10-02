@@ -70,7 +70,7 @@ CountryList <- c(
 
 shinyUI(
     navbarPage("Cascade Test App",
-    theme = shinytheme("Spacelab"),
+    theme = shinytheme("spacelab"),
     tabPanel("Introduction",
         # img(src="HIVMC-logo.jpg",height = 72*2,width = 200*2),
         h1("Introduction"),
@@ -128,22 +128,13 @@ shinyUI(
                 wellPanel(
                     numericInput("userLtfu","Number of PLHIV who dropped out of ART care:",0)
                     )
-                # numericInput("rows","How many rows?",5),
-                # selectInput("letter","Which letter?",LETTERS),
-                # sliderInput("value","What value?",0,100,50)
                 )
             )
         ),
     tabPanel("Single Plot",
         sidebarPanel(
             sliderInput('gamma','ART Initiation Rate',min=0,max=10,value=0.5,step=0.01),
-            # selectInput('x','X',"time"),
             selectInput('y','Y',VariableNames,selected="ART")
-            # selectInput('color','Color',c('None',names(dataset))),
-            # checkboxInput('jitter','Jitter'),
-            # checkboxInput('smooth','Smooth'),
-            # selectInput('facet_row','Facet Row',c(None='.',names(dataset))),
-            # selectInput('facet_col','Facet Column',c(None='.',names(dataset)))
           ),
           mainPanel(
             plotOutput('plotOne')

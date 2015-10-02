@@ -184,7 +184,9 @@ output$outputTable <- DT::renderDataTable({
     out <- mutate(out,NewInfProp = NewInf / N)
 
     return(out)
-    })
+    },
+    options=list(autoWidth=TRUE,pageLength=100)
+)
 
 # Saving input values from setup tab.
 

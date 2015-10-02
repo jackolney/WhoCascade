@@ -29,3 +29,8 @@ require(shiny)
 setwd("./TestApp")
 
 runApp()
+
+# ------------------------------ #
+require(shinyapps)
+
+deployApp("./ShinyCascade")
