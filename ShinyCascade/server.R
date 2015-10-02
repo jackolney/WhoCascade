@@ -9,7 +9,7 @@ library(googlesheets)
 
 source("TheModel.R")
 
-function(input, output) {
+function(input, output, session) {
 
   Parameters <- reactive({c(
         Nu_1 = 0.2139008,
@@ -73,12 +73,12 @@ function(input, output) {
     )})
 
     observeEvent(input$demoInput, {
-        # input$userPLHIV 
-        # input$userDx 
-        # input$userCare 
-        # input$userTx 
-        # input$userVs 
-        # input$userLtfu 
+        updateNumericInput(session,"userPLHIV",value=round(runif(1,1,1e+04),0))
+        updateNumericInput(session,"userDx",value=round(runif(1,1,1e+04),0))
+        updateNumericInput(session,"userCare",value=round(runif(1,1,1e+04),0))
+        updateNumericInput(session,"userTx",value=round(runif(1,1,1e+04),0))
+        updateNumericInput(session,"userVs",value=round(runif(1,1,1e+04),0))
+        updateNumericInput(session,"userLtfu",value=round(runif(1,1,1e+04),0))
     })
 
     output$plotOne <- renderPlot({
