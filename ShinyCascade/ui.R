@@ -167,12 +167,27 @@ shinyUI(
             mainPanel(
                 plotOutput('plot909090')
                 )
+            ),
+        tabPanel("New Infections",
+            sidebarPanel(
+                h4("New Infections"),
+                p("Here are some results...")
+                ),
+            mainPanel()
+            ),
+        tabPanel("AIDS Deaths",
+            sidebarPanel(
+                h4("AIDS Deaths"),
+                p("Here are some results...")
+                ),
+            mainPanel()
             )
         ),
     tabPanel("Optimisation",
         sidebarPanel(
             h4("Model Optimisation"),
             p("This will contain an optimisation algorithm that will pick the most cost-effective intervention to enhance care."),
+            helpText("Need a table giving exact values beneath."),
             actionButton("optimiseInput", "OPTIMISE")
             ),
         mainPanel()
