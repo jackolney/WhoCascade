@@ -8,6 +8,7 @@ library(shinyjs)
 library(googlesheets)
 library(RColorBrewer)
 library(scales)
+library(ggthemes)
 
 source("TheModel.R")
 
@@ -102,7 +103,15 @@ function(input, output, session) {
     })
 
     output$plotOne <- renderPlot({
-        p <- ggplot(out(), aes_string(x="time",y=input$y)) + geom_line() + theme_classic()
+        p <- ggplot(out(), aes_string(x="time",y=input$y)) + 
+        geom_line(size=2) + 
+        # theme_class() +
+        theme_economist() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
+        scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
         print(p)
         }, 
         height=700
@@ -112,38 +121,74 @@ function(input, output, session) {
         out <- out()
         a <- ggplot(out,aes(x=time,y=UnDx)) +
         geom_line() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
         theme_classic()
 
         b <- ggplot(out,aes(x=time,y=Dx)) +
         geom_line() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
         theme_classic()
 
         c <- ggplot(out,aes(x=time,y=Tx)) +
         geom_line() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
         theme_classic()
 
         d <- ggplot(out,aes(x=time,y=Vs)) +
         geom_line() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
         theme_classic()
 
         e <- ggplot(out,aes(x=time,y=Ltfu)) +
         geom_line() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
         theme_classic()
 
         f <- ggplot(out,aes(x=time,y=N)) +
         geom_line() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
         theme_classic()
 
         g <- ggplot(out,aes(x=time,y=NewInf)) +
         geom_line() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
         theme_classic()
 
         h <- ggplot(out,aes(x=time,y=NaturalMortalityProp)) +
         geom_line() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
         theme_classic()
 
         i <- ggplot(out,aes(x=time,y=HivMortalityProp)) +
         geom_line() +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Year") +
         theme_classic()
 
         AllPlot <- grid.arrange(a,b,c,d,e,f,g,h,i,nrow=3,ncol=3)
@@ -151,11 +196,13 @@ function(input, output, session) {
         print(AllPlot)
 
         },
-        height=700
+        height=1000,
+        width=1000
     )
 
-    output$plotCascadeNow <- renderPlot({
+    output$plotCascade <- renderPlot({
         out <- out()
+
         t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
         t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
         t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
@@ -179,14 +226,44 @@ function(input, output, session) {
         o <- o + scale_fill_manual(values=fill.coll)
         o <- o + ggtitle("Care Cascade in 2015\n(denominator is PLHIV)")
         o <- o + theme_classic()
+        o <- o + theme(title=element_text(size=18))
         o <- o + theme(axis.title=element_blank())
-        o <- o + theme(axis.text.x=element_text(size=12))
-        o <- o + theme(axis.text.y=element_text(size=10))
+        o <- o + theme(axis.text.x=element_text(size=15))
+        o <- o + theme(axis.text.y=element_text(size=18))
         o <- o + theme(legend.position="none")
-        print(o)
 
+        t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
+        t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+        t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
+        t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
+        t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
+        t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+
+        t5_results <- c(t5_dx,t5_cx,t5_tx,t5_vs,t5_ltfu)
+
+        definition <- c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU")
+        t5 <- data.frame(definition,t5_results)
+
+        levels(t5$definition)
+        t5$definition <- factor(t5$definition, levels=c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU"))
+
+        fill.coll <- rev(brewer.pal(9,"Blues")[4:8])
+
+        p <- ggplot(t5,aes(definition,t5_results))
+        p <- p + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+        p <- p + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        p <- p + scale_fill_manual(values=fill.coll)
+        p <- p + ggtitle("Care Cascade in 2020\n(denominator is PLHIV)")
+        p <- p + theme_classic()
+        p <- p + theme(title=element_text(size=18))
+        p <- p + theme(axis.title=element_blank())
+        p <- p + theme(axis.text.x=element_text(size=15))
+        p <- p + theme(axis.text.y=element_text(size=18))
+        p <- p + theme(legend.position="none")
+
+        print(grid.arrange(o,p,nrow=1,ncol=2))
         },
-        height=700
+        height=400
     )
 
     output$plotCascadeThen <- renderPlot({
@@ -214,9 +291,10 @@ function(input, output, session) {
         o <- o + scale_fill_manual(values=fill.coll)
         o <- o + ggtitle("Care Cascade in 2020\n(denominator is PLHIV)")
         o <- o + theme_classic()
+        o <- o + theme(title=element_text(size=20))
         o <- o + theme(axis.title=element_blank())
-        o <- o + theme(axis.text.x=element_text(size=12))
-        o <- o + theme(axis.text.y=element_text(size=10))
+        o <- o + theme(axis.text.x=element_text(size=18))
+        o <- o + theme(axis.text.y=element_text(size=18))
         o <- o + theme(legend.position="none")
         print(o)
         },
@@ -253,13 +331,14 @@ function(input, output, session) {
         o <- o + scale_fill_manual(values=fill.coll)
         o <- o + geom_abline(intercept=0.9, slope=0)
         o <- o + theme_classic()
+        o <- o + theme(title=element_text(size=20))
         o <- o + theme(axis.title=element_blank())
-        o <- o + theme(axis.text.x=element_text(size=12))
-        o <- o + theme(axis.text.y=element_text(size=10))
+        o <- o + theme(axis.text.x=element_text(size=18))
+        o <- o + theme(axis.text.y=element_text(size=18))
         o <- o + theme(legend.position="none")
         print(o)
         },
-        height=700
+        height=400
     )
 
     output$outputTable <- DT::renderDataTable({

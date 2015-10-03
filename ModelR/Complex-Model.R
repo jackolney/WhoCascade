@@ -119,7 +119,9 @@ quartz.save(file='./plots/90-90-90.pdf',type='pdf')
 # Care Cascade Cross Section at t0 and t5 #
 ###########################################
 
-t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx,Tx,Vs))))
+# denominator here should be all PLHIV. Then 90-90-90 is different.
+
+t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx,Care,Tx,Vs))))
 t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx,Vs))))
 t0_vs = as.double(filter(out,time == 0) %>% select(Vs))
 t0_ltfu = as.double(filter(out,time == 0) %>% select(Ltfu))
@@ -224,3 +226,13 @@ quartz.options(w=12,h=4)
 grid.arrange(o,p,nrow=1)
 
 quartz.save(file='./plots/NewInf-AidsDeaths.pdf',type='pdf')
+
+
+p <- ggplot(out, aes(x=time,y=ART)) + 
+geom_line() + 
+theme_classic() +
+theme(axis.text.x=element_text(size=20)) +
+theme(axis.text.y=element_text(size=20)) +
+theme(axis.title=element_text(size=20)) +
+scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
+p

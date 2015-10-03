@@ -147,12 +147,35 @@ shinyUI(
             plotOutput('plotOne')
           )
         ),
-    tabPanel("Results",
-        mainPanel(
-            plotOutput('plotCascadeNow'),
-            plotOutput('plotCascadeThen'),
-            plotOutput('plot909090')
-         )
+    navbarMenu("Results",
+        tabPanel("The Care Cascade",
+            fluidRow(
+                plotOutput('plotCascade')
+                ),
+            fluidRow(
+                    wellPanel(
+                        h4("Model Results"),
+                        p("Here are some results...")
+                    )
+                )
+            ),
+        tabPanel("90-90-90",
+            sidebarPanel(
+                h4("UNAIDS 90-90-90"),
+                p("Here are some results...")
+                ),
+            mainPanel(
+                plotOutput('plot909090')
+                )
+            )
+        ),
+    tabPanel("Optimisation",
+        sidebarPanel(
+            h4("Model Optimisation"),
+            p("This will contain an optimisation algorithm that will pick the most cost-effective intervention to enhance care."),
+            actionButton("optimiseInput", "OPTIMISE")
+            ),
+        mainPanel()
         ),
     tabPanel("All Plots",
           mainPanel(
