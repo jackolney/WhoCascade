@@ -75,20 +75,28 @@ function(input, output, session) {
     )})
 
     observeEvent(input$demoInput, {
-        randPLHIV <- round(runif(1,100,1e+04),0)
-        updateNumericInput(session,"userPLHIV",value=randPLHIV)
-        updateNumericInput(session,"userDx",value=round(randPLHIV * 0.8,0))
-        updateNumericInput(session,"userCare",value=round(randPLHIV * 0.6,0))
-        updateNumericInput(session,"userTx",value=round(randPLHIV * 0.3,0))
-        updateNumericInput(session,"userVs",value=round(randPLHIV * 0.25,0))
-        updateNumericInput(session,"userLtfu",value=round(randPLHIV * 0.1,0))
+        if(input$userPLHIV == 0) {
+            randPLHIV <- round(runif(1,100,1e+04),0)
+            updateNumericInput(session,"userPLHIV",value=randPLHIV)
+            updateNumericInput(session,"userDx",value=round(randPLHIV * 0.8,0))
+            updateNumericInput(session,"userCare",value=round(randPLHIV * 0.6,0))
+            updateNumericInput(session,"userTx",value=round(randPLHIV * 0.3,0))
+            updateNumericInput(session,"userVs",value=round(randPLHIV * 0.25,0))
+            updateNumericInput(session,"userLtfu",value=round(randPLHIV * 0.1,0))
+        } else {
+            updateNumericInput(session,"userDx",value=round(input$userPLHIV * 0.8,0))
+            updateNumericInput(session,"userCare",value=round(input$userPLHIV * 0.6,0))
+            updateNumericInput(session,"userTx",value=round(input$userPLHIV * 0.3,0))
+            updateNumericInput(session,"userVs",value=round(input$userPLHIV * 0.25,0))
+            updateNumericInput(session,"userLtfu",value=round(input$userPLHIV * 0.1,0))
+        }
     })
 
     out <- reactive({
         Time <- seq(0,5,0.02)
         theInitial <- Initial()
-        Beta <<- as.double(0.0275837 / (((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
-        print(Beta)
+        Beta <<- as.double(NewInfections / (((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
+        print(paste("Beta:",Beta))
         out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=Parameters()))
         out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
         out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
@@ -351,12 +359,22 @@ function(input, output, session) {
     )
 
     # Saving input values from setup tab.
-    saveData <- function(data) {
+    saveCascadeData <- function(data) {
         # Grab the Google Sheet
         sheet <- gs_title("WHO-Cascade-Data")
         # Add the data as a new row
         gs_add_row(sheet, input = data)
     }
+
+    getIncidenceData <- function() {
+        theTable <- gs_title("SpectrumIncidenceEstimates")
+        return(gs_read(theTable,ws="NewInfections"))
+    }
+
+    observeEvent(input$userCountry, {
+        NewInfections <<- as.double(as.double(filter(getIncidenceData(),Country==input$userCountry) %>% select(NewInfections2014)))
+        print(paste("Country data:",NewInfections))
+    })
 
     observeEvent(input$saveInput, {
         theResult <- c(input$userCountry,
@@ -367,7 +385,7 @@ function(input, output, session) {
             as.integer(input$userVs),
             as.integer(input$userLtfu))
         print(theResult)
-        saveData(theResult)
+        saveCascadeData(theResult)
         output$saveText <- renderText({"Saved!"})  
     })
 
