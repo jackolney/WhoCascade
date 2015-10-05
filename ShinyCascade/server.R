@@ -37,35 +37,35 @@ function(input, output, session) {
     )})
 
     Initial <- reactive({c(
-        UnDx_500 = 1e+4 * ((input$userPLHIV - input$userDx) / input$userPLHIV) * 0.58,
-        UnDx_350500 = 1e+4 * ((input$userPLHIV - input$userDx) / input$userPLHIV) * 0.23,
-        UnDx_200350 = 1e+4 * ((input$userPLHIV - input$userDx) / input$userPLHIV) * 0.16,
-        UnDx_200 = 1e+4 * ((input$userPLHIV - input$userDx) / input$userPLHIV) * 0.03,
+        UnDx_500 = (input$userPLHIV - input$userDx) * 0.58,
+        UnDx_350500 = (input$userPLHIV - input$userDx) * 0.23,
+        UnDx_200350 = (input$userPLHIV - input$userDx) * 0.16,
+        UnDx_200 = (input$userPLHIV - input$userDx) * 0.03,
 
-        Dx_500 = 1e+4 * ((input$userDx - input$userCare - input$userLtfu) / input$userPLHIV) * 0.58,
-        Dx_350500 = 1e+4 * ((input$userDx - input$userCare - input$userLtfu) / input$userPLHIV) * 0.23,
-        Dx_200350 = 1e+4 * ((input$userDx - input$userCare - input$userLtfu) / input$userPLHIV) * 0.16,
-        Dx_200 = 1e+4 * ((input$userDx - input$userCare - input$userLtfu) / input$userPLHIV) * 0.03,
+        Dx_500 = (input$userDx - input$userCare - input$userLtfu) * 0.58,
+        Dx_350500 = (input$userDx - input$userCare - input$userLtfu) * 0.23,
+        Dx_200350 = (input$userDx - input$userCare - input$userLtfu) * 0.16,
+        Dx_200 = (input$userDx - input$userCare - input$userLtfu) * 0.03,
 
-        Care_500 = 1e+4 * ((input$userCare - input$userTx - input$userVs) / input$userPLHIV) * 0.58,
-        Care_350500 = 1e+4 * ((input$userCare - input$userTx - input$userVs) / input$userPLHIV) * 0.23,
-        Care_200350 = 1e+4 * ((input$userCare - input$userTx - input$userVs) / input$userPLHIV) * 0.16,
-        Care_200 = 1e+4 * ((input$userCare - input$userTx - input$userVs) / input$userPLHIV) * 0.03,
+        Care_500 = (input$userCare - input$userTx - input$userVs) * 0.58,
+        Care_350500 = (input$userCare - input$userTx - input$userVs) * 0.23,
+        Care_200350 = (input$userCare - input$userTx - input$userVs) * 0.16,
+        Care_200 = (input$userCare - input$userTx - input$userVs) * 0.03,
 
-        Tx_500 = 1e+4 * ((input$userTx - input$userVs) / input$userPLHIV) * 0.58,
-        Tx_350500 = 1e+4 * ((input$userTx - input$userVs) / input$userPLHIV) * 0.23,
-        Tx_200350 = 1e+4 * ((input$userTx - input$userVs) / input$userPLHIV) * 0.16,
-        Tx_200 = 1e+4 * ((input$userTx - input$userVs) / input$userPLHIV) * 0.03,
+        Tx_500 = (input$userTx - input$userVs) * 0.58,
+        Tx_350500 = (input$userTx - input$userVs) * 0.23,
+        Tx_200350 = (input$userTx - input$userVs) * 0.16,
+        Tx_200 = (input$userTx - input$userVs) * 0.03,
 
-        Vs_500 = 1e+4 * (input$userVs / input$userPLHIV) * 0.58,
-        Vs_350500 = 1e+4 * (input$userVs / input$userPLHIV) * 0.23,
-        Vs_200350 = 1e+4 * (input$userVs / input$userPLHIV) * 0.16,
-        Vs_200 = 1e+4 * (input$userVs / input$userPLHIV) * 0.03,
+        Vs_500 = (input$userVs) * 0.58,
+        Vs_350500 = (input$userVs) * 0.23,
+        Vs_200350 = (input$userVs) * 0.16,
+        Vs_200 = (input$userVs) * 0.03,
 
-        Ltfu_500 = 1e+4 * (input$userLtfu / input$userPLHIV) * 0.58,
-        Ltfu_350500 = 1e+4 * (input$userLtfu / input$userPLHIV) * 0.23,
-        Ltfu_200350 = 1e+4 * (input$userLtfu / input$userPLHIV) * 0.16,
-        Ltfu_200 = 1e+4 * (input$userLtfu / input$userPLHIV) * 0.03,
+        Ltfu_500 = (input$userLtfu) * 0.58,
+        Ltfu_350500 = (input$userLtfu) * 0.23,
+        Ltfu_200350 = (input$userLtfu) * 0.16,
+        Ltfu_200 = (input$userLtfu) * 0.03,
 
         NewInf = 0,
 
@@ -94,11 +94,15 @@ function(input, output, session) {
 
     out <- reactive({
         Time <- seq(0,5,0.02)
-        theInitial <- Initial()        
-        # Beta <<- as.double(NewInfections / (((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
+        theInitial <- Initial()
+        Numerator <- NewInfections
+        Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
+        Beta <<- Numerator / Denominator
         # Beta <<- as.double(0.228622 / (((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
         # Beta <<- 0.27
-        Beta <<- 0
+        # Beta <<- 0
+        print(paste("Numerator:",Numerator))
+        print(paste("Denominator:",Denominator))
         print(paste("Beta:",Beta))
         out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=Parameters()))
         out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
