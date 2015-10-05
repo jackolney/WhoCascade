@@ -105,8 +105,8 @@ function(input, output, session) {
     output$plotOne <- renderPlot({
         p <- ggplot(out(), aes_string(x="time",y=input$y)) + 
         geom_line(size=2) + 
-        # theme_class() +
-        theme_economist() +
+        theme_classic() +
+        # theme_economist() +
         theme(axis.text.x=element_text(size=18)) +
         theme(axis.text.y=element_text(size=18)) +
         theme(axis.title=element_text(size=20)) +
