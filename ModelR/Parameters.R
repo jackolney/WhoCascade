@@ -17,6 +17,5 @@ Parameters <- c(
     Tau_3 = 0.0631120,
     Tau_4 = 0.1225184,
     Mu = 0.0374,
-    Beta = 0.0275837,
     Epsilon = 0.5
 )
