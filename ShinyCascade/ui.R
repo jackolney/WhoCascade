@@ -104,12 +104,14 @@ shinyUI(
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Help Panel"),
-                helpText("Fill in the boxes..."),
+                helpText("Please fill in all boxes with relevant data, then hit 'save' and wait for the confirmation below. Hit 'reset' to reset all values to zero, and hit 'demo' for a random set of values to be generated."),
                 actionButton("saveInput", "SAVE"),
                 p(" "),
                 actionButton("resetInput", "RESET"),
                 p(" "),
-                actionButton("demoInput", "DEMO")
+                actionButton("demoInput", "DEMO"),
+                p(" "),
+                textOutput('saveText')
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),

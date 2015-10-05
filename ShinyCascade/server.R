@@ -366,6 +366,7 @@ function(input, output, session) {
             as.integer(input$userLtfu))
         print(theResult)
         saveData(theResult)
+        output$saveText <- renderText({"Saved!"})  
     })
 
     # Reset button stuff.
