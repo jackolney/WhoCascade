@@ -147,6 +147,7 @@ shinyUI(
                 helpText("Select country and fill in boxes to specify the initial values of the model. 
                     The boxes correlate with indicators in the Consolidated Information Guidelines (shown below), with numbers in brackets corresponding to numbers on the indicator figure."),
                 img(src="WHOGuidelinesCascade.png",height=400 * 0.9,width=900 * 0.9),
+                br(), br(),
                 wellPanel(
                     selectInput("userCountry","Country:",CountryList,selected="Brazil")
                     ),
@@ -184,7 +185,7 @@ shinyUI(
             mainPanel(
                 shinyjs::useShinyjs(),
                 id = "parameter-panel",
-                helpText("Here we show the parameter values used in the back end of the model. See below for a detail diagram of the model, or alternatively click 'more' and 'PDF' to see the accompanying model document."),
+                helpText("Here we show the parameter values used in the back end of the model. See below for a detail diagram of the model, or alternatively click 'more' and 'Model Document' to see the accompanying model document."),
                 imageOutput("modelFlowImage"),
                 br(), br(),
                 sliderInput('rho','Diagnosis rate (rho):',min=0,max=5,value=0.5,step=0.01,width=1000),
@@ -210,15 +211,18 @@ shinyUI(
                 ),
             fluidRow(
                     wellPanel(
-                        h4("Model Results"),
-                        p("Note, the denominator in all these calculations is # of PLHIV.")
+                        h4("The distribution of care between 2015 and 2020."),
+                        helpText("Note, the denominator in all these calculations is # of PLHIV."),
+                        p("These figures illustrate the 'Care Cascade' in 2015 (at baseline), and the projection after 5 years (in 2020).")
                     )
                 )
             ),
         tabPanel("90-90-90",
             sidebarPanel(
                 h4("UNAIDS 90-90-90"),
-                p("By 2020, this is where the model thinks we will be. If you would like to see what changes can be made to resolve inefficiencies in care, then click 'Optimisation' above."),
+                p("By 2020, this is what the model predicts will be achieved in comparison to the UNAIDS goals of 90% diagnosed, 
+                    90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any 
+                    inefficiencies in care, then click on the 'Optimisation' tab."),
                 tableOutput("table909090")
                 ),
             mainPanel(
@@ -228,7 +232,7 @@ shinyUI(
         tabPanel("New Infections",
             sidebarPanel(
                 h4("New Infections"),
-                p("Here are some results...")
+                p("Predictions of incident infections between 2015 and 2020, illustrated as a proportion of the total HIV-positive population.")
                 ),
             mainPanel(
                 plotOutput('plotNewInf')
@@ -237,7 +241,7 @@ shinyUI(
         tabPanel("AIDS Deaths",
             sidebarPanel(
                 h4("AIDS Deaths"),
-                p("Here are some results...")
+                p("Predictions of AIDS deaths between 2015 and 2020, illustrated as a proportion of the total HIV-positive population.")
                 ),
             mainPanel(
                 plotOutput('plotAidsDeaths')
