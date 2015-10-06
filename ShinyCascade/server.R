@@ -348,7 +348,7 @@ function(input, output, session) {
     )
 
     output$table909090 <- renderTable({
-                out <- out()
+        out <- out()
         PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
         # dx / PLHIV
         dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
@@ -408,6 +408,107 @@ function(input, output, session) {
         },
         options=list(autoWidth=TRUE,pageLength=100)
     )
+
+
+    # OPTIMISATION #
+
+    optimisationValues <- reactiveValues(
+        Rho = 0,
+        Epsilon = 0,
+        Gamma = 0,
+        Theta = 0,
+        Omega = 0
+        )
+    
+    output$optimisationTable <- renderTable({
+        tbl_names <- c("Rho","Epsilon","Gamma","Theta","Omega")
+        tbl_data <- c(
+            optimisationValues$Rho,
+            optimisationValues$Epsilon,
+            optimisationValues$Gamma,
+            optimisationValues$Theta,
+            optimisationValues$Omega
+            )
+        tbl <- matrix(tbl_data,nrow=5,ncol=2)
+        tbl[,1] <- c(tbl_names)
+        colnames(tbl) <- c("Parameter","Value")
+        return(tbl)
+    })
+
+    observeEvent(input$optimiseInput, {
+
+        find909090 <- function(target, par) {
+
+            optimisationValues$Rho <- par[1]
+            optimisationValues$Epsilon <- par[5]
+            optimisationValues$Gamma <- par[2]
+            optimisationValues$Theta <- par[3]
+            optimisationValues$Omega <- par[4]
+
+            print(paste("par =",par))
+
+            Time <- seq(0,5,0.02)
+
+            # Ability to turn off HIV incidence in the model.
+            if(input$incidenceInput == TRUE) {
+                theInitial <- Initial()
+                Numerator <- NewInfections
+                Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
+                Beta <<- Numerator / Denominator
+            } else {
+                Beta <<- 0
+            }
+
+            theP <- Parameters()
+            theP["Rho"] = par[1]
+            theP["Gamma"] = par[2]
+            theP["Theta"] = par[3]
+            theP["Omega"] = par[4]
+            theP["Epsilon"] = par[5]
+
+            # The Model #
+            out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=theP))
+            # --------- #
+
+            # Post-simulation mutation (creation of columns) etc.
+            out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+            out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+            out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
+            out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
+            out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
+            out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
+            out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+            out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
+            out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
+            out <- mutate(out,HivMortalityProp = HivMortality / N)
+            out <- mutate(out,NewInfProp = NewInf / N)
+
+
+            PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+            dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+            tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+            vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
+            p_dx <- dx / PLHIV
+            p_tx <- tx / dx
+            p_vs <- vs / tx
+            results <- c(p_dx,p_tx,p_vs)
+            definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+            the909090 <- data.frame(definition,results)
+            out <- sum((target - the909090$results)^2)
+            # out <- (target - the909090$results[1])^2
+            return(out)
+        }
+
+        theResult <- optim(par = c(0,0,0,0,0), find909090, target = 0.9, lower = 0, upper = 10)
+
+        optimisationValues$Rho <- theResult$par[1]
+        optimisationValues$Epsilon <- theResult$par[5]
+        optimisationValues$Gamma <- theResult$par[2]
+        optimisationValues$Theta <- theResult$par[3]
+        optimisationValues$Omega <- theResult$par[4]
+        
+        print(theResult$par)
+    })
 
     # Saving input values from setup tab.
     saveCascadeData <- function(data) {

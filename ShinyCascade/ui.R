@@ -222,9 +222,12 @@ shinyUI(
             h4("Model Optimisation"),
             p("This will contain an optimisation algorithm that will pick the most cost-effective intervention to enhance care."),
             helpText("Need a table giving exact values beneath."),
-            actionButton("optimiseInput", "OPTIMISE")
+            actionButton("optimiseInput", "OPTIMISE"),
+            br(), br(),
+            tableOutput("optimisationTable")
             ),
-        mainPanel()
+        mainPanel(
+            )
         ),
     tabPanel("All Plots",
           mainPanel(
