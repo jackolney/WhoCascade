@@ -501,14 +501,65 @@ function(input, output, session) {
 
         theResult <- optim(par = c(0,0,0,0,0), find909090, target = 0.9, lower = 0, upper = 10)
 
+        # Fill out results table.
         optimisationValues$Rho <- theResult$par[1]
         optimisationValues$Epsilon <- theResult$par[5]
         optimisationValues$Gamma <- theResult$par[2]
         optimisationValues$Theta <- theResult$par[3]
         optimisationValues$Omega <- theResult$par[4]
+
+        # Update sliders on "Parameter" page.
+        updateSliderInput(session,"rho",value=theResult$par[1],min=0,max=5,value=0.5,step=0.01)
+        updateSliderInput(session,"epsilon",value=theResult$par[5],min=0,max=5,value=0.5,step=0.01)
+        updateSliderInput(session,"gamma",value=theResult$par[2],min=0,max=5,value=0.5,step=0.01)
+        updateSliderInput(session,"theta",value=theResult$par[3],min=0,max=5,value=0.5,step=0.01)
+        updateSliderInput(session,"omega",value=theResult$par[4],min=0,max=5,value=0.5,step=0.01)
+
+        # The error is in the above, as the optim() tries to make a value > 5. Then updateSliderInput() screws up.
         
         print(theResult$par)
     })
+
+    output$plotOptimised909090 <- renderPlot({
+        out <- out()
+        PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+        # dx / PLHIV
+        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+        # tx / dx
+        tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+        # vs / tx
+        vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
+
+        p_dx <- dx / PLHIV
+        p_tx <- tx / dx
+        p_vs <- vs / tx
+
+        results <- c(p_dx,p_tx,p_vs)
+        definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+        Scenario <- c("Baseline")
+        the909090 <- data.frame(definition,results,Scenario)
+
+        levels(the909090$definition)
+        the909090$definition <- factor(the909090$definition, levels=c("% Diagnosed","% On Treatment","% Suppressed"))
+
+        fill.coll <- brewer.pal(4,"Set1")
+
+        o <- ggplot(the909090,aes(definition,results))
+        o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        o <- o + scale_fill_manual(values=fill.coll)
+        o <- o + geom_abline(intercept=0.9, slope=0)
+        o <- o + theme_classic()
+        o <- o + theme(title=element_text(size=20))
+        o <- o + theme(axis.title=element_blank())
+        o <- o + theme(axis.text.x=element_text(size=18))
+        o <- o + theme(axis.text.y=element_text(size=18))
+        o <- o + theme(legend.position="none")
+        print(o)
+        },
+        height=400,
+        width=700
+    )
 
     # Saving input values from setup tab.
     saveCascadeData <- function(data) {

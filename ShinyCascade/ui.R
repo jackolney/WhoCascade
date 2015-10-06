@@ -227,6 +227,7 @@ shinyUI(
             tableOutput("optimisationTable")
             ),
         mainPanel(
+            plotOutput('plotOptimised909090')
             )
         ),
     tabPanel("All Plots",

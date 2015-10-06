@@ -74,7 +74,7 @@ target <- 0.9
 
 findFirst90 <- function(target, par) {
     
-    print(paste("par = ",par))
+    print(paste("par =",par))
 
     Parameters <- c(
         Nu_1 = 0.2139008,
@@ -137,7 +137,7 @@ theResult
 
 find909090 <- function(target, par) {
     
-    print(paste("par = ",par))
+    print(paste("par =",par))
 
     Parameters <- c(
         Nu_1 = 0.2139008,
@@ -258,8 +258,8 @@ find909090_alt <- function(target, p) {
     return(out)
 }
 
-test <- modFit(find909090_alt,p = c(0,0,0,0,0),target = 0.9, lower = 0, upper = 10, method = "Nelder-Mead")
-
+test <- modFit(find909090_alt,p = c(0,0,0,0,0),target = 0.9, lower = rep(0,5), upper = rep(10,5), method = "Port")
+theResult$par
     # Parameters <- c(
     #     Nu_1 = 0.2139008,
     #     Nu_2 = 0.3379898,
