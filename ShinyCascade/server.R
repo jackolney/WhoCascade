@@ -20,10 +20,10 @@ function(input, output, session) {
         Nu_1 = 0.2139008,
         Nu_2 = 0.3379898,
         Nu_3 = 0.2744363,
-        Rho = 0.5,
+        Rho = input$rho,
         Gamma = input$gamma,
-        Theta = 2,
-        Omega = 0.01,
+        Theta = input$theta,
+        Omega = input$omega,
         Delta_1 = 1.1491019,
         Delta_2 = 2.5468165,
         Alpha_1 = 0.0043812,
@@ -35,13 +35,15 @@ function(input, output, session) {
         Tau_3 = 0.0631120,
         Tau_4 = 0.1225184,
         Mu = 0.0374,
-        Epsilon = 0.5
+        Epsilon = input$epsilon
     )})
 
     output$parameterTable <- renderTable({
-        ParameterNames <- c("Nu_1", "Nu_2", "Nu_3", "Rho", "Gamma", "Theta", "Omega", "Delta_1", "Delta_2", "Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4", "Tau_1", "Tau_2", "Tau_3", "Tau_4", "Mu", "Epsilon")
+        theP <- Parameters()
+        theParameters <- c(theP[4],theP[19],theP[5],theP[6],theP[7],theP[1],theP[2],theP[3],theP[8],theP[9],theP[10],theP[11],theP[12],theP[13],theP[14],theP[15],theP[16],theP[17],theP[18])
+        ParameterNames <- c("Rho","Epsilon","Gamma","Theta","Omega","Nu_1","Nu_2","Nu_3","Delta_1","Delta_2","Alpha_1","Alpha_2","Alpha_3","Alpha_4","Tau_1","Tau_2","Tau_3","Tau_4","Mu")
         rows <- length(ParameterNames)
-        tbl <- matrix(Parameters(),rows,ncol=2)
+        tbl <- matrix(theParameters,rows,ncol=2)
         tbl[,1] <- ParameterNames
         colnames(tbl) <- c("Parameter","Value")
         return(tbl)
@@ -418,6 +420,10 @@ function(input, output, session) {
     # Reset button stuff.
     observeEvent(input$resetInput, {
         shinyjs::reset("setup-panel")
+    })
+
+    observeEvent(input$resetParameters, {
+        shinyjs::reset("parameter-panel")
     })
 
 }
