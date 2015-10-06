@@ -159,11 +159,11 @@ shinyUI(
                 helpText("Here we show the parameter values used in the back end of the model. See below for a detail diagram of the model, or alternatively click 'more' and 'PDF' to see the accompanying model document."),
                 imageOutput("modelFlowImage"),
                 br(),
-                sliderInput('rho','Diagnosis rate (rho):',min=0,max=5,value=0.5,step=0.01,width=810),
-                sliderInput('epsilon','Care seeking rate (epsilon):',min=0,max=5,value=0.5,step=0.01,width=810),
-                sliderInput('gamma','ART initiation rate (gamma):',min=0,max=5,value=0.5,step=0.01,width=810),
-                sliderInput('theta','Viral suppression rate (theta):',min=0,max=5,value=2,step=0.01,width=810),
-                sliderInput('omega','ART dropout rate (omega):',min=0,max=5,value=0.01,step=0.01,width=810)
+                sliderInput('rho','Diagnosis rate (rho):',min=0,max=5,value=0.5,step=0.01,width=1000),
+                sliderInput('epsilon','Care seeking rate (epsilon):',min=0,max=5,value=0.5,step=0.01,width=1000),
+                sliderInput('gamma','ART initiation rate (gamma):',min=0,max=5,value=0.5,step=0.01,width=1000),
+                sliderInput('theta','Viral suppression rate (theta):',min=0,max=5,value=2,step=0.01,width=1000),
+                sliderInput('omega','ART dropout rate (omega):',min=0,max=5,value=0.01,step=0.01,width=1000)
                 )
             )
         ),
@@ -183,7 +183,7 @@ shinyUI(
             fluidRow(
                     wellPanel(
                         h4("Model Results"),
-                        p("Here are some results...")
+                        p("Note, the denominator in all these calculations is # of PLHIV.")
                     )
                 )
             ),
@@ -230,13 +230,17 @@ shinyUI(
           )
         ),
     navbarMenu("More",
-    tabPanel("PDF",
+    tabPanel("Model Document",
         HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhd0U2cnY3dWJMcE0/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
+        ),
+    tabPanel("Country Input Data",
+        HTML('<iframe src=\"https://drive.google.com/file/d/1rIMf-0vB77uwy7XO4rCM9Isd7_ReiCeOkwW1BvoxZw4/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
+        ),
+    tabPanel("Incidence Estimates",
+        HTML('<iframe src=\"https://drive.google.com/file/d/1-OVjcIl7m-QZt0T52WMcsU1Oxv4znTyc4eU0464L24I/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
         ),
     tabPanel("Raw Output",
         DT::dataTableOutput('outputTable')
         )
     )
-
-
 ))

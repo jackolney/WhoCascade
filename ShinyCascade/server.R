@@ -263,7 +263,7 @@ function(input, output, session) {
         o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
         o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
         o <- o + scale_fill_manual(values=fill.coll)
-        o <- o + ggtitle("Care Cascade in 2015\n(denominator is PLHIV)")
+        o <- o + ggtitle("Care Cascade in 2015")
         o <- o + theme_classic()
         o <- o + theme(title=element_text(size=18))
         o <- o + theme(axis.title=element_blank())
@@ -292,7 +292,7 @@ function(input, output, session) {
         p <- p + geom_bar(aes(fill=definition),position='dodge',stat='identity')
         p <- p + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
         p <- p + scale_fill_manual(values=fill.coll)
-        p <- p + ggtitle("Care Cascade in 2020\n(denominator is PLHIV)")
+        p <- p + ggtitle("Care Cascade in 2020")
         p <- p + theme_classic()
         p <- p + theme(title=element_text(size=18))
         p <- p + theme(axis.title=element_blank())
@@ -303,7 +303,7 @@ function(input, output, session) {
         print(grid.arrange(o,p,nrow=1,ncol=2))
         },
         height=400,
-        width=1300
+        width=1250
     )
 
     output$plot909090 <- renderPlot({
@@ -432,8 +432,8 @@ function(input, output, session) {
             src='www/Model.png',
             contentType='image/png',
             alt='ModelFlowDiagram',
-            height=400*0.9,
-            width=900*0.9))
+            height=444,
+            width=1000))
     },
     deleteFile=FALSE)
 
