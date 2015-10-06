@@ -159,7 +159,7 @@ shinyUI(
                 id = "parameter-panel",
                 helpText("Here we show the parameter values used in the back end of the model. See below for a detail diagram of the model, or alternatively click 'more' and 'PDF' to see the accompanying model document."),
                 imageOutput("modelFlowImage"),
-                br(),
+                br(), br(),
                 sliderInput('rho','Diagnosis rate (rho):',min=0,max=5,value=0.5,step=0.01,width=1000),
                 sliderInput('epsilon','Care seeking rate (epsilon):',min=0,max=5,value=0.5,step=0.01,width=1000),
                 sliderInput('gamma','ART initiation rate (gamma):',min=0,max=5,value=0.5,step=0.01,width=1000),
