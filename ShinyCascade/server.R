@@ -93,18 +93,25 @@ function(input, output, session) {
     })
 
     out <- reactive({
+
         Time <- seq(0,5,0.02)
-        theInitial <- Initial()
-        Numerator <- NewInfections
-        Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
-        Beta <<- Numerator / Denominator
-        # Beta <<- as.double(0.228622 / (((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
-        # Beta <<- 0.27
-        # Beta <<- 0
-        print(paste("Numerator:",Numerator))
-        print(paste("Denominator:",Denominator))
+
+        # Ability to turn off HIV incidence in the model.
+        if(input$incidenceInput == TRUE) {
+            theInitial <- Initial()
+            Numerator <- NewInfections
+            Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
+            Beta <<- Numerator / Denominator
+        } else {
+            Beta <<- 0
+        }
         print(paste("Beta:",Beta))
+
+        # The Model #
         out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=Parameters()))
+        # --------- #
+
+        # Post-simulation mutation (creation of columns) etc.
         out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
         out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
         out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
@@ -116,6 +123,7 @@ function(input, output, session) {
         out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
         out <- mutate(out,HivMortalityProp = HivMortality / N)
         out <- mutate(out,NewInfProp = NewInf / N)
+
         return(out)
     })
 

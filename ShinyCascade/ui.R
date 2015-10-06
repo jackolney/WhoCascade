@@ -1,6 +1,6 @@
 library(shiny)
 library(ggplot2)
-library(shinythemes)
+# library(shinythemes)
 library(DT)
 library(shinyjs)
 
@@ -105,6 +105,7 @@ shinyUI(
             sidebarPanel(
                 h4("Help Panel"),
                 helpText("Please fill in all boxes with relevant data, then hit 'save' and wait for the confirmation below. Hit 'reset' to reset all values to zero, and hit 'demo' for a random set of values to be generated."),
+                checkboxInput("incidenceInput","HIV Incidence",value=TRUE),
                 actionButton("saveInput", "SAVE"),
                 p(" "),
                 actionButton("resetInput", "RESET"),
