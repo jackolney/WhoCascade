@@ -123,7 +123,7 @@ shinyUI(
                     selectInput("userCountry","Country:",CountryList,selected="Brazil")
                     ),
                 wellPanel(
-                    numericInput("userPLHIV","Number of PLHIV:",0,min=0)
+                    numericInput("userPLHIV","Number of PLHIV:",1e+6,min=0)
                     ),
                 wellPanel(
                     numericInput("userDx","Number of PLHIV who have been diagnosed:",0,min=0)
@@ -157,7 +157,7 @@ shinyUI(
                 shinyjs::useShinyjs(),
                 id = "parameter-panel",
                 helpText("Here we show the parameter values used in the back end of the model. See below for a detail diagram of the model, or alternatively click 'more' and 'PDF' to see the accompanying model document."),
-                img(src="Model.png",height = 400 * 0.9,width = 900 * 0.9),
+                imageOutput("modelFlowImage"),
                 br(),
                 sliderInput('rho','Diagnosis rate (rho):',min=0,max=5,value=0.5,step=0.01,width=810),
                 sliderInput('epsilon','Care seeking rate (epsilon):',min=0,max=5,value=0.5,step=0.01,width=810),
@@ -201,14 +201,18 @@ shinyUI(
                 h4("New Infections"),
                 p("Here are some results...")
                 ),
-            mainPanel()
+            mainPanel(
+                plotOutput('plotNewInf')
+                )
             ),
         tabPanel("AIDS Deaths",
             sidebarPanel(
                 h4("AIDS Deaths"),
                 p("Here are some results...")
                 ),
-            mainPanel()
+            mainPanel(
+                plotOutput('plotAidsDeaths')
+                )
             )
         ),
     tabPanel("Optimisation",

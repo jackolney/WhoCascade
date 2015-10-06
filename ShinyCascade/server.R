@@ -152,7 +152,8 @@ function(input, output, session) {
         scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
         print(p)
         }, 
-        height=700
+        height=500,
+        width=700
     )
 
     output$plotTwo <- renderPlot({
@@ -234,8 +235,8 @@ function(input, output, session) {
         print(AllPlot)
 
         },
-        height=1000,
-        width=1000
+        height=900,
+        width=900
     )
 
     output$plotCascade <- renderPlot({
@@ -301,42 +302,8 @@ function(input, output, session) {
 
         print(grid.arrange(o,p,nrow=1,ncol=2))
         },
-        height=400
-    )
-
-    output$plotCascadeThen <- renderPlot({
-        out <- out()
-        t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
-        t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
-        t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
-        t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
-        t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
-        t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
-
-        t5_results <- c(t5_dx,t5_cx,t5_tx,t5_vs,t5_ltfu)
-
-        definition <- c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU")
-        t5 <- data.frame(definition,t5_results)
-
-        levels(t5$definition)
-        t5$definition <- factor(t5$definition, levels=c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU"))
-
-        fill.coll <- rev(brewer.pal(9,"Blues")[4:8])
-
-        o <- ggplot(t5,aes(definition,t5_results))
-        o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
-        o <- o + scale_fill_manual(values=fill.coll)
-        o <- o + ggtitle("Care Cascade in 2020\n(denominator is PLHIV)")
-        o <- o + theme_classic()
-        o <- o + theme(title=element_text(size=20))
-        o <- o + theme(axis.title=element_blank())
-        o <- o + theme(axis.text.x=element_text(size=18))
-        o <- o + theme(axis.text.y=element_text(size=18))
-        o <- o + theme(legend.position="none")
-        print(o)
-        },
-        height=700
+        height=400,
+        width=1300
     )
 
     output$plot909090 <- renderPlot({
@@ -376,7 +343,40 @@ function(input, output, session) {
         o <- o + theme(legend.position="none")
         print(o)
         },
-        height=400
+        height=400,
+        width=700
+    )
+
+    output$plotNewInf <- renderPlot({
+        p <- ggplot(out(), aes(x=time,y=NewInfProp)) + 
+            geom_line(size=2) + 
+            theme_classic() +
+            theme(axis.text.x=element_text(size=18)) +
+            theme(axis.text.y=element_text(size=18)) +
+            theme(axis.title=element_text(size=20)) +
+            xlab("Year") +
+            ylab("# new infections / total infected population") +
+            scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
+        print(p)
+        }, 
+        height=500,
+        width=700
+    )
+
+    output$plotAidsDeaths <- renderPlot({
+        p <- ggplot(out(), aes(x=time,y=HivMortalityProp)) + 
+            geom_line(size=2) + 
+            theme_classic() +
+            theme(axis.text.x=element_text(size=18)) +
+            theme(axis.text.y=element_text(size=18)) +
+            theme(axis.title=element_text(size=20)) +
+            xlab("Year") +
+            ylab("# AIDS deaths / total infected population") +
+            scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
+        print(p)
+        }, 
+        height=500,
+        width=700
     )
 
     output$outputTable <- DT::renderDataTable({
@@ -425,5 +425,16 @@ function(input, output, session) {
     observeEvent(input$resetParameters, {
         shinyjs::reset("parameter-panel")
     })
+
+    # Render Flow Diagram of Model.
+    output$modelFlowImage <- renderImage({
+        return(list(
+            src='www/Model.png',
+            contentType='image/png',
+            alt='ModelFlowDiagram',
+            height=400*0.9,
+            width=900*0.9))
+    },
+    deleteFile=FALSE)
 
 }
