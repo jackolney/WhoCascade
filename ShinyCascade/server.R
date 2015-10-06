@@ -516,6 +516,7 @@ function(input, output, session) {
         updateSliderInput(session,"omega",value=theResult$par[4],min=0,max=5,value=0.5,step=0.01)
 
         # The error is in the above, as the optim() tries to make a value > 5. Then updateSliderInput() screws up.
+        # Also, OMEGA should not be being varied. It is a fixed biological parameter.
         
         print(theResult$par)
     })

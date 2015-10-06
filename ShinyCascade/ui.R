@@ -79,23 +79,49 @@ shinyUI(
     navbarPage("Cascade Test App",
     theme = shinytheme("spacelab"),
     tabPanel("Introduction",
-        # img(src="HIVMC-logo.jpg",height = 72*2,width = 200*2),
+        # img(src="HIVMC-logo.jpg",height=100 * 0.75,width=300 * 0.75),
         h1("Introduction"),
-        helpText("Welcome."),
+        helpText("Welcome to the Cascade App."),
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Quick Start"),
-                helpText("If you want to skip the introduction and get modelling...")
+                helpText("If you want to skip the introduction and get modelling, jump to 'setup' and click on 'DEMO'")
                 ),
             mainPanel(
+                p("With the release of the Consolidated Information Guidelines for HIV by the World Health Organization (WHO)
+                in May 2015, a set of indicators have been agreed upon, based on the cascade of HIV services relating to impact in
+                terms of HIV incidence and mortality (see below). These guidelines provide a framework for countries to assess the current state
+                of care and identify any immediate deficiencies and bottlenecks preventing patients from progressing to treatment."),
+                p("Furthermore, as we pass the Millennium Development Goals of 2015 and focus attention on the UNAIDS 90-90-90 targets for 2020,
+                countries will be keen to understand whether they are on the right trajectory to achieve these goals. For this purpose, data from
+                countries can be input into a mathematical model and used to project forward to estimate future incidence, AIDS-deaths and the ascertainment of the 90-90-90 goals."),
+                img(src="WHOGuidelinesCascade.png",height=400,width=900),
                 h3("Aims"),
-                p("more details."),
+                tags$ol(
+                    tags$li("To develop a simple mathematical model to document and analyse the state of HIV care. This flexible model will take a wide range
+                        of data, characterise individuals into discrete care categories, and build upon a set of assumptions regarding transmission, duration of
+                        infection, progression through care and death, to project changes in incidence, mortality and care five years into the future to 2020."),
+                    tags$li("Using data from 26 countries, the model will be calibrated to each setting in turn to provide country-specific results."),
+                    tags$li("The model will be used to assess the current state of care, ascertaining gaps requiring immediate attention, before identifying what
+                        future changes need to be made, that differ from what has been done so far, for countries to be on track to achieve the 90-90-90 goals set out by UNAIDS."),
+                    tags$li("A range of interventions will then be simulated, each targetting a different aspect of care, to identify the most cost-effective strategy for reconciling any deficiencies in care."),
+                    tags$li("These findings will help countries prioritise strategies and will provide an estimate of the costs required to achieve future targets.")
+                ),
                 h3("The Model"),
-                p("something about the model"),
+                p("The simplified structure of the proposed model is shown below. State compartments do not exactly correlate with the indicators in Consolidated Indicator Guidelines, as compartments in the model 
+                    must be discrete and exhaustive, while the indicators listed are not all discrete; for example, ‘Knowing HIV status’ includes all patients who are in care, on treatment, virally suppressed and 
+                    lost from care as long as they are diagnosed. However, the model is able to take these indicators and seperate them into their individual components to specify the initial conditions for simulations."),
+                img(src="ModelSimple.jpg",height=200,width=850),
                 h3("Outcomes"),
-                p("outcomes"),
-                h3("What the model cannot do"),
-                p("lots...")
+                tags$ol(
+                    tags$li("Predict achievement of UNAIDS 90-90-90 targets in 2020"),
+                    tags$li("Identify strategies to achieve 90-90-90 targets at minimal cost."),
+                    tags$li("Illustrate the change in distribution of care between 2015 and 2020."),
+                    tags$li("Predict new infections in that time-frame."),
+                    tags$li("Predict AIDS deaths in that time-frame too.")
+                    ),
+                h4("Contributors"),
+                p("Jack J Olney, Jeffrey W Eaton, Ellen McRobie & Timothy B Hallett")
                 )
             )
         ),
@@ -123,6 +149,7 @@ shinyUI(
                 wellPanel(
                     selectInput("userCountry","Country:",CountryList,selected="Brazil")
                     ),
+                img(src="WHOGuidelinesCascade.png",height=400,width=900),
                 wellPanel(
                     numericInput("userPLHIV","Number of PLHIV:",1e+6,min=0)
                     ),
