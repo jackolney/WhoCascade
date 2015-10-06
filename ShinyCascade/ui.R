@@ -191,7 +191,8 @@ shinyUI(
         tabPanel("90-90-90",
             sidebarPanel(
                 h4("UNAIDS 90-90-90"),
-                p("Here are some results...")
+                p("By 2020, this is where the model thinks we will be. If you would like to see what changes can be made to resolve inefficiencies in care, then click 'Optimisation' above."),
+                tableOutput("table909090")
                 ),
             mainPanel(
                 plotOutput('plot909090')

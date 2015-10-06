@@ -347,6 +347,30 @@ function(input, output, session) {
         width=700
     )
 
+    output$table909090 <- renderTable({
+                out <- out()
+        PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+        # dx / PLHIV
+        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+        # tx / dx
+        tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+        # vs / tx
+        vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
+
+        p_dx <- dx / PLHIV
+        p_tx <- tx / dx
+        p_vs <- vs / tx
+
+        Result <- c(p_dx,p_tx,p_vs)
+        Target <- c("% Diagnosed","% On Treatment","% Suppressed")
+        the909090 <- data.frame(Target,Result)
+
+        levels(the909090$Target)
+        the909090$Target <- factor(the909090$Target, levels=c("% Diagnosed","% On Treatment","% Suppressed"))
+
+        return(the909090)
+    })
+
     output$plotNewInf <- renderPlot({
         p <- ggplot(out(), aes(x=time,y=NewInfProp)) + 
             geom_line(size=2) + 
@@ -381,7 +405,6 @@ function(input, output, session) {
 
     output$outputTable <- DT::renderDataTable({
         return(out())
-
         },
         options=list(autoWidth=TRUE,pageLength=100)
     )
