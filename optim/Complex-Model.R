@@ -133,8 +133,57 @@ theResult
 theResult
 # ------ #
 
+    Parameters <- c(
+        Nu_1 = 0.2139008,
+        Nu_2 = 0.3379898,
+        Nu_3 = 0.2744363,
+        Rho = 0.280838,
+        Gamma = 0.5,
+        Theta = 2,
+        Omega = 0.01,
+        Delta_1 = 1.1491019,
+        Delta_2 = 2.5468165,
+        Alpha_1 = 0.0043812,
+        Alpha_2 = 0.0179791,
+        Alpha_3 = 0.0664348,
+        Alpha_4 = 0.1289688,
+        Tau_1 = 0.0041621,
+        Tau_2 = 0.0170798,
+        Tau_3 = 0.0631120,
+        Tau_4 = 0.1225184,
+        Mu = 0.0374,
+        Epsilon = 0.5
+    )
+
+    out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
+    out <- tbl_df(data.frame(out))
+    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+    out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+    out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
+    out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
+    out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
+    out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
+    out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+    out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
+    out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
+    out <- mutate(out,HivMortalityProp = HivMortality / N)
+    out <- mutate(out,NewInfProp = NewInf / N)
+
+
+    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+    vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
+    p_dx <- dx / PLHIV
+    p_tx <- tx / dx
+    p_vs <- vs / tx
+    results <- c(p_dx,p_tx,p_vs)
+    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+    the909090 <- data.frame(definition,results)
+
 levels(the909090$definition)
 the909090$definition <- factor(the909090$definition, levels=c("% Diagnosed","% On Treatment","% Suppressed"))
+the909090
 
 graphics.off()
 quartz.options(w=6,h=4)
