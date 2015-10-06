@@ -1,8 +1,10 @@
 library(shiny)
 library(ggplot2)
-# library(shinythemes)
+library(shinythemes)
 library(DT)
 library(shinyjs)
+# devtools::install_github("shinyTable", "trestletech")
+# library(shinyTable)
 
 VariableNames <- c(
     "UnDx_500",
@@ -138,6 +140,22 @@ shinyUI(
                 wellPanel(
                     numericInput("userLtfu","Number of PLHIV who dropped out of ART care:",0,min=0)
                     )
+                )
+            )
+        ),
+    tabPanel("Parameters",
+        h1("Parameter Values"),
+        sidebarLayout(position="right",
+            sidebarPanel(
+                h4("Help Panel"),
+                helpText("You do not need to alter any of these values."),
+                actionButton("resetParameters", "RESET PARAMETERS")
+                ),
+            mainPanel(
+                helpText("Here we show the parameter values used in the back end of the model. See below for a detail diagram of the model, or alternatively click 'more' and 'PDF' to see the accompanying model document."),
+                img(src="Model.png",height = 400 * 0.9,width = 900 * 0.9),
+                p(" "),
+                tableOutput("parameterTable")
                 )
             )
         ),

@@ -9,6 +9,8 @@ library(googlesheets)
 library(RColorBrewer)
 library(scales)
 library(ggthemes)
+# devtools::install_github("shinyTable", "trestletech")
+# library(shinyTable)
 
 source("TheModel.R")
 
@@ -35,6 +37,15 @@ function(input, output, session) {
         Mu = 0.0374,
         Epsilon = 0.5
     )})
+
+    output$parameterTable <- renderTable({
+        ParameterNames <- c("Nu_1", "Nu_2", "Nu_3", "Rho", "Gamma", "Theta", "Omega", "Delta_1", "Delta_2", "Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4", "Tau_1", "Tau_2", "Tau_3", "Tau_4", "Mu", "Epsilon")
+        rows <- length(ParameterNames)
+        tbl <- matrix(Parameters(),rows,ncol=2)
+        tbl[,1] <- ParameterNames
+        colnames(tbl) <- c("Parameter","Value")
+        return(tbl)
+    })
 
     Initial <- reactive({c(
         UnDx_500 = (input$userPLHIV - input$userDx) * 0.58,
