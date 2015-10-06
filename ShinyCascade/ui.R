@@ -114,7 +114,8 @@ shinyUI(
                 p(" "),
                 actionButton("demoInput", "DEMO"),
                 p(" "),
-                textOutput('saveText')
+                textOutput('saveText'),
+                textOutput('warningText')
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),
