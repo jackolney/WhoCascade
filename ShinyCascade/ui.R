@@ -85,7 +85,7 @@ shinyUI(
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Quick Start"),
-                helpText("If you want to skip the introduction and get modelling, jump to 'setup' and click on 'DEMO'")
+                helpText("If you want to skip the introduction and get modelling, jump to 'setup' and click on 'DEMO'.")
                 ),
             mainPanel(
                 p("With the release of the Consolidated Information Guidelines for HIV by the World Health Organization (WHO)
@@ -95,7 +95,7 @@ shinyUI(
                 p("Furthermore, as we pass the Millennium Development Goals of 2015 and focus attention on the UNAIDS 90-90-90 targets for 2020,
                 countries will be keen to understand whether they are on the right trajectory to achieve these goals. For this purpose, data from
                 countries can be input into a mathematical model and used to project forward to estimate future incidence, AIDS-deaths and the ascertainment of the 90-90-90 goals."),
-                img(src="WHOGuidelinesCascade.png",height=400,width=900),
+                # img(src="WHOGuidelinesCascade.png",height=400,width=900),
                 h3("Aims"),
                 tags$ol(
                     tags$li("To develop a simple mathematical model to document and analyse the state of HIV care. This flexible model will take a wide range
@@ -127,8 +127,6 @@ shinyUI(
         ),
     tabPanel("Setup",
         h1("Model Setup"),
-        helpText("Here we will explain how to set the app up."),
-        helpText("Perhaps include the WHO cascade flow diagram here?"),
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Help Panel"),
@@ -146,24 +144,26 @@ shinyUI(
             mainPanel(
                 shinyjs::useShinyjs(),
                 id = "setup-panel",
+                helpText("Select country and fill in boxes to specify the initial values of the model. 
+                    The boxes correlate with indicators in the Consolidated Information Guidelines (shown below), with numbers in brackets corresponding to numbers on the indicator figure."),
+                img(src="WHOGuidelinesCascade.png",height=400 * 0.9,width=900 * 0.9),
                 wellPanel(
                     selectInput("userCountry","Country:",CountryList,selected="Brazil")
                     ),
-                img(src="WHOGuidelinesCascade.png",height=400,width=900),
                 wellPanel(
-                    numericInput("userPLHIV","Number of PLHIV:",1e+6,min=0)
+                    numericInput("userPLHIV","Number of PLHIV (1):",1e+6,min=0)
                     ),
                 wellPanel(
-                    numericInput("userDx","Number of PLHIV who have been diagnosed:",0,min=0)
+                    numericInput("userDx","Number of PLHIV who have been diagnosed (4):",0,min=0)
                     ),
                 wellPanel(
-                    numericInput("userCare","Number of PLHIV in HIV care (including ART):",0,min=0)
+                    numericInput("userCare","Number of PLHIV in HIV care (including ART) (5):",0,min=0)
                     ),
                 wellPanel(
-                    numericInput("userTx","Number of PLHIV in HIV care and on ART:",0,min=0)
+                    numericInput("userTx","Number of PLHIV in HIV care and on ART (6):",0,min=0)
                     ),
                 wellPanel(
-                    numericInput("userVs","Number of PLHIV in HIV care, on ART and virally suppressed:",0,min=0)
+                    numericInput("userVs","Number of PLHIV in HIV care, on ART and virally suppressed (8):",0,min=0)
                     ),
                 wellPanel(
                     numericInput("userLtfu","Number of PLHIV who dropped out of ART care:",0,min=0)
