@@ -159,11 +159,11 @@ shinyUI(
                 helpText("Here we show the parameter values used in the back end of the model. See below for a detail diagram of the model, or alternatively click 'more' and 'PDF' to see the accompanying model document."),
                 img(src="Model.png",height = 400 * 0.9,width = 900 * 0.9),
                 br(),
-                sliderInput('rho','Diagnosis rate (rho):',min=0,max=5,value=0.5,step=0.01),
-                sliderInput('epsilon','Care seeking rate (epsilon):',min=0,max=5,value=0.5,step=0.01),
-                sliderInput('gamma','ART initiation rate (gamma):',min=0,max=5,value=0.5,step=0.01),
-                sliderInput('theta','Viral suppression rate (theta):',min=0,max=5,value=2,step=0.01),
-                sliderInput('omega','ART dropout rate (omega):',min=0,max=5,value=0.01,step=0.01)
+                sliderInput('rho','Diagnosis rate (rho):',min=0,max=5,value=0.5,step=0.01,width=810),
+                sliderInput('epsilon','Care seeking rate (epsilon):',min=0,max=5,value=0.5,step=0.01,width=810),
+                sliderInput('gamma','ART initiation rate (gamma):',min=0,max=5,value=0.5,step=0.01,width=810),
+                sliderInput('theta','Viral suppression rate (theta):',min=0,max=5,value=2,step=0.01,width=810),
+                sliderInput('omega','ART dropout rate (omega):',min=0,max=5,value=0.01,step=0.01,width=810)
                 )
             )
         ),
