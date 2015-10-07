@@ -59,6 +59,18 @@ the909090 <- data.frame(definition,results)
 # Optimise this.
 the909090$results[1]
 
+# Cost testing.
+
+ggplot(out,aes(x=time,y=Dx_Cost)) + geom_line() +
+geom_line(aes(x=time,y=Care_Cost),color="red") +
+geom_line(aes(x=time,y=Tx_Cost),color="green") +
+geom_line(aes(x=time,y=Retention_Cost),color="blue")
+
+out$Dx_Cost
+out$Care_Cost
+out$Tx_Cost
+out$Retention_Cost
+
 # But if we are minimising it then we need for it to equal zero?
 # Minimise the squared difference between value and 0.9.
 
@@ -195,9 +207,10 @@ theResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = 0, upper 
 theResult$par
 
 # ToDo:
-# Get a decent search algorithm going
-# Add upper / lower bounds
-# Specify different bounds for each par[].
+# Get a decent search algorithm going - DONE.
+# Add upper / lower bounds - DONE.
+# Specify different bounds for each par[]. - DONE.
+# After optimisation, re-run simulation so that we can visualise the results immediately.
 
 testResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = 0.01, upper = 10, method = 'L-BFGS-B')
 testResult$par

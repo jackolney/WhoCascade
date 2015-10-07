@@ -60,10 +60,10 @@ function(input, output, session) {
         Dx_200350 = (input$userDx - input$userCare - input$userLtfu) * 0.16,
         Dx_200 = (input$userDx - input$userCare - input$userLtfu) * 0.03,
 
-        Care_500 = (input$userCare - input$userTx - input$userVs) * 0.58,
-        Care_350500 = (input$userCare - input$userTx - input$userVs) * 0.23,
-        Care_200350 = (input$userCare - input$userTx - input$userVs) * 0.16,
-        Care_200 = (input$userCare - input$userTx - input$userVs) * 0.03,
+        Care_500 = (input$userCare - input$userTx) * 0.58,
+        Care_350500 = (input$userCare - input$userTx) * 0.23,
+        Care_200350 = (input$userCare - input$userTx) * 0.16,
+        Care_200 = (input$userCare - input$userTx) * 0.03,
 
         Tx_500 = (input$userTx - input$userVs) * 0.58,
         Tx_350500 = (input$userTx - input$userVs) * 0.23,
@@ -97,11 +97,18 @@ function(input, output, session) {
             updateNumericInput(session,"userVs",value=round(randPLHIV * 0.25,0))
             updateNumericInput(session,"userLtfu",value=round(randPLHIV * 0.1,0))
         } else {
-            updateNumericInput(session,"userDx",value=round(input$userPLHIV * 0.8,0))
-            updateNumericInput(session,"userCare",value=round(input$userPLHIV * 0.6,0))
-            updateNumericInput(session,"userTx",value=round(input$userPLHIV * 0.3,0))
-            updateNumericInput(session,"userVs",value=round(input$userPLHIV * 0.25,0))
-            updateNumericInput(session,"userLtfu",value=round(input$userPLHIV * 0.1,0))
+
+            newDx <- round(input$userPLHIV * runif(1,0.5,0.9),0)
+            newCare <- round(newDx * 0.7,0)
+            newTx <- round(newCare * 0.6,0)
+            newVs <- round(newTx * 0.8923,0)
+            newLtfu <- round(newDx * 0.1,0)
+
+            updateNumericInput(session,"userDx",value=newDx)
+            updateNumericInput(session,"userCare",value=newCare)
+            updateNumericInput(session,"userTx",value=newTx)
+            updateNumericInput(session,"userVs",value=newVs)
+            updateNumericInput(session,"userLtfu",value=newLtfu)
         }
     })
 

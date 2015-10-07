@@ -33,5 +33,10 @@ Initial <- c(
 
     HivMortality = 0,
 
-    NaturalMortality = 0
+    NaturalMortality = 0,
+
+    Dx_Cost = 0,
+    Care_Cost = 0,
+    Tx_Cost = 0,
+    Retention_Cost = 0
 )

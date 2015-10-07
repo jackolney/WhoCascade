@@ -4,7 +4,7 @@ Parameters <- c(
     Nu_3 = 0.2744363,
     Rho = 0.5,
     Gamma = 0.5,
-    Theta = 2,
+    Theta = 2.228,
     Omega = 0.01,
     Delta_1 = 1.1491019,
     Delta_2 = 2.5468165,

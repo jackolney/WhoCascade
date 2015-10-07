@@ -192,7 +192,7 @@ shinyUI(
                 sliderInput('rho','Diagnosis rate (rho):',min=0,max=5,value=0.5,step=0.01,width=1000),
                 sliderInput('epsilon','Care seeking rate (epsilon):',min=0,max=5,value=0.5,step=0.01,width=1000),
                 sliderInput('gamma','ART initiation rate (gamma):',min=0,max=5,value=0.5,step=0.01,width=1000),
-                sliderInput('theta','Viral suppression rate (theta):',min=0,max=5,value=2,step=0.01,width=1000),
+                sliderInput('theta','Viral suppression rate (theta):',min=0,max=5,value=2.28,step=0.01,width=1000),
                 sliderInput('omega','ART dropout rate (omega):',min=0,max=5,value=0.01,step=0.01,width=1000)
                 )
             )
@@ -214,7 +214,14 @@ shinyUI(
                     wellPanel(
                         h4("The distribution of care between 2015 and 2020."),
                         helpText("Note, the denominator in all these calculations is # of PLHIV."),
-                        p("These figures illustrate the 'Care Cascade' in 2015 (at baseline), and the projection after 5 years (in 2020).")
+                        p("These figures illustrate the 'Care Cascade' in 2015 (at baseline), and the projection after 5 years (in 2020)."),
+                        tags$ol(
+                            tags$li("% diagnosed = # persons diagnosed / PLHIV"),
+                            tags$li("% in care = # persons in care (including on ART & virally suppressed) / PLHIV"),
+                            tags$li("% on treatment = # persons on ART (including those virally suppressed) / PLHIV"),
+                            tags$li("% virally suppressed = # persons on ART and virally suppressed / PLHIV"),
+                            tags$li("% LTFU = # persons lost from ART care / PLHIV.")
+                        )
                     )
                 )
             ),
