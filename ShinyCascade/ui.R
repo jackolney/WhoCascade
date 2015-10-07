@@ -44,7 +44,12 @@ VariableNames <- c(
     "Ltfu",
     "NaturalMortalityProp",
     "HivMortalityProp",
-    "NewInfProp")
+    "NewInfProp",
+    "Dx_Cost",
+    "Care_Cost",
+    "Tx_Cost",
+    "Retention_Cost"
+    )
 
 CountryList <- c(
     "Brazil",

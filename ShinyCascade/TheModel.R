@@ -36,6 +36,11 @@ ComplexCascade <- function(t, y, parms) {
 
     dNaturalMortality <- parms[18] * (y[1] + y[2] + y[3] + y[4] + y[5] + y[6] + y[7] + y[8] + y[9] + y[10] + y[11] + y[12] + y[13] + y[14] + y[15] + y[16] + y[17] + y[18] + y[19] + y[20] + y[21] + y[22] + y[23] + y[24])
 
+    dDx_Cost <- (parms[4] * (y[5] + y[6] + y[7] + y[8])) * parms[20]
+    dCare_Cost <- (parms[19] * (y[9] + y[10] + y[11] + y[12])) * parms[21]
+    dTx_Cost <- (parms[5] * (y[13] + y[14] + y[15] + y[16])) * parms[22]
+    dRetention_Cost <- ((parms[7] / 2) * (y[13] + y[14] + y[15] + y[16] + y[17] + y[18] + y[19] + y[20])) * parms[23]
+    
     list(c(
         dUnDx_500,
         dUnDx_350500,
@@ -63,5 +68,9 @@ ComplexCascade <- function(t, y, parms) {
         dLtfu_200,
         dNewInf,
         dHivMortality,
-        dNaturalMortality))
+        dNaturalMortality,
+        dDx_Cost,
+        dCare_Cost,
+        dTx_Cost,
+        dRetention_Cost))
 }

@@ -35,7 +35,11 @@ function(input, output, session) {
         Tau_3 = 0.0631120,
         Tau_4 = 0.1225184,
         Mu = 0.0374,
-        Epsilon = input$epsilon
+        Epsilon = input$epsilon,
+        Dx_unitCost = 2,
+        Care_unitCost = 2,
+        Tx_unitCost = 2,
+        Retention_unitCost = 2
     )})
 
     output$parameterTable <- renderTable({
@@ -84,7 +88,12 @@ function(input, output, session) {
 
         HivMortality = 0,
 
-        NaturalMortality = 0
+        NaturalMortality = 0,
+
+        Dx_Cost = 0,
+        Care_Cost = 0,
+        Tx_Cost = 0,
+        Retention_Cost = 0
     )})
 
     observeEvent(input$demoInput, {
@@ -121,6 +130,8 @@ function(input, output, session) {
             theInitial <- Initial()
             Numerator <- NewInfections
             Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
+            # print(paste("Numerator =",Numerator))
+            # print(paste("Denominator =",Denominator))
             Beta <<- Numerator / Denominator
         } else {
             Beta <<- 0
@@ -128,23 +139,23 @@ function(input, output, session) {
         print(paste("Beta:",Beta))
 
         # The Model #
-        out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=Parameters()))
+        theOut <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=Parameters()))
         # --------- #
 
         # Post-simulation mutation (creation of columns) etc.
-        out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-        out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-        out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-        out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-        out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-        out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-        out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-        out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-        out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-        out <- mutate(out,HivMortalityProp = HivMortality / N)
-        out <- mutate(out,NewInfProp = NewInf / N)
+        theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+        theOut <- mutate(theOut,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+        theOut <- mutate(theOut,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
+        theOut <- mutate(theOut,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
+        theOut <- mutate(theOut,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
+        theOut <- mutate(theOut,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
+        theOut <- mutate(theOut,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+        theOut <- mutate(theOut,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
+        theOut <- mutate(theOut,NaturalMortalityProp = NaturalMortality / N)
+        theOut <- mutate(theOut,HivMortalityProp = HivMortality / N)
+        theOut <- mutate(theOut,NewInfProp = NewInf / N)
 
-        return(out)
+        return(theOut)
     })
 
     output$plotOne <- renderPlot({
@@ -416,27 +427,26 @@ function(input, output, session) {
         options=list(autoWidth=TRUE,pageLength=100)
     )
 
-
+    # ------------ #
     # OPTIMISATION #
+    # ------------ #
 
     optimisationValues <- reactiveValues(
-        Rho = 0,
-        Epsilon = 0,
-        Gamma = 0,
-        Theta = 0,
-        Omega = 0
+        theRho = 0,
+        theEpsilon = 0,
+        theGamma = 0,
+        theOmega = 0
         )
     
     output$optimisationTable <- renderTable({
-        tbl_names <- c("Rho","Epsilon","Gamma","Theta","Omega")
+        tbl_names <- c("Rho","Epsilon","Gamma","Omega")
         tbl_data <- c(
-            optimisationValues$Rho,
-            optimisationValues$Epsilon,
-            optimisationValues$Gamma,
-            optimisationValues$Theta,
-            optimisationValues$Omega
+            optimisationValues$theRho,
+            optimisationValues$theEpsilon,
+            optimisationValues$theGamma,
+            optimisationValues$theOmega
             )
-        tbl <- matrix(tbl_data,nrow=5,ncol=2)
+        tbl <- matrix(tbl_data,nrow=4,ncol=2)
         tbl[,1] <- c(tbl_names)
         colnames(tbl) <- c("Parameter","Value")
         return(tbl)
@@ -446,11 +456,10 @@ function(input, output, session) {
 
         find909090 <- function(target, par) {
 
-            optimisationValues$Rho <- par[1]
-            optimisationValues$Epsilon <- par[5]
-            optimisationValues$Gamma <- par[2]
-            optimisationValues$Theta <- par[3]
-            optimisationValues$Omega <- par[4]
+            optimisationValues$theRho <- par[1]
+            optimisationValues$theEpsilon <- par[4]
+            optimisationValues$theGamma <- par[2]
+            optimisationValues$theOmega <- par[3]
 
             print(paste("par =",par))
 
@@ -469,9 +478,8 @@ function(input, output, session) {
             theP <- Parameters()
             theP["Rho"] = par[1]
             theP["Gamma"] = par[2]
-            theP["Theta"] = par[3]
-            theP["Omega"] = par[4]
-            theP["Epsilon"] = par[5]
+            theP["Omega"] = par[3]
+            theP["Epsilon"] = par[4]
 
             # The Model #
             out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=theP))
@@ -490,7 +498,6 @@ function(input, output, session) {
             out <- mutate(out,HivMortalityProp = HivMortality / N)
             out <- mutate(out,NewInfProp = NewInf / N)
 
-
             PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
             dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
             tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
@@ -501,29 +508,26 @@ function(input, output, session) {
             results <- c(p_dx,p_tx,p_vs)
             definition <- c("% Diagnosed","% On Treatment","% Suppressed")
             the909090 <- data.frame(definition,results)
-            out <- sum((target - the909090$results)^2)
-            # out <- (target - the909090$results[1])^2
+            output <- sum((target - the909090$results)^2)
             return(out)
         }
 
-        theResult <- optim(par = c(0,0,0,0,0), find909090, target = 0.9, lower = 0, upper = 10)
+        theResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
 
         # Fill out results table.
-        optimisationValues$Rho <- theResult$par[1]
-        optimisationValues$Epsilon <- theResult$par[5]
-        optimisationValues$Gamma <- theResult$par[2]
-        optimisationValues$Theta <- theResult$par[3]
-        optimisationValues$Omega <- theResult$par[4]
+        optimisationValues$theRho <- theResult$par[1]
+        optimisationValues$theEpsilon <- theResult$par[4]
+        optimisationValues$theGamma <- theResult$par[2]
+        optimisationValues$theOmega <- theResult$par[3]
 
         # Update sliders on "Parameter" page.
         updateSliderInput(session,"rho",value=theResult$par[1],min=0,max=5,value=0.5,step=0.01)
-        updateSliderInput(session,"epsilon",value=theResult$par[5],min=0,max=5,value=0.5,step=0.01)
+        updateSliderInput(session,"epsilon",value=theResult$par[4],min=0,max=5,value=0.5,step=0.01)
         updateSliderInput(session,"gamma",value=theResult$par[2],min=0,max=5,value=0.5,step=0.01)
-        updateSliderInput(session,"theta",value=theResult$par[3],min=0,max=5,value=0.5,step=0.01)
-        updateSliderInput(session,"omega",value=theResult$par[4],min=0,max=5,value=0.5,step=0.01)
+        updateSliderInput(session,"omega",value=theResult$par[3],min=0,max=5,value=0.5,step=0.01)
 
-        # The error is in the above, as the optim() tries to make a value > 5. Then updateSliderInput() screws up.
-        # Also, OMEGA should not be being varied. It is a fixed biological parameter.
+        # The error is in the above, as the optim() tries to make a value > 5. Then updateSliderInput() screws up. - I HOPE FIXED.
+        # Also, OMEGA should not be being varied. It is a fixed biological parameter. - FIXED.
         
         print(theResult$par)
     })
