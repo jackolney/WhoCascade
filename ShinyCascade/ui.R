@@ -180,7 +180,8 @@ shinyUI(
                 helpText("You do not need to alter any of these values."),
                 actionButton("resetParameters", "RESET PARAMETERS"),
                 p(" "),
-                tableOutput("parameterTable")
+                tableOutput("parameterTable"),
+                p("Details regarding the origin of these parameter values are found in the 'Model Document' under the 'More' tab.")
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),

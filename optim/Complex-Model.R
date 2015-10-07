@@ -145,7 +145,7 @@ find909090 <- function(target, par) {
         Nu_3 = 0.2744363,
         Rho = par[1],
         Gamma = par[2],
-        Theta = par[3],
+        Theta = 2,
         Omega = par[4],
         Delta_1 = 1.1491019,
         Delta_2 = 2.5468165,
@@ -158,7 +158,7 @@ find909090 <- function(target, par) {
         Tau_3 = 0.0631120,
         Tau_4 = 0.1225184,
         Mu = 0.0374,
-        Epsilon = par[5]
+        Epsilon = par[3]
     )
 
     out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
@@ -191,8 +191,19 @@ find909090 <- function(target, par) {
     return(out)
 }
 
-theResult <- optim(par = c(0,0,0,0,0), find909090, target = 0.9, lower = 0, upper = 10)
+theResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = 0, upper = 10)
 theResult$par
+
+# ToDo:
+# Get a decent search algorithm going
+# Add upper / lower bounds
+# Specify different bounds for each par[].
+
+testResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = 0.01, upper = 10, method = 'L-BFGS-B')
+testResult$par
+theResult$par
+testResult2 <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
+testResult2$par
 
 # Answer #
 theResult
