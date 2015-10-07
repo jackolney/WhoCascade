@@ -97,17 +97,22 @@ function(input, output, session) {
     )})
 
     observeEvent(input$demoInput, {
-        if(input$userPLHIV == 0) {
-            randPLHIV <- round(runif(1,100,1e+04),0)
-            updateNumericInput(session,"userPLHIV",value=randPLHIV)
-            updateNumericInput(session,"userDx",value=round(randPLHIV * 0.8,0))
-            updateNumericInput(session,"userCare",value=round(randPLHIV * 0.6,0))
-            updateNumericInput(session,"userTx",value=round(randPLHIV * 0.3,0))
-            updateNumericInput(session,"userVs",value=round(randPLHIV * 0.25,0))
-            updateNumericInput(session,"userLtfu",value=round(randPLHIV * 0.1,0))
-        } else {
+        if(input$userPLHIV == 0 || is.na(input$userPLHIV)) {
+            randPLHIV <- round(runif(1,1e+6,1e+7),0)
+            newDx <- round(randPLHIV * runif(1,0.5,0.7),0)
+            newCare <- round(newDx * 0.7,0)
+            newTx <- round(newCare * 0.6,0)
+            newVs <- round(newTx * 0.8923,0)
+            newLtfu <- round(newDx * 0.1,0)
 
-            newDx <- round(input$userPLHIV * runif(1,0.5,0.9),0)
+            updateNumericInput(session,"userPLHIV",value=randPLHIV)
+            updateNumericInput(session,"userDx",value=newDx)
+            updateNumericInput(session,"userCare",value=newCare)
+            updateNumericInput(session,"userTx",value=newTx)
+            updateNumericInput(session,"userVs",value=newVs)
+            updateNumericInput(session,"userLtfu",value=newLtfu)
+        } else {
+            newDx <- round(input$userPLHIV * runif(1,0.5,0.7),0)
             newCare <- round(newDx * 0.7,0)
             newTx <- round(newCare * 0.6,0)
             newVs <- round(newTx * 0.8923,0)
@@ -482,26 +487,26 @@ function(input, output, session) {
             theP["Epsilon"] = par[4]
 
             # The Model #
-            out <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=theP))
+            theOut <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=theP))
             # --------- #
 
             # Post-simulation mutation (creation of columns) etc.
-            out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-            out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-            out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-            out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-            out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-            out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-            out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-            out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-            out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-            out <- mutate(out,HivMortalityProp = HivMortality / N)
-            out <- mutate(out,NewInfProp = NewInf / N)
+            theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+            theOut <- mutate(theOut,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+            theOut <- mutate(theOut,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
+            theOut <- mutate(theOut,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
+            theOut <- mutate(theOut,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
+            theOut <- mutate(theOut,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
+            theOut <- mutate(theOut,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+            theOut <- mutate(theOut,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
+            theOut <- mutate(theOut,NaturalMortalityProp = NaturalMortality / N)
+            theOut <- mutate(theOut,HivMortalityProp = HivMortality / N)
+            theOut <- mutate(theOut,NewInfProp = NewInf / N)
 
-            PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-            dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-            tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-            vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
+            PLHIV = as.double(sum(filter(theOut,time == 5) %>% select(N)))
+            dx = as.double(sum(filter(theOut,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+            tx = as.double(sum(filter(theOut,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+            vs = as.double(sum(filter(theOut,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
             p_dx <- dx / PLHIV
             p_tx <- tx / dx
             p_vs <- vs / tx
@@ -509,7 +514,7 @@ function(input, output, session) {
             definition <- c("% Diagnosed","% On Treatment","% Suppressed")
             the909090 <- data.frame(definition,results)
             output <- sum((target - the909090$results)^2)
-            return(out)
+            return(output)
         }
 
         theResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
@@ -521,18 +526,21 @@ function(input, output, session) {
         optimisationValues$theOmega <- theResult$par[3]
 
         # Update sliders on "Parameter" page.
-        updateSliderInput(session,"rho",value=theResult$par[1],min=0,max=5,value=0.5,step=0.01)
-        updateSliderInput(session,"epsilon",value=theResult$par[4],min=0,max=5,value=0.5,step=0.01)
-        updateSliderInput(session,"gamma",value=theResult$par[2],min=0,max=5,value=0.5,step=0.01)
-        updateSliderInput(session,"omega",value=theResult$par[3],min=0,max=5,value=0.5,step=0.01)
+        updateSliderInput(session,"rho",value=theResult$par[1],min=0,max=5,step=0.01)
+        updateSliderInput(session,"epsilon",value=theResult$par[4],min=0,max=5,step=0.01)
+        updateSliderInput(session,"gamma",value=theResult$par[2],min=0,max=5,step=0.01)
+        updateSliderInput(session,"omega",value=theResult$par[3],min=0,max=5,step=0.01)
 
-        # The error is in the above, as the optim() tries to make a value > 5. Then updateSliderInput() screws up. - I HOPE FIXED.
-        # Also, OMEGA should not be being varied. It is a fixed biological parameter. - FIXED.
-        
         print(theResult$par)
+
+        Parameters()
+        out()
     })
 
     output$plotOptimised909090 <- renderPlot({
+        # This should retrigger the plot to render... (I hope.)
+        input$optimiseInput
+
         out <- out()
         PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
         # dx / PLHIV
