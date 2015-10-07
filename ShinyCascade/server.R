@@ -532,14 +532,11 @@ function(input, output, session) {
         updateSliderInput(session,"omega",value=theResult$par[3],min=0,max=5,step=0.01)
 
         print(theResult$par)
-
-        Parameters()
-        out()
     })
 
     output$plotOptimised909090 <- renderPlot({
         # This should retrigger the plot to render... (I hope.)
-        input$optimiseInput
+        # input$optimiseInput
 
         out <- out()
         PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
@@ -575,7 +572,7 @@ function(input, output, session) {
         o <- o + theme(axis.text.x=element_text(size=18))
         o <- o + theme(axis.text.y=element_text(size=18))
         o <- o + theme(legend.position="none")
-        print(o)
+        print(o)        
         },
         height=400,
         width=700
