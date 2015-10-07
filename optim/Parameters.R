@@ -17,5 +17,9 @@ Parameters <- c(
     Tau_3 = 0.0631120,
     Tau_4 = 0.1225184,
     Mu = 0.0374,
-    Epsilon = 0.5
+    Epsilon = 0.5,
+    Dx_unitCost = 2,
+    Care_unitCost = 2,
+    Tx_unitCost = 2,
+    Retention_unitCost = 2
 )

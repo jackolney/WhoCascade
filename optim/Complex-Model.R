@@ -58,8 +58,9 @@ the909090 <- data.frame(definition,results)
 
 # Optimise this.
 the909090$results[1]
-
+out$Dx_Cost[251]
 # Cost testing.
+out$Dx_Cost
 
 ggplot(out,aes(x=time,y=Dx_Cost)) + geom_line() +
 geom_line(aes(x=time,y=Care_Cost),color="red") +
