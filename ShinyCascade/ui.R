@@ -264,11 +264,16 @@ shinyUI(
     tabPanel("Optimisation",
         sidebarPanel(
             h4("Model Optimisation"),
-            p("This will contain an optimisation algorithm that will pick the most cost-effective intervention to enhance care."),
-            helpText("Need a table giving exact values beneath."),
+            p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button..."),
+            helpText("Figure and table will turn grey while optimisation algorithm runs."),
             actionButton("optimiseInput", "OPTIMISE"),
             br(), br(),
-            tableOutput("optimisationTable")
+            tableOutput("optimisationTable"),
+            h4("Cost of optimisation"),
+            tableOutput("optimisationCostTable"),
+            h4("Unit cost table"),
+            tableOutput("unitCostTable"),
+            helpText("What about the counterfactual?")
             ),
         mainPanel(
             plotOutput('plotOptimised909090')

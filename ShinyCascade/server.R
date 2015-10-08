@@ -457,6 +457,33 @@ function(input, output, session) {
         return(tbl)
     })
 
+    output$optimisationCostTable <- renderTable({
+        out <- out()
+        theDx_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Dx_Cost)),0))
+        theCare_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Care_Cost)),0))
+        theTx_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Tx_Cost)),0))
+        theRetention_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Retention_Cost)),0))
+        Cost <- c(theDx_Cost,theCare_Cost,theTx_Cost,theRetention_Cost)
+        Category <- c("Testing costs","Care costs","Treatment costs","Retention costs")
+        CostTable <- data.frame(Category,Cost)
+        levels(CostTable$Category)
+        CostTable$Category <- factor(CostTable$Category, levels=c("Testing costs","Care costs","Treatment costs","Retention costs"))
+        return(CostTable)
+    })
+
+    output$unitCostTable <- renderTable({
+        theP <- Parameters()
+        Dx_unitCost <- as.double(theP["Dx_unitCost"])
+        Care_unitCost <- as.double(theP["Care_unitCost"])
+        Tx_unitCost <- as.double(theP["Tx_unitCost"])
+        Retention_unitCost <- as.double(theP["Retention_unitCost"])
+        Cost <- c(Dx_unitCost, Care_unitCost, Tx_unitCost, Retention_unitCost)
+        Unit <- c("HIV-test","Care","Treatment","Retention")
+        UnitCostTable <- data.frame(Unit,Cost)
+        UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-test","Care","Treatment","Retention"))
+        return(UnitCostTable)
+    })
+
     observeEvent(input$optimiseInput, {
 
         find909090 <- function(target, par) {
