@@ -81,7 +81,7 @@ CountryList <- c(
     )
 
 shinyUI(
-    navbarPage("Cascade Test App",
+    navbarPage("Cascade App",
     theme = shinytheme("spacelab"),
     tabPanel("Introduction",
         # img(src="HIVMC-logo.jpg",height=100 * 0.75,width=300 * 0.75),
@@ -90,7 +90,12 @@ shinyUI(
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Quick Start"),
-                helpText("If you want to skip the introduction and get modelling, jump to 'setup' and click on 'DEMO'.")
+                helpText("If you want to skip the introduction and get modelling, jump to 'setup' and click on 'DEMO'. 
+                    Data entered can be saved by clicking 'SAVE' on any relevant page. A pdf containing details about 
+                    the entire model can be found in the 'more' tab along with links to spreadsheets containing data used in the model."),
+                br(),
+                h5("Contributors"),
+                helpText("Jack J Olney, Jeffrey W Eaton, Ellen McRobie & Timothy B Hallett")
                 ),
             mainPanel(
                 p("With the release of the Consolidated Information Guidelines for HIV by the World Health Organization (WHO)
@@ -99,34 +104,39 @@ shinyUI(
                 of care and identify any immediate deficiencies and bottlenecks preventing patients from progressing to treatment."),
                 p("Furthermore, as we pass the Millennium Development Goals of 2015 and focus attention on the UNAIDS 90-90-90 targets for 2020,
                 countries will be keen to understand whether they are on the right trajectory to achieve these goals. For this purpose, data from
-                countries can be input into a mathematical model and used to project forward to estimate future incidence, AIDS-deaths and the ascertainment of the 90-90-90 goals."),
+                countries can be input into a mathematical model and used to estimate future incidence, AIDS-deaths and the ascertainment of the 90-90-90 goals."),
                 # img(src="WHOGuidelinesCascade.png",height=400,width=900),
                 h3("Aims"),
+                p("This webpage contains an interactive model that allows data to be entered, parameters to be altered and results to be presented in real-time. 
+                    No specialist software is required as all calculations are completed on a remote server, results are then returned and displayed, along with all visualisations, in the browser."),
+                p("The overarching aims of this model are to:"),
                 tags$ol(
-                    tags$li("To develop a simple mathematical model to document and analyse the state of HIV care. This flexible model will take a wide range
-                        of data, characterise individuals into discrete care categories, and build upon a set of assumptions regarding transmission, duration of
-                        infection, progression through care and death, to project changes in incidence, mortality and care five years into the future to 2020."),
-                    tags$li("Using data from 26 countries, the model will be calibrated to each setting in turn to provide country-specific results."),
-                    tags$li("The model will be used to assess the current state of care, ascertaining gaps requiring immediate attention, before identifying what
-                        future changes need to be made, that differ from what has been done so far, for countries to be on track to achieve the 90-90-90 goals set out by UNAIDS."),
-                    tags$li("A range of interventions will then be simulated, each targetting a different aspect of care, to identify the most cost-effective strategy for reconciling any deficiencies in care."),
-                    tags$li("These findings will help countries prioritise strategies and will provide an estimate of the costs required to achieve future targets.")
+                    tags$li("Provide a simple intuitive tool to document and analyse the current state of HIV care. This mathematical model is able to handle a wide range
+                        of data, characterise individuals into discrete care categories, and by building upon a set of assumptions regarding HIV-transmission, duration of
+                        infection and progression through care and death, the model can project changes in incidence, mortality and care until 2020."),
+                    tags$li("The model is country-specific. During setup, when a new country is selected from the drop down list, 
+                        the model adjusts its incidence estimates based on data from the Spectrum software used by UNAIDS."),
+                    tags$li("The model can be used to assess the current state of care and ascertain gaps that require immediate attention. Furthermore, the model can identify what
+                        future changes need to be made, that differ from what countries have done so far, to be on track to achieve the 90-90-90 goals set out by UNAIDS."),
+                    tags$li("Non-specific interventions can be simulated that broadly illustrate the changes that can be made to care, along with with the costs of doing so, 
+                        to identify the most cost-effective strategy for reconciling any deficiencies in care (still in development)."),
+                    tags$li("It is hoped that this model will help countries prioritise strategies and estimate the costs required to achieve future targets.")
                 ),
                 h3("The Model"),
-                p("The simplified structure of the proposed model is shown below. State compartments do not exactly correlate with the indicators in Consolidated Indicator Guidelines, as compartments in the model 
+                p("The simplified structure of the model is shown below. State compartments do not exactly correlate with the indicators in Consolidated Indicator Guidelines, as compartments in the model 
                     must be discrete and exhaustive, while the indicators listed are not all discrete; for example, ‘Knowing HIV status’ includes all patients who are in care, on treatment, virally suppressed and 
-                    lost from care as long as they are diagnosed. However, the model is able to take these indicators and seperate them into their individual components to specify the initial conditions for simulations."),
+                    lost from care as long as they are diagnosed. However, the model is able to reconcile this by taking individual indicators and seperating them into their components to specify the initial conditions for simulations."),
+                helpText("More details on the model can be found in the following pages, along with a detailed description under the 'more' table and 'Model Document'."),
                 img(src="ModelSimple.jpg",height=200,width=850),
                 h3("Outcomes"),
                 tags$ol(
-                    tags$li("Predict achievement of UNAIDS 90-90-90 targets in 2020"),
+                    tags$li("Predict achievement of UNAIDS 90-90-90 targets in 2020."),
                     tags$li("Identify strategies to achieve 90-90-90 targets at minimal cost."),
                     tags$li("Illustrate the change in distribution of care between 2015 and 2020."),
-                    tags$li("Predict new infections in that time-frame."),
-                    tags$li("Predict AIDS deaths in that time-frame too.")
+                    tags$li("Predict changes in new infections and AIDS deaths between 2015 and 2020.")
                     ),
-                h4("Contributors"),
-                p("Jack J Olney, Jeffrey W Eaton, Ellen McRobie & Timothy B Hallett")
+                br(),
+                em(h4("Click 'Setup' to get started!"))
                 )
             )
         ),
