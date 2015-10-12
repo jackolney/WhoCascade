@@ -3,6 +3,7 @@ library(ggplot2)
 library(shinythemes)
 library(DT)
 library(shinyjs)
+library(shinyBS)
 # devtools::install_github("shinyTable", "trestletech")
 # library(shinyTable)
 
@@ -149,11 +150,11 @@ shinyUI(
                     Hit 'RESET' to reset all values to zero, and hit 'DEMO' for a random set of values to be generated. 
                     Unchecking the 'HIV incidence' checkbox prevents any new infections occurring in the model."),
                 checkboxInput("incidenceInput","HIV Incidence",value=TRUE),
-                actionButton("saveInput", "SAVE"),
+                bsButton("saveInput",label="SAVE",style="success"),
                 p(" "),
-                actionButton("resetInput", "RESET"),
+                bsButton("resetInput",label="RESET",style="danger"),
                 p(" "),
-                actionButton("demoInput", "DEMO"),
+                bsButton("demoInput",label="DEMO",style="primary"),
                 p(" "),
                 helpText("Console output:"),
                 textOutput('saveText'),
@@ -200,7 +201,7 @@ shinyUI(
             sidebarPanel(
                 h4("Help Panel"),
                 helpText("You do not need to alter any of these values."),
-                actionButton("resetParameters", "RESET PARAMETERS"),
+                bsButton("resetParameters",label="RESET PARAMETERS",style="danger"),
                 p(" "),
                 tableOutput("parameterTable"),
                 p("Details regarding the origin of these parameter values are found in the 'Model Document' under the 'More' tab.")
@@ -283,7 +284,7 @@ shinyUI(
             h4("Model Optimisation"),
             p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button..."),
             helpText("Figure and table will turn grey while optimisation algorithm runs."),
-            actionButton("optimiseInput", "OPTIMISE"),
+            bsButton("optimiseInput",label="OPTIMISE",style="info"),
             br(), br(),
             tableOutput("optimisationTable"),
             h4("Cost of optimisation"),
