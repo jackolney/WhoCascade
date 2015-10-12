@@ -297,9 +297,7 @@ shinyUI(
                 bsButton("resetCost",label="RESET COST",style="danger"),
                 p(" "),
                 h4("Unit cost table"),
-                tableOutput("unitCostTable"),
-                helpText("What about the counterfactual?"),
-                helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
+                tableOutput("unitCostTable")
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),
@@ -318,37 +316,16 @@ shinyUI(
                     )
                 )
             ),
-        tabPanel("Algorithm",
-            sidebarPanel(
-                h4("Optimisation - Algorithm"),
-                p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button."),
-                helpText("Figure and table will turn grey while optimisation algorithm runs."),
-                bsButton("optimiseInput",label="OPTIMISE",style="info"),
-                br(), br(),
-                tableOutput("optimisationTable"),
-                h4("Cost of optimisation"),
-                # tableOutput("optimisationCostTable"),
-                h4("Unit cost table"),
-                # tableOutput("unitCostTable"),
-                helpText("What about the counterfactual?"),
-                helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
-                ),
-            mainPanel(
-                helpText("Baseline 90-90-90 plot.")
-                # plotOutput('plot909090')
-                )
-            ),
         tabPanel("Results",
             sidebarPanel(
-                h4("Model Optimisation - Results"),
+                h4("Optimisation"),
                 p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button."),
-                helpText("Figure and table will turn grey while optimisation algorithm runs."),
-                br(), br(),
-                # tableOutput("optimisationTable"),
+                helpText("Table will turn grey while optimisation algorithm runs."),
+                bsButton("optimiseInput",label="OPTIMISE",style="info"),
+                helpText("After optimisation is complete, flick back to 'parameter' tab to update model parameters, before returning to see the updated 90-90-90 plot."),
+                tableOutput("optimisationTable"),
                 h4("Cost of optimisation"),
-                # tableOutput("optimisationCostTable"),
-                h4("Unit cost table"),
-                # tableOutput("unitCostTable"),
+                tableOutput("optimisationCostTable"),
                 helpText("What about the counterfactual?"),
                 helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
                 ),
