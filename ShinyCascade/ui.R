@@ -242,6 +242,7 @@ shinyUI(
                 plotOutput('plotCascade')
                 ),
             fluidRow(
+                    br(),
                     wellPanel(
                         h4("The distribution of care between 2015 and 2020."),
                         helpText("Note, the denominator in all these calculations is # of PLHIV."),
@@ -287,23 +288,73 @@ shinyUI(
                 )
             )
         ),
-    tabPanel("Optimisation",
-        sidebarPanel(
-            h4("Model Optimisation"),
-            p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button..."),
-            helpText("Figure and table will turn grey while optimisation algorithm runs."),
-            bsButton("optimiseInput",label="OPTIMISE",style="info"),
-            br(), br(),
-            tableOutput("optimisationTable"),
-            h4("Cost of optimisation"),
-            tableOutput("optimisationCostTable"),
-            h4("Unit cost table"),
-            tableOutput("unitCostTable"),
-            helpText("What about the counterfactual?"),
-            helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
+    navbarMenu("Optimisation",
+        tabPanel("Cost",
+            sidebarPanel(
+                h4("Optimisation - Cost"),
+                p("Review or edit the unit costs in each box."),
+                helpText("Click the 'optimisation' drop down menu and select 'algorithm' to begin running the optimisation algorithm."),
+                bsButton("resetCost",label="RESET COST",style="danger"),
+                p(" "),
+                h4("Unit cost table"),
+                tableOutput("unitCostTable"),
+                helpText("What about the counterfactual?"),
+                helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
+                ),
+            mainPanel(
+                shinyjs::useShinyjs(),
+                id = "cost-panel",
+                wellPanel(
+                    numericInput("userDxUnitCost","Unit cost of HIV-test (USD):",2,min=0,step=0.01)
+                    ),
+                wellPanel(
+                    numericInput("userCxUnitCost","Unit cost of getting a patient into care (USD):",2,min=0,step=0.01)
+                    ),
+                wellPanel(
+                    numericInput("userTxUnitCost","Unit cost of getting a patient onto treatment (USD):",2,min=0,step=0.01)
+                    ),
+                wellPanel(
+                    numericInput("userRxUnitCost","Unit cost of retaining a patient on treatment (USD):",2,min=0,step=0.01)
+                    )
+                )
             ),
-        mainPanel(
-            plotOutput('plotOptimised909090')
+        tabPanel("Algorithm",
+            sidebarPanel(
+                h4("Optimisation - Algorithm"),
+                p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button."),
+                helpText("Figure and table will turn grey while optimisation algorithm runs."),
+                bsButton("optimiseInput",label="OPTIMISE",style="info"),
+                br(), br(),
+                tableOutput("optimisationTable"),
+                h4("Cost of optimisation"),
+                # tableOutput("optimisationCostTable"),
+                h4("Unit cost table"),
+                # tableOutput("unitCostTable"),
+                helpText("What about the counterfactual?"),
+                helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
+                ),
+            mainPanel(
+                helpText("Baseline 90-90-90 plot.")
+                # plotOutput('plot909090')
+                )
+            ),
+        tabPanel("Results",
+            sidebarPanel(
+                h4("Model Optimisation - Results"),
+                p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button."),
+                helpText("Figure and table will turn grey while optimisation algorithm runs."),
+                br(), br(),
+                # tableOutput("optimisationTable"),
+                h4("Cost of optimisation"),
+                # tableOutput("optimisationCostTable"),
+                h4("Unit cost table"),
+                # tableOutput("unitCostTable"),
+                helpText("What about the counterfactual?"),
+                helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
+                ),
+            mainPanel(
+                plotOutput('plotOptimised909090')
+                )
             )
         ),
     navbarMenu("Diagnostics",

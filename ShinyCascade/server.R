@@ -36,10 +36,10 @@ function(input, output, session) {
         Tau_4 = 0.1225184,
         Mu = 0.0374,
         Epsilon = input$epsilon,
-        Dx_unitCost = 2,
-        Care_unitCost = 2,
-        Tx_unitCost = 2,
-        Retention_unitCost = 2
+        Dx_unitCost = input$userDxUnitCost,
+        Care_unitCost = input$userCxUnitCost,
+        Tx_unitCost = input$userTxUnitCost,
+        Retention_unitCost = input$userRxUnitCost
     )})
 
     output$parameterTable <- renderTable({
@@ -127,7 +127,7 @@ function(input, output, session) {
     })
 
     observeEvent(input$userRetArt12mths, {
-        if(input$userRetArt12mths != 0) {
+        if(input$userRetArt12mths != 0 || is.na(input$userRetArt12mths)) {
             newValue <- -log(input$userRetArt12mths)
             updateSliderInput(session,"omega",value=newValue,min=0,max=5,step=0.01)
         }
@@ -480,10 +480,10 @@ function(input, output, session) {
 
     output$unitCostTable <- renderTable({
         theP <- Parameters()
-        Dx_unitCost <- as.double(theP["Dx_unitCost"])
-        Care_unitCost <- as.double(theP["Care_unitCost"])
-        Tx_unitCost <- as.double(theP["Tx_unitCost"])
-        Retention_unitCost <- as.double(theP["Retention_unitCost"])
+        Dx_unitCost <- dollar(as.double(theP["Dx_unitCost"]))
+        Care_unitCost <- dollar(as.double(theP["Care_unitCost"]))
+        Tx_unitCost <- dollar(as.double(theP["Tx_unitCost"]))
+        Retention_unitCost <- dollar(as.double(theP["Retention_unitCost"]))
         Cost <- c(Dx_unitCost, Care_unitCost, Tx_unitCost, Retention_unitCost)
         Unit <- c("HIV-test","Care","Treatment","Retention")
         UnitCostTable <- data.frame(Unit,Cost)
@@ -569,10 +569,8 @@ function(input, output, session) {
     })
 
     output$plotOptimised909090 <- renderPlot({
-        # This should retrigger the plot to render... (I hope.)
-        # input$optimiseInput
-
         out <- out()
+        
         PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
         # dx / PLHIV
         dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
@@ -657,6 +655,10 @@ function(input, output, session) {
     observeEvent(input$resetParameters, {
         shinyjs::reset("parameter-panel")
         updateNumericInput(session,"userRetArt12mths",value=0)
+    })
+
+    observeEvent(input$resetCost, {
+        shinyjs::reset("cost-panel")
     })
 
     # Render Flow Diagram of Model.
