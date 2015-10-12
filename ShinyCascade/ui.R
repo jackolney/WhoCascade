@@ -200,23 +200,39 @@ shinyUI(
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Help Panel"),
-                helpText("You do not need to alter any of these values."),
+                helpText("It is not neccessary to alter any of these values, but feel free to move the sliders around and see the values in the table change. 
+                    Hit 'RESET PARAMETERS' to reset all parameters including the 'ART dropout rate' if specified in the 'Setup' tab."),
                 bsButton("resetParameters",label="RESET PARAMETERS",style="danger"),
                 p(" "),
                 tableOutput("parameterTable"),
-                p("Details regarding the origin of these parameter values are found in the 'Model Document' under the 'More' tab.")
+                helpText("Details regarding the origin of these parameter values are found in the 'Model Document', under the 'More' tab.")
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),
                 id = "parameter-panel",
-                helpText("Here we show the parameter values used in the back end of the model. See below for a detail diagram of the model, or alternatively click 'more' and 'Model Document' to see the accompanying model document."),
+                helpText("Below is a detailed diagram of the model showing the flow of patients through care and the progression of HIV, 
+                    captured by the decline of CD4 counts when not on treatment and the recovery of CD4 counts when on ART. 
+                    A table of parameter values is shown in the 'Help Panel' and several sliders are shown below which can be 
+                    used to manipulate certain parameter values. Parameter values can be manipulated by changing the rate or the inverse of the rate (time to event). 
+                    You only need to change one slider as the other updated auotmatically. Please note that the parameter table is 'live' and will update in real-time."),
                 imageOutput("modelFlowImage"),
-                br(), br(),
-                sliderInput('rho','Diagnosis rate (rho):',min=0,max=5,value=0.5,step=0.01,width=1000),
-                sliderInput('epsilon','Care seeking rate (epsilon):',min=0,max=5,value=0.5,step=0.01,width=1000),
-                sliderInput('gamma','ART initiation rate (gamma):',min=0,max=5,value=0.5,step=0.01,width=1000),
-                sliderInput('theta','Viral suppression rate (theta):',min=0,max=5,value=2.28,step=0.01,width=1000),
-                sliderInput('omega','ART dropout rate (omega):',min=0,max=5,value=0.01,step=0.01,width=1000)
+                br(), br(), br(),
+                wellPanel(
+                    sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):',min=0,max=5,value=0.5,step=0.01,width=1000),
+                    sliderInput('invRho','Average time to diagnosis (years) (1 / rho):',min=0,max=100,value=2,step=0.01,width=1000)
+                    ),
+                wellPanel(
+                    sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):',min=0,max=5,value=0.5,step=0.01,width=1000),    
+                    sliderInput('invEpsilon','Average time to seeking care (years) (1 / epsilon):',min=0,max=100,value=2,step=0.01,width=1000)
+                    ),
+                wellPanel(
+                    sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):',min=0,max=5,value=0.5,step=0.01,width=1000),    
+                    sliderInput('invGamma','Average time to ART initiation (years) (1 / gamma):',min=0,max=100,value=2,step=0.01,width=1000)
+                    ),
+                wellPanel(
+                    sliderInput('omega','ART dropout rate (ART dropout/py) (omega):',min=0,max=5,value=0.01,step=0.01,width=1000),
+                    sliderInput('invOmega','Average time to ART dropout (years) (1 / omega):',min=0,max=100,value=100,step=0.01,width=1000)
+                    )
                 )
             )
         ),

@@ -22,7 +22,7 @@ function(input, output, session) {
         Nu_3 = 0.2744363,
         Rho = input$rho,
         Gamma = input$gamma,
-        Theta = input$theta,
+        Theta = 2.28,
         Omega = input$omega,
         Delta_1 = 1.1491019,
         Delta_2 = 2.5468165,
@@ -670,4 +670,14 @@ function(input, output, session) {
     },
     deleteFile=FALSE)
 
+    # Inverse sliders for parameter window #
+
+    observeEvent(input$rho, {updateSliderInput(session,"invRho",value=1/input$rho,min=0,max=100,step=0.01)})
+    observeEvent(input$invRho, {updateSliderInput(session,"rho",value=1/input$invRho,min=0,max=5,step=0.01)})
+    observeEvent(input$epsilon, {updateSliderInput(session,"invEpsilon",value=1/input$epsilon,min=0,max=100,step=0.01)})
+    observeEvent(input$invEpsilon, {updateSliderInput(session,"epsilon",value=1/input$invEpsilon,min=0,max=5,step=0.01)})
+    observeEvent(input$gamma, {updateSliderInput(session,"invGamma",value=1/input$gamma,min=0,max=100,step=0.01)})
+    observeEvent(input$invGamma, {updateSliderInput(session,"gamma",value=1/input$invGamma,min=0,max=5,step=0.01)})
+    observeEvent(input$omega, {updateSliderInput(session,"invOmega",value=1/input$omega,min=0,max=100,step=0.01)})
+    observeEvent(input$invOmega, {updateSliderInput(session,"omega",value=1/input$invOmega,min=0,max=5,step=0.01)})
 }
