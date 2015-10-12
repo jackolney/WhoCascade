@@ -126,6 +126,13 @@ function(input, output, session) {
         }
     })
 
+    observeEvent(input$userRetArt12mths, {
+        if(input$userRetArt12mths != 0) {
+            newValue <- -log(input$userRetArt12mths)
+            updateSliderInput(session,"omega",value=newValue,min=0,max=5,step=0.01)
+        }
+    })
+
     out <- reactive({
 
         Time <- seq(0,5,0.02)
@@ -649,6 +656,7 @@ function(input, output, session) {
 
     observeEvent(input$resetParameters, {
         shinyjs::reset("parameter-panel")
+        updateNumericInput(session,"userRetArt12mths",value=0)
     })
 
     # Render Flow Diagram of Model.

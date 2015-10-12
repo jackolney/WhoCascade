@@ -186,6 +186,10 @@ shinyUI(
                     ),
                 wellPanel(
                     numericInput("userLtfu","Number of PLHIV who dropped out of ART care:",0,min=0)
+                    ),
+                em(h5("If this value is known please enter it, otherwise leave it blank:")),
+                wellPanel(
+                    numericInput("userRetArt12mths","Percentage of PLHIV retained and surviving on ART 12 months after initiation (7):",0,min=0,max=1,step=0.01)
                     )
                 )
             )
@@ -286,7 +290,8 @@ shinyUI(
             tableOutput("optimisationCostTable"),
             h4("Unit cost table"),
             tableOutput("unitCostTable"),
-            helpText("What about the counterfactual?")
+            helpText("What about the counterfactual?"),
+            helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
             ),
         mainPanel(
             plotOutput('plotOptimised909090')
