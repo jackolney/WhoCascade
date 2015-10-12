@@ -236,14 +236,6 @@ shinyUI(
                 )
             )
         ),
-    tabPanel("Single Plot",
-        sidebarPanel(
-            selectInput('y','Y',VariableNames,selected="ART")
-          ),
-          mainPanel(
-            plotOutput('plotOne')
-          )
-        ),
     navbarMenu("Results",
         tabPanel("The Care Cascade",
             fluidRow(
@@ -314,10 +306,20 @@ shinyUI(
             plotOutput('plotOptimised909090')
             )
         ),
-    tabPanel("All Plots",
-          mainPanel(
-            plotOutput('plotTwo')
-          )
+    navbarMenu("Diagnostics",
+            tabPanel("Single Plot",
+                sidebarPanel(
+                    selectInput('y','Y',VariableNames,selected="ART")
+                    ),
+                  mainPanel(
+                    plotOutput('plotOne')
+                    )
+                ),
+            tabPanel("All Plots",
+                mainPanel(
+                    plotOutput('plotTwo')
+                    )
+                )
         ),
     navbarMenu("More",
     tabPanel("Model Document",
