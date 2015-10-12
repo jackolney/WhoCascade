@@ -621,10 +621,10 @@ function(input, output, session) {
     observeEvent(input$userCountry, {
         NewInfections <<- as.double(as.double(filter(getIncidenceData(),Country==input$userCountry) %>% select(NewInfections2014)))
         if(is.na(NewInfections)) {
-            output$warningText <- renderText({"Warning! NA value returned from Country. Using data from Kenya as default."})
+            output$warningText <- renderText({return(paste("Warning! NA value returned from",input$userCountry,"data. Using Kenya as default."))})
             NewInfections <<- 56353
         } else {
-            output$warningText <- renderText({""})
+            output$warningText <- renderText({return(paste(input$userCountry,"data loaded."))})
         } 
         print(paste("Country data:",NewInfections))
     })

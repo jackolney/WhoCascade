@@ -145,7 +145,9 @@ shinyUI(
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Help Panel"),
-                helpText("Please fill in all boxes with relevant data, then hit 'save' and wait for the confirmation below. Hit 'reset' to reset all values to zero, and hit 'demo' for a random set of values to be generated."),
+                helpText("Please fill in all boxes with relevant data, then hit 'SAVE' and wait for the confirmation below. 
+                    Hit 'RESET' to reset all values to zero, and hit 'DEMO' for a random set of values to be generated. 
+                    Unchecking the 'HIV incidence' checkbox prevents any new infections occurring in the model."),
                 checkboxInput("incidenceInput","HIV Incidence",value=TRUE),
                 actionButton("saveInput", "SAVE"),
                 p(" "),
@@ -153,6 +155,7 @@ shinyUI(
                 p(" "),
                 actionButton("demoInput", "DEMO"),
                 p(" "),
+                helpText("Console output:"),
                 textOutput('saveText'),
                 textOutput('warningText')
                 ),
