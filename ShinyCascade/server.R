@@ -547,7 +547,7 @@ function(input, output, session) {
             results <- c(p_dx,p_tx,p_vs)
             definition <- c("% Diagnosed","% On Treatment","% Suppressed")
             the909090 <- data.frame(definition,results)
-            output <- sum((target - the909090$results)^2)
+            output <- 1/3 * sum((target - the909090$results)^2)
             return(output)
         }
 

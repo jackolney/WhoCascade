@@ -145,13 +145,19 @@ find909090forLowestCost <- function(target, par) {
     # print(paste("outputCost =",outputCost))
 
     # print(paste("output =",output))
-    output <- sum((target - the909090$results)^2)
+
+    output <- 1/3 * sum((target - the909090$results)^2)
+    # output <- sum((target - the909090$results)^2)
     print(paste("output =",output))    
     return(output)
 }
 
 willThisWork <- optim(par = c(0,0,0,0), find909090forLowestCost, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
 willThisWork$par
+
+OldParms <- willThisWork$par
+
+NewParms
 
 # Right now it is just reducing cost NOT focusing on getting to 90-90-90.
 
