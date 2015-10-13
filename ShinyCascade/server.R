@@ -166,6 +166,7 @@ function(input, output, session) {
         theOut <- mutate(theOut,NaturalMortalityProp = NaturalMortality / N)
         theOut <- mutate(theOut,HivMortalityProp = HivMortality / N)
         theOut <- mutate(theOut,NewInfProp = NewInf / N)
+        theOut <- mutate(theOut,TotalCost = Dx_Cost + Care_Cost + Tx_Cost + Retention_Cost)
 
         return(theOut)
     })

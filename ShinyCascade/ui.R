@@ -49,7 +49,8 @@ VariableNames <- c(
     "Dx_Cost",
     "Care_Cost",
     "Tx_Cost",
-    "Retention_Cost"
+    "Retention_Cost",
+    "TotalCost"
     )
 
 CountryList <- c(
