@@ -337,6 +337,118 @@ function(input, output, session) {
         width=1250
     )
 
+    output$plotPowersCascade <- renderPlot({
+        out <- out()
+
+        t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
+        t0_undx = as.double(sum(filter(out,time == 0) %>% select(c(UnDx_500,UnDx_350500,UnDx_200350,UnDx_200)))) / t0_N
+        t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200)))) / t0_N
+        t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_200350,Care_200)))) / t0_N
+        t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200)))) / t0_N
+        t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
+        t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
+
+        tResult <- c(t0_vs,t0_tx,t0_cx,t0_dx,t0_undx,t0_ltfu,
+                     t0_vs,t0_tx,t0_cx,t0_dx,t0_ltfu,
+                     t0_vs,t0_tx,t0_cx,
+                     t0_vs,t0_tx,
+                     t0_vs,
+                     t0_ltfu)
+
+        State <- c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU",
+                    "% Suppressed","% On Treatment","% In Care","% Diagnosed","% LTFU",
+                    "% Suppressed","% On Treatment","% In Care",
+                    "% Suppressed","% On Treatment",
+                    "% Suppressed",
+                    "% LTFU")
+
+        tOrder <- c(rep("All",6),
+                    rep("Diagnosed",5),
+                    rep("In Care",3),
+                    rep("On Treatment",2),
+                    rep("Virally Suppressed",1),
+                    rep("LTFU",1))
+
+        t0 <- data.frame(State,tResult,tOrder)
+
+        levels(t0$tOrder)
+        t0$tOrder <- factor(t0$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
+
+        levels(t0$State)
+        t0$State <- factor(t0$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU"))
+
+        cols <- brewer.pal(9,"Set1")
+        fill.coll <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[7])
+
+        o <- ggplot(t0,aes(x=tOrder,y=tResult,fill=State))
+        o <- o + geom_bar(stat='identity')
+        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        o <- o + scale_fill_manual(values=fill.coll)
+        o <- o + ggtitle("Care Cascade in 2015")
+        o <- o + theme_classic()
+        o <- o + theme(title=element_text(size=18))
+        o <- o + theme(axis.title=element_blank())
+        o <- o + theme(axis.text.x=element_text(size=13))
+        o <- o + theme(axis.text.y=element_text(size=15))
+        o <- o + theme(legend.text=element_text(size=15))
+
+        t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
+        t5_undx = as.double(sum(filter(out,time == 5) %>% select(c(UnDx_500,UnDx_350500,UnDx_200350,UnDx_200)))) / t5_N
+        t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200)))) / t5_N
+        t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200)))) / t5_N
+        t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200)))) / t5_N
+        t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
+        t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+
+
+        tResult <- c(t5_vs,t5_tx,t5_cx,t5_dx,t5_undx,t5_ltfu,
+                     t5_vs,t5_tx,t5_cx,t5_dx,t5_ltfu,
+                     t5_vs,t5_tx,t5_cx,
+                     t5_vs,t5_tx,
+                     t5_vs,
+                     t5_ltfu)
+
+        State <- c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU",
+                    "% Suppressed","% On Treatment","% In Care","% Diagnosed","% LTFU",
+                    "% Suppressed","% On Treatment","% In Care",
+                    "% Suppressed","% On Treatment",
+                    "% Suppressed",
+                    "% LTFU")
+
+        tOrder <- c(rep("All",6),
+                    rep("Diagnosed",5),
+                    rep("In Care",3),
+                    rep("On Treatment",2),
+                    rep("Virally Suppressed",1),
+                    rep("LTFU",1))
+
+        t5 <- data.frame(State,tResult,tOrder)
+
+        levels(t5$tOrder)
+        t5$tOrder <- factor(t5$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
+
+        levels(t5$State)
+        t5$State <- factor(t5$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU"))
+
+        fill.coll <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[7])
+
+        p <- ggplot(t5,aes(x=tOrder,y=tResult,fill=State))
+        p <- p + geom_bar(stat='identity')
+        p <- p + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        p <- p + scale_fill_manual(values=fill.coll)
+        p <- p + ggtitle("Care Cascade in 2020")
+        p <- p + theme_classic()
+        p <- p + theme(title=element_text(size=18))
+        p <- p + theme(axis.title=element_blank())
+        p <- p + theme(axis.text.x=element_text(size=13))
+        p <- p + theme(axis.text.y=element_text(size=15))
+        p <- p + theme(legend.text=element_text(size=15))
+
+        return(grid.arrange(o,p,nrow=1,ncol=2))
+    },
+    height=400
+    )
+
     output$plot909090 <- renderPlot({
         out <- out()
         PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
