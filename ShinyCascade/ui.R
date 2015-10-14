@@ -268,6 +268,7 @@ shinyUI(
                         h4("The distribution of care between 2015 and 2020."),
                         helpText("Note, the denominator in all these calculations is # of PLHIV."),
                         p("These figures illustrate the 'Care Cascade' in 2015 (at baseline), and the projection after 5 years (in 2020)."),
+                        helpText("Figures are based on those found in Powers et al. (2015)."),
                         tags$ol(
                             tags$li("% Undiagnosed = # persons undiagnosed / PLHIV"),                            
                             tags$li("% Diagnosed = # persons diagnosed and not in care / PLHIV"),

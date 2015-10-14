@@ -378,12 +378,12 @@ function(input, output, session) {
         t0$State <- factor(t0$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU"))
 
         cols <- brewer.pal(9,"Set1")
-        fill.coll <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[7])
+        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[7])
 
         o <- ggplot(t0,aes(x=tOrder,y=tResult,fill=State))
         o <- o + geom_bar(stat='identity')
         o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
-        o <- o + scale_fill_manual(values=fill.coll)
+        o <- o + scale_fill_manual(values=power.col)
         o <- o + ggtitle("Care Cascade in 2015")
         o <- o + theme_classic()
         o <- o + theme(title=element_text(size=18))
@@ -430,12 +430,12 @@ function(input, output, session) {
         levels(t5$State)
         t5$State <- factor(t5$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU"))
 
-        fill.coll <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[7])
+        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[7])
 
         p <- ggplot(t5,aes(x=tOrder,y=tResult,fill=State))
         p <- p + geom_bar(stat='identity')
         p <- p + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
-        p <- p + scale_fill_manual(values=fill.coll)
+        p <- p + scale_fill_manual(values=power.col)
         p <- p + ggtitle("Care Cascade in 2020")
         p <- p + theme_classic()
         p <- p + theme(title=element_text(size=18))
