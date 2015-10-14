@@ -598,9 +598,9 @@ function(input, output, session) {
         Tx_unitCost <- dollar(as.double(theP["Tx_unitCost"]))
         Retention_unitCost <- dollar(as.double(theP["Retention_unitCost"]))
         Cost <- c(Dx_unitCost, Care_unitCost, Tx_unitCost, Retention_unitCost)
-        Unit <- c("HIV-test","Care","Treatment","Retention")
+        Unit <- c("HIV-testing","Care","Treatment","Retention")
         UnitCostTable <- data.frame(Unit,Cost)
-        UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-test","Care","Treatment","Retention"))
+        UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-testing","Care","Treatment","Retention"))
         return(UnitCostTable)
     })
 

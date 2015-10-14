@@ -316,7 +316,7 @@ shinyUI(
             sidebarPanel(
                 h4("Optimisation - Cost"),
                 p("Review or edit the unit costs in each box."),
-                helpText("Click the 'optimisation' drop down menu and select 'algorithm' to begin running the optimisation algorithm."),
+                helpText("Click the 'optimisation' drop down menu and select 'results' to begin running the optimisation algorithm."),
                 bsButton("resetCost",label="RESET COST",style="danger"),
                 p(" "),
                 h4("Unit cost table"),
@@ -326,7 +326,7 @@ shinyUI(
                 shinyjs::useShinyjs(),
                 id = "cost-panel",
                 wellPanel(
-                    numericInput("userDxUnitCost","Unit cost of HIV-test (USD):",2,min=0,step=0.01)
+                    numericInput("userDxUnitCost","Unit cost of diagnosing a patient (USD):",2,min=0,step=0.01)
                     ),
                 wellPanel(
                     numericInput("userCxUnitCost","Unit cost of getting a patient into care (USD):",2,min=0,step=0.01)
@@ -374,7 +374,7 @@ shinyUI(
         ),
     navbarMenu("More",
     tabPanel("Model Document",
-        HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhd0U2cnY3dWJMcE0/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
+        HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhazg1Y1U5RGpkeEk/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
         ),
     tabPanel("Country Input Data",
         HTML('<iframe src=\"https://drive.google.com/file/d/1rIMf-0vB77uwy7XO4rCM9Isd7_ReiCeOkwW1BvoxZw4/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
