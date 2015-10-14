@@ -97,13 +97,15 @@ function(input, output, session) {
     )})
 
     observeEvent(input$demoInput, {
+        updateSelectInput(session,"userCountry",selected="Kenya")
+
         if(input$userPLHIV == 0 || is.na(input$userPLHIV)) {
             randPLHIV <- round(runif(1,1e+6,1e+7),0)
-            newDx <- round(randPLHIV * runif(1,0.5,0.7),0)
-            newCare <- round(newDx * 0.7,0)
-            newTx <- round(newCare * 0.6,0)
-            newVs <- round(newTx * 0.8923,0)
-            newLtfu <- round(newDx * 0.1,0)
+            newDx <- round(randPLHIV * 0.831923,0)
+            newCare <- round(newDx * 0.606497,0)
+            newTx <- round(newCare * 0.490679,0)
+            newVs <- round(newTx * 0.466145,0)
+            newLtfu <- round(newDx * 0.051168,0)
 
             updateNumericInput(session,"userPLHIV",value=randPLHIV)
             updateNumericInput(session,"userDx",value=newDx)
@@ -112,11 +114,11 @@ function(input, output, session) {
             updateNumericInput(session,"userVs",value=newVs)
             updateNumericInput(session,"userLtfu",value=newLtfu)
         } else {
-            newDx <- round(input$userPLHIV * runif(1,0.5,0.7),0)
-            newCare <- round(newDx * 0.7,0)
-            newTx <- round(newCare * 0.6,0)
-            newVs <- round(newTx * 0.8923,0)
-            newLtfu <- round(newDx * 0.1,0)
+            newDx <- round(input$userPLHIV * 0.831923,0)
+            newCare <- round(newDx * 0.606497,0)
+            newTx <- round(newCare * 0.490679,0)
+            newVs <- round(newTx * 0.466145,0)
+            newLtfu <- round(newDx * 0.051168,0)
 
             updateNumericInput(session,"userDx",value=newDx)
             updateNumericInput(session,"userCare",value=newCare)
