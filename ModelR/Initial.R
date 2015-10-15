@@ -9,10 +9,15 @@ Initial <- c(
     Dx_200350 = 1e+4 * 0.23 * 0.16,
     Dx_200 = 1e+4 * 0.23 * 0.03,
 
-    Care_500 = 1e+4 * 0.2 * 0.58,
-    Care_350500 = 1e+4 * 0.2 * 0.23,
-    Care_200350 = 1e+4 * 0.2 * 0.16,
-    Care_200 = 1e+4 * 0.2 * 0.03,
+    Care_500 = 1e+4 * 0.19 * 0.58,
+    Care_350500 = 1e+4 * 0.19 * 0.23,
+    Care_200350 = 1e+4 * 0.19 * 0.16,
+    Care_200 = 1e+4 * 0.19 * 0.03,
+
+    PreLtfu_500 = 1e+4 * 0.01 * 0.58,
+    PreLtfu_350500 = 1e+4 * 0.01 * 0.23,
+    PreLtfu_200350 = 1e+4 * 0.01 * 0.16,
+    PreLtfu_200 = 1e+4 * 0.01 * 0.03,
 
     Tx_500 = 1e+4 * 0.2 * 0.58,
     Tx_350500 = 1e+4 * 0.2 * 0.23,
@@ -33,5 +38,10 @@ Initial <- c(
 
     HivMortality = 0,
 
-    NaturalMortality = 0
+    NaturalMortality = 0,
+
+    Dx_Cost = 0,
+    Care_Cost = 0,
+    Tx_Cost = 0,
+    Retention_Cost = 0
 )

@@ -3,9 +3,14 @@ Parameters <- c(
     Nu_2 = 0.3379898,
     Nu_3 = 0.2744363,
     Rho = 0.5,
+    Epsilon = 0.5,
+    Kappa = 0.5,
     Gamma = 0.5,
-    Theta = 2,
-    Omega = 0.01,
+    Eta = 0.5,
+    Phi = 0.5,
+    Psi = 0.5,
+    Theta = 2.28,
+    Omega = 0.5,
     Delta_1 = 1.1491019,
     Delta_2 = 2.5468165,
     Alpha_1 = 0.0043812,
@@ -17,5 +22,8 @@ Parameters <- c(
     Tau_3 = 0.0631120,
     Tau_4 = 0.1225184,
     Mu = 0.0374,
-    Epsilon = 0.5
+    Dx_unitCost = 0.5,
+    Care_unitCost = 0.5,
+    Tx_unitCost = 0.5,
+    Retention_unitCost = 0.5
 )
