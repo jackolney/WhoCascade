@@ -23,7 +23,7 @@ ComplexCascade <- function(t, y, parms) {
     dTx_500 <- + parms[8] * y[13] + parms[7] * y[9] + parms[9] * y[5] + parms[10] * y[1] - (parms[11] + parms[12] + parms[15] + parms[23]) * y[17]
     dTx_350500 <- + parms[8] * y[14] + parms[7] * y[10] + parms[9] * y[6] + parms[10] * y[2] + parms[13] * y[19] - (parms[11] + parms[12] + parms[16] + parms[23]) * y[18]
     dTx_200350 <- + parms[8] * y[15] + parms[7] * y[11] + parms[9] * y[7] + parms[10] * y[3] + parms[14] * y[20] - (parms[13] + parms[11] + parms[12] + parms[17] + parms[23]) * y[19]
-    dTx_200 <- + parms[8] * y[16] + parms[7] * y[11] + parms[9] * y[8] + parms[10] * y[4] - (parms[14] + parms[11] + parms[12] + parms[18] + parms[23]) * y[20]
+    dTx_200 <- + parms[8] * y[16] + parms[7] * y[12] + parms[9] * y[8] + parms[10] * y[4] - (parms[14] + parms[11] + parms[12] + parms[18] + parms[23]) * y[20]
 
     dVs_500 <- + parms[11] * y[17] - (parms[12] + parms[19] + parms[23]) * y[21]
     dVs_350500 <- + parms[11] * y[18] + parms[13] * y[23] - (parms[12] + parms[20] + parms[23]) * y[22]
