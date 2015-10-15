@@ -384,7 +384,7 @@ function(input, output, session) {
 
         o <- ggplot(t0,aes(x=tOrder,y=tResult,fill=State))
         o <- o + geom_bar(stat='identity')
-        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        o <- o + scale_y_continuous(breaks=seq(0,1,0.1),labels=percent)
         o <- o + scale_fill_manual(values=power.col)
         o <- o + ggtitle("Care Cascade in 2015")
         o <- o + theme_classic()
@@ -436,7 +436,7 @@ function(input, output, session) {
 
         p <- ggplot(t5,aes(x=tOrder,y=tResult,fill=State))
         p <- p + geom_bar(stat='identity')
-        p <- p + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        p <- p + scale_y_continuous(breaks=seq(0,1,0.1),labels=percent)
         p <- p + scale_fill_manual(values=power.col)
         p <- p + ggtitle("Care Cascade in 2020")
         p <- p + theme_classic()
