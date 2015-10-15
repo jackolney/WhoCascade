@@ -219,20 +219,20 @@ shinyUI(
                 imageOutput("modelFlowImage"),
                 br(), br(), br(),
                 wellPanel(
-                    sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):',min=0,max=5,value=0.5,step=0.01,width=1000),
-                    sliderInput('invRho','Average time to diagnosis (years) (1 / rho):',min=0,max=100,value=2,step=0.01,width=1000)
+                    sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):',min=0,max=5,value=0.20,step=0.01,width=1000),
+                    sliderInput('invRho','Average time to diagnosis (years) (1 / rho):',min=0,max=100,value=5,step=0.01,width=1000)
                     ),
                 wellPanel(
-                    sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):',min=0,max=5,value=0.5,step=0.01,width=1000),    
-                    sliderInput('invEpsilon','Average time to seeking care (years) (1 / epsilon):',min=0,max=100,value=2,step=0.01,width=1000)
+                    sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):',min=0,max=20,value=16.67,step=0.01,width=1000),    
+                    sliderInput('invEpsilon','Average time to seeking care (years) (1 / epsilon):',min=0,max=100,value=0.06,step=0.01,width=1000)
                     ),
                 wellPanel(
-                    sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):',min=0,max=5,value=0.5,step=0.01,width=1000),    
-                    sliderInput('invGamma','Average time to ART initiation (years) (1 / gamma):',min=0,max=100,value=2,step=0.01,width=1000)
+                    sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):',min=0,max=5,value=2.56,step=0.01,width=1000),    
+                    sliderInput('invGamma','Average time to ART initiation (years) (1 / gamma):',min=0,max=100,value=0.39,step=0.01,width=1000)
                     ),
                 wellPanel(
-                    sliderInput('omega','ART dropout rate (ART dropout/py) (omega):',min=0,max=5,value=0.01,step=0.01,width=1000),
-                    sliderInput('invOmega','Average time to ART dropout (years) (1 / omega):',min=0,max=100,value=100,step=0.01,width=1000)
+                    sliderInput('omega','ART dropout rate (ART dropout/py) (omega):',min=0,max=5,value=0.03,step=0.01,width=1000),
+                    sliderInput('invOmega','Average time to ART dropout (years) (1 / omega):',min=0,max=100,value=33.33,step=0.01,width=1000)
                     )
                 )
             )

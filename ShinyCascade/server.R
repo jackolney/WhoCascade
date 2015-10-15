@@ -792,7 +792,7 @@ function(input, output, session) {
     observeEvent(input$rho, {updateSliderInput(session,"invRho",value=1/input$rho,min=0,max=100,step=0.01)})
     observeEvent(input$invRho, {updateSliderInput(session,"rho",value=1/input$invRho,min=0,max=5,step=0.01)})
     observeEvent(input$epsilon, {updateSliderInput(session,"invEpsilon",value=1/input$epsilon,min=0,max=100,step=0.01)})
-    observeEvent(input$invEpsilon, {updateSliderInput(session,"epsilon",value=1/input$invEpsilon,min=0,max=5,step=0.01)})
+    observeEvent(input$invEpsilon, {updateSliderInput(session,"epsilon",value=1/input$invEpsilon,min=0,max=20,step=0.01)})
     observeEvent(input$gamma, {updateSliderInput(session,"invGamma",value=1/input$gamma,min=0,max=100,step=0.01)})
     observeEvent(input$invGamma, {updateSliderInput(session,"gamma",value=1/input$invGamma,min=0,max=5,step=0.01)})
     observeEvent(input$omega, {updateSliderInput(session,"invOmega",value=1/input$omega,min=0,max=100,step=0.01)})
