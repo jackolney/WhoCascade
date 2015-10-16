@@ -48,8 +48,9 @@ VariableNames <- c(
     "NewInfProp",
     "Dx_Cost",
     "Care_Cost",
-    "Tx_Cost",
+    "TxInit_Cost",
     "Retention_Cost",
+    "AnnualTx_Cost",
     "TotalCost"
     )
 

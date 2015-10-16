@@ -106,7 +106,7 @@ function(input, output, session) {
         Retention_Cost = 0,
 
         # Annual costs
-        AnnualTxCost = 0
+        AnnualTx_Cost = 0
     )})
 
     observeEvent(input$demoInput, {
@@ -170,18 +170,19 @@ function(input, output, session) {
         # --------- #
 
         # Post-simulation mutation (creation of columns) etc.
-        theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+        theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
         theOut <- mutate(theOut,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
         theOut <- mutate(theOut,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
         theOut <- mutate(theOut,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
         theOut <- mutate(theOut,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
+        theOut <- mutate(theOut,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200) / N)
         theOut <- mutate(theOut,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
         theOut <- mutate(theOut,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
         theOut <- mutate(theOut,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
         theOut <- mutate(theOut,NaturalMortalityProp = NaturalMortality / N)
         theOut <- mutate(theOut,HivMortalityProp = HivMortality / N)
         theOut <- mutate(theOut,NewInfProp = NewInf / N)
-        theOut <- mutate(theOut,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTxCost)
+        theOut <- mutate(theOut,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTx_Cost)
 
         return(theOut)
     })
@@ -220,7 +221,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        c <- ggplot(out,aes(x=time,y=Tx)) +
+        c <- ggplot(out,aes(x=time,y=Care)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -228,7 +229,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        d <- ggplot(out,aes(x=time,y=Vs)) +
+        d <- ggplot(out,aes(x=time,y=PreLtfu)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -236,7 +237,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        e <- ggplot(out,aes(x=time,y=Ltfu)) +
+        e <- ggplot(out,aes(x=time,y=Tx)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -244,7 +245,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        f <- ggplot(out,aes(x=time,y=N)) +
+        f <- ggplot(out,aes(x=time,y=Vs)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -252,7 +253,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        g <- ggplot(out,aes(x=time,y=NewInf)) +
+        g <- ggplot(out,aes(x=time,y=Ltfu)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -260,7 +261,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        h <- ggplot(out,aes(x=time,y=NaturalMortalityProp)) +
+        h <- ggplot(out,aes(x=time,y=N)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -289,11 +290,11 @@ function(input, output, session) {
         out <- out()
 
         t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
-        t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
+        t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
         t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
         t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
         t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
-        t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
+        t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
 
         t0_results <- c(t0_dx,t0_cx,t0_tx,t0_vs,t0_ltfu)
 
@@ -318,11 +319,11 @@ function(input, output, session) {
         o <- o + theme(legend.position="none")
 
         t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
-        t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+        t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
         t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
         t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
         t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
-        t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+        t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
 
         t5_results <- c(t5_dx,t5_cx,t5_tx,t5_vs,t5_ltfu)
 
@@ -359,30 +360,31 @@ function(input, output, session) {
         t0_undx = as.double(sum(filter(out,time == 0) %>% select(c(UnDx_500,UnDx_350500,UnDx_200350,UnDx_200)))) / t0_N
         t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200)))) / t0_N
         t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_200350,Care_200)))) / t0_N
+        t0_preltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200)))) / t0_N
         t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200)))) / t0_N
         t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
         t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
 
-        tResult <- c(t0_vs,t0_tx,t0_cx,t0_dx,t0_undx,t0_ltfu,
-                     t0_vs,t0_tx,t0_cx,t0_dx,t0_ltfu,
+        tResult <- c(t0_vs,t0_tx,t0_cx,t0_dx,t0_undx,t0_preltfu,t0_ltfu,
+                     t0_vs,t0_tx,t0_cx,t0_dx,t0_preltfu,t0_ltfu,
                      t0_vs,t0_tx,t0_cx,
                      t0_vs,t0_tx,
                      t0_vs,
-                     t0_ltfu)
+                     t0_preltfu,t0_ltfu)
 
-        State <- c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU",
-                    "% Suppressed","% On Treatment","% In Care","% Diagnosed","% LTFU",
-                    "% Suppressed","% On Treatment","% In Care",
-                    "% Suppressed","% On Treatment",
-                    "% Suppressed",
-                    "% LTFU")
+        State <- c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU",
+                   "% Suppressed","% On Treatment","% In Care","% Diagnosed","% pre-ART LTFU","% LTFU",
+                   "% Suppressed","% On Treatment","% In Care",
+                   "% Suppressed","% On Treatment",
+                   "% Suppressed",
+                   "% pre-ART LTFU","% LTFU")
 
-        tOrder <- c(rep("All",6),
-                    rep("Diagnosed",5),
+        tOrder <- c(rep("All",7),
+                    rep("Diagnosed",6),
                     rep("In Care",3),
                     rep("On Treatment",2),
                     rep("Virally Suppressed",1),
-                    rep("LTFU",1))
+                    rep("LTFU",2))
 
         t0 <- data.frame(State,tResult,tOrder)
 
@@ -390,10 +392,10 @@ function(input, output, session) {
         t0$tOrder <- factor(t0$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
 
         levels(t0$State)
-        t0$State <- factor(t0$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU"))
+        t0$State <- factor(t0$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
 
         cols <- brewer.pal(9,"Set1")
-        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[7])
+        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[7])
 
         o <- ggplot(t0,aes(x=tOrder,y=tResult,fill=State))
         o <- o + geom_bar(stat='identity')
@@ -411,31 +413,32 @@ function(input, output, session) {
         t5_undx = as.double(sum(filter(out,time == 5) %>% select(c(UnDx_500,UnDx_350500,UnDx_200350,UnDx_200)))) / t5_N
         t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200)))) / t5_N
         t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200)))) / t5_N
+        t5_preltfu = as.double(sum(filter(out,time == 5) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200)))) / t5_N
         t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200)))) / t5_N
         t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
         t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
 
 
-        tResult <- c(t5_vs,t5_tx,t5_cx,t5_dx,t5_undx,t5_ltfu,
-                     t5_vs,t5_tx,t5_cx,t5_dx,t5_ltfu,
+        tResult <- c(t5_vs,t5_tx,t5_cx,t5_dx,t5_undx,t5_preltfu,t5_ltfu,
+                     t5_vs,t5_tx,t5_cx,t5_dx,t5_preltfu,t5_ltfu,
                      t5_vs,t5_tx,t5_cx,
                      t5_vs,t5_tx,
                      t5_vs,
-                     t5_ltfu)
+                     t5_preltfu,t5_ltfu)
 
-        State <- c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU",
-                    "% Suppressed","% On Treatment","% In Care","% Diagnosed","% LTFU",
+        State <- c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU",
+                    "% Suppressed","% On Treatment","% In Care","% Diagnosed","% pre-ART LTFU","% LTFU",
                     "% Suppressed","% On Treatment","% In Care",
                     "% Suppressed","% On Treatment",
                     "% Suppressed",
-                    "% LTFU")
+                    "% pre-ART LTFU","% LTFU")
 
-        tOrder <- c(rep("All",6),
-                    rep("Diagnosed",5),
+        tOrder <- c(rep("All",7),
+                    rep("Diagnosed",6),
                     rep("In Care",3),
                     rep("On Treatment",2),
                     rep("Virally Suppressed",1),
-                    rep("LTFU",1))
+                    rep("LTFU",2))
 
         t5 <- data.frame(State,tResult,tOrder)
 
@@ -443,9 +446,9 @@ function(input, output, session) {
         t5$tOrder <- factor(t5$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
 
         levels(t5$State)
-        t5$State <- factor(t5$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% LTFU"))
+        t5$State <- factor(t5$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
 
-        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[7])
+        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[7])
 
         p <- ggplot(t5,aes(x=tOrder,y=tResult,fill=State))
         p <- p + geom_bar(stat='identity')
@@ -468,7 +471,7 @@ function(input, output, session) {
         out <- out()
         PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
         # dx / PLHIV
-        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
         # tx / dx
         tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
         # vs / tx
@@ -509,7 +512,7 @@ function(input, output, session) {
         out <- out()
         PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
         # dx / PLHIV
-        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
         # tx / dx
         tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
         # vs / tx
@@ -597,7 +600,7 @@ function(input, output, session) {
         theDx_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Dx_Cost)),0))
         theCare_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Care_Cost)),0))
         theTxInit_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(TxInit_Cost)),0))
-        theAnnualTx_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(AnnualTxCost)),0))
+        theAnnualTx_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(AnnualTx_Cost)),0))
         theRetention_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Retention_Cost)),0))
         Cost <- c(theDx_Cost,theCare_Cost,theTxInit_Cost,theAnnualTx_Cost,theRetention_Cost)
         Category <- c("Testing costs","Care costs","Treatment Initiation","Annual Treatment","Retention costs")
@@ -655,11 +658,12 @@ function(input, output, session) {
             # --------- #
 
             # Post-simulation mutation (creation of columns) etc.
-            theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+            theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
             theOut <- mutate(theOut,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
             theOut <- mutate(theOut,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
             theOut <- mutate(theOut,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
             theOut <- mutate(theOut,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
+            theOut <- mutate(theOut,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200) / N)
             theOut <- mutate(theOut,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
             theOut <- mutate(theOut,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
             theOut <- mutate(theOut,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
@@ -668,7 +672,7 @@ function(input, output, session) {
             theOut <- mutate(theOut,NewInfProp = NewInf / N)
 
             PLHIV = as.double(sum(filter(theOut,time == 5) %>% select(N)))
-            dx = as.double(sum(filter(theOut,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+            dx = as.double(sum(filter(theOut,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
             tx = as.double(sum(filter(theOut,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
             vs = as.double(sum(filter(theOut,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
             p_dx <- dx / PLHIV
@@ -681,29 +685,37 @@ function(input, output, session) {
             return(output)
         }
 
-        theResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
+        withProgress(message = 'Running optimisation', value = 0, {
+            incProgress(0.1/1, message = 'Runnning optimisation')
+            theResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
+            incProgress(0.5/1, message = 'calculating results')
 
-        # Fill out results table.
-        optimisationValues$theRho <- theResult$par[1]
-        optimisationValues$theEpsilon <- theResult$par[4]
-        optimisationValues$theGamma <- theResult$par[2]
-        optimisationValues$theOmega <- theResult$par[3]
+            # Fill out results table.
+            optimisationValues$theRho <- theResult$par[1]
+            optimisationValues$theEpsilon <- theResult$par[4]
+            optimisationValues$theGamma <- theResult$par[2]
+            optimisationValues$theOmega <- theResult$par[3]
 
-        # Update sliders on "Parameter" page.
-        updateSliderInput(session,"rho",value=theResult$par[1],min=0,max=5,step=0.01)
-        updateSliderInput(session,"epsilon",value=theResult$par[4],min=0,max=5,step=0.01)
-        updateSliderInput(session,"gamma",value=theResult$par[2],min=0,max=5,step=0.01)
-        updateSliderInput(session,"omega",value=theResult$par[3],min=0,max=5,step=0.01)
+            # Update sliders on "Parameter" page.
+            updateSliderInput(session,"rho",value=theResult$par[1],min=0,max=5,step=0.01)
+            updateSliderInput(session,"epsilon",value=theResult$par[4],min=0,max=5,step=0.01)
+            updateSliderInput(session,"gamma",value=theResult$par[2],min=0,max=5,step=0.01)
+            updateSliderInput(session,"omega",value=theResult$par[3],min=0,max=5,step=0.01)
 
-        print(theResult$par)
+            print(theResult$par)
+            incProgress(1, message = 'Complete.')
+        })
     })
 
     output$plotOptimised909090 <- renderPlot({
+        # Should refresh when this button is pressed.
+        input$optimiseInput
+
         out <- out()
         
         PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
         # dx / PLHIV
-        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
         # tx / dx
         tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
         # vs / tx
