@@ -129,7 +129,7 @@ shinyUI(
                     must be discrete and exhaustive, while the indicators listed are not all discrete; for example, ‘Knowing HIV status’ includes all patients who are in care, on treatment, virally suppressed and 
                     lost from care as long as they are diagnosed. However, the model is able to reconcile this by taking individual indicators and seperating them into their components to specify the initial conditions for simulations."),
                 helpText("More details on the model can be found in the following pages, along with a detailed description under the 'more' table and 'Model Document'."),
-                img(src="ModelSimple.jpg",height=200,width=850),
+                img(src="ModelSimple.png",height=200,width=850),
                 h3("Outcomes"),
                 tags$ol(
                     tags$li("Predict achievement of UNAIDS 90-90-90 targets in 2020."),
@@ -217,22 +217,22 @@ shinyUI(
                     used to manipulate certain parameter values. Parameter values can be manipulated by changing the rate or the inverse of the rate (time to event). 
                     You only need to change one slider as the other updated auotmatically. Please note that the parameter table is 'live' and will update in real-time."),
                 imageOutput("modelFlowImage"),
-                br(), br(), br(),
+                br(), br(), br(), br(), br(),
                 wellPanel(
-                    sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):',min=0,max=5,value=0.20,step=0.01,width=1000),
-                    sliderInput('invRho','Average time to diagnosis (years) (1 / rho):',min=0,max=100,value=5,step=0.01,width=1000)
+                    sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):',min=0,max=5,value=0.205,step=0.001,width=1000),
+                    sliderInput('invRho','Average time to diagnosis (years) (1 / rho):',min=0,max=100,value=1/0.205,step=0.001,width=1000)
                     ),
                 wellPanel(
-                    sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):',min=0,max=20,value=16.67,step=0.01,width=1000),    
-                    sliderInput('invEpsilon','Average time to seeking care (years) (1 / epsilon):',min=0,max=100,value=0.06,step=0.01,width=1000)
+                    sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):',min=0,max=20,value=16.949,step=0.001,width=1000),    
+                    sliderInput('invEpsilon','Average time to seeking care (years) (1 / epsilon):',min=0,max=100,value=1/16.949,step=0.001,width=1000)
                     ),
                 wellPanel(
-                    sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):',min=0,max=5,value=2.56,step=0.01,width=1000),    
-                    sliderInput('invGamma','Average time to ART initiation (years) (1 / gamma):',min=0,max=100,value=0.39,step=0.01,width=1000)
+                    sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):',min=0,max=5,value=2.556,step=0.001,width=1000),    
+                    sliderInput('invGamma','Average time to ART initiation (years) (1 / gamma):',min=0,max=100,value=1/2.556,step=0.001,width=1000)
                     ),
                 wellPanel(
-                    sliderInput('omega','ART dropout rate (ART dropout/py) (omega):',min=0,max=5,value=0.03,step=0.01,width=1000),
-                    sliderInput('invOmega','Average time to ART dropout (years) (1 / omega):',min=0,max=100,value=33.33,step=0.01,width=1000)
+                    sliderInput('omega','ART dropout rate (ART dropout/py) (omega):',min=0,max=5,value=0.033,step=0.001,width=1000),
+                    sliderInput('invOmega','Average time to ART dropout (years) (1 / omega):',min=0,max=100,value=1/0.033,step=0.001,width=1000)
                     )
                 )
             )

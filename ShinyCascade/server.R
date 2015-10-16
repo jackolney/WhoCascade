@@ -17,25 +17,29 @@ source("TheModel.R")
 function(input, output, session) {
 
     Parameters <- reactive({c(
-        Nu_1 = 0.2139008,
-        Nu_2 = 0.3379898,
-        Nu_3 = 0.2744363,
+        Nu_1 = 0.193634,
+        Nu_2 = 0.321304,
+        Nu_3 = 0.163484,
         Rho = input$rho,
+        Epsilon = input$epsilon,
+        Kappa = 1.079,
         Gamma = input$gamma,
+        Eta = 0.476,
+        Phi = 3.628,
+        Psi = 0.431,
         Theta = 2.28,
         Omega = input$omega,
         Delta_1 = 1.1491019,
         Delta_2 = 2.5468165,
-        Alpha_1 = 0.0043812,
-        Alpha_2 = 0.0179791,
-        Alpha_3 = 0.0664348,
-        Alpha_4 = 0.1289688,
+        Alpha_1 = 0.00411,
+        Alpha_2 = 0.01167,
+        Alpha_3 = 0.01289,
+        Alpha_4 = 0.385832,
         Tau_1 = 0.0041621,
         Tau_2 = 0.0170798,
         Tau_3 = 0.0631120,
         Tau_4 = 0.1225184,
         Mu = 0.0374,
-        Epsilon = input$epsilon,
         Dx_unitCost = input$userDxUnitCost,
         Care_unitCost = input$userCxUnitCost,
         Tx_unitCost = input$userTxUnitCost,
@@ -44,8 +48,8 @@ function(input, output, session) {
 
     output$parameterTable <- renderTable({
         theP <- Parameters()
-        theParameters <- c(theP[4],theP[19],theP[5],theP[6],theP[7],theP[1],theP[2],theP[3],theP[8],theP[9],theP[10],theP[11],theP[12],theP[13],theP[14],theP[15],theP[16],theP[17],theP[18])
-        ParameterNames <- c("Rho","Epsilon","Gamma","Theta","Omega","Nu_1","Nu_2","Nu_3","Delta_1","Delta_2","Alpha_1","Alpha_2","Alpha_3","Alpha_4","Tau_1","Tau_2","Tau_3","Tau_4","Mu")
+        theParameters <- c(theP[4],theP[5],theP[6],theP[7],theP[8],theP[9],theP[10],theP[11],theP[12],theP[1],theP[2],theP[3],theP[13],theP[14],theP[15],theP[16],theP[17],theP[18],theP[19],theP[20],theP[21],theP[22],theP[23],0.5251,0.2315,0.2401,0.0033)
+        ParameterNames <- c("Rho","Epsilon","Kappa","Gamma","Eta","Phi","Psi","Theta","Omega","Nu_1","Nu_2","Nu_3","Delta_1","Delta_2","Alpha_1","Alpha_2","Alpha_3","Alpha_4","Tau_1","Tau_2","Tau_3","Tau_4","Mu","Iota_1","Iota_2","Iota_3","Iota_4")
         rows <- length(ParameterNames)
         tbl <- matrix(theParameters,rows,ncol=2)
         tbl[,1] <- ParameterNames
@@ -54,35 +58,40 @@ function(input, output, session) {
     })
 
     Initial <- reactive({c(
-        UnDx_500 = (input$userPLHIV - input$userDx) * 0.58,
-        UnDx_350500 = (input$userPLHIV - input$userDx) * 0.23,
-        UnDx_200350 = (input$userPLHIV - input$userDx) * 0.16,
-        UnDx_200 = (input$userPLHIV - input$userDx) * 0.03,
+        UnDx_500 = (input$userPLHIV - input$userDx) * 0.5251,
+        UnDx_350500 = (input$userPLHIV - input$userDx) * 0.2315,
+        UnDx_200350 = (input$userPLHIV - input$userDx) * 0.2401,
+        UnDx_200 = (input$userPLHIV - input$userDx) * 0.0033,
 
-        Dx_500 = (input$userDx - input$userCare - input$userLtfu) * 0.58,
-        Dx_350500 = (input$userDx - input$userCare - input$userLtfu) * 0.23,
-        Dx_200350 = (input$userDx - input$userCare - input$userLtfu) * 0.16,
-        Dx_200 = (input$userDx - input$userCare - input$userLtfu) * 0.03,
+        Dx_500 = (input$userDx - input$userCare - input$userLtfu) * 0.5251,
+        Dx_350500 = (input$userDx - input$userCare - input$userLtfu) * 0.2315,
+        Dx_200350 = (input$userDx - input$userCare - input$userLtfu) * 0.2401,
+        Dx_200 = (input$userDx - input$userCare - input$userLtfu) * 0.0033,
 
-        Care_500 = (input$userCare - input$userTx) * 0.58,
-        Care_350500 = (input$userCare - input$userTx) * 0.23,
-        Care_200350 = (input$userCare - input$userTx) * 0.16,
-        Care_200 = (input$userCare - input$userTx) * 0.03,
+        Care_500 = (input$userCare - input$userTx) * 0.5251,
+        Care_350500 = (input$userCare - input$userTx) * 0.2315,
+        Care_200350 = (input$userCare - input$userTx) * 0.2401,
+        Care_200 = (input$userCare - input$userTx) * 0.0033,
 
-        Tx_500 = (input$userTx - input$userVs) * 0.58,
-        Tx_350500 = (input$userTx - input$userVs) * 0.23,
-        Tx_200350 = (input$userTx - input$userVs) * 0.16,
-        Tx_200 = (input$userTx - input$userVs) * 0.03,
+        PreLtfu_500 = 0 * 0.5251,
+        PreLtfu_350500 = 0 * 0.2315,
+        PreLtfu_200350 = 0 * 0.2401,
+        PreLtfu_200 = 0 * 0.0033,
 
-        Vs_500 = (input$userVs) * 0.58,
-        Vs_350500 = (input$userVs) * 0.23,
-        Vs_200350 = (input$userVs) * 0.16,
-        Vs_200 = (input$userVs) * 0.03,
+        Tx_500 = (input$userTx - input$userVs) * 0.5251,
+        Tx_350500 = (input$userTx - input$userVs) * 0.2315,
+        Tx_200350 = (input$userTx - input$userVs) * 0.2401,
+        Tx_200 = (input$userTx - input$userVs) * 0.0033,
 
-        Ltfu_500 = (input$userLtfu) * 0.58,
-        Ltfu_350500 = (input$userLtfu) * 0.23,
-        Ltfu_200350 = (input$userLtfu) * 0.16,
-        Ltfu_200 = (input$userLtfu) * 0.03,
+        Vs_500 = (input$userVs) * 0.5251,
+        Vs_350500 = (input$userVs) * 0.2315,
+        Vs_200350 = (input$userVs) * 0.2401,
+        Vs_200 = (input$userVs) * 0.0033,
+
+        Ltfu_500 = (input$userLtfu) * 0.5251,
+        Ltfu_350500 = (input$userLtfu) * 0.2315,
+        Ltfu_200350 = (input$userLtfu) * 0.2401,
+        Ltfu_200 = (input$userLtfu) * 0.0033,
 
         NewInf = 0,
 
@@ -782,19 +791,19 @@ function(input, output, session) {
             src='www/Model.png',
             contentType='image/png',
             alt='ModelFlowDiagram',
-            height=444,
+            height=500,
             width=1000))
     },
     deleteFile=FALSE)
 
     # Inverse sliders for parameter window #
 
-    observeEvent(input$rho, {updateSliderInput(session,"invRho",value=1/input$rho,min=0,max=100,step=0.01)})
-    observeEvent(input$invRho, {updateSliderInput(session,"rho",value=1/input$invRho,min=0,max=5,step=0.01)})
-    observeEvent(input$epsilon, {updateSliderInput(session,"invEpsilon",value=1/input$epsilon,min=0,max=100,step=0.01)})
-    observeEvent(input$invEpsilon, {updateSliderInput(session,"epsilon",value=1/input$invEpsilon,min=0,max=20,step=0.01)})
-    observeEvent(input$gamma, {updateSliderInput(session,"invGamma",value=1/input$gamma,min=0,max=100,step=0.01)})
-    observeEvent(input$invGamma, {updateSliderInput(session,"gamma",value=1/input$invGamma,min=0,max=5,step=0.01)})
-    observeEvent(input$omega, {updateSliderInput(session,"invOmega",value=1/input$omega,min=0,max=100,step=0.01)})
-    observeEvent(input$invOmega, {updateSliderInput(session,"omega",value=1/input$invOmega,min=0,max=5,step=0.01)})
+    observeEvent(input$rho, {updateSliderInput(session,"invRho",value=1/input$rho,min=0,max=100,step=0.001)})
+    observeEvent(input$invRho, {updateSliderInput(session,"rho",value=1/input$invRho,min=0,max=5,step=0.001)})
+    observeEvent(input$epsilon, {updateSliderInput(session,"invEpsilon",value=1/input$epsilon,min=0,max=100,step=0.001)})
+    observeEvent(input$invEpsilon, {updateSliderInput(session,"epsilon",value=1/input$invEpsilon,min=0,max=20,step=0.001)})
+    observeEvent(input$gamma, {updateSliderInput(session,"invGamma",value=1/input$gamma,min=0,max=100,step=0.001)})
+    observeEvent(input$invGamma, {updateSliderInput(session,"gamma",value=1/input$invGamma,min=0,max=5,step=0.001)})
+    observeEvent(input$omega, {updateSliderInput(session,"invOmega",value=1/input$omega,min=0,max=100,step=0.001)})
+    observeEvent(input$invOmega, {updateSliderInput(session,"omega",value=1/input$invOmega,min=0,max=5,step=0.001)})
 }
