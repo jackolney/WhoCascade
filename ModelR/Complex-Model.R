@@ -67,27 +67,27 @@ b <- ggplot(out,aes(x=time,y=Dx)) +
 geom_line() +
 theme_classic()
 
-c <- ggplot(out,aes(x=time,y=Tx)) +
+c <- ggplot(out,aes(x=time,y=Care)) +
 geom_line() +
 theme_classic()
 
-d <- ggplot(out,aes(x=time,y=Vs)) +
+d <- ggplot(out,aes(x=time,y=PreLtfu)) +
 geom_line() +
 theme_classic()
 
-e <- ggplot(out,aes(x=time,y=Ltfu)) +
+e <- ggplot(out,aes(x=time,y=Tx)) +
 geom_line() +
 theme_classic()
 
-f <- ggplot(out,aes(x=time,y=N)) +
+f <- ggplot(out,aes(x=time,y=Vs)) +
 geom_line() +
 theme_classic()
 
-g <- ggplot(out,aes(x=time,y=NewInf)) +
+g <- ggplot(out,aes(x=time,y=Ltfu)) +
 geom_line() +
 theme_classic()
 
-h <- ggplot(out,aes(x=time,y=NaturalMortalityProp)) +
+h <- ggplot(out,aes(x=time,y=N)) +
 geom_line() +
 theme_classic()
 
