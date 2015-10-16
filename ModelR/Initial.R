@@ -34,14 +34,17 @@ Initial <- c(
     Ltfu_200350 = 0,
     Ltfu_200 = 0,
 
+    # Keeping track
     NewInf = 0,
-
     HivMortality = 0,
-
     NaturalMortality = 0,
 
+    # Transition costs
     Dx_Cost = 0,
     Care_Cost = 0,
-    Tx_Cost = 0,
-    Retention_Cost = 0
+    TxInit_Cost = 0,
+    Retention_Cost = 0,
+
+    # Annual costs
+    AnnualTxCost = 0
 )

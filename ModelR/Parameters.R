@@ -22,8 +22,9 @@ Parameters <- c(
     Tau_3 = 0.0631120,
     Tau_4 = 0.1225184,
     Mu = 0.0374,
-    Dx_unitCost = 0.5,
-    Care_unitCost = 0.5,
-    Tx_unitCost = 0.5,
-    Retention_unitCost = 0.5
+    Dx_unitCost = 10,
+    Care_unitCost = 12,
+    TxInit_unitCost = 28,
+    Retention_unitCost = 367,
+    AnnualTx_unitCost = 367
 )

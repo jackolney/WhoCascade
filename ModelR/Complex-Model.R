@@ -23,18 +23,18 @@ source("Parameters.R")
 source("Initial.R")
 
 # Googlesheet Spectrum Incidence Values
-theTable <- gs_title("SpectrumIncidenceEstimates")
-theIncidence <- gs_read(theTable,ws="NewInfections")
+# theTable <- gs_title("SpectrumIncidenceEstimates")
+# theIncidence <- gs_read(theTable,ws="NewInfections")
 
-# AIDSinfo estimates (2014)
-theIncidence$NewInfections2014
+# # AIDSinfo estimates (2014)
+# theIncidence$NewInfections2014
 
-# Spectrum estimates (2015)
-# theIncidence$IncidenceRate2015
+# # Spectrum estimates (2015)
+# # theIncidence$IncidenceRate2015
 
-Parameters[["Beta"]]
-# [12] = Kenya incidence estimate
-theIncidence$NewInfections2014[12]
+# Parameters[["Beta"]]
+# # [12] = Kenya incidence estimate
+# theIncidence$NewInfections2014[12]
 
 
 # Beta <- as.double(theIncidence$NewInfections2014[12] / (((Initial[1] + Initial[5] + Initial[9] + Initial[13] + Initial[21]) * 1.35) + ((Initial[2] + Initial[6] + Initial[10] + Initial[14] + Initial[22]) * 1) + ((Initial[3] + Initial[7] + Initial[11] + Initial[15] + Initial[23]) * 1.64) + ((Initial[4] + Initial[8] + Initial[12] + Initial[16] + Initial[24]) * 5.17) + ((Initial[17] + Initial[18] + Initial[19] + Initial[20]) * 0.1)))
@@ -58,6 +58,20 @@ out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
 out <- mutate(out,HivMortalityProp = HivMortality / N)
 out <- mutate(out,NewInfProp = NewInf / N)
 #############
+
+out$time
+length(out$Tx)
+(out$AnnualTxCost)
+
+test <- rowSums(select(out,c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))
+
+plot(out$time,out$AnnualTxCost,type='l',lwd=2)
+
+1/0.02
+# So if an annual cost of $300 then take 1/50 of it
+300 / 50
+
+
 
 a <- ggplot(out,aes(x=time,y=UnDx)) +
 geom_line() +

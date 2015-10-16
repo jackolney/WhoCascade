@@ -46,9 +46,11 @@ ComplexCascade <- function(t, y, parms) {
     
     dCare_Cost <- (parms[5] * (y[5] + y[6] + y[7] + y[8])) * parms[25]
     
-    dTx_Cost <- (parms[7] * (y[9] + y[10] + y[11] + y[12])) * parms[26]
+    dTxInit_Cost <- (parms[7] * (y[9] + y[10] + y[11] + y[12])) * parms[26]
     
     dRetention_Cost <- (parms[12] * (y[17] + y[18] + y[19] + y[20] + y[21] + y[22] + y[23] + y[24])) * parms[27]
+
+    dAnnualTxCost <- (y[17] + y[18] + y[19] + y[20] + y[21] + y[22] + y[23] + y[24]) * parms[28]
     
     list(c(
         dUnDx_500,
@@ -84,6 +86,7 @@ ComplexCascade <- function(t, y, parms) {
         dNaturalMortality,
         dDx_Cost,
         dCare_Cost,
-        dTx_Cost,
-        dRetention_Cost))
+        dTxInit_Cost,
+        dRetention_Cost,
+        dAnnualTxCost))
 }
