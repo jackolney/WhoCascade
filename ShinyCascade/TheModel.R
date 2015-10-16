@@ -37,18 +37,17 @@ ComplexCascade <- function(t, y, parms) {
 
 
     dNewInf <- Beta * (((y[1] + y[5] + y[9] + y[13] + y[17] + y[25]) * 1.35) + ((y[2] + y[6] + y[10] + y[14] + y[18] + y[26]) * 1) + ((y[3] + y[7] + y[11] + y[15] + y[19] + y[27]) * 1.64) + ((y[4] + y[8] + y[12] + y[16] + y[20] + y[28]) * 5.17) + ((y[21] + y[22] + y[23] + y[24]) * 0.1))
-
     dHivMortality <- parms[15] * (y[1] + y[5] + y[9] + y[13] + y[17] + y[25]) + parms[16] * (y[2] + y[6] + y[10] + y[14] + y[18] + y[26]) + parms[17] * (y[3] + y[7] + y[11] + y[15] + y[19] + y[27]) + parms[18] * (y[4] + y[8] + y[12] + y[16] + y[20] + y[28]) + parms[19] * y[21] + parms[20] * y[22] + parms[21] * y[23] + parms[22] * y[24]
-
     dNaturalMortality <- parms[23] * (y[1] + y[2] + y[3] + y[4] + y[5] + y[6] + y[7] + y[8] + y[9] + y[10] + y[11] + y[12] + y[13] + y[14] + y[15] + y[16] + y[17] + y[18] + y[19] + y[20] + y[21] + y[22] + y[23] + y[24] + y[25] + y[26] + y[27] + y[28])
 
+    # Transition Costs
     dDx_Cost <- (parms[4] * (y[1] + y[2] + y[3] + y[4])) * parms[24]
-    
     dCare_Cost <- (parms[5] * (y[5] + y[6] + y[7] + y[8])) * parms[25]
-    
-    dTx_Cost <- (parms[7] * (y[9] + y[10] + y[11] + y[12])) * parms[26]
-    
+    dTxInit_Cost <- ((parms[10] * (y[1] + y[2] + y[3] + y[4])) + (parms[9] * (y[5] + y[6] + y[7] + y[8])) + (parms[7] * (y[9] + y[10] + y[11] + y[12])) + (parms[8] * (y[13] + y[14] + y[15] + y[16]))) * parms[26]
     dRetention_Cost <- (parms[12] * (y[17] + y[18] + y[19] + y[20] + y[21] + y[22] + y[23] + y[24])) * parms[27]
+
+    # Annual Costs
+    dAnnualTxCost <- (y[17] + y[18] + y[19] + y[20] + y[21] + y[22] + y[23] + y[24]) * parms[28]
     
     list(c(
         dUnDx_500,
@@ -84,6 +83,7 @@ ComplexCascade <- function(t, y, parms) {
         dNaturalMortality,
         dDx_Cost,
         dCare_Cost,
-        dTx_Cost,
-        dRetention_Cost))
+        dTxInit_Cost,
+        dRetention_Cost,
+        dAnnualTxCost))
 }

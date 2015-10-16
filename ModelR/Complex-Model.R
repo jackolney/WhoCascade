@@ -58,7 +58,9 @@ out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
 out <- mutate(out,HivMortalityProp = HivMortality / N)
 out <- mutate(out,NewInfProp = NewInf / N)
 #############
-
+names(out)
+plot(out$TxInit_Cost)
+plot(out$AnnualTxCost)
 out$time
 length(out$Tx)
 (out$AnnualTxCost)

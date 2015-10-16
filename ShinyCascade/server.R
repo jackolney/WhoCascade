@@ -42,8 +42,9 @@ function(input, output, session) {
         Mu = 0.0374,
         Dx_unitCost = input$userDxUnitCost,
         Care_unitCost = input$userCxUnitCost,
-        Tx_unitCost = input$userTxUnitCost,
-        Retention_unitCost = input$userRxUnitCost
+        TxInit_unitCost = input$userTxInitUnitCost,
+        Retention_unitCost = input$userRxUnitCost,
+        AnnualTx_unitCost = input$userAnnualTxUnitCost
     )})
 
     output$parameterTable <- renderTable({
@@ -93,16 +94,19 @@ function(input, output, session) {
         Ltfu_200350 = (input$userLtfu) * 0.2401,
         Ltfu_200 = (input$userLtfu) * 0.0033,
 
+        # Keeping track
         NewInf = 0,
-
         HivMortality = 0,
-
         NaturalMortality = 0,
 
+        # Transition costs
         Dx_Cost = 0,
         Care_Cost = 0,
-        Tx_Cost = 0,
-        Retention_Cost = 0
+        TxInit_Cost = 0,
+        Retention_Cost = 0,
+
+        # Annual costs
+        AnnualTxCost = 0
     )})
 
     observeEvent(input$demoInput, {
@@ -177,7 +181,7 @@ function(input, output, session) {
         theOut <- mutate(theOut,NaturalMortalityProp = NaturalMortality / N)
         theOut <- mutate(theOut,HivMortalityProp = HivMortality / N)
         theOut <- mutate(theOut,NewInfProp = NewInf / N)
-        theOut <- mutate(theOut,TotalCost = Dx_Cost + Care_Cost + Tx_Cost + Retention_Cost)
+        theOut <- mutate(theOut,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTxCost)
 
         return(theOut)
     })
@@ -592,13 +596,14 @@ function(input, output, session) {
         out <- out()
         theDx_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Dx_Cost)),0))
         theCare_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Care_Cost)),0))
-        theTx_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Tx_Cost)),0))
+        theTxInit_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(TxInit_Cost)),0))
+        theAnnualTx_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(AnnualTxCost)),0))
         theRetention_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Retention_Cost)),0))
-        Cost <- c(theDx_Cost,theCare_Cost,theTx_Cost,theRetention_Cost)
-        Category <- c("Testing costs","Care costs","Treatment costs","Retention costs")
+        Cost <- c(theDx_Cost,theCare_Cost,theTxInit_Cost,theAnnualTx_Cost,theRetention_Cost)
+        Category <- c("Testing costs","Care costs","Treatment Initiation","Annual Treatment","Retention costs")
         CostTable <- data.frame(Category,Cost)
         levels(CostTable$Category)
-        CostTable$Category <- factor(CostTable$Category, levels=c("Testing costs","Care costs","Treatment costs","Retention costs"))
+        CostTable$Category <- factor(CostTable$Category, levels=c("Testing costs","Care costs","Treatment Initiation","Annual Treatment","Retention costs"))
         return(CostTable)
     })
 
@@ -606,12 +611,13 @@ function(input, output, session) {
         theP <- Parameters()
         Dx_unitCost <- dollar(as.double(theP["Dx_unitCost"]))
         Care_unitCost <- dollar(as.double(theP["Care_unitCost"]))
-        Tx_unitCost <- dollar(as.double(theP["Tx_unitCost"]))
+        TxInit_unitCost <- dollar(as.double(theP["TxInit_unitCost"]))
+        AnnualTx_unitCost <- dollar(as.double(theP["AnnualTx_unitCost"]))
         Retention_unitCost <- dollar(as.double(theP["Retention_unitCost"]))
-        Cost <- c(Dx_unitCost, Care_unitCost, Tx_unitCost, Retention_unitCost)
-        Unit <- c("HIV-testing","Care","Treatment","Retention")
+        Cost <- c(Dx_unitCost,Care_unitCost,TxInit_unitCost,AnnualTx_unitCost,Retention_unitCost)
+        Unit <- c("HIV-testing","Care","Treatment Initiation","Annual Treatment","Retention")
         UnitCostTable <- data.frame(Unit,Cost)
-        UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-testing","Care","Treatment","Retention"))
+        UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-testing","Care","Treatment Initiation","Annual Treatment","Retention"))
         return(UnitCostTable)
     })
 
