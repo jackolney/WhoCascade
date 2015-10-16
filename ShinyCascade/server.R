@@ -156,7 +156,7 @@ function(input, output, session) {
         if(input$incidenceInput == TRUE) {
             theInitial <- Initial()
             Numerator <- NewInfections
-            Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
+            Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[17] + theInitial[25]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[18] + theInitial[26]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[19] + theInitial[27]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[20] + theInitial[28]) * 5.17) + ((theInitial[21] + theInitial[22] + theInitial[23] + theInitial[24]) * 0.1)))
             # print(paste("Numerator =",Numerator))
             # print(paste("Denominator =",Denominator))
             Beta <<- Numerator / Denominator
@@ -641,7 +641,7 @@ function(input, output, session) {
             if(input$incidenceInput == TRUE) {
                 theInitial <- Initial()
                 Numerator <- NewInfections
-                Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[21]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[22]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[23]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[24]) * 5.17) + ((theInitial[17] + theInitial[18] + theInitial[19] + theInitial[20]) * 0.1)))
+                Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[17] + theInitial[25]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[18] + theInitial[26]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[19] + theInitial[27]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[20] + theInitial[28]) * 5.17) + ((theInitial[21] + theInitial[22] + theInitial[23] + theInitial[24]) * 0.1)))
                 Beta <<- Numerator / Denominator
             } else {
                 Beta <<- 0
