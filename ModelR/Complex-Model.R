@@ -16,7 +16,7 @@ require(gridExtra)
 require(googlesheets)
 
 # Set time step
-Time <- seq(0,5,0.02)
+# Time <- seq(0,5,0.02)
 
 source("TheModel.R")
 source("Parameters.R")
@@ -38,16 +38,14 @@ source("Initial.R")
 
 
 # Beta <- as.double(theIncidence$NewInfections2014[12] / (((Initial[1] + Initial[5] + Initial[9] + Initial[13] + Initial[21]) * 1.35) + ((Initial[2] + Initial[6] + Initial[10] + Initial[14] + Initial[22]) * 1) + ((Initial[3] + Initial[7] + Initial[11] + Initial[15] + Initial[23]) * 1.64) + ((Initial[4] + Initial[8] + Initial[12] + Initial[16] + Initial[24]) * 5.17) + ((Initial[17] + Initial[18] + Initial[19] + Initial[20]) * 0.1)))
-# Beta <- 0.0275837
-Beta <- 0
+Beta <- 0.0275837
+# Beta <- 0
 
 #############
 # THE MODEL #
+Time <- seq(0,5,0.02)
 out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
 out <- tbl_df(data.frame(out))
-out
-out$UnDx_500
-# plot(out$N)
 out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
 out <- mutate(out,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
 out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
@@ -62,6 +60,8 @@ out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
 out <- mutate(out,HivMortalityProp = HivMortality / N)
 out <- mutate(out,NewInfProp = NewInf / N)
 #############
+
+plot(out$N,type='l',lwd=2)
 # names(out)
 # plot(out$TxInit_Cost)
 # plot(out$AnnualTxCost)
@@ -131,9 +131,8 @@ graphics.off()
 quartz.options(w=8,h=5)
 grid.arrange(a,b,c,d,e,f,g,h,i,j,k,l,nrow=4,ncol=3)
 
-ggplot(out,aes(x=time,y=PreLtfu)) +
-geom_line() +
-theme_classic()
+# Survival plot
+
 
 #################
 # 90-90-90 Test #
