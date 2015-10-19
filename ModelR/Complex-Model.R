@@ -38,40 +38,44 @@ source("Initial.R")
 
 
 # Beta <- as.double(theIncidence$NewInfections2014[12] / (((Initial[1] + Initial[5] + Initial[9] + Initial[13] + Initial[21]) * 1.35) + ((Initial[2] + Initial[6] + Initial[10] + Initial[14] + Initial[22]) * 1) + ((Initial[3] + Initial[7] + Initial[11] + Initial[15] + Initial[23]) * 1.64) + ((Initial[4] + Initial[8] + Initial[12] + Initial[16] + Initial[24]) * 5.17) + ((Initial[17] + Initial[18] + Initial[19] + Initial[20]) * 0.1)))
-Beta <- 0.0275837
-# Beta <- 0
+# Beta <- 0.0275837
+Beta <- 0
 
 #############
 # THE MODEL #
 out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
 out <- tbl_df(data.frame(out))
-out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+out
+out$UnDx_500
+# plot(out$N)
+out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+out <- mutate(out,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
 out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
 out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
 out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
 out <- mutate(out,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200) / N)
-out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
+out <- mutate(out,Tx = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200) / N)
+out <- mutate(out,Adherence = (Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
 out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
 out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
 out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
 out <- mutate(out,HivMortalityProp = HivMortality / N)
 out <- mutate(out,NewInfProp = NewInf / N)
 #############
-names(out)
-plot(out$TxInit_Cost)
-plot(out$AnnualTxCost)
-out$time
-length(out$Tx)
-(out$AnnualTxCost)
+# names(out)
+# plot(out$TxInit_Cost)
+# plot(out$AnnualTxCost)
+# out$time
+# length(out$Tx)
+# (out$AnnualTxCost)
 
-test <- rowSums(select(out,c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))
+# test <- rowSums(select(out,c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))
 
-plot(out$time,out$AnnualTxCost,type='l',lwd=2)
+# plot(out$time,out$AnnualTxCost,type='l',lwd=2)
 
-1/0.02
-# So if an annual cost of $300 then take 1/50 of it
-300 / 50
+# 1/0.02
+# # So if an annual cost of $300 then take 1/50 of it
+# 300 / 50
 
 
 
@@ -95,26 +99,37 @@ e <- ggplot(out,aes(x=time,y=Tx)) +
 geom_line() +
 theme_classic()
 
-f <- ggplot(out,aes(x=time,y=Vs)) +
+f <- ggplot(out,aes(x=time,y=Adherence)) +
 geom_line() +
 theme_classic()
 
-g <- ggplot(out,aes(x=time,y=Ltfu)) +
+g <- ggplot(out,aes(x=time,y=Vs)) +
 geom_line() +
 theme_classic()
 
-h <- ggplot(out,aes(x=time,y=N)) +
+h <- ggplot(out,aes(x=time,y=Ltfu)) +
 geom_line() +
 theme_classic()
 
-i <- ggplot(out,aes(x=time,y=HivMortalityProp)) +
+i <- ggplot(out,aes(x=time,y=N)) +
+geom_line() +
+theme_classic()
+
+j <- ggplot(out,aes(x=time,y=NewInf)) +
+geom_line() +
+theme_classic()
+
+k <- ggplot(out,aes(x=time,y=HivMortalityProp)) +
+geom_line() +
+theme_classic()
+
+l <- ggplot(out,aes(x=time,y=NaturalMortalityProp)) +
 geom_line() +
 theme_classic()
 
 graphics.off()
 quartz.options(w=8,h=5)
-
-grid.arrange(a,b,c,d,e,f,g,h,i,nrow=3,ncol=3)
+grid.arrange(a,b,c,d,e,f,g,h,i,j,k,l,nrow=4,ncol=3)
 
 ggplot(out,aes(x=time,y=PreLtfu)) +
 geom_line() +

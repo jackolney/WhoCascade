@@ -1,53 +1,58 @@
 ComplexCascade <- function(t, y, parms) {
 
-    dUnDx_500 <- 0.5251 * (Beta * (((y[1] + y[5] + y[9] + y[13] + y[17] + y[25]) * 1.35) + ((y[2] + y[6] + y[10] + y[14] + y[18] + y[26]) * 1) + ((y[3] + y[7] + y[11] + y[15] + y[19] + y[27]) * 1.64) + ((y[4] + y[8] + y[12] + y[16] + y[20] + y[28]) * 5.17) + ((y[21] + y[22] + y[23] + y[24]) * 0.1))) - (parms[1] + parms[10] + parms[4] + parms[15] + parms[23]) * y[1]
-    dUnDx_350500 <- 0.2315 * (Beta * (((y[1] + y[5] + y[9] + y[13] + y[17] + y[25]) * 1.35) + ((y[2] + y[6] + y[10] + y[14] + y[18] + y[26]) * 1) + ((y[3] + y[7] + y[11] + y[15] + y[19] + y[27]) * 1.64) + ((y[4] + y[8] + y[12] + y[16] + y[20] + y[28]) * 5.17) + ((y[21] + y[22] + y[23] + y[24]) * 0.1))) + parms[1] * y[1] - (parms[2] + parms[10] + parms[4] + parms[16] + parms[23]) * y[2]
-    dUnDx_200350 <- 0.2401 * (Beta * (((y[1] + y[5] + y[9] + y[13] + y[17] + y[25]) * 1.35) + ((y[2] + y[6] + y[10] + y[14] + y[18] + y[26]) * 1) + ((y[3] + y[7] + y[11] + y[15] + y[19] + y[27]) * 1.64) + ((y[4] + y[8] + y[12] + y[16] + y[20] + y[28]) * 5.17) + ((y[21] + y[22] + y[23] + y[24]) * 0.1))) + parms[2] * y[2] - (parms[3] + parms[10] + parms[4] + parms[17] + parms[23]) * y[3]
-    dUnDx_200 <- 0.0033 * (Beta * (((y[1] + y[5] + y[9] + y[13] + y[17] + y[25]) * 1.35) + ((y[2] + y[6] + y[10] + y[14] + y[18] + y[26]) * 1) + ((y[3] + y[7] + y[11] + y[15] + y[19] + y[27]) * 1.64) + ((y[4] + y[8] + y[12] + y[16] + y[20] + y[28]) * 5.17) + ((y[21] + y[22] + y[23] + y[24]) * 0.1))) + parms[3] * y[3] - (parms[10] + parms[4] + parms[18] + parms[23]) * y[4]
+    dUnDx_500 <- 0.5251 * (Beta * (((y[["UnDx_500"]] + y[["Dx_500"]] + y[["Care_500"]] + y[["PreLtfu_500"]] + y[["Tx_Na_500"]] + y[["Tx_A_500"]] + y[["Ltfu_500"]]) * 1.35) + ((y[["UnDx_350500"]] + y[["Dx_350500"]] + y[["Care_350500"]] + y[["PreLtfu_350500"]] + y[["Tx_Na_350500"]] + y[["Tx_A_350500"]] + y[["Ltfu_350500"]]) * 1) + ((y[["UnDx_200350"]] + y[["Dx_200350"]] + y[["Care_200350"]] + y[["PreLtfu_200350"]] + y[["Tx_Na_200350"]] + y[["Tx_A_200350"]] + y[["Ltfu_200350"]]) * 1.64) + ((y[["UnDx_200"]] + y[["Dx_200"]] + y[["Care_200"]] + y[["PreLtfu_200"]] + y[["Tx_Na_200"]] + y[["Tx_A_200"]] + y[["Ltfu_200"]]) * 5.17) + ((y[["Vs_500"]] + y[["Vs_350500"]] + y[["Vs_200350"]] + y[["Vs_200"]]) * 0.1))) - (parms[["Nu_1"]] + parms[["Rho"]] + (parms[["p"]] * parms[["Psi"]]) + ((1-parms[["p"]]) * parms[["Psi"]]) + parms[["Alpha_1"]] + parms[["Mu"]]) * y[["UnDx_500"]]
+    dUnDx_350500 <- 0.2315 * (Beta * (((y[["UnDx_500"]] + y[["Dx_500"]] + y[["Care_500"]] + y[["PreLtfu_500"]] + y[["Tx_Na_500"]] + y[["Tx_A_500"]] + y[["Ltfu_500"]]) * 1.35) + ((y[["UnDx_350500"]] + y[["Dx_350500"]] + y[["Care_350500"]] + y[["PreLtfu_350500"]] + y[["Tx_Na_350500"]] + y[["Tx_A_350500"]] + y[["Ltfu_350500"]]) * 1) + ((y[["UnDx_200350"]] + y[["Dx_200350"]] + y[["Care_200350"]] + y[["PreLtfu_200350"]] + y[["Tx_Na_200350"]] + y[["Tx_A_200350"]] + y[["Ltfu_200350"]]) * 1.64) + ((y[["UnDx_200"]] + y[["Dx_200"]] + y[["Care_200"]] + y[["PreLtfu_200"]] + y[["Tx_Na_200"]] + y[["Tx_A_200"]] + y[["Ltfu_200"]]) * 5.17) + ((y[["Vs_500"]] + y[["Vs_350500"]] + y[["Vs_200350"]] + y[["Vs_200"]]) * 0.1))) + parms[["Nu_1"]] * y[["UnDx_500"]] - (parms[["Nu_2"]] + parms[["Rho"]] + (parms[["p"]] * parms[["Psi"]]) + ((1-parms[["p"]]) * parms[["Psi"]]) + parms[["Alpha_2"]] + parms[["Mu"]]) * y[["UnDx_350500"]]
+    dUnDx_200350 <- 0.2401 * (Beta * (((y[["UnDx_500"]] + y[["Dx_500"]] + y[["Care_500"]] + y[["PreLtfu_500"]] + y[["Tx_Na_500"]] + y[["Tx_A_500"]] + y[["Ltfu_500"]]) * 1.35) + ((y[["UnDx_350500"]] + y[["Dx_350500"]] + y[["Care_350500"]] + y[["PreLtfu_350500"]] + y[["Tx_Na_350500"]] + y[["Tx_A_350500"]] + y[["Ltfu_350500"]]) * 1) + ((y[["UnDx_200350"]] + y[["Dx_200350"]] + y[["Care_200350"]] + y[["PreLtfu_200350"]] + y[["Tx_Na_200350"]] + y[["Tx_A_200350"]] + y[["Ltfu_200350"]]) * 1.64) + ((y[["UnDx_200"]] + y[["Dx_200"]] + y[["Care_200"]] + y[["PreLtfu_200"]] + y[["Tx_Na_200"]] + y[["Tx_A_200"]] + y[["Ltfu_200"]]) * 5.17) + ((y[["Vs_500"]] + y[["Vs_350500"]] + y[["Vs_200350"]] + y[["Vs_200"]]) * 0.1))) + parms[["Nu_2"]] * y[["UnDx_350500"]] - (parms[["Nu_3"]] + parms[["Rho"]] + (parms[["p"]] * parms[["Psi"]]) + ((1-parms[["p"]]) * parms[["Psi"]]) + parms[["Alpha_3"]] + parms[["Mu"]]) * y[["UnDx_200350"]]
+    dUnDx_200 <- 0.0033 * (Beta * (((y[["UnDx_500"]] + y[["Dx_500"]] + y[["Care_500"]] + y[["PreLtfu_500"]] + y[["Tx_Na_500"]] + y[["Tx_A_500"]] + y[["Ltfu_500"]]) * 1.35) + ((y[["UnDx_350500"]] + y[["Dx_350500"]] + y[["Care_350500"]] + y[["PreLtfu_350500"]] + y[["Tx_Na_350500"]] + y[["Tx_A_350500"]] + y[["Ltfu_350500"]]) * 1) + ((y[["UnDx_200350"]] + y[["Dx_200350"]] + y[["Care_200350"]] + y[["PreLtfu_200350"]] + y[["Tx_Na_200350"]] + y[["Tx_A_200350"]] + y[["Ltfu_200350"]]) * 1.64) + ((y[["UnDx_200"]] + y[["Dx_200"]] + y[["Care_200"]] + y[["PreLtfu_200"]] + y[["Tx_Na_200"]] + y[["Tx_A_200"]] + y[["Ltfu_200"]]) * 5.17) + ((y[["Vs_500"]] + y[["Vs_350500"]] + y[["Vs_200350"]] + y[["Vs_200"]]) * 0.1))) + parms[["Nu_3"]] * y[["UnDx_200350"]] - (parms[["Rho"]] + (parms[["p"]] * parms[["Psi"]]) + ((1-parms[["p"]]) * parms[["Psi"]]) + parms[["Alpha_4"]] + parms[["Mu"]]) * y[["UnDx_200"]]
 
-    dDx_500 <- + parms[4] * y[1] - (parms[1] + parms[9] + parms[5] + parms[15] + parms[23]) * y[5]
-    dDx_350500 <- + parms[4] * y[2] + parms[1] * y[5] - (parms[2] + parms[9] + parms[5] + parms[16] + parms[23]) * y[6]
-    dDx_200350 <- + parms[4] * y[3] + parms[2] * y[6] - (parms[3] + parms[9] + parms[5] + parms[17] + parms[23]) * y[7]
-    dDx_200 <- + parms[4] * y[4] + parms[3] * y[7] - (parms[9] + parms[5] + parms[18] + parms[23]) * y[8]
+    dDx_500 <- + parms[["Rho"]] * y[["UnDx_500"]] - (parms[["Nu_1"]] + parms[["Epsilon"]] + (parms[["p"]] * parms[["Phi"]]) + ((1-parms[["p"]]) * parms[["Phi"]]) + parms[["Alpha_1"]] + parms[["Mu"]]) * y[["Dx_500"]]
+    dDx_350500 <- + parms[["Rho"]] * y[["UnDx_350500"]] + parms[["Nu_1"]] * y[["Dx_500"]] - (parms[["Nu_2"]] + parms[["Epsilon"]] + (parms[["p"]] * parms[["Phi"]]) + ((1-parms[["p"]]) * parms[["Phi"]]) + parms[["Alpha_2"]] + parms[["Mu"]]) * y[["Dx_350500"]]
+    dDx_200350 <- + parms[["Rho"]] * y[["UnDx_200350"]] + parms[["Nu_2"]] * y[["Dx_350500"]] - (parms[["Nu_3"]] + parms[["Epsilon"]] + (parms[["p"]] * parms[["Phi"]]) + ((1-parms[["p"]]) * parms[["Phi"]]) + parms[["Alpha_3"]] + parms[["Mu"]]) * y[["Dx_200350"]]
+    dDx_200 <- + parms[["Rho"]] * y[["UnDx_200"]] + parms[["Nu_3"]] * y[["Dx_200350"]] - (parms[["Epsilon"]] + (parms[["p"]] * parms[["Phi"]]) + ((1-parms[["p"]]) * parms[["Phi"]]) + parms[["Alpha_4"]] + parms[["Mu"]]) * y[["Dx_200"]]
 
-    dCare_500 <- + parms[5] * y[5] - (parms[1] + parms[7] + parms[6] + parms[15] + parms[23]) * y[9]
-    dCare_350500 <- + parms[5] * y[6] + parms[1] * y[9] - (parms[2] + parms[7] + parms[6] + parms[16] + parms[23]) * y[10]
-    dCare_200350 <- + parms[5] * y[7] + parms[2] * y[10] - (parms[3] + parms[7] + parms[6] + parms[17] + parms[23]) * y[11]
-    dCare_200 <- + parms[5] * y[8] + parms[3] * y[11] - (parms[7] + parms[6] + parms[18] + parms[23]) * y[12]
+    dCare_500 <- + parms[["Epsilon"]] * y[["Dx_500"]] - (parms[["Nu_1"]] + parms[["Kappa"]] + (parms[["p"]] * parms[["Gamma"]]) + ((1-parms[["p"]]) * parms[["Gamma"]]) + parms[["Alpha_1"]] + parms[["Mu"]]) * y[["Care_500"]]
+    dCare_350500 <- + parms[["Epsilon"]] * y[["Dx_350500"]] + parms[["Nu_1"]] * y[["Care_500"]] - (parms[["Nu_2"]] + parms[["Kappa"]] + (parms[["p"]] * parms[["Gamma"]]) + ((1-parms[["p"]]) * parms[["Gamma"]]) + parms[["Alpha_2"]] + parms[["Mu"]]) * y[["Care_350500"]]
+    dCare_200350 <- + parms[["Epsilon"]] * y[["Dx_200350"]] + parms[["Nu_2"]] * y[["Care_350500"]] - (parms[["Nu_3"]] + parms[["Kappa"]] + (parms[["p"]] * parms[["Gamma"]]) + ((1-parms[["p"]]) * parms[["Gamma"]]) + parms[["Alpha_3"]] + parms[["Mu"]]) * y[["Care_200350"]]
+    dCare_200 <- + parms[["Epsilon"]] * y[["Dx_200"]] + parms[["Nu_3"]] * y[["Care_200350"]] - (parms[["Kappa"]] + (parms[["p"]] * parms[["Gamma"]]) + ((1-parms[["p"]]) * parms[["Gamma"]]) + parms[["Alpha_4"]] + parms[["Mu"]]) * y[["Care_200"]]
 
-    dPreLtfu_500 <- + parms[6] * y[9] - (parms[1] + parms[8] + parms[15] + parms[23]) * y[13]
-    dPreLtfu_350500 <- + parms[6] * y[10] + parms[1] * y[13] - (parms[2] + parms[8] + parms[16] + parms[23]) * y[14]
-    dPreLtfu_200350 <- + parms[6] * y[11] + parms[2] * y[14] - (parms[3] + parms[8] + parms[17] + parms[23]) * y[15]
-    dPreLtfu_200 <- + parms[6] * y[12] + parms[3] * y[15] - (parms[8] + parms[18] + parms[23]) * y[16]
+    dPreLtfu_500 <- + parms[["Kappa"]] * y[["Care_500"]] - (parms[["Nu_1"]] + (parms[["p"]] * parms[["Eta"]]) + ((1-parms[["p"]]) * parms[["Eta"]]) + parms[["Alpha_1"]] + parms[["Mu"]]) * y[["PreLtfu_500"]]
+    dPreLtfu_350500 <- + parms[["Kappa"]] * y[["Care_350500"]] + parms[["Nu_1"]] * y[["PreLtfu_500"]] - (parms[["Nu_2"]] + (parms[["p"]] * parms[["Eta"]]) + ((1-parms[["p"]]) * parms[["Eta"]]) + parms[["Alpha_2"]] + parms[["Mu"]]) * y[["PreLtfu_350500"]]
+    dPreLtfu_200350 <- + parms[["Kappa"]] * y[["Care_200350"]] + parms[["Nu_2"]] * y[["PreLtfu_350500"]] - (parms[["Nu_3"]] + (parms[["p"]] * parms[["Eta"]]) + ((1-parms[["p"]]) * parms[["Eta"]]) + parms[["Alpha_3"]] + parms[["Mu"]]) * y[["PreLtfu_200350"]]
+    dPreLtfu_200 <- + parms[["Kappa"]] * y[["Care_200"]] + parms[["Nu_3"]] * y[["PreLtfu_200350"]] - ((parms[["p"]] * parms[["Eta"]]) + ((1-parms[["p"]]) * parms[["Eta"]]) + parms[["Alpha_4"]] + parms[["Mu"]]) * y[["PreLtfu_200"]]
 
-    dTx_500 <- + parms[8] * y[13] + parms[7] * y[9] + parms[9] * y[5] + parms[10] * y[1] - (parms[11] + parms[12] + parms[15] + parms[23]) * y[17]
-    dTx_350500 <- + parms[8] * y[14] + parms[7] * y[10] + parms[9] * y[6] + parms[10] * y[2] + parms[13] * y[19] - (parms[11] + parms[12] + parms[16] + parms[23]) * y[18]
-    dTx_200350 <- + parms[8] * y[15] + parms[7] * y[11] + parms[9] * y[7] + parms[10] * y[3] + parms[14] * y[20] - (parms[13] + parms[11] + parms[12] + parms[17] + parms[23]) * y[19]
-    dTx_200 <- + parms[8] * y[16] + parms[7] * y[12] + parms[9] * y[8] + parms[10] * y[4] - (parms[14] + parms[11] + parms[12] + parms[18] + parms[23]) * y[20]
+    dTx_Na_500 <- + ((1-parms[["p"]]) * parms[["Eta"]]) * y[["PreLtfu_500"]] + ((1-parms[["p"]]) * parms[["Gamma"]]) * y[["Care_500"]] + ((1-parms[["p"]]) * parms[["Phi"]]) * y[["Dx_500"]] + ((1-parms[["p"]]) * parms[["Psi"]]) * y[["UnDx_500"]] + parms[["Sigma_b"]] * y[["Tx_A_500"]] - (parms[["Nu_1"]] + parms[["Omega"]] + parms[["Sigma_a"]] + parms[["Alpha_1"]] + parms[["Mu"]]) * y[["Tx_Na_500"]]
+    dTx_Na_350500 <- + ((1-parms[["p"]]) * parms[["Eta"]]) * y[["PreLtfu_350500"]] + ((1-parms[["p"]]) * parms[["Gamma"]]) * y[["Care_350500"]] + ((1-parms[["p"]]) * parms[["Phi"]]) * y[["Dx_350500"]] + ((1-parms[["p"]]) * parms[["Psi"]]) * y[["UnDx_350500"]] + parms[["Sigma_b"]] * y[["Tx_A_350500"]] + parms[["Nu_1"]] * y[["Tx_Na_500"]] - (parms[["Nu_2"]] + parms[["Omega"]] + parms[["Sigma_a"]] + parms[["Alpha_2"]] + parms[["Mu"]]) * y[["Tx_Na_350500"]]
+    dTx_Na_200350 <- + ((1-parms[["p"]]) * parms[["Eta"]]) * y[["PreLtfu_200350"]] + ((1-parms[["p"]]) * parms[["Gamma"]]) * y[["Care_200350"]] + ((1-parms[["p"]]) * parms[["Phi"]]) * y[["Dx_200350"]] + ((1-parms[["p"]]) * parms[["Psi"]]) * y[["UnDx_200350"]] + parms[["Sigma_b"]] * y[["Tx_A_200350"]] + parms[["Nu_2"]] * y[["Tx_Na_350500"]] - (parms[["Nu_3"]] + parms[["Omega"]] + parms[["Sigma_a"]] + parms[["Alpha_3"]] + parms[["Mu"]]) * y[["Tx_Na_200350"]]
+    dTx_Na_200 <- + ((1-parms[["p"]]) * parms[["Eta"]]) * y[["PreLtfu_200"]] + ((1-parms[["p"]]) * parms[["Gamma"]]) * y[["Care_200"]] + ((1-parms[["p"]]) * parms[["Phi"]]) * y[["Dx_200"]] + ((1-parms[["p"]]) * parms[["Psi"]]) * y[["UnDx_200"]] + parms[["Sigma_b"]] * y[["Tx_A_200"]] + parms[["Nu_3"]] * y[["Tx_Na_200350"]] - (parms[["Omega"]] + parms[["Sigma_a"]] + parms[["Alpha_4"]] + parms[["Mu"]]) * y[["Tx_Na_200"]]
 
-    dVs_500 <- + parms[11] * y[17] - (parms[12] + parms[19] + parms[23]) * y[21]
-    dVs_350500 <- + parms[11] * y[18] + parms[13] * y[23] - (parms[12] + parms[20] + parms[23]) * y[22]
-    dVs_200350 <- + parms[11] * y[19] + parms[14] * y[24] - (parms[13] + parms[12] + parms[21] + parms[23]) * y[23]
-    dVs_200 <- + parms[11] * y[20] - (parms[14] + parms[12] + parms[22] + parms[23]) * y[24]
+    dTx_A_500 <- + parms[["Sigma_a"]] * y[["Tx_Na_500"]] + (parms[["p"]] * parms[["Eta"]]) * y[["PreLtfu_500"]] + (parms[["p"]] * parms[["Gamma"]]) * y[["Care_500"]] + (parms[["p"]] * parms[["Phi"]]) * y[["Dx_500"]] + (parms[["p"]] * parms[["Psi"]]) * y[["UnDx_500"]] - (parms[["Sigma_b"]] + parms[["Omega"]] + parms[["Theta"]] + parms[["Alpha_1"]] + parms[["Mu"]]) * y[["Tx_A_500"]]
+    dTx_A_350500 <- + parms[["Sigma_a"]] * y[["Tx_Na_350500"]] + (parms[["p"]] * parms[["Eta"]]) * y[["PreLtfu_350500"]] + (parms[["p"]] * parms[["Gamma"]]) * y[["Care_350500"]] + (parms[["p"]] * parms[["Phi"]]) * y[["Dx_350500"]] + (parms[["p"]] * parms[["Psi"]]) * y[["UnDx_350500"]] + parms[["Delta_1"]] * y[["Tx_A_200350"]] - (parms[["Sigma_b"]] + parms[["Omega"]] + parms[["Theta"]] + parms[["Alpha_2"]] + parms[["Mu"]]) * y[["Tx_A_350500"]]
+    dTx_A_200350 <- + parms[["Sigma_a"]] * y[["Tx_Na_200350"]] + (parms[["p"]] * parms[["Eta"]]) * y[["PreLtfu_200350"]] + (parms[["p"]] * parms[["Gamma"]]) * y[["Care_200350"]] + (parms[["p"]] * parms[["Phi"]]) * y[["Dx_200350"]] + (parms[["p"]] * parms[["Psi"]]) * y[["UnDx_200350"]] + parms[["Delta_2"]] * y[["Tx_A_200"]] - (parms[["Delta_1"]] + parms[["Sigma_b"]] + parms[["Omega"]] + parms[["Theta"]] + parms[["Alpha_3"]] + parms[["Mu"]]) * y[["Tx_A_200350"]]
+    dTx_A_200 <- + parms[["Sigma_a"]] * y[["Tx_Na_200"]] + (parms[["p"]] * parms[["Eta"]]) * y[["PreLtfu_200"]] + (parms[["p"]] * parms[["Gamma"]]) * y[["Care_200"]] + (parms[["p"]] * parms[["Phi"]]) * y[["Dx_200"]] + (parms[["p"]] * parms[["Psi"]]) * y[["UnDx_200"]] - (parms[["Delta_2"]] + parms[["Sigma_b"]] + parms[["Omega"]] + parms[["Theta"]] + parms[["Alpha_4"]] + parms[["Mu"]]) * y[["Tx_A_200"]]
 
-    dLtfu_500 <- + parms[12] * (y[21] + y[17]) - (parms[1] + parms[15] + parms[23]) * y[25]
-    dLtfu_350500 <- + parms[12] * (y[22] + y[18]) + parms[1] * y[25] - (parms[2] + parms[16] + parms[23]) * y[26]
-    dLtfu_200350 <- + parms[12] * (y[23] + y[19]) + parms[2] * y[26] - (parms[3] + parms[17] + parms[23]) * y[27]
-    dLtfu_200 <- + parms[12] * (y[24] + y[20]) + parms[3] * y[27] - (parms[18] + parms[23]) * y[28]
+    dVs_500 <- + parms[["Theta"]] * y[["Tx_A_500"]] - (parms[["Omega"]] + parms[["Tau_1"]] + parms[["Mu"]]) * y[["Vs_500"]]
+    dVs_350500 <- + parms[["Theta"]] * y[["Tx_A_350500"]] + parms[["Delta_1"]] * y[["Vs_200350"]] - (parms[["Omega"]] + parms[["Tau_2"]] + parms[["Mu"]]) * y[["Vs_350500"]]
+    dVs_200350 <- + parms[["Theta"]] * y[["Tx_A_200350"]] + parms[["Delta_2"]] * y[["Vs_200"]] - (parms[["Delta_1"]] + parms[["Omega"]] + parms[["Tau_3"]] + parms[["Mu"]]) * y[["Vs_200350"]]
+    dVs_200 <- + parms[["Theta"]] * y[["Tx_A_200"]] - (parms[["Delta_2"]] + parms[["Omega"]] + parms[["Tau_4"]] + parms[["Mu"]]) * y[["Vs_200"]]
+
+    dLtfu_500 <- + parms[["Omega"]] * (y[["Tx_Na_500"]] + y[["Tx_A_500"]] + y[["Vs_500"]]) - (parms[["Nu_1"]] + parms[["Alpha_1"]] + parms[["Mu"]]) * y[["Ltfu_500"]]
+    dLtfu_350500 <- + parms[["Omega"]] * (y[["Tx_Na_350500"]] + y[["Tx_A_350500"]] + y[["Vs_350500"]]) + parms[["Nu_1"]] * y[["Ltfu_500"]] - (parms[["Nu_2"]] + parms[["Alpha_2"]] + parms[["Mu"]]) * y[["Ltfu_350500"]]
+    dLtfu_200350 <- + parms[["Omega"]] * (y[["Tx_Na_200350"]] + y[["Tx_A_200350"]] + y[["Vs_200350"]]) + parms[["Nu_2"]] * y[["Ltfu_350500"]] - (parms[["Nu_3"]] + parms[["Alpha_3"]] + parms[["Mu"]]) * y[["Ltfu_200350"]]
+    dLtfu_200 <- + parms[["Omega"]] * (y[["Tx_Na_200"]] + y[["Tx_A_200"]] + y[["Vs_200"]]) + parms[["Nu_3"]] * y[["Ltfu_200350"]] - (parms[["Alpha_4"]] + parms[["Mu"]]) * y[["Ltfu_200"]]
 
 
-    dNewInf <- Beta * (((y[1] + y[5] + y[9] + y[13] + y[17] + y[25]) * 1.35) + ((y[2] + y[6] + y[10] + y[14] + y[18] + y[26]) * 1) + ((y[3] + y[7] + y[11] + y[15] + y[19] + y[27]) * 1.64) + ((y[4] + y[8] + y[12] + y[16] + y[20] + y[28]) * 5.17) + ((y[21] + y[22] + y[23] + y[24]) * 0.1))
-    dHivMortality <- parms[15] * (y[1] + y[5] + y[9] + y[13] + y[17] + y[25]) + parms[16] * (y[2] + y[6] + y[10] + y[14] + y[18] + y[26]) + parms[17] * (y[3] + y[7] + y[11] + y[15] + y[19] + y[27]) + parms[18] * (y[4] + y[8] + y[12] + y[16] + y[20] + y[28]) + parms[19] * y[21] + parms[20] * y[22] + parms[21] * y[23] + parms[22] * y[24]
-    dNaturalMortality <- parms[23] * (y[1] + y[2] + y[3] + y[4] + y[5] + y[6] + y[7] + y[8] + y[9] + y[10] + y[11] + y[12] + y[13] + y[14] + y[15] + y[16] + y[17] + y[18] + y[19] + y[20] + y[21] + y[22] + y[23] + y[24] + y[25] + y[26] + y[27] + y[28])
+    dNewInf <- Beta * (((y[["UnDx_500"]] + y[["Dx_500"]] + y[["Care_500"]] + y[["PreLtfu_500"]] + y[["Tx_Na_500"]] + y[["Tx_A_500"]] + y[["Ltfu_500"]]) * 1.35) + ((y[["UnDx_350500"]] + y[["Dx_350500"]] + y[["Care_350500"]] + y[["PreLtfu_350500"]] + y[["Tx_Na_350500"]] + y[["Tx_A_350500"]] + y[["Ltfu_350500"]]) * 1) + ((y[["UnDx_200350"]] + y[["Dx_200350"]] + y[["Care_200350"]] + y[["PreLtfu_200350"]] + y[["Tx_Na_200350"]] + y[["Tx_A_200350"]] + y[["Ltfu_200350"]]) * 1.64) + ((y[["UnDx_200"]] + y[["Dx_200"]] + y[["Care_200"]] + y[["PreLtfu_200"]] + y[["Tx_Na_200"]] + y[["Tx_A_200"]] + y[["Ltfu_200"]]) * 5.17) + ((y[["Vs_500"]] + y[["Vs_350500"]] + y[["Vs_200350"]] + y[["Vs_200"]]) * 0.1))
+    dHivMortality <- parms[["Alpha_1"]] * (y[["UnDx_500"]] + y[["Dx_500"]] + y[["Care_500"]] + y[["PreLtfu_500"]] + y[["Tx_Na_500"]] + y[["Tx_A_500"]]) + parms[["Alpha_2"]] * (y[["UnDx_350500"]] + y[["Dx_350500"]] + y[["Care_350500"]] + y[["PreLtfu_350500"]] + y[["Tx_Na_350500"]] + y[["Tx_A_350500"]]) + parms[["Alpha_3"]] * (y[["UnDx_200350"]] + y[["Dx_200350"]] + y[["Care_200350"]] + y[["PreLtfu_200350"]] + y[["Tx_Na_200350"]] + y[["Tx_A_200350"]]) + parms[["Alpha_4"]] * (y[["UnDx_200"]] + y[["Dx_200"]] + y[["Care_200"]] + y[["PreLtfu_200"]] + y[["Tx_Na_200"]] + y[["Tx_A_200"]]) + parms[["Tau_1"]] * y[["Vs_500"]] + parms[["Tau_2"]] * y[["Vs_350500"]] + parms[["Tau_3"]] * y[["Vs_200350"]] + parms[["Tau_4"]] * y[["Vs_200"]]
+    dNaturalMortality <- parms[["Mu"]] * (y[["UnDx_500"]] + y[["UnDx_350500"]] + y[["UnDx_200350"]] + y[["UnDx_200"]] + y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_200350"]] + y[["Dx_200"]] + y[["Care_500"]] + y[["Care_350500"]] + y[["Care_200350"]] + y[["Care_200"]] + y[["PreLtfu_500"]] + y[["PreLtfu_350500"]] + y[["PreLtfu_200350"]] + y[["PreLtfu_200"]] + y[["Tx_Na_500"]] + y[["Tx_Na_350500"]] + y[["Tx_Na_200350"]] + y[["Tx_Na_200"]] + y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_200350"]] + y[["Tx_A_200"]] + y[["Vs_500"]] + y[["Vs_350500"]] + y[["Vs_200350"]] + y[["Vs_200"]] + y[["Ltfu_500"]] + y[["Ltfu_350500"]] + y[["Ltfu_200350"]] + y[["Ltfu_200"]])
 
     # Transition Costs
-    dDx_Cost <- (parms[4] * (y[1] + y[2] + y[3] + y[4])) * parms[24]
-    dCare_Cost <- (parms[5] * (y[5] + y[6] + y[7] + y[8])) * parms[25]
-    dTxInit_Cost <- ((parms[10] * (y[1] + y[2] + y[3] + y[4])) + (parms[9] * (y[5] + y[6] + y[7] + y[8])) + (parms[7] * (y[9] + y[10] + y[11] + y[12])) + (parms[8] * (y[13] + y[14] + y[15] + y[16]))) * parms[26]
-    dRetention_Cost <- (parms[12] * (y[17] + y[18] + y[19] + y[20] + y[21] + y[22] + y[23] + y[24])) * parms[27]
+    dDx_Cost <- (parms[["Rho"]] * (y[["UnDx_500"]] + y[["UnDx_350500"]] + y[["UnDx_200350"]] + y[["UnDx_200"]])) * parms[["Dx_unitCost"]]
+    dCare_Cost <- (parms[["Epsilon"]] * (y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_200350"]] + y[["Dx_200"]])) * parms[["Care_unitCost"]]
+    dTxInit_Cost <- (((parms[["p"]] * parms[["Psi"]]) * (y[["UnDx_500"]] + y[["UnDx_350500"]] + y[["UnDx_200350"]] + y[["UnDx_200"]])) + (((1-parms[["p"]]) * parms[["Psi"]]) * (y[["UnDx_500"]] + y[["UnDx_350500"]] + y[["UnDx_200350"]] + y[["UnDx_200"]])) + ((parms[["p"]] * parms[["Phi"]]) * (y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_200350"]] + y[["Dx_200"]])) + (((1-parms[["p"]]) * parms[["Phi"]]) * (y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_200350"]] + y[["Dx_200"]])) + ((parms[["p"]] * parms[["Gamma"]]) * (y[["Care_500"]] + y[["Care_350500"]] + y[["Care_200350"]] + y[["Care_200"]])) + (((1-parms[["p"]]) * parms[["Gamma"]]) * (y[["Care_500"]] + y[["Care_350500"]] + y[["Care_200350"]] + y[["Care_200"]])) + ((parms[["p"]] * parms[["Eta"]]) * (y[["PreLtfu_500"]] + y[["PreLtfu_350500"]] + y[["PreLtfu_200350"]] + y[["PreLtfu_200"]])) + (((1-parms[["p"]]) * parms[["Eta"]]) * (y[["PreLtfu_500"]] + y[["PreLtfu_350500"]] + y[["PreLtfu_200350"]] + y[["PreLtfu_200"]]))) * parms[["TxInit_unitCost"]]
+    dRetention_Cost <- (parms[["Omega"]] * (y[["Tx_Na_500"]] + y[["Tx_Na_350500"]] + y[["Tx_Na_200350"]] + y[["Tx_Na_200"]] + y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_200350"]] + y[["Tx_A_200"]] + y[["Vs_500"]] + y[["Vs_350500"]] + y[["Vs_200350"]] + y[["Vs_200"]])) * parms[["Retention_unitCost"]]
 
     # Annual Costs
-    dAnnualTxCost <- (y[17] + y[18] + y[19] + y[20] + y[21] + y[22] + y[23] + y[24]) * parms[28]
+    dAnnualTxCost <- (y[["Tx_Na_500"]] + y[["Tx_Na_350500"]] + y[["Tx_Na_200350"]] + y[["Tx_Na_200"]] + y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_200350"]] + y[["Tx_A_200"]] + y[["Vs_500"]] + y[["Vs_350500"]] + y[["Vs_200350"]] + y[["Vs_200"]]) * parms[["AnnualTx_unitCost"]]
     
     list(c(
         dUnDx_500,
@@ -66,10 +71,14 @@ ComplexCascade <- function(t, y, parms) {
         dPreLtfu_350500,
         dPreLtfu_200350,
         dPreLtfu_200,
-        dTx_500,
-        dTx_350500,
-        dTx_200350,
-        dTx_200,
+        dTx_Na_500,
+        dTx_Na_350500,
+        dTx_Na_200350,
+        dTx_Na_200,
+        dTx_A_500,
+        dTx_A_350500,
+        dTx_A_200350,
+        dTx_A_200,
         dVs_500,
         dVs_350500,
         dVs_200350,
