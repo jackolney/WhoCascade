@@ -38,12 +38,12 @@ source("Initial.R")
 
 
 # Beta <- as.double(theIncidence$NewInfections2014[12] / (((Initial[1] + Initial[5] + Initial[9] + Initial[13] + Initial[21]) * 1.35) + ((Initial[2] + Initial[6] + Initial[10] + Initial[14] + Initial[22]) * 1) + ((Initial[3] + Initial[7] + Initial[11] + Initial[15] + Initial[23]) * 1.64) + ((Initial[4] + Initial[8] + Initial[12] + Initial[16] + Initial[24]) * 5.17) + ((Initial[17] + Initial[18] + Initial[19] + Initial[20]) * 0.1)))
-Beta <- 0.0275837
-# Beta <- 0
+# Beta <- 0.0275837
+Beta <- 0
 
 #############
 # THE MODEL #
-Time <- seq(0,5,0.02)
+Time <- seq(0,100,0.02)
 out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
 out <- tbl_df(data.frame(out))
 out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
@@ -61,7 +61,86 @@ out <- mutate(out,HivMortalityProp = HivMortality / N)
 out <- mutate(out,NewInfProp = NewInf / N)
 #############
 
-plot(out$N,type='l',lwd=2)
+plot(out$N/out$N[1],type='l',lwd=2)
+out$N[1]
+
+# Median just gives the median time of the simulation.
+median(out$N)
+select(filter(out,N > 22 & N < 23),time)
+
+# Mean calculation.
+mean(out$N)
+select(filter(out,N > 933 & N < 935),time)
+
+# With >1 person.
+mean(as.list(select(filter(out,N > 1),N))$N)
+MeanSurival <- as.double(select(filter(out,N > 1179 & N < 1182),time))
+MeanSurival
+
+ggplot(out,aes(x=time,y=N/out$N[1])) + 
+geom_line() + 
+theme_classic() +
+xlab("Time (years)") +
+ylab("Surival (proportion)") +
+ggtitle("ART Survival (mean = 25.4 years)")
+
+#####################
+# CD4 DISTRIBUTIONS #
+out <- mutate(out,cd4_500 = (UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Tx_A_500 + Vs_500 + Ltfu_500) / N)
+out <- mutate(out,cd4_350500 = (UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Tx_A_350500 + Vs_350500 + Ltfu_350500) / N)
+out <- mutate(out,cd4_200350 = (UnDx_200350 + Dx_200350 + Care_200350 + PreLtfu_200350 + Tx_Na_200350 + Tx_A_200350 + Vs_200350 + Ltfu_200350) / N)
+out <- mutate(out,cd4_200 = (UnDx_200 + Dx_200 + Care_200 + PreLtfu_200 + Tx_Na_200 + Tx_A_200 + Vs_200 + Ltfu_200) / N)
+
+
+# CD4 distribution in 2015 (t0)
+t0.cd4_500 <- as.double(filter(out,time == 0) %>% select(cd4_500))
+t0.cd4_350500 <- as.double(filter(out,time == 0) %>% select(cd4_350500))
+t0.cd4_200350 <- as.double(filter(out,time == 0) %>% select(cd4_200350))
+t0.cd4_200 <- as.double(filter(out,time == 0) %>% select(cd4_200))
+
+t0.cd4 <- c(t0.cd4_500, t0.cd4_350500, t0.cd4_200350, t0.cd4_200)
+t0.names <- c(">500","350-500","200-350","<200")
+
+t0 <- data.frame(t0.names,t0.cd4)
+
+levels(t0$t0.names)
+t0$t0.names <- factor(t0$t0.names, levels=c(">500","350-500","200-350","<200"))
+
+t5.cd4_500 <- as.double(filter(out,time == 5) %>% select(cd4_500))
+t5.cd4_350500 <- as.double(filter(out,time == 5) %>% select(cd4_350500))
+t5.cd4_200350 <- as.double(filter(out,time == 5) %>% select(cd4_200350))
+t5.cd4_200 <- as.double(filter(out,time == 5) %>% select(cd4_200))
+
+t5.cd4 <- c(t5.cd4_500, t5.cd4_350500, t5.cd4_200350, t5.cd4_200)
+t5.names <- c(">500","350-500","200-350","<200")
+
+t5 <- data.frame(t5.names,t5.cd4)
+
+levels(t5$t5.names)
+t5$t5.names <- factor(t5$t5.names, levels=c(">500","350-500","200-350","<200"))
+
+cd4.t0 <- ggplot(t0,aes(x=t0.names,y=t0.cd4)) +
+geom_bar(stat='identity') +
+theme_classic() +
+xlab("CD4 category") +
+ylab("Proportion") +
+ggtitle("CD4 distribution in 2015")
+
+cd4.t5 <- ggplot(t5,aes(x=t5.names,y=t5.cd4)) +
+geom_bar(stat='identity') +
+theme_classic() +
+xlab("CD4 category") +
+ylab("Proportion") +
+ggtitle("CD4 distribution in 2020")
+
+grid.arrange(cd4.t0,cd4.t5,ncol=2)
+
+
+# CD4 distribution in 2020 (t5)
+plot(out$cd4_200350)
+
+mean(out$N/out$N[1])
+mean(out$N)
 # names(out)
 # plot(out$TxInit_Cost)
 # plot(out$AnnualTxCost)
