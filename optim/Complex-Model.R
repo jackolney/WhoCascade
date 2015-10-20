@@ -51,7 +51,7 @@ Beta <- 0.0275837
 # out <- mutate(out,NewInfProp = NewInf / N)
 
 
-find909090forLowestCost <- function(target, par) {
+find909090 <- function(target, par) {
     
     # print(paste("par =",par))
 
@@ -59,21 +59,21 @@ find909090forLowestCost <- function(target, par) {
         Nu_1 = 0.193634,
         Nu_2 = 0.321304,
         Nu_3 = 0.163484,
-        Rho = par[1],
-        Epsilon = par[3],
-        Kappa = 1.079,
-        Gamma = par[2],
-        Eta = 0.476,
-        Phi = 3.628,
-        Psi = 0.431,
+        Rho = par[["Rho"]],
+        Epsilon = par[["Epsilon"]],
+        Kappa = par[["Kappa"]],
+        Gamma = par[["Gamma"]],
+        Eta = par[["Eta"]],
+        Phi = par[["Phi"]],
+        Psi = par[["Psi"]],
         Theta = 2.28,
-        Omega = par[4],
+        Omega = par[["Omega"]],
         p = 0.95,
         s_1 = 0.25,
         s_2 = 0.75,
         s_3 = 1,
         s_4 = 2,
-        Sigma_a = 0.5,
+        Sigma_a = par[["Sigma_a"]],
         Sigma_b = 0.5,
         Delta_1 = 1.58084765,
         Delta_2 = 3.50371789,
@@ -115,15 +115,45 @@ find909090forLowestCost <- function(target, par) {
     return(output)
 }
 
-willThisWork <- optim(par = c(0,0,0,0), find909090forLowestCost, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
-willThisWork$par
+# willThisWork <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
+# willThisWork$par
 
 # ModFit method
 require(FME)
-res <- modFit(find909090forLowestCost, p = c(0.205,2.556,16.949,0.033), target = 0.9, lower = c(0.01,0.01,0.01,0.01), upper = c(20,20,20,20), method = 'L-BFGS-B')
+res <- modFit(find909090, 
+    p = c(
+        Rho = 0.205,
+        Gamma = 2.556,
+        Epsilon = 16.949,
+        Omega = 0.033,
+        Kappa = 1.079,
+        Sigma_a = 0.5,
+        Phi = 3.628,
+        Psi = 0.431,
+        Eta = 0.476), 
+    target = 0.9, 
+    lower = c(
+        Rho = 0.01,
+        Gamma = 0.01,
+        Epsilon = 0.01,
+        Omega = 0.01,
+        Kappa = 0.01,
+        Sigma_a = 0.01,
+        Phi = 0.01,
+        Psi = 0.01,
+        Eta = 0.01), 
+    upper = c(
+        Rho = 20,
+        Gamma = 20,
+        Epsilon = 20,
+        Omega = 20,
+        Kappa = 20,
+        Sigma_a = 20,
+        Phi = 20,
+        Psi = 20,
+        Eta = 20), 
+    method = 'L-BFGS-B')
 res
-
-OldParms <- willThisWork$par
 
 # Optimisation method which takes a matrix? Containing randomised parameter values? Or let the optim() method walk through them?
 
@@ -146,49 +176,50 @@ Latinhyper(parRange,10)
 
 
 Parameters <- c(
-    Nu_1 = 0.2139008,
-    Nu_2 = 0.3379898,
-    Nu_3 = 0.2744363,
-    Rho = willThisWork$par[1],
-    Gamma = willThisWork$par[2],
-    Theta = 2.228,
-    Omega = willThisWork$par[4],
-    Delta_1 = 1.1491019,
-    Delta_2 = 2.5468165,
-    Alpha_1 = 0.0043812,
-    Alpha_2 = 0.0179791,
-    Alpha_3 = 0.0664348,
-    Alpha_4 = 0.1289688,
-    Tau_1 = 0.0041621,
-    Tau_2 = 0.0170798,
-    Tau_3 = 0.0631120,
-    Tau_4 = 0.1225184,
+    Nu_1 = 0.193634,
+    Nu_2 = 0.321304,
+    Nu_3 = 0.163484,
+    Rho = res$par[["Rho"]],
+    Epsilon = res$par[["Epsilon"]],
+    Kappa = res$par[["Kappa"]],
+    Gamma = res$par[["Gamma"]],
+    Eta = res$par[["Eta"]],
+    Phi = res$par[["Phi"]],
+    Psi = res$par[["Psi"]],
+    Theta = 2.28,
+    Omega = res$par[["Omega"]],
+    p = 0.95,
+    s_1 = 0.25,
+    s_2 = 0.75,
+    s_3 = 1,
+    s_4 = 2,
+    Sigma_a = res$par[["Sigma_a"]],
+    Sigma_b = 0.5,
+    Delta_1 = 1.58084765,
+    Delta_2 = 3.50371789,
+    Alpha_1 = 0.00411,
+    Alpha_2 = 0.01167,
+    Alpha_3 = 0.01289,
+    Alpha_4 = 0.385832,
+    Tau_1 = 0.04013346,
+    Tau_2 = 0.05431511,
+    Tau_3 = 0.15692556,
+    Tau_4 = 0.23814569,
     Mu = 0.0374,
-    Epsilon = willThisWork$par[3],
-    Dx_unitCost = 100,
-    Care_unitCost = 2,
-    Tx_unitCost = 2,
-    Retention_unitCost = 2
+    Dx_unitCost = 10,
+    Care_unitCost = 12,
+    TxInit_unitCost = 28,
+    Retention_unitCost = 367,
+    AnnualTx_unitCost = 367
 )
 
+Time <- seq(0,5,0.02)
 out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
 out <- tbl_df(data.frame(out))
-out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-out <- mutate(out,HivMortalityProp = HivMortality / N)
-out <- mutate(out,NewInfProp = NewInf / N)
-
-
+out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
 PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
 vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
 p_dx <- dx / PLHIV
 p_tx <- tx / dx
@@ -196,7 +227,6 @@ p_vs <- vs / tx
 results <- c(p_dx,p_tx,p_vs)
 definition <- c("% Diagnosed","% On Treatment","% Suppressed")
 the909090 <- data.frame(definition,results)
-the909090
 
 # graphics.off()
 # quartz.options(w=6,h=4)
