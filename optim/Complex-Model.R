@@ -97,6 +97,7 @@ find909090 <- function(target, par) {
     out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
     out <- tbl_df(data.frame(out))
     out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+    out <- mutate(out,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTxCost)
     PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
     dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
     tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
@@ -108,10 +109,14 @@ find909090 <- function(target, par) {
     definition <- c("% Diagnosed","% On Treatment","% Suppressed")
     the909090 <- data.frame(definition,results)
 
+    # Cost
+    cost <- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
+    # print(paste("cost = ",dollar(cost)))
+
     # Returning outputs
     output <- 1/3 * sum((target - the909090$results)^2)
     # output <- sum((target - the909090$results)^2)
-    print(paste("output =",output))    
+    print(paste("error =",output,"cost =",dollar(cost)))    
     return(output)
 }
 
@@ -157,20 +162,127 @@ res
 
 # Optimisation method which takes a matrix? Containing randomised parameter values? Or let the optim() method walk through them?
 
+# LHC sampling parameter values
+require(FME)
 parRange <- data.frame(
-    min = c(0, 1, 2, 3), 
-    max = c(10, 9, 8, 7))
+    min = c(
+        Rho = 0.01,
+        Gamma = 0.01,
+        Epsilon = 0.01,
+        Omega = 0.01,
+        Kappa = 0.01,
+        Sigma_a = 0.01,
+        Phi = 0.01,
+        Psi = 0.01,
+        Eta = 0.01), 
+    max = c(
+        Rho = 20,
+        Gamma = 20,
+        Epsilon = 20,
+        Omega = 20,
+        Kappa = 20,
+        Sigma_a = 20,
+        Phi = 20,
+        Psi = 20,
+        Eta = 20))
 
-rownames(parRange) <- c("Rho", "Gamma", "Epsilon", "Omega")
-parRange
+a <- Latinhyper(parRange,100)
 
-Latinhyper(parRange,10)
+# Extract a value from LHC sample
+a[[1,"Rho"]]
 
 # What are we trying to do?
-# -> For a given set of abstract changes to the system, what is the impact / cost?
+# -> For a given set of changes to the system (interventions), what is the impact / cost?
 # -> Help us minimise error towards 90-90-90 for the least money?
 # -> For a given amount of money, how can we maximise health benefit?
 # -> For a given health benefit, how cheap can it be?
+
+# Perhaps an intervention just involves constraining the bounds of a parameter in a certain way? (but tightly-ish.)
+
+# e.g. a testing intervention.
+# Rho = 0.205 at baseline.
+# So maximum is 0.205 (4.87yrs)
+# min = 0.41
+
+par <- data.frame(
+    min = c(Rho = 0.41),
+    max = c(Rho = 0.205))
+
+params <- Latinhyper(par,100)
+
+
+# Test loop.
+
+for(i in 1:length(params)) {
+
+    target <- 0.9
+    
+    Parameters <- c(
+        Nu_1 = 0.193634,
+        Nu_2 = 0.321304,
+        Nu_3 = 0.163484,
+        Rho = params[[i,"Rho"]],
+        Epsilon = 16.949,
+        Kappa = 1.079,
+        Gamma = 2.556,
+        Eta = 0.476,
+        Phi = 3.628,
+        Psi = 0.431,
+        Theta = 2.28,
+        Omega = 0.033,
+        p = 0.95,
+        s_1 = 0.25,
+        s_2 = 0.75,
+        s_3 = 1,
+        s_4 = 2,
+        Sigma_a = 0.5,
+        Sigma_b = 0.5,
+        Delta_1 = 1.58084765,
+        Delta_2 = 3.50371789,
+        Alpha_1 = 0.00411,
+        Alpha_2 = 0.01167,
+        Alpha_3 = 0.01289,
+        Alpha_4 = 0.385832,
+        Tau_1 = 0.04013346,
+        Tau_2 = 0.05431511,
+        Tau_3 = 0.15692556,
+        Tau_4 = 0.23814569,
+        Mu = 0.0374,
+        Dx_unitCost = 10,
+        Care_unitCost = 12,
+        TxInit_unitCost = 28,
+        Retention_unitCost = 367,
+        AnnualTx_unitCost = 367
+    )    
+
+    Time <- seq(0,5,0.02)
+    out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
+    out <- tbl_df(data.frame(out))
+    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+    out <- mutate(out,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTxCost)
+    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+    vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
+    p_dx <- dx / PLHIV
+    p_tx <- tx / dx
+    p_vs <- vs / tx
+    results <- c(p_dx,p_tx,p_vs)
+    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+    the909090 <- data.frame(definition,results)
+
+    # Cost
+    cost <- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
+    # print(paste("cost = ",dollar(cost)))
+
+    # Returning outputs
+    output <- 1/3 * sum((target - the909090$results)^2)
+    # output <- sum((target - the909090$results)^2)
+    print(paste("error =",output,"cost =",dollar(cost)))  
+
+}
+
+# I should be optimising 90-90-90... but how to include the cost component too?
 
 # Right now it is just reducing cost NOT focusing on getting to 90-90-90.
 
@@ -217,6 +329,7 @@ Time <- seq(0,5,0.02)
 out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
 out <- tbl_df(data.frame(out))
 out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+out <- mutate(out,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTxCost)
 PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
 dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
 tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
