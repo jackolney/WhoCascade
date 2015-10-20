@@ -41,6 +41,7 @@ VariableNames <- c(
     "Dx",
     "Care",
     "Tx",
+    "Adherence",
     "Vs",
     "Ltfu",
     "NaturalMortalityProp",
@@ -51,7 +52,11 @@ VariableNames <- c(
     "TxInit_Cost",
     "Retention_Cost",
     "AnnualTx_Cost",
-    "TotalCost"
+    "TotalCost",
+    "cd4_500",
+    "cd4_350500",
+    "cd4_200350",
+    "cd4_200"
     )
 
 CountryList <- c(

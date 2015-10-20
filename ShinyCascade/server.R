@@ -29,6 +29,13 @@ function(input, output, session) {
         Psi = 0.431,
         Theta = 2.28,
         Omega = input$omega,
+        p = 0.95,
+        s_1 = 0.25,
+        s_2 = 0.75,
+        s_3 = 1,
+        s_4 = 2,
+        Sigma_a = 0.5,
+        Sigma_b = 0.5,
         Delta_1 = 1.58084765,
         Delta_2 = 3.50371789,
         Alpha_1 = 0.00411,
@@ -49,8 +56,8 @@ function(input, output, session) {
 
     output$parameterTable <- renderTable({
         theP <- Parameters()
-        theParameters <- c(theP[4],theP[5],theP[6],theP[7],theP[8],theP[9],theP[10],theP[11],theP[12],theP[1],theP[2],theP[3],theP[13],theP[14],theP[15],theP[16],theP[17],theP[18],theP[19],theP[20],theP[21],theP[22],theP[23],0.5251,0.2315,0.2401,0.0033)
-        ParameterNames <- c("Rho","Epsilon","Kappa","Gamma","Eta","Phi","Psi","Theta","Omega","Nu_1","Nu_2","Nu_3","Delta_1","Delta_2","Alpha_1","Alpha_2","Alpha_3","Alpha_4","Tau_1","Tau_2","Tau_3","Tau_4","Mu","Iota_1","Iota_2","Iota_3","Iota_4")
+        theParameters <- c(theP[["Rho"]],theP[["Epsilon"]],theP[["Kappa"]],theP[["Gamma"]],theP[["Eta"]],theP[["Phi"]],theP[["Psi"]],theP[["Theta"]],theP[["Omega"]],theP[["Nu_1"]],theP[["Nu_2"]],theP[["Nu_3"]],theP[["p"]],theP[["s_1"]],theP[["s_2"]],theP[["s_3"]],theP[["s_4"]],theP[["Sigma_a"]],theP[["Sigma_b"]],theP[["Delta_1"]],theP[["Delta_2"]],theP[["Alpha_1"]],theP[["Alpha_2"]],theP[["Alpha_3"]],theP[["Alpha_4"]],theP[["Tau_1"]],theP[["Tau_2"]],theP[["Tau_3"]],theP[["Tau_4"]],theP[["Mu"]],theP[["Dx_unitCost"]],theP[["Care_unitCost"]],theP[["TxInit_unitCost"]],theP[["Retention_unitCost"]],theP[["AnnualTx_unitCost"]],0.5251,0.2315,0.2401,0.0033)
+        ParameterNames <- c("Rho","Epsilon","Kappa","Gamma","Eta","Phi","Psi","Theta","Omega","Nu_1","Nu_2","Nu_3","p","s_1","s_2","s_3","s_4","Sigma_a","Sigma_b","Delta_1","Delta_2","Alpha_1","Alpha_2","Alpha_3","Alpha_4","Tau_1","Tau_2","Tau_3","Tau_4","Mu","Dx_unitCost","Care_unitCost","TxInit_unitCost","Retention_unitCost","AnnualTx_unitCost","Iota_1","Iota_2","Iota_3","Iota_4")
         rows <- length(ParameterNames)
         tbl <- matrix(theParameters,rows,ncol=2)
         tbl[,1] <- ParameterNames
@@ -79,10 +86,15 @@ function(input, output, session) {
         PreLtfu_200350 = 0 * 0.2401,
         PreLtfu_200 = 0 * 0.0033,
 
-        Tx_500 = (input$userTx - input$userVs) * 0.5251,
-        Tx_350500 = (input$userTx - input$userVs) * 0.2315,
-        Tx_200350 = (input$userTx - input$userVs) * 0.2401,
-        Tx_200 = (input$userTx - input$userVs) * 0.0033,
+        Tx_Na_500 = (input$userTx - input$userVs) * (1-Parameters()[["p"]]) * 0.5251,
+        Tx_Na_350500 = (input$userTx - input$userVs) * (1-Parameters()[["p"]]) * 0.2315,
+        Tx_Na_200350 = (input$userTx - input$userVs) * (1-Parameters()[["p"]]) * 0.2401,
+        Tx_Na_200 = (input$userTx - input$userVs) * (1-Parameters()[["p"]]) * 0.0033,
+
+        Tx_A_500 = (input$userTx - input$userVs) * Parameters()[["p"]] * 0.5251,
+        Tx_A_350500 = (input$userTx - input$userVs) * Parameters()[["p"]] * 0.2315,
+        Tx_A_200350 = (input$userTx - input$userVs) * Parameters()[["p"]] * 0.2401,
+        Tx_A_200 = (input$userTx - input$userVs) * Parameters()[["p"]] * 0.0033,
 
         Vs_500 = (input$userVs) * 0.5251,
         Vs_350500 = (input$userVs) * 0.2315,
@@ -156,7 +168,8 @@ function(input, output, session) {
         if(input$incidenceInput == TRUE) {
             theInitial <- Initial()
             Numerator <- NewInfections
-            Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[17] + theInitial[25]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[18] + theInitial[26]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[19] + theInitial[27]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[20] + theInitial[28]) * 5.17) + ((theInitial[21] + theInitial[22] + theInitial[23] + theInitial[24]) * 0.1)))
+            print(theInitial)
+            Denominator <- as.double(((theInitial[["UnDx_500"]] + theInitial[["Dx_500"]] + theInitial[["Care_500"]] + theInitial[["PreLtfu_500"]] + theInitial[["Tx_Na_500"]] + theInitial[["Tx_A_500"]] + theInitial[["Ltfu_500"]]) * 1.35) + ((theInitial[["UnDx_350500"]] + theInitial[["Dx_350500"]] + theInitial[["Care_350500"]] + theInitial[["PreLtfu_350500"]] + theInitial[["Tx_Na_350500"]] + theInitial[["Tx_A_350500"]] + theInitial[["Ltfu_350500"]]) * 1) + ((theInitial[["UnDx_200350"]] + theInitial[["Dx_200350"]] + theInitial[["Care_200350"]] + theInitial[["PreLtfu_200350"]] + theInitial[["Tx_Na_200350"]] + theInitial[["Tx_A_200350"]] + theInitial[["Ltfu_200350"]]) * 1.64) + ((theInitial[["UnDx_200"]] + theInitial[["Dx_200"]] + theInitial[["Care_200"]] + theInitial[["PreLtfu_200"]] + theInitial[["Tx_Na_200"]] + theInitial[["Tx_A_200"]] + theInitial[["Ltfu_200"]]) * 5.17) + ((theInitial[["Vs_500"]] + theInitial[["Vs_350500"]] + theInitial[["Vs_200350"]] + theInitial[["Vs_200"]]) * 0.1))
             # print(paste("Numerator =",Numerator))
             # print(paste("Denominator =",Denominator))
             Beta <<- Numerator / Denominator
@@ -170,20 +183,24 @@ function(input, output, session) {
         # --------- #
 
         # Post-simulation mutation (creation of columns) etc.
-        theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-        theOut <- mutate(theOut,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+        theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+        theOut <- mutate(theOut,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
         theOut <- mutate(theOut,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
         theOut <- mutate(theOut,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
         theOut <- mutate(theOut,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
         theOut <- mutate(theOut,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200) / N)
-        theOut <- mutate(theOut,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
+        theOut <- mutate(theOut,Tx = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200) / N)
+        theOut <- mutate(theOut,Adherence = (Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
         theOut <- mutate(theOut,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
         theOut <- mutate(theOut,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
         theOut <- mutate(theOut,NaturalMortalityProp = NaturalMortality / N)
         theOut <- mutate(theOut,HivMortalityProp = HivMortality / N)
         theOut <- mutate(theOut,NewInfProp = NewInf / N)
         theOut <- mutate(theOut,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTx_Cost)
-
+        theOut <- mutate(theOut,cd4_500 = (UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Tx_A_500 + Vs_500 + Ltfu_500) / N)
+        theOut <- mutate(theOut,cd4_350500 = (UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Tx_A_350500 + Vs_350500 + Ltfu_350500) / N)
+        theOut <- mutate(theOut,cd4_200350 = (UnDx_200350 + Dx_200350 + Care_200350 + PreLtfu_200350 + Tx_Na_200350 + Tx_A_200350 + Vs_200350 + Ltfu_200350) / N)
+        theOut <- mutate(theOut,cd4_200 = (UnDx_200 + Dx_200 + Care_200 + PreLtfu_200 + Tx_Na_200 + Tx_A_200 + Vs_200 + Ltfu_200) / N)
         return(theOut)
     })
 
@@ -245,7 +262,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        f <- ggplot(out,aes(x=time,y=Vs)) +
+        f <- ggplot(out,aes(x=time,y=Adherence)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -253,7 +270,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        g <- ggplot(out,aes(x=time,y=Ltfu)) +
+        g <- ggplot(out,aes(x=time,y=Vs)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -261,7 +278,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        h <- ggplot(out,aes(x=time,y=N)) +
+        h <- ggplot(out,aes(x=time,y=Ltfu)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -269,7 +286,7 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        i <- ggplot(out,aes(x=time,y=HivMortalityProp)) +
+        i <- ggplot(out,aes(x=time,y=N)) +
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -277,7 +294,31 @@ function(input, output, session) {
             xlab("Year") +
             theme_classic()
 
-        AllPlot <- grid.arrange(a,b,c,d,e,f,g,h,i,nrow=3,ncol=3)
+        j <- ggplot(out,aes(x=time,y=NewInf)) +
+            geom_line() +
+            theme(axis.text.x=element_text(size=18)) +
+            theme(axis.text.y=element_text(size=18)) +
+            theme(axis.title=element_text(size=20)) +
+            xlab("Year") +
+            theme_classic()
+
+        k <- ggplot(out,aes(x=time,y=HivMortalityProp)) +
+            geom_line() +
+            theme(axis.text.x=element_text(size=18)) +
+            theme(axis.text.y=element_text(size=18)) +
+            theme(axis.title=element_text(size=20)) +
+            xlab("Year") +
+            theme_classic()
+
+        l <- ggplot(out,aes(x=time,y=NaturalMortalityProp)) +
+            geom_line() +
+            theme(axis.text.x=element_text(size=18)) +
+            theme(axis.text.y=element_text(size=18)) +
+            theme(axis.title=element_text(size=20)) +
+            xlab("Year") +
+            theme_classic()
+
+        AllPlot <- grid.arrange(a,b,c,d,e,f,g,h,i,j,k,l,nrow=4,ncol=3)
 
         print(AllPlot)
 
