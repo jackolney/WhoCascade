@@ -168,7 +168,6 @@ function(input, output, session) {
         if(input$incidenceInput == TRUE) {
             theInitial <- Initial()
             Numerator <- NewInfections
-            print(theInitial)
             Denominator <- as.double(((theInitial[["UnDx_500"]] + theInitial[["Dx_500"]] + theInitial[["Care_500"]] + theInitial[["PreLtfu_500"]] + theInitial[["Tx_Na_500"]] + theInitial[["Tx_A_500"]] + theInitial[["Ltfu_500"]]) * 1.35) + ((theInitial[["UnDx_350500"]] + theInitial[["Dx_350500"]] + theInitial[["Care_350500"]] + theInitial[["PreLtfu_350500"]] + theInitial[["Tx_Na_350500"]] + theInitial[["Tx_A_350500"]] + theInitial[["Ltfu_350500"]]) * 1) + ((theInitial[["UnDx_200350"]] + theInitial[["Dx_200350"]] + theInitial[["Care_200350"]] + theInitial[["PreLtfu_200350"]] + theInitial[["Tx_Na_200350"]] + theInitial[["Tx_A_200350"]] + theInitial[["Ltfu_200350"]]) * 1.64) + ((theInitial[["UnDx_200"]] + theInitial[["Dx_200"]] + theInitial[["Care_200"]] + theInitial[["PreLtfu_200"]] + theInitial[["Tx_Na_200"]] + theInitial[["Tx_A_200"]] + theInitial[["Ltfu_200"]]) * 5.17) + ((theInitial[["Vs_500"]] + theInitial[["Vs_350500"]] + theInitial[["Vs_200350"]] + theInitial[["Vs_200"]]) * 0.1))
             # print(paste("Numerator =",Numerator))
             # print(paste("Denominator =",Denominator))

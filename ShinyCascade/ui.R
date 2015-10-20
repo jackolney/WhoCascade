@@ -279,7 +279,8 @@ shinyUI(
                             tags$li("% Undiagnosed = # persons undiagnosed / PLHIV"),                            
                             tags$li("% Diagnosed = # persons diagnosed and not in care / PLHIV"),
                             tags$li("% In Care = # persons diagnosed, in care, not on ART / PLHIV"),
-                            tags$li("% On Treatment = # persons diagnosed, in care, on ART, not virally suppressed / PLHIV"),
+                            tags$li("% On Treatment (non-adherent) = # persons diagnosed, in care, on ART, but not adhering and not virally suppressed / PLHIV"),
+                            tags$li("% On Treatment (adherent) = # persons diagnosed, in care, on ART, adhering, but not virally suppressed / PLHIV"),
                             tags$li("% Virally Suppressed = # persons diagnosed, in care, on ART, virally suppressed / PLHIV"),
                             tags$li("% LTFU = # persons diagnosed, not in care, dropped out of ART / PLHIV.")
                         )
