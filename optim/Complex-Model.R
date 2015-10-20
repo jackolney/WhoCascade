@@ -120,7 +120,7 @@ willThisWork$par
 
 # ModFit method
 require(FME)
-res <- modFit(find909090forLowestCost,p = c(0.205,2.556,16.949,0.033), target = 0.9, lower = c(0.01,0.01,0.01,0.01), upper = c(20,20,20,20), method = 'L-BFGS-B')
+res <- modFit(find909090forLowestCost, p = c(0.205,2.556,16.949,0.033), target = 0.9, lower = c(0.01,0.01,0.01,0.01), upper = c(20,20,20,20), method = 'L-BFGS-B')
 res
 
 OldParms <- willThisWork$par
@@ -136,7 +136,11 @@ parRange
 
 Latinhyper(parRange,10)
 
-
+# What are we trying to do?
+# -> For a given set of abstract changes to the system, what is the impact / cost?
+# -> Help us minimise error towards 90-90-90 for the least money?
+# -> For a given amount of money, how can we maximise health benefit?
+# -> For a given health benefit, how cheap can it be?
 
 # Right now it is just reducing cost NOT focusing on getting to 90-90-90.
 

@@ -333,19 +333,19 @@ shinyUI(
                 shinyjs::useShinyjs(),
                 id = "cost-panel",
                 wellPanel(
-                    numericInput("userDxUnitCost","Unit cost of diagnosing a patient (USD):",2,min=0,step=1)
+                    sliderInput('userDxUnitCost','Unit cost of diagnosing a patient (USD):',min=0,max=100,value=2,step=1)
                     ),
                 wellPanel(
-                    numericInput("userCxUnitCost","Unit cost of getting a patient into care (USD):",2,min=0,step=1)
+                    sliderInput('userCxUnitCost','Unit cost of getting a patient into care (USD):',min=0,max=100,value=2,step=1)
                     ),
                 wellPanel(
-                    numericInput("userTxInitUnitCost","Unit cost of getting a patient onto treatment (USD):",2,min=0,step=1)
+                    sliderInput('userTxInitUnitCost','Unit cost of getting a patient onto treatment (USD):',min=0,max=100,value=2,step=1)
                     ),
                 wellPanel(
-                    numericInput("userAnnualTxUnitCost","Annual cost of ART (USD):",367,min=0,step=1)
+                    sliderInput('userAnnualTxUnitCost','Annual cost of ART (USD):',min=0,max=500,value=367,step=1)
                     ),
                 wellPanel(
-                    numericInput("userRxUnitCost","Unit cost of retaining a patient on treatment (USD):",2,min=0,step=1)
+                    sliderInput('userRxUnitCost','Unit cost of retaining a patient on treatment (USD):',min=0,max=100,value=2,step=1)
                     )
                 )
             ),
