@@ -402,28 +402,29 @@ function(input, output, session) {
         t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200)))) / t0_N
         t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_200350,Care_200)))) / t0_N
         t0_preltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200)))) / t0_N
-        t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200)))) / t0_N
+        t0_tx_na = as.double(sum(filter(out,time == 0) %>% select(c(Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200)))) / t0_N
+        t0_tx_a = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200)))) / t0_N
         t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
         t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
 
-        tResult <- c(t0_vs,t0_tx,t0_cx,t0_dx,t0_undx,t0_preltfu,t0_ltfu,
-                     t0_vs,t0_tx,t0_cx,t0_dx,t0_preltfu,t0_ltfu,
-                     t0_vs,t0_tx,t0_cx,
-                     t0_vs,t0_tx,
+        tResult <- c(t0_vs,t0_tx_a,t0_tx_na,t0_cx,t0_dx,t0_undx,t0_preltfu,t0_ltfu,
+                     t0_vs,t0_tx_a,t0_tx_na,t0_cx,t0_dx,t0_preltfu,t0_ltfu,
+                     t0_vs,t0_tx_a,t0_tx_nat0_cx,
+                     t0_vs,t0_tx_a,t0_tx_na,
                      t0_vs,
                      t0_preltfu,t0_ltfu)
 
-        State <- c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU",
-                   "% Suppressed","% On Treatment","% In Care","% Diagnosed","% pre-ART LTFU","% LTFU",
-                   "% Suppressed","% On Treatment","% In Care",
-                   "% Suppressed","% On Treatment",
+        State <- c("% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU",
+                   "% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)","% In Care","% Diagnosed","% pre-ART LTFU","% LTFU",
+                   "% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)","% In Care",
+                   "% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)",
                    "% Suppressed",
                    "% pre-ART LTFU","% LTFU")
 
-        tOrder <- c(rep("All",7),
-                    rep("Diagnosed",6),
-                    rep("In Care",3),
-                    rep("On Treatment",2),
+        tOrder <- c(rep("All",8),
+                    rep("Diagnosed",7),
+                    rep("In Care",4),
+                    rep("On Treatment",3),
                     rep("Virally Suppressed",1),
                     rep("LTFU",2))
 
@@ -433,10 +434,10 @@ function(input, output, session) {
         t0$tOrder <- factor(t0$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
 
         levels(t0$State)
-        t0$State <- factor(t0$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
+        t0$State <- factor(t0$State, levels=c("% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
 
         cols <- brewer.pal(9,"Set1")
-        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[7])
+        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[7],cols[8])
 
         o <- ggplot(t0,aes(x=tOrder,y=tResult,fill=State))
         o <- o + geom_bar(stat='identity')
@@ -455,29 +456,30 @@ function(input, output, session) {
         t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200)))) / t5_N
         t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200)))) / t5_N
         t5_preltfu = as.double(sum(filter(out,time == 5) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200)))) / t5_N
-        t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200)))) / t5_N
+        t5_tx_na = as.double(sum(filter(out,time == 5) %>% select(c(Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200)))) / t5_N
+        t5_tx_a = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200)))) / t5_N
         t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
         t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
 
 
-        tResult <- c(t5_vs,t5_tx,t5_cx,t5_dx,t5_undx,t5_preltfu,t5_ltfu,
-                     t5_vs,t5_tx,t5_cx,t5_dx,t5_preltfu,t5_ltfu,
-                     t5_vs,t5_tx,t5_cx,
-                     t5_vs,t5_tx,
+        tResult <- c(t5_vs,t5_tx_a,t5_tx_na,t5_cx,t5_dx,t5_undx,t5_preltfu,t5_ltfu,
+                     t5_vs,t5_tx_a,t5_tx_na,t5_cx,t5_dx,t5_preltfu,t5_ltfu,
+                     t5_vs,t5_tx_a,t5_tx_nat5_cx,
+                     t5_vs,t5_tx_a,t5_tx_na,
                      t5_vs,
                      t5_preltfu,t5_ltfu)
 
-        State <- c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU",
-                    "% Suppressed","% On Treatment","% In Care","% Diagnosed","% pre-ART LTFU","% LTFU",
-                    "% Suppressed","% On Treatment","% In Care",
-                    "% Suppressed","% On Treatment",
-                    "% Suppressed",
-                    "% pre-ART LTFU","% LTFU")
+        State <- c("% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU",
+                   "% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)","% In Care","% Diagnosed","% pre-ART LTFU","% LTFU",
+                   "% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)","% In Care",
+                   "% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)",
+                   "% Suppressed",
+                   "% pre-ART LTFU","% LTFU")
 
-        tOrder <- c(rep("All",7),
-                    rep("Diagnosed",6),
-                    rep("In Care",3),
-                    rep("On Treatment",2),
+        tOrder <- c(rep("All",8),
+                    rep("Diagnosed",7),
+                    rep("In Care",4),
+                    rep("On Treatment",3),
                     rep("Virally Suppressed",1),
                     rep("LTFU",2))
 
@@ -487,7 +489,7 @@ function(input, output, session) {
         t5$tOrder <- factor(t5$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
 
         levels(t5$State)
-        t5$State <- factor(t5$State, levels=c("% Suppressed","% On Treatment","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
+        t5$State <- factor(t5$State, levels=c("% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
 
         power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[7])
 
