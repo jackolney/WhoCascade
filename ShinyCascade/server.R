@@ -684,7 +684,7 @@ function(input, output, session) {
             if(input$incidenceInput == TRUE) {
                 theInitial <- Initial()
                 Numerator <- NewInfections
-                Denominator <- as.double((((theInitial[1] + theInitial[5] + theInitial[9] + theInitial[13] + theInitial[17] + theInitial[25]) * 1.35) + ((theInitial[2] + theInitial[6] + theInitial[10] + theInitial[14] + theInitial[18] + theInitial[26]) * 1) + ((theInitial[3] + theInitial[7] + theInitial[11] + theInitial[15] + theInitial[19] + theInitial[27]) * 1.64) + ((theInitial[4] + theInitial[8] + theInitial[12] + theInitial[16] + theInitial[20] + theInitial[28]) * 5.17) + ((theInitial[21] + theInitial[22] + theInitial[23] + theInitial[24]) * 0.1)))
+                Denominator <- as.double(((theInitial[["UnDx_500"]] + theInitial[["Dx_500"]] + theInitial[["Care_500"]] + theInitial[["PreLtfu_500"]] + theInitial[["Tx_Na_500"]] + theInitial[["Tx_A_500"]] + theInitial[["Ltfu_500"]]) * 1.35) + ((theInitial[["UnDx_350500"]] + theInitial[["Dx_350500"]] + theInitial[["Care_350500"]] + theInitial[["PreLtfu_350500"]] + theInitial[["Tx_Na_350500"]] + theInitial[["Tx_A_350500"]] + theInitial[["Ltfu_350500"]]) * 1) + ((theInitial[["UnDx_200350"]] + theInitial[["Dx_200350"]] + theInitial[["Care_200350"]] + theInitial[["PreLtfu_200350"]] + theInitial[["Tx_Na_200350"]] + theInitial[["Tx_A_200350"]] + theInitial[["Ltfu_200350"]]) * 1.64) + ((theInitial[["UnDx_200"]] + theInitial[["Dx_200"]] + theInitial[["Care_200"]] + theInitial[["PreLtfu_200"]] + theInitial[["Tx_Na_200"]] + theInitial[["Tx_A_200"]] + theInitial[["Ltfu_200"]]) * 5.17) + ((theInitial[["Vs_500"]] + theInitial[["Vs_350500"]] + theInitial[["Vs_200350"]] + theInitial[["Vs_200"]]) * 0.1))
                 Beta <<- Numerator / Denominator
             } else {
                 Beta <<- 0
@@ -701,23 +701,29 @@ function(input, output, session) {
             # --------- #
 
             # Post-simulation mutation (creation of columns) etc.
-            theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-            theOut <- mutate(theOut,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+            theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+            theOut <- mutate(theOut,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
             theOut <- mutate(theOut,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
             theOut <- mutate(theOut,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
             theOut <- mutate(theOut,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
             theOut <- mutate(theOut,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200) / N)
-            theOut <- mutate(theOut,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
+            theOut <- mutate(theOut,Tx = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200) / N)
+            theOut <- mutate(theOut,Adherence = (Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
             theOut <- mutate(theOut,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
             theOut <- mutate(theOut,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
             theOut <- mutate(theOut,NaturalMortalityProp = NaturalMortality / N)
             theOut <- mutate(theOut,HivMortalityProp = HivMortality / N)
             theOut <- mutate(theOut,NewInfProp = NewInf / N)
+            theOut <- mutate(theOut,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTx_Cost)
+            theOut <- mutate(theOut,cd4_500 = (UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Tx_A_500 + Vs_500 + Ltfu_500) / N)
+            theOut <- mutate(theOut,cd4_350500 = (UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Tx_A_350500 + Vs_350500 + Ltfu_350500) / N)
+            theOut <- mutate(theOut,cd4_200350 = (UnDx_200350 + Dx_200350 + Care_200350 + PreLtfu_200350 + Tx_Na_200350 + Tx_A_200350 + Vs_200350 + Ltfu_200350) / N)
+            theOut <- mutate(theOut,cd4_200 = (UnDx_200 + Dx_200 + Care_200 + PreLtfu_200 + Tx_Na_200 + Tx_A_200 + Vs_200 + Ltfu_200) / N)
 
             PLHIV = as.double(sum(filter(theOut,time == 5) %>% select(N)))
-            dx = as.double(sum(filter(theOut,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-            tx = as.double(sum(filter(theOut,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-            vs = as.double(sum(filter(theOut,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
+            dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+            tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+            vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
             p_dx <- dx / PLHIV
             p_tx <- tx / dx
             p_vs <- vs / tx
@@ -758,9 +764,9 @@ function(input, output, session) {
         
         PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
         # dx / PLHIV
-        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
         # tx / dx
-        tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+        tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
         # vs / tx
         vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
 
