@@ -858,7 +858,7 @@ function(input, output, session) {
             src='www/Model.png',
             contentType='image/png',
             alt='ModelFlowDiagram',
-            height=500,
+            height=600,
             width=1000))
     },
     deleteFile=FALSE)

@@ -223,7 +223,7 @@ shinyUI(
                     used to manipulate certain parameter values. Parameter values can be manipulated by changing the rate or the inverse of the rate (time to event). 
                     You only need to change one slider as the other updated auotmatically. Please note that the parameter table is 'live' and will update in real-time."),
                 imageOutput("modelFlowImage"),
-                br(), br(), br(), br(), br(),
+                br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(),
                 wellPanel(
                     sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):',min=0,max=5,value=0.205,step=0.001,width=1000),
                     sliderInput('invRho','Average time to diagnosis (years) (1 / rho):',min=0,max=100,value=1/0.205,step=0.001,width=1000)
