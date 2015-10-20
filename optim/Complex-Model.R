@@ -16,7 +16,6 @@ require(gridExtra)
 require(googlesheets)
 
 # Set time step
-Time <- seq(0,5,0.02)
 
 source("TheModel.R")
 source("Parameters.R")
@@ -34,52 +33,22 @@ Beta <- 0.0275837
 # Start with just the first 90. (then scale up to get all three.)
 # Start with just varying ONE parameter.
 
-out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
-out <- tbl_df(data.frame(out))
-out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-out <- mutate(out,HivMortalityProp = HivMortality / N)
-out <- mutate(out,NewInfProp = NewInf / N)
-
-# 90-90-90
-dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx,Tx,Vs))))
-tx = as.double(filter(out,time == 5) %>% select(ART))
-vs = as.double(filter(out,time == 5) %>% select(Vs))
-
-results <- c(dx,tx,vs)
-definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-the909090 <- data.frame(definition,results)
-the909090
-target <- 0.9
-output <- sum((target - the909090$results)^2)
-output
-
-# COST
-ggplot(out,aes(x=time,y=Dx_Cost)) + geom_line() +
-geom_line(aes(x=time,y=Care_Cost),color="red") +
-geom_line(aes(x=time,y=Tx_Cost),color="green") +
-geom_line(aes(x=time,y=Retention_Cost),color="blue")
-
-out$Dx_Cost
-out$Care_Cost
-out$Tx_Cost
-out$Retention_Cost
-
-totalCost <- sum(out$Dx_Cost,out$Care_Cost,out$Tx_Cost,out$Retention_Cost)
-totalCost
-
-# output + totalCost
-
-# how to we improve impact AND minimise cost?
-
-initialCost <- sum(out$Dx_Cost,out$Care_Cost,out$Tx_Cost,out$Retention_Cost)
+# Time <- seq(0,5,0.02)
+# out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
+# out <- tbl_df(data.frame(out))
+# out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+# out <- mutate(out,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+# out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
+# out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
+# out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
+# out <- mutate(out,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200) / N)
+# out <- mutate(out,Tx = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200) / N)
+# out <- mutate(out,Adherence = (Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+# out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+# out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
+# out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
+# out <- mutate(out,HivMortalityProp = HivMortality / N)
+# out <- mutate(out,NewInfProp = NewInf / N)
 
 
 find909090forLowestCost <- function(target, par) {
@@ -87,49 +56,50 @@ find909090forLowestCost <- function(target, par) {
     # print(paste("par =",par))
 
     Parameters <- c(
-        Nu_1 = 0.2139008,
-        Nu_2 = 0.3379898,
-        Nu_3 = 0.2744363,
+        Nu_1 = 0.193634,
+        Nu_2 = 0.321304,
+        Nu_3 = 0.163484,
         Rho = par[1],
-        Gamma = par[2],
-        Theta = 2.228,
-        Omega = par[4],
-        Delta_1 = 1.1491019,
-        Delta_2 = 2.5468165,
-        Alpha_1 = 0.0043812,
-        Alpha_2 = 0.0179791,
-        Alpha_3 = 0.0664348,
-        Alpha_4 = 0.1289688,
-        Tau_1 = 0.0041621,
-        Tau_2 = 0.0170798,
-        Tau_3 = 0.0631120,
-        Tau_4 = 0.1225184,
-        Mu = 0.0374,
         Epsilon = par[3],
-        Dx_unitCost = 100,
-        Care_unitCost = 2,
-        Tx_unitCost = 2,
-        Retention_unitCost = 2
+        Kappa = 1.079,
+        Gamma = par[2],
+        Eta = 0.476,
+        Phi = 3.628,
+        Psi = 0.431,
+        Theta = 2.28,
+        Omega = par[4],
+        p = 0.95,
+        s_1 = 0.25,
+        s_2 = 0.75,
+        s_3 = 1,
+        s_4 = 2,
+        Sigma_a = 0.5,
+        Sigma_b = 0.5,
+        Delta_1 = 1.58084765,
+        Delta_2 = 3.50371789,
+        Alpha_1 = 0.00411,
+        Alpha_2 = 0.01167,
+        Alpha_3 = 0.01289,
+        Alpha_4 = 0.385832,
+        Tau_1 = 0.04013346,
+        Tau_2 = 0.05431511,
+        Tau_3 = 0.15692556,
+        Tau_4 = 0.23814569,
+        Mu = 0.0374,
+        Dx_unitCost = 10,
+        Care_unitCost = 12,
+        TxInit_unitCost = 28,
+        Retention_unitCost = 367,
+        AnnualTx_unitCost = 367
     )
 
+    Time <- seq(0,5,0.02)
     out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
     out <- tbl_df(data.frame(out))
-    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-    out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-    out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-    out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-    out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-    out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-    out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-    out <- mutate(out,HivMortalityProp = HivMortality / N)
-    out <- mutate(out,NewInfProp = NewInf / N)
-
-
+    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
     PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
+    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
     vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
     p_dx <- dx / PLHIV
     p_tx <- tx / dx
@@ -137,15 +107,8 @@ find909090forLowestCost <- function(target, par) {
     results <- c(p_dx,p_tx,p_vs)
     definition <- c("% Diagnosed","% On Treatment","% Suppressed")
     the909090 <- data.frame(definition,results)
-    # output909090 <- sum((target - the909090$results)^2)
-    # outputCost <- ((sum(out$Dx_Cost,out$Care_Cost,out$Tx_Cost,out$Retention_Cost) - initialCost)^2)
-    # output <- output909090 + outputCost
 
-    # print(paste("output909090 =",output909090))
-    # print(paste("outputCost =",outputCost))
-
-    # print(paste("output =",output))
-
+    # Returning outputs
     output <- 1/3 * sum((target - the909090$results)^2)
     # output <- sum((target - the909090$results)^2)
     print(paste("output =",output))    
@@ -155,9 +118,25 @@ find909090forLowestCost <- function(target, par) {
 willThisWork <- optim(par = c(0,0,0,0), find909090forLowestCost, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
 willThisWork$par
 
+# ModFit method
+require(FME)
+res <- modFit(find909090forLowestCost,p = c(0.205,2.556,16.949,0.033), target = 0.9, lower = c(0.01,0.01,0.01,0.01), upper = c(20,20,20,20), method = 'L-BFGS-B')
+res
+
 OldParms <- willThisWork$par
 
-NewParms
+# Optimisation method which takes a matrix? Containing randomised parameter values? Or let the optim() method walk through them?
+
+parRange <- data.frame(
+    min = c(0, 1, 2, 3), 
+    max = c(10, 9, 8, 7))
+
+rownames(parRange) <- c("Rho", "Gamma", "Epsilon", "Omega")
+parRange
+
+Latinhyper(parRange,10)
+
+
 
 # Right now it is just reducing cost NOT focusing on getting to 90-90-90.
 
