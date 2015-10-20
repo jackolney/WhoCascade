@@ -333,7 +333,7 @@ function(input, output, session) {
         t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
         t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
         t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
-        t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
+        t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
         t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t0_N
         t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
 
@@ -362,7 +362,7 @@ function(input, output, session) {
         t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
         t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
         t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
-        t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
+        t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
         t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200)))) / t5_N
         t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
 
@@ -409,7 +409,7 @@ function(input, output, session) {
 
         tResult <- c(t0_vs,t0_tx_a,t0_tx_na,t0_cx,t0_dx,t0_undx,t0_preltfu,t0_ltfu,
                      t0_vs,t0_tx_a,t0_tx_na,t0_cx,t0_dx,t0_preltfu,t0_ltfu,
-                     t0_vs,t0_tx_a,t0_tx_nat0_cx,
+                     t0_vs,t0_tx_a,t0_tx_na,t0_cx,
                      t0_vs,t0_tx_a,t0_tx_na,
                      t0_vs,
                      t0_preltfu,t0_ltfu)
@@ -464,7 +464,7 @@ function(input, output, session) {
 
         tResult <- c(t5_vs,t5_tx_a,t5_tx_na,t5_cx,t5_dx,t5_undx,t5_preltfu,t5_ltfu,
                      t5_vs,t5_tx_a,t5_tx_na,t5_cx,t5_dx,t5_preltfu,t5_ltfu,
-                     t5_vs,t5_tx_a,t5_tx_nat5_cx,
+                     t5_vs,t5_tx_a,t5_tx_na,t5_cx,
                      t5_vs,t5_tx_a,t5_tx_na,
                      t5_vs,
                      t5_preltfu,t5_ltfu)
@@ -491,7 +491,7 @@ function(input, output, session) {
         levels(t5$State)
         t5$State <- factor(t5$State, levels=c("% Suppressed","% On Treatment (adherent)","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
 
-        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[7])
+        power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[7],cols[8])
 
         p <- ggplot(t5,aes(x=tOrder,y=tResult,fill=State))
         p <- p + geom_bar(stat='identity')
