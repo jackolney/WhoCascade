@@ -43,18 +43,17 @@ Beta <- 0
 
 #############
 # THE MODEL #
-Time <- seq(0,100,0.02)
+Time <- seq(0,5,0.02)
 out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
 out <- tbl_df(data.frame(out))
-out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-out <- mutate(out,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
+out <- mutate(out,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200) / N)
 out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
 out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
 out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
 out <- mutate(out,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200) / N)
 out <- mutate(out,Tx = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200) / N)
-out <- mutate(out,Adherence = (Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
+out <- mutate(out,Vs = (Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200) / N)
 out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
 out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
 out <- mutate(out,HivMortalityProp = HivMortality / N)
@@ -66,7 +65,7 @@ out$N[1]
 
 # Median just gives the median time of the simulation.
 median(out$N)
-select(filter(out,N > 22 & N < 23),time)
+select(filter(out,N > 59.45 & N < 59.47),time)
 
 # Mean calculation.
 mean(out$N)
@@ -74,7 +73,7 @@ select(filter(out,N > 933 & N < 935),time)
 
 # With >1 person.
 mean(as.list(select(filter(out,N > 1),N))$N)
-MeanSurival <- as.double(select(filter(out,N > 1179 & N < 1182),time))
+MeanSurival <- as.double(select(filter(out,N > 1699 & N < 1705),time))
 MeanSurival
 
 ggplot(out,aes(x=time,y=N/out$N[1])) + 
@@ -82,14 +81,14 @@ geom_line() +
 theme_classic() +
 xlab("Time (years)") +
 ylab("Surival (proportion)") +
-ggtitle("ART Survival (mean = 25.4 years)")
+ggtitle("ART Survival (mean = 15.5 years)")
 
 #####################
 # CD4 DISTRIBUTIONS #
-out <- mutate(out,cd4_500 = (UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Tx_A_500 + Vs_500 + Ltfu_500) / N)
-out <- mutate(out,cd4_350500 = (UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Tx_A_350500 + Vs_350500 + Ltfu_350500) / N)
-out <- mutate(out,cd4_200350 = (UnDx_200350 + Dx_200350 + Care_200350 + PreLtfu_200350 + Tx_Na_200350 + Tx_A_200350 + Vs_200350 + Ltfu_200350) / N)
-out <- mutate(out,cd4_200 = (UnDx_200 + Dx_200 + Care_200 + PreLtfu_200 + Tx_Na_200 + Tx_A_200 + Vs_200 + Ltfu_200) / N)
+out <- mutate(out,cd4_500 = (UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Tx_A_500 + Ltfu_500) / N)
+out <- mutate(out,cd4_350500 = (UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Tx_A_350500 + Ltfu_350500) / N)
+out <- mutate(out,cd4_200350 = (UnDx_200350 + Dx_200350 + Care_200350 + PreLtfu_200350 + Tx_Na_200350 + Tx_A_200350 + Ltfu_200350) / N)
+out <- mutate(out,cd4_200 = (UnDx_200 + Dx_200 + Care_200 + PreLtfu_200 + Tx_Na_200 + Tx_A_200 + Ltfu_200) / N)
 
 
 # CD4 distribution in 2015 (t0)
@@ -178,23 +177,23 @@ e <- ggplot(out,aes(x=time,y=Tx)) +
 geom_line() +
 theme_classic()
 
-f <- ggplot(out,aes(x=time,y=Adherence)) +
+f <- ggplot(out,aes(x=time,y=Vs)) +
 geom_line() +
 theme_classic()
 
-g <- ggplot(out,aes(x=time,y=Vs)) +
+g <- ggplot(out,aes(x=time,y=Ltfu)) +
 geom_line() +
 theme_classic()
 
-h <- ggplot(out,aes(x=time,y=Ltfu)) +
+h <- ggplot(out,aes(x=time,y=N)) +
 geom_line() +
 theme_classic()
 
-i <- ggplot(out,aes(x=time,y=N)) +
+i <- ggplot(out,aes(x=time,y=NewInf)) +
 geom_line() +
 theme_classic()
 
-j <- ggplot(out,aes(x=time,y=NewInf)) +
+j <- ggplot(out,aes(x=time,y=NewInfProp)) +
 geom_line() +
 theme_classic()
 
