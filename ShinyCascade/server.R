@@ -24,18 +24,14 @@ function(input, output, session) {
         Epsilon = input$epsilon,
         Kappa = 1.079,
         Gamma = input$gamma,
-        Eta = 0.476,
-        Phi = 3.628,
-        Psi = 0.431,
-        Theta = 2.28,
+        Theta = 1.511,
         Omega = input$omega,
         p = 0.95,
         s_1 = 0.25,
         s_2 = 0.75,
         s_3 = 1,
         s_4 = 2,
-        Sigma_a = 0.5,
-        Sigma_b = 0.5,
+        Sigma = 0,
         Delta_1 = 1.58084765,
         Delta_2 = 3.50371789,
         Alpha_1 = 0.00411,
@@ -48,16 +44,15 @@ function(input, output, session) {
         Tau_4 = 0.23814569,
         Mu = 0.0374,
         Dx_unitCost = input$userDxUnitCost,
-        Care_unitCost = input$userCxUnitCost,
-        TxInit_unitCost = input$userTxInitUnitCost,
-        Retention_unitCost = input$userRxUnitCost,
-        AnnualTx_unitCost = input$userAnnualTxUnitCost
+        Linkage_unitCost = input$userLinkageUnitCost,
+        Annual_Care_unitCost = input$userAnnualCareUnit,
+        Annual_ART_unitCost = input$userAnnualARTUnitCost
     )})
 
     output$parameterTable <- renderTable({
         theP <- Parameters()
-        theParameters <- c(theP[["Rho"]],theP[["Epsilon"]],theP[["Kappa"]],theP[["Gamma"]],theP[["Eta"]],theP[["Phi"]],theP[["Psi"]],theP[["Theta"]],theP[["Omega"]],theP[["Nu_1"]],theP[["Nu_2"]],theP[["Nu_3"]],theP[["p"]],theP[["s_1"]],theP[["s_2"]],theP[["s_3"]],theP[["s_4"]],theP[["Sigma_a"]],theP[["Sigma_b"]],theP[["Delta_1"]],theP[["Delta_2"]],theP[["Alpha_1"]],theP[["Alpha_2"]],theP[["Alpha_3"]],theP[["Alpha_4"]],theP[["Tau_1"]],theP[["Tau_2"]],theP[["Tau_3"]],theP[["Tau_4"]],theP[["Mu"]],theP[["Dx_unitCost"]],theP[["Care_unitCost"]],theP[["TxInit_unitCost"]],theP[["Retention_unitCost"]],theP[["AnnualTx_unitCost"]],0.5251,0.2315,0.2401,0.0033)
-        ParameterNames <- c("Rho","Epsilon","Kappa","Gamma","Eta","Phi","Psi","Theta","Omega","Nu_1","Nu_2","Nu_3","p","s_1","s_2","s_3","s_4","Sigma_a","Sigma_b","Delta_1","Delta_2","Alpha_1","Alpha_2","Alpha_3","Alpha_4","Tau_1","Tau_2","Tau_3","Tau_4","Mu","Dx_unitCost","Care_unitCost","TxInit_unitCost","Retention_unitCost","AnnualTx_unitCost","Iota_1","Iota_2","Iota_3","Iota_4")
+        theParameters <- c(theP[["Rho"]],theP[["Epsilon"]],theP[["Kappa"]],theP[["Gamma"]],theP[["Theta"]],theP[["Omega"]],theP[["Nu_1"]],theP[["Nu_2"]],theP[["Nu_3"]],theP[["p"]],theP[["s_1"]],theP[["s_2"]],theP[["s_3"]],theP[["s_4"]],theP[["Sigma"]],theP[["Delta_1"]],theP[["Delta_2"]],theP[["Alpha_1"]],theP[["Alpha_2"]],theP[["Alpha_3"]],theP[["Alpha_4"]],theP[["Tau_1"]],theP[["Tau_2"]],theP[["Tau_3"]],theP[["Tau_4"]],theP[["Mu"]],theP[["Dx_unitCost"]],theP[["Linkage_unitCost"]],theP[["Annual_Care_unitCost"]],theP[["Annual_ART_unitCost"]],0.5251,0.2315,0.2401,0.0033)
+        ParameterNames <- c("Rho","Epsilon","Kappa","Gamma","Theta","Omega","Nu_1","Nu_2","Nu_3","p","s_1","s_2","s_3","s_4","Sigma","Delta_1","Delta_2","Alpha_1","Alpha_2","Alpha_3","Alpha_4","Tau_1","Tau_2","Tau_3","Tau_4","Mu","Dx_unitCost","Linkage_unitCost","Annual_Care_unitCost","Annual_ART_unitCost","Iota_1","Iota_2","Iota_3","Iota_4")
         rows <- length(ParameterNames)
         tbl <- matrix(theParameters,rows,ncol=2)
         tbl[,1] <- ParameterNames
@@ -86,20 +81,15 @@ function(input, output, session) {
         PreLtfu_200350 = 0 * 0.2401,
         PreLtfu_200 = 0 * 0.0033,
 
-        Tx_Na_500 = (input$userTx - input$userVs) * (1-Parameters()[["p"]]) * 0.5251,
-        Tx_Na_350500 = (input$userTx - input$userVs) * (1-Parameters()[["p"]]) * 0.2315,
-        Tx_Na_200350 = (input$userTx - input$userVs) * (1-Parameters()[["p"]]) * 0.2401,
-        Tx_Na_200 = (input$userTx - input$userVs) * (1-Parameters()[["p"]]) * 0.0033,
+        Tx_Na_500 = (input$userTx - input$userVs) * 0.5251,
+        Tx_Na_350500 = (input$userTx - input$userVs) * 0.2315,
+        Tx_Na_200350 = (input$userTx - input$userVs) * 0.2401,
+        Tx_Na_200 = (input$userTx - input$userVs) * 0.0033,
 
-        Tx_A_500 = (input$userTx - input$userVs) * Parameters()[["p"]] * 0.5251,
-        Tx_A_350500 = (input$userTx - input$userVs) * Parameters()[["p"]] * 0.2315,
-        Tx_A_200350 = (input$userTx - input$userVs) * Parameters()[["p"]] * 0.2401,
-        Tx_A_200 = (input$userTx - input$userVs) * Parameters()[["p"]] * 0.0033,
-
-        Vs_500 = (input$userVs) * 0.5251,
-        Vs_350500 = (input$userVs) * 0.2315,
-        Vs_200350 = (input$userVs) * 0.2401,
-        Vs_200 = (input$userVs) * 0.0033,
+        Tx_A_500 = input$userVs * 0.5251,
+        Tx_A_350500 = input$userVs * 0.2315,
+        Tx_A_200350 = input$userVs * 0.2401,
+        Tx_A_200 = input$userVs * 0.0033,
 
         Ltfu_500 = (input$userLtfu) * 0.5251,
         Ltfu_350500 = (input$userLtfu) * 0.2315,
@@ -111,14 +101,11 @@ function(input, output, session) {
         HivMortality = 0,
         NaturalMortality = 0,
 
-        # Transition costs
+        # Costs
         Dx_Cost = 0,
-        Care_Cost = 0,
-        TxInit_Cost = 0,
-        Retention_Cost = 0,
-
-        # Annual costs
-        AnnualTx_Cost = 0
+        Linkage_Cost = 0,
+        Annual_Care_Cost = 0,
+        Annual_ART_Cost = 0
     )})
 
     observeEvent(input$demoInput, {
@@ -655,14 +642,13 @@ function(input, output, session) {
     output$unitCostTable <- renderTable({
         theP <- Parameters()
         Dx_unitCost <- dollar(as.double(theP["Dx_unitCost"]))
-        Care_unitCost <- dollar(as.double(theP["Care_unitCost"]))
-        TxInit_unitCost <- dollar(as.double(theP["TxInit_unitCost"]))
-        AnnualTx_unitCost <- dollar(as.double(theP["AnnualTx_unitCost"]))
-        Retention_unitCost <- dollar(as.double(theP["Retention_unitCost"]))
-        Cost <- c(Dx_unitCost,Care_unitCost,TxInit_unitCost,AnnualTx_unitCost,Retention_unitCost)
-        Unit <- c("HIV-testing","Care","Treatment Initiation","Annual Treatment","Retention")
+        Linkage_unitCost <- dollar(as.double(theP["Linkage_unitCost"]))
+        Annual_Care_unitCost <- dollar(as.double(theP["Annual_Care_unitCost"]))
+        Annual_ART_unitCost <- dollar(as.double(theP["Annual_ART_unitCost"]))
+        Cost <- c(Dx_unitCost,Linkage_unitCost,Annual_Care_unitCost,Annual_ART_unitCost)
+        Unit <- c("HIV-testing","Linkage","Annual Care","Annual Treatment")
         UnitCostTable <- data.frame(Unit,Cost)
-        UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-testing","Care","Treatment Initiation","Annual Treatment","Retention"))
+        UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-testing","Linkage","Annual Care","Annual Treatment"))
         return(UnitCostTable)
     })
 
