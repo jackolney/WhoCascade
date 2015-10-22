@@ -29,11 +29,6 @@ Initial <- c(
     Tx_A_200350 = 1e+4 * 0 * 0.2401,
     Tx_A_200 = 1e+4 * 0 * 0.0033,
 
-    Vs_500 = 1e+4 * 0 * 0.5251,
-    Vs_350500 = 1e+4 * 0 * 0.2315,
-    Vs_200350 = 1e+4 * 0 * 0.2401,
-    Vs_200 = 1e+4 * 0 * 0.0033,
-
     Ltfu_500 = 0,
     Ltfu_350500 = 0,
     Ltfu_200350 = 0,
@@ -44,12 +39,9 @@ Initial <- c(
     HivMortality = 0,
     NaturalMortality = 0,
 
-    # Transition costs
+    # Costs
     Dx_Cost = 0,
-    Care_Cost = 0,
-    TxInit_Cost = 0,
-    Retention_Cost = 0,
-
-    # Annual costs
-    AnnualTxCost = 0
+    Linkage_Cost = 0,
+    Annual_Care_Cost = 0,
+    Annual_ART_Cost = 0
 )
