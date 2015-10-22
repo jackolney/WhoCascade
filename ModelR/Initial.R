@@ -39,12 +39,9 @@ Initial <- c(
     HivMortality = 0,
     NaturalMortality = 0,
 
-    # Transition costs
+    # Costs
     Dx_Cost = 0,
-    Care_Cost = 0,
-    TxInit_Cost = 0,
-    Retention_Cost = 0,
-
-    # Annual costs
-    AnnualTxCost = 0
+    Linkage_Cost = 0,
+    Annual_Care_Cost = 0,
+    Annual_ART_Cost = 0
 )

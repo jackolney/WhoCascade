@@ -58,6 +58,7 @@ out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
 out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
 out <- mutate(out,HivMortalityProp = HivMortality / N)
 out <- mutate(out,NewInfProp = NewInf / N)
+out <- mutate(out,TotalCost = Dx_Cost + Linkage_Cost + Annual_Care_Cost + Annual_ART_Cost)
 #############
 
 plot(out$N/out$N[1],type='l',lwd=2)

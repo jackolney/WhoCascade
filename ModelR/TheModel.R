@@ -35,20 +35,15 @@ ComplexCascade <- function(t, y, parms) {
     dLtfu_200350 <- + parms[["Omega"]] * (y[["Tx_Na_200350"]] + y[["Tx_A_200350"]]) + parms[["Nu_2"]] * y[["Ltfu_350500"]] - (parms[["Nu_3"]] + parms[["Alpha_3"]] + parms[["Mu"]]) * y[["Ltfu_200350"]]
     dLtfu_200 <- + parms[["Omega"]] * (y[["Tx_Na_200"]] + y[["Tx_A_200"]]) + parms[["Nu_3"]] * y[["Ltfu_200350"]] - (parms[["Alpha_4"]] + parms[["Mu"]]) * y[["Ltfu_200"]]
 
-
     dNewInf <- Beta * (((y[["UnDx_500"]] + y[["Dx_500"]] + y[["Care_500"]] + y[["PreLtfu_500"]] + y[["Tx_Na_500"]] + y[["Ltfu_500"]]) * 1.35) + ((y[["UnDx_350500"]] + y[["Dx_350500"]] + y[["Care_350500"]] + y[["PreLtfu_350500"]] + y[["Tx_Na_350500"]] + y[["Ltfu_350500"]]) * 1) + ((y[["UnDx_200350"]] + y[["Dx_200350"]] + y[["Care_200350"]] + y[["PreLtfu_200350"]] + y[["Tx_Na_200350"]] + y[["Ltfu_200350"]]) * 1.64) + ((y[["UnDx_200"]] + y[["Dx_200"]] + y[["Care_200"]] + y[["PreLtfu_200"]] + y[["Tx_Na_200"]] + y[["Ltfu_200"]]) * 5.17) + ((y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_200350"]] + y[["Tx_A_200"]]) * 0.1))
     dHivMortality <- parms[["Alpha_1"]] * (y[["UnDx_500"]] + y[["Dx_500"]] + y[["Care_500"]] + y[["PreLtfu_500"]] + y[["Tx_Na_500"]]) + parms[["Alpha_2"]] * (y[["UnDx_350500"]] + y[["Dx_350500"]] + y[["Care_350500"]] + y[["PreLtfu_350500"]] + y[["Tx_Na_350500"]]) + parms[["Alpha_3"]] * (y[["UnDx_200350"]] + y[["Dx_200350"]] + y[["Care_200350"]] + y[["PreLtfu_200350"]] + y[["Tx_Na_200350"]]) + parms[["Alpha_4"]] * (y[["UnDx_200"]] + y[["Dx_200"]] + y[["Care_200"]] + y[["PreLtfu_200"]] + y[["Tx_Na_200"]]) + parms[["Tau_1"]] * y[["Tx_A_500"]] + parms[["Tau_2"]] * y[["Tx_A_350500"]] + parms[["Tau_3"]] * y[["Tx_A_200350"]] + parms[["Tau_4"]] * y[["Tx_A_200"]]
     dNaturalMortality <- parms[["Mu"]] * (y[["UnDx_500"]] + y[["UnDx_350500"]] + y[["UnDx_200350"]] + y[["UnDx_200"]] + y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_200350"]] + y[["Dx_200"]] + y[["Care_500"]] + y[["Care_350500"]] + y[["Care_200350"]] + y[["Care_200"]] + y[["PreLtfu_500"]] + y[["PreLtfu_350500"]] + y[["PreLtfu_200350"]] + y[["PreLtfu_200"]] + y[["Tx_Na_500"]] + y[["Tx_Na_350500"]] + y[["Tx_Na_200350"]] + y[["Tx_Na_200"]] + y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_200350"]] + y[["Tx_A_200"]] + y[["Ltfu_500"]] + y[["Ltfu_350500"]] + y[["Ltfu_200350"]] + y[["Ltfu_200"]])
 
-    # Transition Costs
+    # Costs
     dDx_Cost <- (parms[["Rho"]] * (y[["UnDx_500"]] + y[["UnDx_350500"]] + y[["UnDx_200350"]] + y[["UnDx_200"]])) * parms[["Dx_unitCost"]]
-    dCare_Cost <- (parms[["Epsilon"]] * (y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_200350"]] + y[["Dx_200"]])) * parms[["Care_unitCost"]]
-    dTxInit_Cost <- (((parms[["p"]] * parms[["Theta"]]) * (y[["UnDx_500"]] + y[["UnDx_350500"]] + y[["UnDx_200350"]] + y[["UnDx_200"]])) + (((1-parms[["p"]]) * parms[["Theta"]]) * (y[["UnDx_500"]] + y[["UnDx_350500"]] + y[["UnDx_200350"]] + y[["UnDx_200"]])) + ((parms[["p"]] * parms[["Theta"]]) * (y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_200350"]] + y[["Dx_200"]])) + (((1-parms[["p"]]) * parms[["Theta"]]) * (y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_200350"]] + y[["Dx_200"]])) + ((parms[["p"]] * parms[["Gamma"]]) * (y[["Care_500"]] + y[["Care_350500"]] + y[["Care_200350"]] + y[["Care_200"]])) + (((1-parms[["p"]]) * parms[["Gamma"]]) * (y[["Care_500"]] + y[["Care_350500"]] + y[["Care_200350"]] + y[["Care_200"]])) + ((parms[["p"]] * parms[["Theta"]]) * (y[["PreLtfu_500"]] + y[["PreLtfu_350500"]] + y[["PreLtfu_200350"]] + y[["PreLtfu_200"]])) + (((1-parms[["p"]]) * parms[["Theta"]]) * (y[["PreLtfu_500"]] + y[["PreLtfu_350500"]] + y[["PreLtfu_200350"]] + y[["PreLtfu_200"]]))) * parms[["TxInit_unitCost"]]
-    
-    dRetention_Cost <- (parms[["Omega"]] * (y[["Tx_Na_500"]] + y[["Tx_Na_350500"]] + y[["Tx_Na_200350"]] + y[["Tx_Na_200"]] + y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_200350"]] + y[["Tx_A_200"]])) * parms[["Retention_unitCost"]]
-
-    # Annual Costs
-    dAnnualTxCost <- (y[["Tx_Na_500"]] + y[["Tx_Na_350500"]] + y[["Tx_Na_200350"]] + y[["Tx_Na_200"]] + y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_200350"]] + y[["Tx_A_200"]]) * parms[["AnnualTx_unitCost"]]
+    dLinkage_Cost <- (parms[["Epsilon"]] * (y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_200350"]] + y[["Dx_200"]])) * parms[["Linkage_unitCost"]]
+    dAnnual_Care_Cost <- (y[["Care_500"]] + y[["Care_350500"]] + y[["Care_200350"]] + y[["Care_200"]]) * parms[["Annual_Care_unitCost"]]
+    dAnnual_ART_Cost <- (y[["Tx_Na_500"]] + y[["Tx_Na_350500"]] + y[["Tx_Na_200350"]] + y[["Tx_Na_200"]] + y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_200350"]] + y[["Tx_A_200"]]) * parms[["Annual_ART_unitCost"]]
     
     list(c(
         dUnDx_500,
@@ -83,8 +78,7 @@ ComplexCascade <- function(t, y, parms) {
         dHivMortality,
         dNaturalMortality,
         dDx_Cost,
-        dCare_Cost,
-        dTxInit_Cost,
-        dRetention_Cost,
-        dAnnualTxCost))
+        dLinkage_Cost,
+        dAnnual_Care_Cost,
+        dAnnual_ART_Cost))
 }

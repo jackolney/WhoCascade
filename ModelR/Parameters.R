@@ -26,8 +26,7 @@ Parameters <- c(
     Tau_4 = 0.23814569,
     Mu = 0.0374,
     Dx_unitCost = 10,
-    Care_unitCost = 12,
-    TxInit_unitCost = 28,
-    Retention_unitCost = 367,
-    AnnualTx_unitCost = 367
+    Linkage_unitCost = 40,
+    Annual_Care_unitCost = 40,
+    Annual_ART_unitCost = 367
 )
