@@ -379,7 +379,7 @@ shinyUI(
         ),
     navbarMenu("More",
     tabPanel("Model Document",
-        HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhazg1Y1U5RGpkeEk/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
+        HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhOEdNRmNPYjFqQjg/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
         ),
     tabPanel("Country Input Data",
         HTML('<iframe src=\"https://drive.google.com/file/d/1rIMf-0vB77uwy7XO4rCM9Isd7_ReiCeOkwW1BvoxZw4/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
