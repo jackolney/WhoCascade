@@ -14,6 +14,7 @@ require(ggplot2)
 require(scales)
 require(gridExtra)
 require(googlesheets)
+require(grid)
 
 # Set time step
 # Time <- seq(0,5,0.02)
@@ -23,8 +24,8 @@ source("Parameters.R")
 source("Initial.R")
 
 # Googlesheet Spectrum Incidence Values
-# theTable <- gs_title("SpectrumIncidenceEstimates")
-# theIncidence <- gs_read(theTable,ws="NewInfections")
+theTable <- gs_title("SpectrumIncidenceEstimates")
+theIncidence <- gs_read(theTable,ws="NewInfections")
 
 # # AIDSinfo estimates (2014)
 # theIncidence$NewInfections2014
@@ -36,10 +37,13 @@ source("Initial.R")
 # # [12] = Kenya incidence estimate
 # theIncidence$NewInfections2014[12]
 
-
-# Beta <- as.double(theIncidence$NewInfections2014[12] / (((Initial[1] + Initial[5] + Initial[9] + Initial[13] + Initial[21]) * 1.35) + ((Initial[2] + Initial[6] + Initial[10] + Initial[14] + Initial[22]) * 1) + ((Initial[3] + Initial[7] + Initial[11] + Initial[15] + Initial[23]) * 1.64) + ((Initial[4] + Initial[8] + Initial[12] + Initial[16] + Initial[24]) * 5.17) + ((Initial[17] + Initial[18] + Initial[19] + Initial[20]) * 0.1)))
+# Beta Calculation #
+# Beta <- 0
 # Beta <- 0.0275837
-Beta <- 0
+Numerator <- theIncidence$NewInfections2014[12]
+Denominator <- as.double(((Initial[["UnDx_500"]] + Initial[["Dx_500"]] + Initial[["Care_500"]] + Initial[["PreLtfu_500"]] + Initial[["Tx_Na_500"]] + Initial[["Ltfu_500"]]) * 1.35) + ((Initial[["UnDx_350500"]] + Initial[["Dx_350500"]] + Initial[["Care_350500"]] + Initial[["PreLtfu_350500"]] + Initial[["Tx_Na_350500"]] + Initial[["Ltfu_350500"]]) * 1) + ((Initial[["UnDx_200350"]] + Initial[["Dx_200350"]] + Initial[["Care_200350"]] + Initial[["PreLtfu_200350"]] + Initial[["Tx_Na_200350"]] + Initial[["Ltfu_200350"]]) * 1.64) + ((Initial[["UnDx_200"]] + Initial[["Dx_200"]] + Initial[["Care_200"]] + Initial[["PreLtfu_200"]] + Initial[["Tx_Na_200"]] + Initial[["Ltfu_200"]]) * 5.17) + ((Initial[["Tx_A_500"]] + Initial[["Tx_A_350500"]] + Initial[["Tx_A_200350"]] + Initial[["Tx_A_200"]]) * 0.1))
+Beta <- Numerator / Denominator
+print(paste("Beta =",Beta))
 
 #############
 # THE MODEL #
@@ -212,6 +216,287 @@ grid.arrange(a,b,c,d,e,f,g,h,i,j,k,l,nrow=4,ncol=3)
 
 # Survival plot
 
+###############
+# CareCascade #
+###############
+
+t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
+t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
+t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200)))) / t0_N
+t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200)))) / t0_N
+t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200)))) / t0_N
+t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
+
+t0_results <- c(t0_dx,t0_cx,t0_tx,t0_vs,t0_ltfu)
+
+definition <- c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU")
+t0 <- data.frame(definition,t0_results)
+
+levels(t0$definition)
+t0$definition <- factor(t0$definition, levels=c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU"))
+
+fill.coll <- rev(brewer.pal(9,"Blues")[4:8])
+
+o <- ggplot(t0,aes(definition,t0_results))
+o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+o <- o + scale_fill_manual(values=fill.coll)
+o <- o + ggtitle("Care Cascade in 2015")
+o <- o + theme_classic()
+o <- o + theme(title=element_text(size=10))
+o <- o + theme(axis.title=element_blank())
+o <- o + theme(axis.text.x=element_text(size=9))
+o <- o + theme(axis.text.y=element_text(size=9))
+o <- o + theme(legend.position="none")
+
+graphics.off()
+quartz.options(w=5.5,h=3)
+o
+
+t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
+t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200)))) / t5_N
+t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200)))) / t5_N
+t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200)))) / t5_N
+t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+
+t5_results <- c(t5_dx,t5_cx,t5_tx,t5_vs,t5_ltfu)
+
+definition <- c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU")
+t5 <- data.frame(definition,t5_results)
+
+levels(t5$definition)
+t5$definition <- factor(t5$definition, levels=c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU"))
+
+fill.coll <- rev(brewer.pal(9,"Blues")[4:8])
+
+p <- ggplot(t5,aes(definition,t5_results))
+p <- p + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+p <- p + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+p <- p + scale_fill_manual(values=fill.coll)
+p <- p + ggtitle("Care Cascade in 2020")
+p <- p + theme_classic()
+p <- p + theme(title=element_text(size=10))
+p <- p + theme(axis.title=element_blank())
+p <- p + theme(axis.text.x=element_text(size=9))
+p <- p + theme(axis.text.y=element_text(size=9))
+p <- p + theme(legend.position="none")
+
+graphics.off()
+quartz.options(w=5.5,h=3)
+p
+
+grid.arrange(o,p,nrow=1,ncol=2)
+
+#################
+# PowersCascade #
+#################
+
+t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
+t0_undx = as.double(sum(filter(out,time == 0) %>% select(c(UnDx_500,UnDx_350500,UnDx_200350,UnDx_200)))) / t0_N
+t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200)))) / t0_N
+t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_200350,Care_200)))) / t0_N
+t0_preltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200)))) / t0_N
+t0_tx_na = as.double(sum(filter(out,time == 0) %>% select(c(Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200)))) / t0_N
+t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200)))) / t0_N
+t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t0_N
+
+tResult <- c(t0_vs,t0_tx_na,t0_cx,t0_dx,t0_undx,t0_preltfu,t0_ltfu,
+             t0_vs,t0_tx_na,t0_cx,t0_dx,t0_preltfu,t0_ltfu,
+             t0_vs,t0_tx_na,t0_cx,
+             t0_vs,t0_tx_na,
+             t0_vs,
+             t0_preltfu,t0_ltfu)
+
+State <- c("% Suppressed","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU",
+           "% Suppressed","% On Treatment (non-adherent)","% In Care","% Diagnosed","% pre-ART LTFU","% LTFU",
+           "% Suppressed","% On Treatment (non-adherent)","% In Care",
+           "% Suppressed","% On Treatment (non-adherent)",
+           "% Suppressed",
+           "% pre-ART LTFU","% LTFU")
+
+tOrder <- c(rep("All",7),
+            rep("Diagnosed",6),
+            rep("In Care",3),
+            rep("On Treatment",2),
+            rep("Virally Suppressed",1),
+            rep("LTFU",2))
+
+t0 <- data.frame(State,tResult,tOrder)
+
+levels(t0$tOrder)
+t0$tOrder <- factor(t0$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
+
+levels(t0$State)
+t0$State <- factor(t0$State, levels=c("% Suppressed","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
+
+cols <- brewer.pal(9,"Set1")
+power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[8])
+
+o <- ggplot(t0,aes(x=tOrder,y=tResult,fill=State))
+o <- o + geom_bar(stat='identity')
+o <- o + scale_y_continuous(breaks=seq(0,1,0.1),labels=percent)
+o <- o + scale_fill_manual(values=power.col)
+o <- o + ggtitle("Care Cascade in 2015")
+o <- o + theme_classic()
+o <- o + theme(title=element_text(size=10))
+o <- o + theme(axis.title=element_blank())
+o <- o + theme(axis.text.x=element_text(size=9))
+o <- o + theme(axis.text.y=element_text(size=8))
+o <- o + theme(legend.text=element_text(size=7))
+o <- o + theme(legend.key.size=unit(3,"mm"))
+
+graphics.off()
+quartz.options(w=9,h=4)
+o
+
+t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
+t5_undx = as.double(sum(filter(out,time == 5) %>% select(c(UnDx_500,UnDx_350500,UnDx_200350,UnDx_200)))) / t5_N
+t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200)))) / t5_N
+t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_200350,Care_200)))) / t5_N
+t5_preltfu = as.double(sum(filter(out,time == 5) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200)))) / t5_N
+t5_tx_na = as.double(sum(filter(out,time == 5) %>% select(c(Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200)))) / t5_N
+t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200)))) / t5_N
+t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200)))) / t5_N
+
+
+tResult <- c(t5_vs,t5_tx_na,t5_cx,t5_dx,t5_undx,t5_preltfu,t5_ltfu,
+             t5_vs,t5_tx_na,t5_cx,t5_dx,t5_preltfu,t5_ltfu,
+             t5_vs,t5_tx_na,t5_cx,
+             t5_vs,t5_tx_na,
+             t5_vs,
+             t5_preltfu,t5_ltfu)
+
+State <- c("% Suppressed","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU",
+           "% Suppressed","% On Treatment (non-adherent)","% In Care","% Diagnosed","% pre-ART LTFU","% LTFU",
+           "% Suppressed","% On Treatment (non-adherent)","% In Care",
+           "% Suppressed","% On Treatment (non-adherent)",
+           "% Suppressed",
+           "% pre-ART LTFU","% LTFU")
+
+tOrder <- c(rep("All",7),
+            rep("Diagnosed",6),
+            rep("In Care",3),
+            rep("On Treatment",2),
+            rep("Virally Suppressed",1),
+            rep("LTFU",2))
+
+t5 <- data.frame(State,tResult,tOrder)
+
+levels(t5$tOrder)
+t5$tOrder <- factor(t5$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
+
+levels(t5$State)
+t5$State <- factor(t5$State, levels=c("% Suppressed","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
+
+power.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[8])
+
+p <- ggplot(t5,aes(x=tOrder,y=tResult,fill=State))
+p <- p + geom_bar(stat='identity')
+p <- p + scale_y_continuous(breaks=seq(0,1,0.1),labels=percent)
+p <- p + scale_fill_manual(values=power.col)
+p <- p + ggtitle("Care Cascade in 2020")
+p <- p + theme_classic()
+p <- p + theme(title=element_text(size=10))
+p <- p + theme(axis.title=element_blank())
+p <- p + theme(axis.text.x=element_text(size=9))
+p <- p + theme(axis.text.y=element_text(size=8))
+p <- p + theme(legend.text=element_text(size=7))
+p <- p + theme(legend.key.size=unit(3,"mm"))
+
+graphics.off()
+quartz.options(w=9,h=4)
+p
+
+#################
+# 90-90-90 PLOT #
+#################
+
+Plot909090 <- function() {
+    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+    # dx / PLHIV
+    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+    # tx / dx
+    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200))))
+    # vs / tx
+    vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200))))
+
+    p_dx <- dx / PLHIV
+    p_tx <- tx / dx
+    p_vs <- vs / tx
+
+    results <- c(p_dx,p_tx,p_vs)
+    definition <- c("% Diagnosed\nof all PLHIV","% On Treatment\nof all diagnosed","% Suppressed\nof all on ART")
+    Scenario <- c("Baseline")
+    the909090 <- data.frame(definition,results,Scenario)
+
+    levels(the909090$definition)
+    the909090$definition <- factor(the909090$definition, levels=c("% Diagnosed\nof all PLHIV","% On Treatment\nof all diagnosed","% Suppressed\nof all on ART"))
+
+    fill.coll <- brewer.pal(4,"Set1")
+
+    o <- ggplot(the909090,aes(definition,results))
+    o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+    o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+    o <- o + scale_fill_manual(values=fill.coll)
+    o <- o + geom_abline(intercept=0.9, slope=0)
+    o <- o + theme_classic()
+    o <- o + theme(title=element_text(size=10))
+    o <- o + theme(axis.title=element_blank())
+    o <- o + theme(axis.text.x=element_text(size=8))
+    o <- o + theme(axis.text.y=element_text(size=9))
+    o <- o + theme(legend.position="none")
+    print(o)
+}
+
+graphics.off()
+quartz.options(w=4,h=3)
+Plot909090()
+# grid.arrange(o,p,nrow=1,ncol=2)
+
+###########################
+# 90-90-90 PLOT Version 2 #
+###########################
+
+Plot909090v2 <- function() {
+    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
+    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200))))
+    vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200))))
+
+    p_dx <- dx / PLHIV
+    p_tx <- tx / PLHIV
+    p_vs <- vs / PLHIV
+
+    results <- c(p_dx,p_tx,p_vs)
+    definition <- c("% Diagnosed\nof all PLHIV","% On Treatment\nof all PLHIV","% Suppressed\nof all PLHIV")
+    Scenario <- c("Baseline")
+    the909090 <- data.frame(definition,results,Scenario)
+
+    levels(the909090$definition)
+    the909090$definition <- factor(the909090$definition, levels=c("% Diagnosed\nof all PLHIV","% On Treatment\nof all PLHIV","% Suppressed\nof all PLHIV"))
+
+    fill.coll <- brewer.pal(4,"Set1")
+
+    o <- ggplot(the909090,aes(definition,results))
+    o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+    o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+    o <- o + scale_fill_manual(values=fill.coll)
+    o <- o + geom_segment(aes(x = 0.5, y = 0.9, xend = 1.5, yend = 0.9))
+    o <- o + geom_segment(aes(x = 1.5, y = 0.9^2, xend = 2.5, yend = 0.9^2))
+    o <- o + geom_segment(aes(x = 2.5, y = 0.9^3, xend = 3.5, yend = 0.9^3))
+    o <- o + theme_classic()
+    o <- o + theme(title=element_text(size=10))
+    o <- o + theme(axis.title=element_blank())
+    o <- o + theme(axis.text.x=element_text(size=8))
+    o <- o + theme(axis.text.y=element_text(size=9))
+    o <- o + theme(legend.position="none")
+    print(o)
+}
+
+graphics.off()
+quartz.options(w=4,h=3)
+Plot909090v2()
 
 #################
 # 90-90-90 Test #
