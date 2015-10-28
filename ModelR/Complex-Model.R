@@ -165,7 +165,6 @@ plot(out$time,out$AnnualTxCost,type='l',lwd=2)
 300 / 50
 
 
-
 a <- ggplot(out,aes(x=time,y=UnDx)) +
 geom_line() +
 theme_classic()
