@@ -58,6 +58,9 @@ function(input, output, session) {
         Tau_6 = 0.045482,
         Tau_7 = 1.02785,
         Mu = 0.0374,
+        ART_500 = input$userART_500,
+        ART_350 = input$userART_350,
+        ART_200 = input$userART_200,
         Dx_unitCost = input$userDxUnitCost,
         Linkage_unitCost = input$userLinkageUnitCost,
         Annual_Care_unitCost = input$userAnnualCareUnit,
@@ -883,6 +886,29 @@ function(input, output, session) {
             width=1000))
     },
     deleteFile=FALSE)
+
+    # ART Initiation Checkbox Rules #
+    observeEvent(input$userART_500, {
+        if(input$userART_500 == TRUE) {
+            updateCheckboxInput(session,"userART_350",value=TRUE)
+            updateCheckboxInput(session,"userART_200",value=TRUE)
+        }
+    })
+
+    observeEvent(input$userART_350, {
+        if(input$userART_350 == TRUE) {
+            updateCheckboxInput(session,"userART_200",value=TRUE)
+        } else {
+            updateCheckboxInput(session,"userART_500",value=FALSE)
+        }
+    })
+
+    observeEvent(input$userART_200, {
+        if(input$userART_200 == FALSE) {
+            updateCheckboxInput(session,"userART_350",value=FALSE)
+            updateCheckboxInput(session,"userART_500",value=FALSE)
+        }
+    })
 
     # Inverse sliders for parameter window #
 
