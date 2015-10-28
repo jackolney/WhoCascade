@@ -157,10 +157,11 @@ shinyUI(
                     tags$li("It is hoped that this model will help countries prioritise strategies and estimate the costs required to achieve future targets.")
                 ),
                 h3("The Model"),
-                p("The simplified structure of the model is shown below. State compartments do not exactly correlate with the indicators in Consolidated Indicator Guidelines, as compartments in the model 
-                    must be discrete and exhaustive, while the indicators listed are not all discrete; for example, ‘Knowing HIV status’ includes all patients who are in care, on treatment, virally suppressed and 
-                    lost from care as long as they are diagnosed. However, the model is able to reconcile this by taking individual indicators and seperating them into their components to specify the initial conditions for simulations."),
-                helpText("More details on the model can be found in the following pages, along with a detailed description under the 'more' table and 'Model Document'."),
+                    p("The simplified structure of the model is shown below. State compartments do not exactly correlate with the indicators in Consolidated Indicator Guidelines, 
+                        as compartments in the model must be discrete and exhaustive, while the indicators listed are not all discrete; for example, 'Knowing HIV status' includes all patients who are in care, 
+                        on treatment, virally suppressed and lost from care as long as they are diagnosed. However, the model is able to reconcile this by taking individual indicators and separating them into their 
+                        components to specify the initial conditions for simulations."),
+                    helpText("More details on the model can be found in the following pages, along with a detailed description under the 'more' table and 'Model Document'."),
                 img(src="ModelSimple.png",height=200,width=850),
                 h3("Outcomes"),
                 tags$ol(
