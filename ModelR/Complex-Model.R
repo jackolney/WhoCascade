@@ -47,7 +47,7 @@ print(paste("Beta =",Beta))
 
 #############
 # THE MODEL #
-Time <- seq(0,5,0.02)
+Time <- seq(0,100,0.02)
 out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
 out <- tbl_df(data.frame(out))
 out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50 + Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50)
@@ -65,12 +65,24 @@ out <- mutate(out,NewInfProp = NewInf / N)
 out <- mutate(out,TotalCost = Dx_Cost + Linkage_Cost + Annual_Care_Cost + Annual_ART_Cost)
 #############
 
-plot(out$N/out$N[1],type='l',lwd=2)
-out$N[1]
+plot(out$time,out$N/out$N[1],type='l',lwd=2)
 
-# Median just gives the median time of the simulation.
-median(out$N)
-select(filter(out,N > 59.45 & N < 59.47),time)
+# With >1000 people (0.1% of people)
+mean(as.list(select(filter(out,N > 1000),N))$N)
+MeanSurival <- as.double(select(filter(out,N > 241830 & N < 242830),time))
+
+plot(out$time,out$N/out$N[1],type='l',lwd=2)
+abline(v=MeanSurival)
+
+
+ggplot(out,aes(x=time,y=N/out$N[1])) + 
+geom_line() + 
+geom_vline(xintercept = MeanSurival) +
+theme_classic() +
+xlab("Time (years)") +
+ylab("Surival (proportion)") +
+ggtitle(paste("Pre-ART Survival (mean =",MeanSurival,"years)"))
+
 
 # Mean calculation.
 mean(out$N)
@@ -78,6 +90,7 @@ select(filter(out,N > 95060 & N < 96000),time)
 
 # With >1 person.
 mean(as.list(select(filter(out,N > 1),N))$N)
+as.double(select(filter(out,N > 241830 & N < 242830),time))
 as.double(select(filter(out,N > 138120 & N < 138500),time))
 MeanSurival <- as.double(select(filter(out,N > 138120 & N < 138140),time))
 MeanSurival

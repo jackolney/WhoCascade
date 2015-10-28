@@ -5,7 +5,6 @@ userLtfu = 42568
 userTx = 247577
 userVs = 115407
 
-
 Initial <- c(
     UnDx_500 = (userPLHIV - userDx) * 0.5251,
     UnDx_350500 = (userPLHIV - userDx) * 0.2315,
