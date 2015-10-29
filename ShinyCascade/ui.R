@@ -208,6 +208,7 @@ shinyUI(
                 wellPanel(
                     h4("ART Initiation Threshold"),
                     helpText("Please check the box corresponding to the correct treatment threshold. Boxes are reactive and nearby boxes will adjust to the selection made. Please note that unchecking all boxes will result in ART being witheld for all individuals."),
+                    checkboxInput("userART_All","Immediate ART",value=TRUE),
                     checkboxInput("userART_500","CD4 <500",value=TRUE),
                     checkboxInput("userART_350","CD4 <350",value=TRUE),
                     checkboxInput("userART_200","CD4 <200",value=TRUE)

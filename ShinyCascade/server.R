@@ -58,6 +58,7 @@ function(input, output, session) {
         Tau_6 = 0.045482,
         Tau_7 = 1.02785,
         Mu = 0.0374,
+        ART_All = input$userART_All,
         ART_500 = input$userART_500,
         ART_350 = input$userART_350,
         ART_200 = input$userART_200,
@@ -935,10 +936,20 @@ function(input, output, session) {
     deleteFile=FALSE)
 
     # ART Initiation Checkbox Rules #
+    observeEvent(input$userART_All, {
+        if(input$userART_All == TRUE) {
+            updateCheckboxInput(session,"userART_500",value=TRUE)
+            updateCheckboxInput(session,"userART_350",value=TRUE)
+            updateCheckboxInput(session,"userART_200",value=TRUE)
+        }
+    })
+
     observeEvent(input$userART_500, {
         if(input$userART_500 == TRUE) {
             updateCheckboxInput(session,"userART_350",value=TRUE)
             updateCheckboxInput(session,"userART_200",value=TRUE)
+        } else {
+            updateCheckboxInput(session,"userART_All",value=FALSE)
         }
     })
 
@@ -946,14 +957,16 @@ function(input, output, session) {
         if(input$userART_350 == TRUE) {
             updateCheckboxInput(session,"userART_200",value=TRUE)
         } else {
+            updateCheckboxInput(session,"userART_All",value=FALSE)
             updateCheckboxInput(session,"userART_500",value=FALSE)
         }
     })
 
     observeEvent(input$userART_200, {
         if(input$userART_200 == FALSE) {
-            updateCheckboxInput(session,"userART_350",value=FALSE)
+            updateCheckboxInput(session,"userART_All",value=FALSE)
             updateCheckboxInput(session,"userART_500",value=FALSE)
+            updateCheckboxInput(session,"userART_350",value=FALSE)
         }
     })
 
