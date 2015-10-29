@@ -79,61 +79,61 @@ function(input, output, session) {
     })
 
     Initial <- reactive({c(
-        UnDx_500 = (input$userPLHIV - input$userDx) * 0.5251,
-        UnDx_350500 = (input$userPLHIV - input$userDx) * 0.2315,
-        UnDx_250350 = (input$userPLHIV - input$userDx) * 0.1787,
-        UnDx_200250 = (input$userPLHIV - input$userDx) * 0.0615,
-        UnDx_100200 = (input$userPLHIV - input$userDx) * 0.0011,
-        UnDx_50100 = (input$userPLHIV - input$userDx) * 0.0008,
-        UnDx_50 = (input$userPLHIV - input$userDx) * 0.0014,
+        UnDx_500 = (input$userPLHIV - input$userDx) * prop_preART_500,
+        UnDx_350500 = (input$userPLHIV - input$userDx) * prop_preART_350500,
+        UnDx_250350 = (input$userPLHIV - input$userDx) * prop_preART_250350,
+        UnDx_200250 = (input$userPLHIV - input$userDx) * prop_preART_200250,
+        UnDx_100200 = (input$userPLHIV - input$userDx) * prop_preART_100200,
+        UnDx_50100 = (input$userPLHIV - input$userDx) * prop_preART_50100,
+        UnDx_50 = (input$userPLHIV - input$userDx) * prop_preART_50,
 
-        Dx_500 = (input$userDx - input$userCare - input$userLtfu) * 0.5251,
-        Dx_350500 = (input$userDx - input$userCare - input$userLtfu) * 0.2315,
-        Dx_250350 = (input$userDx - input$userCare - input$userLtfu) * 0.1787,
-        Dx_200250 = (input$userDx - input$userCare - input$userLtfu) * 0.0615,
-        Dx_100200 = (input$userDx - input$userCare - input$userLtfu) * 0.0011,
-        Dx_50100 = (input$userDx - input$userCare - input$userLtfu) * 0.0008,
-        Dx_50 = (input$userDx - input$userCare - input$userLtfu) * 0.0014,
+        Dx_500 = (input$userDx - input$userCare - input$userLtfu) * prop_preART_500,
+        Dx_350500 = (input$userDx - input$userCare - input$userLtfu) * prop_preART_350500,
+        Dx_250350 = (input$userDx - input$userCare - input$userLtfu) * prop_preART_250350,
+        Dx_200250 = (input$userDx - input$userCare - input$userLtfu) * prop_preART_200250,
+        Dx_100200 = (input$userDx - input$userCare - input$userLtfu) * prop_preART_100200,
+        Dx_50100 = (input$userDx - input$userCare - input$userLtfu) * prop_preART_50100,
+        Dx_50 = (input$userDx - input$userCare - input$userLtfu) * prop_preART_50,
 
-        Care_500 = (input$userCare - input$userTx) * 0.5251,
-        Care_350500 = (input$userCare - input$userTx) * 0.2315,
-        Care_250350 = (input$userCare - input$userTx) * 0.1787,
-        Care_200250 = (input$userCare - input$userTx) * 0.0615,
-        Care_100200 = (input$userCare - input$userTx) * 0.0011,
-        Care_50100 = (input$userCare - input$userTx) * 0.0008,
-        Care_50 = (input$userCare - input$userTx) * 0.0014,
+        Care_500 = (input$userCare - input$userTx) * prop_preART_500,
+        Care_350500 = (input$userCare - input$userTx) * prop_preART_350500,
+        Care_250350 = (input$userCare - input$userTx) * prop_preART_250350,
+        Care_200250 = (input$userCare - input$userTx) * prop_preART_200250,
+        Care_100200 = (input$userCare - input$userTx) * prop_preART_100200,
+        Care_50100 = (input$userCare - input$userTx) * prop_preART_50100,
+        Care_50 = (input$userCare - input$userTx) * prop_preART_50,
 
-        PreLtfu_500 = 0 * 0.5251,
-        PreLtfu_350500 = 0 * 0.2315,
-        PreLtfu_250350 = 0 * 0.1787,
-        PreLtfu_200250 = 0 * 0.0615,
-        PreLtfu_100200 = 0 * 0.0011,
-        PreLtfu_50100 = 0 * 0.0008,
-        PreLtfu_50 = 0 * 0.0014,
+        PreLtfu_500 = 0 * prop_preART_500,
+        PreLtfu_350500 = 0 * prop_preART_350500,
+        PreLtfu_250350 = 0 * prop_preART_250350,
+        PreLtfu_200250 = 0 * prop_preART_200250,
+        PreLtfu_100200 = 0 * prop_preART_100200,
+        PreLtfu_50100 = 0 * prop_preART_50100,
+        PreLtfu_50 = 0 * prop_preART_50,
 
-        Tx_Na_500 = (input$userTx - input$userVs) * 0.5251,
-        Tx_Na_350500 = (input$userTx - input$userVs) * 0.2315,
-        Tx_Na_250350 = (input$userTx - input$userVs) * 0.1787,
-        Tx_Na_200250 = (input$userTx - input$userVs) * 0.0615,
-        Tx_Na_100200 = (input$userTx - input$userVs) * 0.0011,
-        Tx_Na_50100 = (input$userTx - input$userVs) * 0.0008,
-        Tx_Na_50 = (input$userTx - input$userVs) * 0.0014,
+        Tx_Na_500 = (input$userTx - input$userVs) * prop_onART_500,
+        Tx_Na_350500 = (input$userTx - input$userVs) * prop_onART_350500,
+        Tx_Na_250350 = (input$userTx - input$userVs) * prop_onART_250350,
+        Tx_Na_200250 = (input$userTx - input$userVs) * prop_onART_200250,
+        Tx_Na_100200 = (input$userTx - input$userVs) * prop_onART_100200,
+        Tx_Na_50100 = (input$userTx - input$userVs) * prop_onART_50100,
+        Tx_Na_50 = (input$userTx - input$userVs) * prop_onART_50,
 
-        Tx_A_500 = input$userVs * 0.5251,
-        Tx_A_350500 = input$userVs * 0.2315,
-        Tx_A_250350 = input$userVs * 0.1787,
-        Tx_A_200250 = input$userVs * 0.0615,
-        Tx_A_100200 = input$userVs * 0.0011,
-        Tx_A_50100 = input$userVs * 0.0008,
-        Tx_A_50 = input$userVs * 0.0014,
+        Tx_A_500 = input$userVs * prop_onART_500,
+        Tx_A_350500 = input$userVs * prop_onART_350500,
+        Tx_A_250350 = input$userVs * prop_onART_250350,
+        Tx_A_200250 = input$userVs * prop_onART_200250,
+        Tx_A_100200 = input$userVs * prop_onART_100200,
+        Tx_A_50100 = input$userVs * prop_onART_50100,
+        Tx_A_50 = input$userVs * prop_onART_50,
 
-        Ltfu_500 = (input$userLtfu) * 0.5251,
-        Ltfu_350500 = (input$userLtfu) * 0.2315,
-        Ltfu_250350 = (input$userLtfu) * 0.1787,
-        Ltfu_200250 = (input$userLtfu) * 0.0615,
-        Ltfu_100200 = (input$userLtfu) * 0.0011,
-        Ltfu_50100 = (input$userLtfu) * 0.0008,
-        Ltfu_50 = (input$userLtfu) * 0.0014,
+        Ltfu_500 = (input$userLtfu) * prop_preART_500,
+        Ltfu_350500 = (input$userLtfu) * prop_preART_350500,
+        Ltfu_250350 = (input$userLtfu) * prop_preART_250350,
+        Ltfu_200250 = (input$userLtfu) * prop_preART_200250,
+        Ltfu_100200 = (input$userLtfu) * prop_preART_100200,
+        Ltfu_50100 = (input$userLtfu) * prop_preART_50100,
+        Ltfu_50 = (input$userLtfu) * prop_preART_50,
         
         # Keeping track
         NewInf = 0,
@@ -833,19 +833,66 @@ function(input, output, session) {
         gs_add_row(sheet, input = data)
     }
 
-    getIncidenceData <- function() {
-        theTable <- gs_title("SpectrumIncidenceEstimates")
+    # Google Sheet API Interface
+
+    locateSheet <- function() {
+        return(gs_title("SpectrumIncidenceEstimates"))
+    }
+
+    getIncidenceData <- function(theTable) {
         return(gs_read(theTable,ws="NewInfections"))
     }
 
+    getCD4Data <- function(theTable) {
+        return(gs_read(theTable,ws="CD4-Distribution"))
+    }
+
     observeEvent(input$userCountry, {
-        NewInfections <<- as.double(as.double(filter(getIncidenceData(),Country==input$userCountry) %>% select(NewInfections2014)))
+        # Find GSheet
+        theTable <- locateSheet()
+        # Read new infections
+        NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable),Country==input$userCountry) %>% select(NewInfections2014)))
         if(is.na(NewInfections)) {
             output$warningText <- renderText({return(paste("Warning! NA value returned from",input$userCountry,"data. Using Kenya as default."))})
-            NewInfections <<- 56353
+            NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable),Country=="Kenya") %>% select(NewInfections2014)))
         } else {
             output$warningText <- renderText({return(paste(input$userCountry,"data loaded."))})
         } 
+        # Read CD4 distributions
+        theCD4 <- getCD4Data(theTable)
+        if(is.na(as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500)))) {
+            output$warningCD4Text <- renderText({return(paste("CD4 Warning! Using Kenya as default."))})
+            prop_preART_500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.500))
+            prop_preART_350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.350500))
+            prop_preART_250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.250350))
+            prop_preART_200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.200250))
+            prop_preART_100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.100200))
+            prop_preART_50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50100))
+            prop_preART_50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50))
+            prop_onART_500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.500))
+            prop_onART_350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.350500))
+            prop_onART_250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.250350))
+            prop_onART_200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.200250))
+            prop_onART_100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.100200))
+            prop_onART_50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50100))
+            prop_onART_50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50))
+        } else {
+            output$warningCD4Text <- renderText({return(paste(input$userCountry,"CD4 data loaded."))})
+            prop_preART_500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500))
+            prop_preART_350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.350500))
+            prop_preART_250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.250350))
+            prop_preART_200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.200250))
+            prop_preART_100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.100200))
+            prop_preART_50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50100))
+            prop_preART_50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50))
+            prop_onART_500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.500))
+            prop_onART_350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.350500))
+            prop_onART_250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.250350))
+            prop_onART_200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.200250))
+            prop_onART_100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.100200))
+            prop_onART_50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50100))
+            prop_onART_50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50))
+        }
         print(paste("Country data:",NewInfections))
     })
 

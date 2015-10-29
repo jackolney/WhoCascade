@@ -19,13 +19,35 @@ require(grid)
 # Set time step
 # Time <- seq(0,5,0.02)
 
+# Googlesheet Spectrum Incidence Values
+theTable <- gs_title("SpectrumIncidenceEstimates")
+theIncidence <- gs_read(theTable,ws="NewInfections")
+
+# Googlesheet CD4 distributions
+theCD4 <- gs_read(theTable,ws="CD4-Distribution")
+SelectedCountry <- "Kenya"
+as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.500))
+
+prop_preART_500 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.500))
+prop_preART_350500 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.350500))
+prop_preART_250350 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.250350))
+prop_preART_200250 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.200250))
+prop_preART_100200 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.100200))
+prop_preART_50100 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.50100))
+prop_preART_50 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.50))
+
+prop_onART_500 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.500))
+prop_onART_350500 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.350500))
+prop_onART_250350 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.250350))
+prop_onART_200250 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.200250))
+prop_onART_100200 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.100200))
+prop_onART_50100 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.50100))
+prop_onART_50 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.50))
+
 source("TheModel.R")
 source("Parameters.R")
 source("Initial.R")
 
-# Googlesheet Spectrum Incidence Values
-theTable <- gs_title("SpectrumIncidenceEstimates")
-theIncidence <- gs_read(theTable,ws="NewInfections")
 
 # # AIDSinfo estimates (2014)
 # theIncidence$NewInfections2014
@@ -47,7 +69,7 @@ print(paste("Beta =",Beta))
 
 #############
 # THE MODEL #
-Time <- seq(0,100,0.02)
+Time <- seq(0,5,0.02)
 out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
 out <- tbl_df(data.frame(out))
 out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50 + Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50)
@@ -112,6 +134,13 @@ out <- mutate(out,cd4_100200 = (UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_
 out <- mutate(out,cd4_50100 = (UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Tx_A_50100 + Ltfu_50100) / N)
 out <- mutate(out,cd4_50 = (UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Tx_A_50 + Ltfu_50) / N)
 
+plot(out$time,out$cd4_500,type='l',lwd=2,ylim=c(0,1))
+lines(out$time,out$cd4_350500)
+lines(out$time,out$cd4_250350)
+lines(out$time,out$cd4_200250)
+lines(out$time,out$cd4_100200)
+lines(out$time,out$cd4_50100)
+lines(out$time,out$cd4_50)
 
 # CD4 distribution in 2015 (t0)
 t0.cd4_500 <- as.double(filter(out,time == 0) %>% select(cd4_500))

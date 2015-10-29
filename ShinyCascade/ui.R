@@ -192,7 +192,8 @@ shinyUI(
                 p(" "),
                 helpText("Console output:"),
                 textOutput('saveText'),
-                textOutput('warningText')
+                textOutput('warningText'),
+                textOutput('warningCD4Text')
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),
