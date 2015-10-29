@@ -316,18 +316,68 @@ ggplot(Result,aes(x=ResultError,y=ResultCost)) +
 geom_point() +
 theme_classic()
 
+# ---------------- #
+# DALY Calculation #
+# ---------------- #
+
+out <- mutate(out,DALY = 
+    (
+        ((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.053) +  # >350, no ART
+        ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.221) +  # 200-350, no ART
+        ((UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Ltfu_100200 + UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Ltfu_50100 + UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Ltfu_50) * 0.547) + # <200, no ART
+        ((Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) * 0.053) # on ART and virally suppressed
+    )
+)
+
+out$DALY
+
+# Add DALY f(theList)
+
+AddDALY <- function(List) {
+    for(i in 1:length(List)) {
+        print(i)
+        List[[i]] <- mutate(List[[i]],DALY = 
+            (
+                ((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.053) +  # >350, no ART
+                ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.221) +  # 200-350, no ART
+                ((UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Ltfu_100200 + UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Ltfu_50100 + UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Ltfu_50) * 0.547) + # <200, no ART
+                ((Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) * 0.053) # on ART and virally suppressed
+            )
+        )
+    }
+    return(List)
+}
+
+theList <- AddDALY(theList)
+
+plot(theList[[1]]$DALY,type='l')
+cumsum(theList[[1]]$DALY)
+
+Calc_DALY <- function(outFile) {
+    theDALY <- select(outFile,DALY) %>% sum()
+    return(theDALY)
+}
+
+ResultImpact <- c()
+ResultCost <- c()
+for(i in 1:length(theList)) {
+    print(i)
+    ResultImpact[i] <- Calc_DALY(theList[[i]])
+    ResultCost[i] <- Calc_Cost(theList[[i]])
+}
+
+ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
+
+Result <- data.frame(ResultNames,ResultImpact,ResultCost)
+
+ggplot(Result,aes(x=ResultImpact,y=ResultCost)) +
+geom_point() +
+theme_classic()
 
 
-
-
-
-
-
-
-
-
-
-
+# Save all those files.
+# dir("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October")
+save.image("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October/sessionData.Rdata")
 
 
 
