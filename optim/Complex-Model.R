@@ -4,7 +4,7 @@
 ############################
 
 rm(list=ls())
-setwd("~/git/WhoCascade/optim")
+setwd("~/git/WhoCascade/ModelR")
 
 # install_github("cran/deSolve")
 # install.packages("deSolve")
@@ -14,94 +14,173 @@ require(ggplot2)
 require(scales)
 require(gridExtra)
 require(googlesheets)
+require(grid)
 
 # Set time step
+# Time <- seq(0,5,0.02)
+
+# Googlesheet Spectrum Incidence Values
+theTable <- gs_title("SpectrumIncidenceEstimates")
+theIncidence <- gs_read(theTable,ws="NewInfections")
+
+# Googlesheet CD4 distributions
+theCD4 <- gs_read(theTable,ws="CD4-Distribution")
+SelectedCountry <- "Kenya"
+as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.500))
+
+prop_preART_500 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.500))
+prop_preART_350500 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.350500))
+prop_preART_250350 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.250350))
+prop_preART_200250 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.200250))
+prop_preART_100200 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.100200))
+prop_preART_50100 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.50100))
+prop_preART_50 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.Off.ART.50))
+
+prop_onART_500 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.500))
+prop_onART_350500 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.350500))
+prop_onART_250350 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.250350))
+prop_onART_200250 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.200250))
+prop_onART_100200 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.100200))
+prop_onART_50100 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.50100))
+prop_onART_50 <<- as.double(filter(theCD4,Country == SelectedCountry) %>% select(prop.On.ART.50))
 
 source("TheModel.R")
 source("Parameters.R")
 source("Initial.R")
 
-# Just using a boring beta value for now
-Beta <- 0.0275837
+# Beta Calculation #
 # Beta <- 0
-
-# --------- #
-# THE MODEL #
-# --------- #
-
-# Need a f(x) that is able to produce the estimate that we need.
-# Start with just the first 90. (then scale up to get all three.)
-# Start with just varying ONE parameter.
-
-# Time <- seq(0,5,0.02)
-# out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
-# out <- tbl_df(data.frame(out))
-# out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-# out <- mutate(out,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-# out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-# out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-# out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-# out <- mutate(out,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200) / N)
-# out <- mutate(out,Tx = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200) / N)
-# out <- mutate(out,Adherence = (Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-# out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-# out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-# out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-# out <- mutate(out,HivMortalityProp = HivMortality / N)
-# out <- mutate(out,NewInfProp = NewInf / N)
+# Beta <- 0.0275837
+Numerator <- theIncidence$NewInfections2014[12]
+Denominator <- as.double(((Initial[["UnDx_500"]] + Initial[["Dx_500"]] + Initial[["Care_500"]] + Initial[["PreLtfu_500"]] + Initial[["Tx_Na_500"]] + Initial[["Ltfu_500"]]) * 1.35) + ((Initial[["UnDx_350500"]] + Initial[["Dx_350500"]] + Initial[["Care_350500"]] + Initial[["PreLtfu_350500"]] + Initial[["Tx_Na_350500"]] + Initial[["Ltfu_350500"]]) * 1) + ((Initial[["UnDx_250350"]] + Initial[["Dx_250350"]] + Initial[["Care_250350"]] + Initial[["PreLtfu_250350"]] + Initial[["Tx_Na_250350"]] + Initial[["Ltfu_250350"]] + Initial[["UnDx_200250"]] + Initial[["Dx_200250"]] + Initial[["Care_200250"]] + Initial[["PreLtfu_200250"]] + Initial[["Tx_Na_200250"]] + Initial[["Ltfu_200250"]]) * 1.64) + ((Initial[["UnDx_100200"]] + Initial[["Dx_100200"]] + Initial[["Care_100200"]] + Initial[["PreLtfu_100200"]] + Initial[["Tx_Na_100200"]] + Initial[["Ltfu_100200"]] + Initial[["UnDx_50100"]] + Initial[["Dx_50100"]] + Initial[["Care_50100"]] + Initial[["PreLtfu_50100"]] + Initial[["Tx_Na_50100"]] + Initial[["Ltfu_50100"]] + Initial[["UnDx_50"]] + Initial[["Dx_50"]] + Initial[["Care_50"]] + Initial[["PreLtfu_50"]] + Initial[["Tx_Na_50"]] + Initial[["Ltfu_50"]]) * 5.17) + ((Initial[["Tx_A_500"]] + Initial[["Tx_A_350500"]] + Initial[["Tx_A_250350"]] + Initial[["Tx_A_200250"]] + Initial[["Tx_A_100200"]] + Initial[["Tx_A_50100"]] + Initial[["Tx_A_50"]]) * 0.1))
+Beta <- Numerator / Denominator
+print(paste("Beta =",Beta))
 
 
-find909090 <- function(target, par) {
+# Create matrix of interventions and parameter values
+# Starting with just one intervention (rho)
+# Write function to take parameter inputs and values, returns result matrix.
+# Save matrix in accessible list.
+# Expand.
+# Create a matrix / dataframe that has, 4096 rows, with 6 columns specifying the values for each parameter (reshape::melt()?)
 
-    # print(paste("par =",par))
+ParameterMatrix <- matrix(0,4,6)
+
+Rho.Range <- seq(from = 0.205,to = 20,length.out = 4)
+Epsilon.Range <- seq(from = 16.949,to = 30,length.out = 4)
+Kappa.Range <- seq(from = 0.01,to = 1.079,length.out = 4)
+Gamma.Range <- seq(from = 2.556,to = 20,length.out = 4)
+Sigma.Range <- seq(from = 0,to = 5,length.out = 4)
+Omega.Range <- seq(from = 0.01,to = 0.033,length.out = 4)
+
+# Epsilon.Range <- 16.949
+# Kappa.Range <- 0.01
+# Gamma.Range <- 2.556
+# Sigma.Range <- 0
+# Omega.Range <- 0.01
+
+ParameterMatrix[,1] <- Rho.Range
+ParameterMatrix[,2] <- Epsilon.Range
+ParameterMatrix[,3] <- Kappa.Range
+ParameterMatrix[,4] <- Gamma.Range
+ParameterMatrix[,5] <- Sigma.Range
+ParameterMatrix[,6] <- Omega.Range
+
+colnames(ParameterMatrix) <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+rownames(ParameterMatrix) <- paste("p",seq(1,dim(ParameterMatrix)[1],1),sep='')
+ParameterMatrix
+
+# Use expand.grid() to list all possible combinations of interventions
+ParInput <- expand.grid(
+    Rho = Rho.Range,
+    Epsilon = Epsilon.Range,
+    Kappa = Kappa.Range,
+    Gamma = Gamma.Range,
+    Sigma = Sigma.Range,
+    Omega = Omega.Range
+    )
+
+# ParInput
+head(ParInput)
+
+# ----- #
+# solnp #
+# ----- #
+
+# Specify your function
+RunSimulation <- function(par,target) {
 
     Parameters <- c(
         Nu_1 = 0.193634,
         Nu_2 = 0.321304,
-        Nu_3 = 0.163484,
+        Nu_3 = 0.328285,
+        Nu_4 = 0.497247,
+        Nu_5 = 0.559090,
+        Nu_6 = 0.846406,
         Rho = par[["Rho"]],
         Epsilon = par[["Epsilon"]],
         Kappa = par[["Kappa"]],
         Gamma = par[["Gamma"]],
-        Eta = par[["Eta"]],
-        Phi = par[["Phi"]],
-        Psi = par[["Psi"]],
-        Theta = 2.28,
+        Theta = 1.511,
         Omega = par[["Omega"]],
         p = 0.95,
-        s_1 = 0.25,
-        s_2 = 0.75,
-        s_3 = 1,
-        s_4 = 2,
-        Sigma_a = par[["Sigma_a"]],
-        Sigma_b = 0.5,
+        s_1 = 0.1,
+        s_2 = 0.2,
+        s_3 = 0.3,
+        s_4 = 0.4,
+        s_5 = 1,
+        s_6 = 2,
+        s_7 = 3,
+        Sigma = par[["Sigma"]],
         Delta_1 = 1.58084765,
         Delta_2 = 3.50371789,
-        Alpha_1 = 0.00411,
-        Alpha_2 = 0.01167,
-        Alpha_3 = 0.01289,
-        Alpha_4 = 0.385832,
-        Tau_1 = 0.04013346,
-        Tau_2 = 0.05431511,
-        Tau_3 = 0.15692556,
-        Tau_4 = 0.23814569,
+        Delta_3 = 3.50371789,
+        Delta_4 = 3.50371789,
+        Delta_5 = 3.50371789,
+        Alpha_1 = 0.004110,
+        Alpha_2 = 0.011670,
+        Alpha_3 = 0.009385,
+        Alpha_4 = 0.016394,
+        Alpha_5 = 0.027656,
+        Alpha_6 = 0.047877,
+        Alpha_7 = 1.081964,
+        Tau_1 = 0.003905,
+        Tau_2 = 0.011087,
+        Tau_3 = 0.008916,
+        Tau_4 = 0.015574,
+        Tau_5 = 0.026273,
+        Tau_6 = 0.045482,
+        Tau_7 = 1.02785,
         Mu = 0.0374,
+        ART_500 = 1,
+        ART_350 = 1,
+        ART_200 = 1,
         Dx_unitCost = 10,
-        Care_unitCost = 12,
-        TxInit_unitCost = 28,
-        Retention_unitCost = 367,
-        AnnualTx_unitCost = 367
+        Linkage_unitCost = 40,
+        Annual_Care_unitCost = 40,
+        Annual_ART_unitCost = 367
     )
 
     Time <- seq(0,5,0.02)
     out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
     out <- tbl_df(data.frame(out))
-    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-    out <- mutate(out,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTxCost)
+    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50 + Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50)
+    out <- mutate(out,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
+    out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50) / N)
+    out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50) / N)
+    out <- mutate(out,Care = (Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50) / N)
+    out <- mutate(out,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50) / N)
+    out <- mutate(out,Tx = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
+    out <- mutate(out,Vs = (Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
+    out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50) / N)
+    out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
+    out <- mutate(out,HivMortalityProp = HivMortality / N)
+    out <- mutate(out,NewInfProp = NewInf / N)
+    out <- mutate(out,TotalCost = Dx_Cost + Linkage_Cost + Annual_Care_Cost + Annual_ART_Cost)
     PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
+    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+    vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
     p_dx <- dx / PLHIV
     p_tx <- tx / dx
     p_vs <- vs / tx
@@ -109,749 +188,146 @@ find909090 <- function(target, par) {
     definition <- c("% Diagnosed","% On Treatment","% Suppressed")
     the909090 <- data.frame(definition,results)
 
-    # Cost
-    cost <- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
-    # print(paste("cost = ",dollar(cost)))
-
-    # Returning outputs
+    # Outputs to return
+    cost <<- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
     output <- 1/3 * sum((target - the909090$results)^2)
-    # output <- sum((target - the909090$results)^2)
-    print(paste("error =",output,"cost =",dollar(cost)))
+    # print(paste("Error =",output,"Cost =",dollar(cost)))
+    return(out)
+}
+
+# test <- RunSimulation(ParameterMatrix[1,],1)
+# theList <- list(p1 = test,p2 = test)
+# length(theList)
+# theList[["p3"]] <- test
+# object_size(test)
+
+Start.Time <- proc.time()
+theList <- list()
+for(i in 1:dim(ParInput)[1]) {
+    print(paste("Run",i))
+    theList[[rownames(ParInput)[i]]] <- RunSimulation(ParInput[i,],1)
+}
+Time.Elapsed <- proc.time() - Start.Time
+Time.Elapsed
+object_size(theList)
+
+# theList
+object_size(theList)
+
+# theList[[1]]$TotalCost
+
+# system.time(RunSimulation(ParInput[1,],1))
+
+# 90-90-90 Calculation for Sample (write into function)
+
+Calc_909090 <- function(outFile) {
+    PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
+    dx = as.double(sum(filter(outFile,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+    tx = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+    vs = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+    p_dx <- dx / PLHIV
+    p_tx <- tx / dx
+    p_vs <- vs / tx
+    results <- c(p_dx,p_tx,p_vs)
+    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+    the909090 <- data.frame(definition,results)
+    return(the909090)
+}
+
+Calc_909090(theList[[1]])
+
+Calc_Cost <- function(outFile) {
+    theCost <- as.double(filter(outFile,time == 5) %>% select(TotalCost))
+    return(theCost)
+}
+
+Calc_Cost(theList[[1]])
+
+CalcError_909090 <- function(outFile,target) {
+    PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
+    dx = as.double(sum(filter(outFile,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+    tx = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+    vs = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+    p_dx <- dx / PLHIV
+    p_tx <- tx / dx
+    p_vs <- vs / tx
+    results <- c(p_dx,p_tx,p_vs)
+    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+    the909090 <- data.frame(definition,results)
+    # output <- 1/3 * sum((target - the909090$results)^2)
+    output <- 1/1 * sum((target - the909090$results[3])^2)
     return(output)
 }
 
-# willThisWork <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
-# willThisWork$par
-
-# ModFit method
-require(FME)
-res <- modFit(find909090,
-    p = c(
-        Rho = 0.205,
-        Gamma = 2.556,
-        Epsilon = 16.949,
-        Omega = 0.033,
-        Kappa = 1.079,
-        Sigma_a = 0.5,
-        Phi = 3.628,
-        Psi = 0.431,
-        Eta = 0.476),
-    target = 0.9,
-    lower = c(
-        Rho = 0.01,
-        Gamma = 0.01,
-        Epsilon = 0.01,
-        Omega = 0.01,
-        Kappa = 0.01,
-        Sigma_a = 0.01,
-        Phi = 0.01,
-        Psi = 0.01,
-        Eta = 0.01),
-    upper = c(
-        Rho = 20,
-        Gamma = 20,
-        Epsilon = 20,
-        Omega = 20,
-        Kappa = 20,
-        Sigma_a = 20,
-        Phi = 20,
-        Psi = 20,
-        Eta = 20),
-    method = 'L-BFGS-B')
-res
-
-# Optimisation method which takes a matrix? Containing randomised parameter values? Or let the optim() method walk through them?
-
-# LHC sampling parameter values
-require(FME)
-parRange <- data.frame(
-    min = c(
-        Rho = 0.01,
-        Gamma = 0.01,
-        Epsilon = 0.01,
-        Omega = 0.01,
-        Kappa = 0.01,
-        Sigma_a = 0.01,
-        Phi = 0.01,
-        Psi = 0.01,
-        Eta = 0.01),
-    max = c(
-        Rho = 20,
-        Gamma = 20,
-        Epsilon = 20,
-        Omega = 20,
-        Kappa = 20,
-        Sigma_a = 20,
-        Phi = 20,
-        Psi = 20,
-        Eta = 20))
-
-a <- Latinhyper(parRange,100)
-
-# For some interventions
-parRange <- data.frame(
-    off = c(
-        Testing = 0,
-        Linkage = 0
-        ),
-    on = c(
-        Testing = 1,
-        Linakge = 1
-        )
-    )
-
-# The number of combinations of 9 parameters that need testing?
-factorial(9)
-
-# Extract a value from LHC sample
-a[[1,"Rho"]]
-
-# What are we trying to do?
-# -> For a given set of changes to the system (interventions), what is the impact / cost?
-# -> Help us minimise error towards 90-90-90 for the least money?
-# -> For a given amount of money, how can we maximise health benefit?
-# -> For a given health benefit, how cheap can it be?
-
-
-##############################
-install.packages("Rsolnp")
-require(Rsolnp)
-
-#specify your function
-# find909090() -> This is the function to optimise... i.e. aiming towards 90-90-90
-find909090 <- function(target, par) {
-
-    # print(paste("par =",par))
-
-    Parameters <- c(
-        Nu_1 = 0.193634,
-        Nu_2 = 0.321304,
-        Nu_3 = 0.163484,
-        Rho = par[["Rho"]],
-        Epsilon = par[["Epsilon"]],
-        Kappa = par[["Kappa"]],
-        Gamma = par[["Gamma"]],
-        Eta = par[["Eta"]],
-        Phi = par[["Phi"]],
-        Psi = par[["Psi"]],
-        Theta = 2.28,
-        Omega = par[["Omega"]],
-        p = 0.95,
-        s_1 = 0.25,
-        s_2 = 0.75,
-        s_3 = 1,
-        s_4 = 2,
-        Sigma_a = par[["Sigma_a"]],
-        Sigma_b = 0.5,
-        Delta_1 = 1.58084765,
-        Delta_2 = 3.50371789,
-        Alpha_1 = 0.00411,
-        Alpha_2 = 0.01167,
-        Alpha_3 = 0.01289,
-        Alpha_4 = 0.385832,
-        Tau_1 = 0.04013346,
-        Tau_2 = 0.05431511,
-        Tau_3 = 0.15692556,
-        Tau_4 = 0.23814569,
-        Mu = 0.0374,
-        Dx_unitCost = 10,
-        Care_unitCost = 12,
-        TxInit_unitCost = 28,
-        Retention_unitCost = 367,
-        AnnualTx_unitCost = 367
-    )
-
-    Time <- seq(0,5,0.02)
-    out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
-    out <- tbl_df(data.frame(out))
-    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-    out <- mutate(out,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTxCost)
-    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
-
-    # Cost
-    cost <- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
-    print(paste("cost = ",cost))
-
-    # Returning outputs
-    output <- 1/3 * sum((target - the909090$results)^2)
-    # output <- sum((target - the909090$results)^2)
-    # print(paste("error =",output,"cost =",dollar(cost)))
-    return(output)
+ResultError <- c()
+ResultCost <- c()
+for(i in 1:length(theList)) {
+    print(i)
+    ResultError[i] <- CalcError_909090(theList[[i]],1)
+    ResultCost[i] <- Calc_Cost(theList[[i]])
 }
 
-#specify the equality function. The number 15 (to which the function is equal)
-#is specified as an additional argument
-# This f(x) then should be the cost function. i.e. we set a cost?
-ForCost <- function(cost,target) {
-    print(cost)
-    cost[1]
+ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
+
+Result <- data.frame(ResultNames,ResultError,ResultCost)
+
+ggplot(Result,aes(x=ResultError,y=ResultCost)) +
+geom_point() +
+theme_classic()
+
+FindResults_909090 <- function(ResultList) {
+    theResultList <- list()
+    for(i in 1:length(ResultList)) {
+        print(i)
+        the909090 <- Calc_909090(ResultList[[i]])
+        Test <- c(0,0,0)
+        for(j in 1:length(the909090$results)) {
+            if(the909090$results[j] > 0.9) {
+                Test[j] <- 1
+            } else {
+                Test[j] <- 0
+            }
+        }
+        if(sum(Test) == 3) {
+            theResultList[[length(theResultList) + 1]] <- theList[[i]]
+        }
+    }
+    return(theResultList)
 }
 
-#the optimiser - minimises by default (that is cool).
-solnp(pars = c(
-        Rho = 0.205,
-        Gamma = 2.556,
-        Epsilon = 16.949,
-        Omega = 0.033,
-        Kappa = 1.079,
-        Sigma_a = 0.5,
-        Phi = 3.628,
-        Psi = 0.431,
-        Eta = 0.476), # Starting values
-    find909090, # Function to optimise
-    eqfun=ForCost, # Equality function
-    eqB=100e+6,   # The equality constraint
-    LB = c(
-        Rho = 0.01,
-        Gamma = 0.01,
-        Epsilon = 0.01,
-        Omega = 0.01,
-        Kappa = 0.01,
-        Sigma_a = 0.01,
-        Phi = 0.01,
-        Psi = 0.01,
-        Eta = 0.01), # Lower bound for parameters i.e. greater than zero
-    UB = c(
-        Rho = 20,
-        Gamma = 20,
-        Epsilon = 20,
-        Omega = 20,
-        Kappa = 20,
-        Sigma_a = 20,
-        Phi = 20,
-        Psi = 20,
-        Eta = 20), # Upper bound for parameters (I just chose 100 randomly)
-        target = 0.9) # Additional arguments (should be given to both main and equality f(x) regardless of whether they are used by both or not).
+Result909090 <- FindResults_909090(theList)
 
+length(Result909090)
+object_size(Result909090)
 
-##############################
-
-# Perhaps an intervention just involves constraining the bounds of a parameter in a certain way? (but tightly-ish.)
-
-# e.g. a testing intervention.
-# Rho = 0.205 at baseline.
-# So maximum is 0.205 (4.87yrs)
-# min = 0.41
-
-par <- data.frame(
-    min = c(Rho = 0.41),
-    max = c(Rho = 0.205))
-
-params <- Latinhyper(par,100)
-
-
-# Test loop.
-
-for(i in 1:length(params)) {
-
-    target <- 0.9
-
-    Parameters <- c(
-        Nu_1 = 0.193634,
-        Nu_2 = 0.321304,
-        Nu_3 = 0.163484,
-        Rho = params[[i,"Rho"]],
-        Epsilon = 16.949,
-        Kappa = 1.079,
-        Gamma = 2.556,
-        Eta = 0.476,
-        Phi = 3.628,
-        Psi = 0.431,
-        Theta = 2.28,
-        Omega = 0.033,
-        p = 0.95,
-        s_1 = 0.25,
-        s_2 = 0.75,
-        s_3 = 1,
-        s_4 = 2,
-        Sigma_a = 0.5,
-        Sigma_b = 0.5,
-        Delta_1 = 1.58084765,
-        Delta_2 = 3.50371789,
-        Alpha_1 = 0.00411,
-        Alpha_2 = 0.01167,
-        Alpha_3 = 0.01289,
-        Alpha_4 = 0.385832,
-        Tau_1 = 0.04013346,
-        Tau_2 = 0.05431511,
-        Tau_3 = 0.15692556,
-        Tau_4 = 0.23814569,
-        Mu = 0.0374,
-        Dx_unitCost = 10,
-        Care_unitCost = 12,
-        TxInit_unitCost = 28,
-        Retention_unitCost = 367,
-        AnnualTx_unitCost = 367
-    )
-
-    Time <- seq(0,5,0.02)
-    out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
-    out <- tbl_df(data.frame(out))
-    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-    out <- mutate(out,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTxCost)
-    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
-
-    # Cost
-    cost <- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
-    # print(paste("cost = ",dollar(cost)))
-
-    # Returning outputs
-    output <- 1/3 * sum((target - the909090$results)^2)
-    # output <- sum((target - the909090$results)^2)
-    print(paste("error =",output,"cost =",dollar(cost)))
-
+ResultError <- c()
+ResultCost <- c()
+for(i in 1:length(Result909090)) {
+    print(i)
+    ResultError[i] <- CalcError_909090(Result909090[[i]],0.9)
+    ResultCost[i] <- Calc_Cost(Result909090[[i]])
 }
 
-# I should be optimising 90-90-90... but how to include the cost component too?
+ResultNames <- paste("p",seq(1,length(Result909090),1),sep='')
 
-# Right now it is just reducing cost NOT focusing on getting to 90-90-90.
+Result <- data.frame(ResultNames,ResultError,ResultCost)
 
-res$par <- c(
- Rho = 0.2050000,
- Gamma = 2.6340549,
- Epsilon = 16.9475865,
- Omega = 0.0100000,
- Kappa = 0.9487229,
- Sigma_a = 0.7561403,
- Phi = 3.6366206,
- Psi = 0.5768007,
- Eta = 0.8563607
- )
+ggplot(Result,aes(x=ResultError,y=ResultCost)) +
+geom_point() +
+theme_classic()
 
 
-# Parameters <- c(
-#     Nu_1 = 0.193634,
-#     Nu_2 = 0.321304,
-#     Nu_3 = 0.163484,
-#     Rho = res$par[["Rho"]],
-#     Epsilon = res$par[["Epsilon"]],
-#     Kappa = res$par[["Kappa"]],
-#     Gamma = res$par[["Gamma"]],
-#     Eta = res$par[["Eta"]],
-#     Phi = res$par[["Phi"]],
-#     Psi = res$par[["Psi"]],
-#     Theta = 2.28,
-#     Omega = res$par[["Omega"]],
-#     p = 0.95,
-#     s_1 = 0.25,
-#     s_2 = 0.75,
-#     s_3 = 1,
-#     s_4 = 2,
-#     Sigma_a = res$par[["Sigma_a"]],
-#     Sigma_b = 0.5,
-#     Delta_1 = 1.58084765,
-#     Delta_2 = 3.50371789,
-#     Alpha_1 = 0.00411,
-#     Alpha_2 = 0.01167,
-#     Alpha_3 = 0.01289,
-#     Alpha_4 = 0.385832,
-#     Tau_1 = 0.04013346,
-#     Tau_2 = 0.05431511,
-#     Tau_3 = 0.15692556,
-#     Tau_4 = 0.23814569,
-#     Mu = 0.0374,
-#     Dx_unitCost = 10,
-#     Care_unitCost = 12,
-#     TxInit_unitCost = 28,
-#     Retention_unitCost = 367,
-#     AnnualTx_unitCost = 367
-# )
 
 
-Parameters <- c(
-    Nu_1 = 0.193634,
-    Nu_2 = 0.321304,
-    Nu_3 = 0.163484,
-    Rho = 0.2050000,
-    Epsilon = 16.9475865,
-    Kappa = 0.9487229,
-    Gamma = 2.6340549,
-    Eta = 0.8563607,
-    Phi = 3.6366206,
-    Psi = 0.5768007,
-    Theta = 2.28,
-    Omega = 0.0100000,
-    p = 0.95,
-    s_1 = 0.25,
-    s_2 = 0.75,
-    s_3 = 1,
-    s_4 = 2,
-    Sigma_a = 0.7561403,
-    Sigma_b = 0.5,
-    Delta_1 = 1.58084765,
-    Delta_2 = 3.50371789,
-    Alpha_1 = 0.00411,
-    Alpha_2 = 0.01167,
-    Alpha_3 = 0.01289,
-    Alpha_4 = 0.385832,
-    Tau_1 = 0.04013346,
-    Tau_2 = 0.05431511,
-    Tau_3 = 0.15692556,
-    Tau_4 = 0.23814569,
-    Mu = 0.0374,
-    Dx_unitCost = 10,
-    Care_unitCost = 12,
-    TxInit_unitCost = 28,
-    Retention_unitCost = 367,
-    AnnualTx_unitCost = 367
-)
-
-Time <- seq(0,5,0.02)
-out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
-out <- tbl_df(data.frame(out))
-out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_200350 + PreLtfu_200 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_200350 + Tx_Na_200 + Tx_A_500 + Tx_A_350500 + Tx_A_200350 + Tx_A_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-out <- mutate(out,TotalCost = Dx_Cost + Care_Cost + TxInit_Cost + Retention_Cost + AnnualTxCost)
-PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,PreLtfu_500,PreLtfu_350500,PreLtfu_200350,PreLtfu_200,Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_200350,Tx_A_200,Tx_Na_500,Tx_Na_350500,Tx_Na_200350,Tx_Na_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
-p_dx <- dx / PLHIV
-p_tx <- tx / dx
-p_vs <- vs / tx
-results <- c(p_dx,p_tx,p_vs)
-definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-the909090 <- data.frame(definition,results)
-
-# graphics.off()
-# quartz.options(w=6,h=4)
-fill.coll <- brewer.pal(4,"Set1")
-
-o <- ggplot(the909090,aes(definition,results))
-o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
-o <- o + scale_fill_manual(values=fill.coll)
-o <- o + geom_abline(intercept=0.9, slope=0)
-o <- o + theme_classic()
-o <- o + theme(axis.title=element_blank())
-o <- o + theme(axis.text.x=element_text(size=12))
-o <- o + theme(axis.text.y=element_text(size=10))
-o <- o + theme(legend.position="none")
-o
-
-# AIM = Minimise cost AND get to 90-90-90.
-# so smallest totalCost
 
 
-# But if we are minimising it then we need for it to equal zero?
-# Minimise the squared difference between value and 0.9.
-
-target <- 0.9
-
-(target - the909090$results[1])^2
-
-# ---- #
-# TEST #
-# ---- #
-
-# First the first 90.
-
-findFirst90 <- function(target, par) {
-
-    print(paste("par =",par))
-
-    Parameters <- c(
-        Nu_1 = 0.2139008,
-        Nu_2 = 0.3379898,
-        Nu_3 = 0.2744363,
-        Rho = par,
-        Gamma = 0.5,
-        Theta = 2,
-        Omega = 0.01,
-        Delta_1 = 1.1491019,
-        Delta_2 = 2.5468165,
-        Alpha_1 = 0.0043812,
-        Alpha_2 = 0.0179791,
-        Alpha_3 = 0.0664348,
-        Alpha_4 = 0.1289688,
-        Tau_1 = 0.0041621,
-        Tau_2 = 0.0170798,
-        Tau_3 = 0.0631120,
-        Tau_4 = 0.1225184,
-        Mu = 0.0374,
-        Epsilon = 0.5
-    )
-
-    out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
-    out <- tbl_df(data.frame(out))
-    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-    out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-    out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-    out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-    out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-    out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-    out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-    out <- mutate(out,HivMortalityProp = HivMortality / N)
-    out <- mutate(out,NewInfProp = NewInf / N)
 
 
-    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
-    # out <- sum((target - the909090$results)^2)
-    out <- (target - the909090$results[1])^2
-    return(out)
-}
-
-theResult <- optim(par = 0, findFirst90, target = 0.9, lower = 0, upper = 10)
-theResult
-
-# ----------------- #
-# FIND ALL 90-90-90 #
-# ----------------- #
-
-find909090 <- function(target, par) {
-
-    print(paste("par =",par))
-
-    Parameters <- c(
-        Nu_1 = 0.2139008,
-        Nu_2 = 0.3379898,
-        Nu_3 = 0.2744363,
-        Rho = par[1],
-        Gamma = par[2],
-        Theta = 2,
-        Omega = par[4],
-        Delta_1 = 1.1491019,
-        Delta_2 = 2.5468165,
-        Alpha_1 = 0.0043812,
-        Alpha_2 = 0.0179791,
-        Alpha_3 = 0.0664348,
-        Alpha_4 = 0.1289688,
-        Tau_1 = 0.0041621,
-        Tau_2 = 0.0170798,
-        Tau_3 = 0.0631120,
-        Tau_4 = 0.1225184,
-        Mu = 0.0374,
-        Epsilon = par[3]
-    )
-
-    out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
-    out <- tbl_df(data.frame(out))
-    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-    out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-    out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-    out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-    out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-    out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-    out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-    out <- mutate(out,HivMortalityProp = HivMortality / N)
-    out <- mutate(out,NewInfProp = NewInf / N)
 
 
-    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
-    out <- sum((target - the909090$results)^2)
-    # out <- (target - the909090$results[1])^2
-    return(out)
-}
-
-theResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = 0, upper = 10)
-theResult$par
-
-# ToDo:
-# Get a decent search algorithm going - DONE.
-# Add upper / lower bounds - DONE.
-# Specify different bounds for each par[]. - DONE.
-# After optimisation, re-run simulation so that we can visualise the results immediately.
-
-testResult <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = 0.01, upper = 10, method = 'L-BFGS-B')
-testResult$par
-theResult$par
-testResult2 <- optim(par = c(0,0,0,0), find909090, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,5), method = 'L-BFGS-B')
-testResult2$par
-
-# Answer #
-theResult
-# ------ #
-
-# Alternative method, using {FME}.
-
-require(FME)
-
-find909090_alt <- function(target, p) {
-
-    print(paste("p =",p))
-
-    Parameters <- c(
-        Nu_1 = 0.2139008,
-        Nu_2 = 0.3379898,
-        Nu_3 = 0.2744363,
-        Rho = p[1],
-        Gamma = p[2],
-        Theta = p[3],
-        Omega = p[4],
-        Delta_1 = 1.1491019,
-        Delta_2 = 2.5468165,
-        Alpha_1 = 0.0043812,
-        Alpha_2 = 0.0179791,
-        Alpha_3 = 0.0664348,
-        Alpha_4 = 0.1289688,
-        Tau_1 = 0.0041621,
-        Tau_2 = 0.0170798,
-        Tau_3 = 0.0631120,
-        Tau_4 = 0.1225184,
-        Mu = 0.0374,
-        Epsilon = p[5]
-    )
-
-    out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
-    out <- tbl_df(data.frame(out))
-    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-    out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-    out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-    out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-    out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-    out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-    out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-    out <- mutate(out,HivMortalityProp = HivMortality / N)
-    out <- mutate(out,NewInfProp = NewInf / N)
 
 
-    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
-    out <- sum((target - the909090$results)^2)
-    # out <- (target - the909090$results[1])^2
-    return(out)
-}
-
-test <- modFit(find909090_alt,p = c(0,0,0,0,0),target = 0.9, lower = rep(0,5), upper = rep(10,5), method = "Port")
-theResult$par
-    # Parameters <- c(
-    #     Nu_1 = 0.2139008,
-    #     Nu_2 = 0.3379898,
-    #     Nu_3 = 0.2744363,
-    #     Rho = 0.280838,
-    #     Gamma = 0.5,
-    #     Theta = 2,
-    #     Omega = 0.01,
-    #     Delta_1 = 1.1491019,
-    #     Delta_2 = 2.5468165,
-    #     Alpha_1 = 0.0043812,
-    #     Alpha_2 = 0.0179791,
-    #     Alpha_3 = 0.0664348,
-    #     Alpha_4 = 0.1289688,
-    #     Tau_1 = 0.0041621,
-    #     Tau_2 = 0.0170798,
-    #     Tau_3 = 0.0631120,
-    #     Tau_4 = 0.1225184,
-    #     Mu = 0.0374,
-    #     Epsilon = 0.5
-    # )
-
-    Parameters <- c(
-        Nu_1 = 0.2139008,
-        Nu_2 = 0.3379898,
-        Nu_3 = 0.2744363,
-        Rho = 0.2651495,
-        Gamma = 0.6180978,
-        Theta = 0.7914529,
-        Omega = 0,
-        Delta_1 = 1.1491019,
-        Delta_2 = 2.5468165,
-        Alpha_1 = 0.0043812,
-        Alpha_2 = 0.0179791,
-        Alpha_3 = 0.0664348,
-        Alpha_4 = 0.1289688,
-        Tau_1 = 0.0041621,
-        Tau_2 = 0.0170798,
-        Tau_3 = 0.0631120,
-        Tau_4 = 0.1225184,
-        Mu = 0.0374,
-        Epsilon = 1.4354894
-    )
 
 
-    out <- ode(times=Time, y=Initial, func=ComplexCascade, parms=Parameters)
-    out <- tbl_df(data.frame(out))
-    out <- mutate(out,N = UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200 + Dx_500 + Dx_350500 + Dx_200350 + Dx_200 + Care_500 + Care_350500 + Care_200350 + Care_200 + Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200 + Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200)
-    out <- mutate(out,ART = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200 + Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,UnDx = (UnDx_500 + UnDx_350500 + UnDx_200350 + UnDx_200) / N)
-    out <- mutate(out,Dx = (Dx_500 + Dx_350500 + Dx_200350 + Dx_200) / N)
-    out <- mutate(out,Care = (Care_500 + Care_350500 + Care_200350 + Care_200) / N)
-    out <- mutate(out,Tx = (Tx_500 + Tx_350500 + Tx_200350 + Tx_200) / N)
-    out <- mutate(out,Vs = (Vs_500 + Vs_350500 + Vs_200350 + Vs_200) / N)
-    out <- mutate(out,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_200350 + Ltfu_200) / N)
-    out <- mutate(out,NaturalMortalityProp = NaturalMortality / N)
-    out <- mutate(out,HivMortalityProp = HivMortality / N)
-    out <- mutate(out,NewInfProp = NewInf / N)
 
 
-    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_200350,Dx_200,Care_500,Care_350500,Care_200350,Care_200,Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200,Ltfu_500,Ltfu_350500,Ltfu_200350,Ltfu_200))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_500,Tx_350500,Tx_200350,Tx_200,Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    vs = as.double(sum(filter(out,time == 5) %>% select(c(Vs_500,Vs_350500,Vs_200350,Vs_200))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
-
-levels(the909090$definition)
-the909090$definition <- factor(the909090$definition, levels=c("% Diagnosed","% On Treatment","% Suppressed"))
-the909090
-
-sum((target - the909090$results)^2)
-
-graphics.off()
-quartz.options(w=6,h=4)
-fill.coll <- brewer.pal(4,"Set1")
-
-o <- ggplot(the909090,aes(definition,results))
-o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
-o <- o + scale_fill_manual(values=fill.coll)
-o <- o + geom_abline(intercept=0.9, slope=0)
-o <- o + theme_classic()
-o <- o + theme(axis.title=element_blank())
-o <- o + theme(axis.text.x=element_text(size=12))
-o <- o + theme(axis.text.y=element_text(size=10))
-o <- o + theme(legend.position="none")
-o
