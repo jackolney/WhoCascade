@@ -914,19 +914,17 @@ function(input, output, session) {
     plotOpt.ranges <- reactiveValues(x = NULL, y = NULL)
 
     output$plotOpt <- renderPlot({
-
-        o <- ggplot(Result,aes(x=Impact,y=Cost))
-        o <- o + geom_point(aes(color=Names),size=5)
-        o <- o + theme_classic()
-        o <- o + theme(legend.position="none")
-        o <- o + theme(axis.text.x=element_text(size=18))
-        o <- o + theme(axis.text.y=element_text(size=18))
-        o <- o + theme(axis.title=element_text(size=20))
-        o <- o + xlab("Impact (DALYs Averted)")
-        o <- o + ylab("Cost (2013 USD)")
-        o <- o + coord_cartesian(xlim = plotOpt.ranges$x, ylim = plotOpt.ranges$y)
-
-        print(o)        
+        input$optimiseInput
+        ggplot(Result,aes(x=Impact,y=Cost)) + 
+        geom_point(aes(color=Names),size=5) + 
+        theme_classic() + 
+        theme(legend.position="none") + 
+        theme(axis.text.x=element_text(size=18)) + 
+        theme(axis.text.y=element_text(size=18)) + 
+        theme(axis.title=element_text(size=20)) + 
+        xlab("Impact (DALYs Averted)") + 
+        ylab("Cost (2013 USD)") + 
+        coord_cartesian(xlim = plotOpt.ranges$x, ylim = plotOpt.ranges$y)
         },
         height=400,
         width=700
@@ -936,7 +934,6 @@ function(input, output, session) {
     # If so, zoom to the brush bounds; if not, reset the zoom.
     observeEvent(input$plotOpt_dblclick, {
         brush <- input$plotOpt_brush
-        print(brush)
         if (!is.null(brush)) {
             plotOpt.ranges$x <- c(brush$xmin, brush$xmax)
             plotOpt.ranges$y <- c(brush$ymin, brush$ymax)
@@ -954,7 +951,7 @@ function(input, output, session) {
     )
 
     output$optTableBrushed <- DT::renderDataTable({
-        return(brushedPoints(Result, input$plotOpt_brush))
+        return(brushedPoints(df = Result,brush = input$plotOpt_brush))
         },
         options=list(pageLength=25)
     )

@@ -442,8 +442,12 @@ shinyUI(
         tabPanel("Results",
             sidebarPanel(
                 h4("Results"),
-                helpText("This section is still under development."),
+                helpText("This section is still under active development."),
+                p("The results of the optimisation simulation are shown in the plot to the right. Hit 'Show Result Table' to view all data points and corresponding parameter values.
+                    Zoom in on data points by drawing a box on the plot with the mouse and double clicking. To view the details of a specific point, draw a box with the mouse over the point and 
+                    hit 'Show Selected Result Table'"),
                 bsButton("showOptTable",label="Show Result Table",style="primary"),
+                p(" "),
                 bsButton("showOptBrushedTable",label="Show Selected Result Table",style="primary")
                 ),
             mainPanel(
