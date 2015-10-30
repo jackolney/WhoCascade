@@ -404,6 +404,11 @@ theme_classic()
 # DALYs Averted #
 # ------------- #
 
+Calc_Cost <- function(outFile) {
+    theCost <- as.double(filter(outFile,time == 5) %>% select(TotalCost))
+    return(theCost)
+}
+
 Calc_BaselineDALY <- function() {
     BaselinePar <- c(
         Rho = 0.205,

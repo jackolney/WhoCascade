@@ -392,7 +392,8 @@ shinyUI(
                 p(" "),
                 bsButton("optimiseInput",label="OPTIMISE",style="info"),
                 helpText("After optimisation is complete, flick back to 'parameter' tab to update model parameters, before returning to see the updated 90-90-90 plot."),
-                tableOutput("optIterationTable")
+                tableOutput("optIterationTable"),
+                bsButton("optFinished",label="OPTIMISATION NOT RUN",style="danger",icon = icon("ban"),disabled = TRUE)
                 ),
             mainPanel(
                 shinyjs::useShinyjs(),
@@ -451,6 +452,7 @@ shinyUI(
                 # helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
                 ),
             mainPanel(
+                plotOutput('plotOpt')
                 )
             )
         ),

@@ -642,6 +642,18 @@ function(input, output, session) {
     # OPTIMISATION #
     # ------------ #
 
+    output$unitCostTable <- renderTable({
+        theP <- Parameters()
+        Dx_unitCost <- dollar(as.double(theP["Dx_unitCost"]))
+        Linkage_unitCost <- dollar(as.double(theP["Linkage_unitCost"]))
+        Annual_Care_unitCost <- dollar(as.double(theP["Annual_Care_unitCost"]))
+        Annual_ART_unitCost <- dollar(as.double(theP["Annual_ART_unitCost"]))
+        Cost <- c(Dx_unitCost,Linkage_unitCost,Annual_Care_unitCost,Annual_ART_unitCost)
+        Unit <- c("HIV-testing","Linkage","Annual Care","Annual Treatment")
+        UnitCostTable <- data.frame(Unit,Cost)
+        UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-testing","Linkage","Annual Care","Annual Treatment"))
+        return(UnitCostTable)
+    })
 
     output$optParTable_Rho <- renderTable({
         theData <- seq(from = input$userOptRho_Range[1],to = input$userOptRho_Range[2],length.out = input$userOptRho_LengthOf)
@@ -708,88 +720,85 @@ function(input, output, session) {
         return(tbl)
     })
 
-    optimisationValues <- reactiveValues(
-        theRho = 0,
-        theEpsilon = 0,
-        theGamma = 0,
-        theOmega = 0
-        )
-    
-    output$optimisationTable <- renderTable({
-        tbl_names <- c("Rho","Epsilon","Gamma","Omega")
-        tbl_data <- c(
-            optimisationValues$theRho,
-            optimisationValues$theEpsilon,
-            optimisationValues$theGamma,
-            optimisationValues$theOmega
-            )
-        tbl <- matrix(tbl_data,nrow=4,ncol=2)
-        tbl[,1] <- c(tbl_names)
-        colnames(tbl) <- c("Parameter","Value")
-        return(tbl)
-    })
-
-    output$optimisationCostTable <- renderTable({
-        out <- out()
-        theDx_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Dx_Cost)),0))
-        theLinkage_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Linkage_Cost)),0))
-        theAnnual_Care_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Annual_Care_Cost)),0))
-        theAnnual_ART_Cost <- dollar(round(sum(filter(out,time == 5) %>% select(Annual_ART_Cost)),0))
-        Cost <- c(theDx_Cost,theLinkage_Cost,theAnnual_Care_Cost,theAnnual_ART_Cost)
-        Category <- c("Testing costs","Linkage costs","Annual Care Costs","Annual Treatment Costs")
-        CostTable <- data.frame(Category,Cost)
-        levels(CostTable$Category)
-        CostTable$Category <- factor(CostTable$Category, levels=c("Testing costs","Linkage costs","Annual Care Costs","Annual Treatment Costs"))
-        return(CostTable)
-    })
-
-    output$unitCostTable <- renderTable({
-        theP <- Parameters()
-        Dx_unitCost <- dollar(as.double(theP["Dx_unitCost"]))
-        Linkage_unitCost <- dollar(as.double(theP["Linkage_unitCost"]))
-        Annual_Care_unitCost <- dollar(as.double(theP["Annual_Care_unitCost"]))
-        Annual_ART_unitCost <- dollar(as.double(theP["Annual_ART_unitCost"]))
-        Cost <- c(Dx_unitCost,Linkage_unitCost,Annual_Care_unitCost,Annual_ART_unitCost)
-        Unit <- c("HIV-testing","Linkage","Annual Care","Annual Treatment")
-        UnitCostTable <- data.frame(Unit,Cost)
-        UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-testing","Linkage","Annual Care","Annual Treatment"))
-        return(UnitCostTable)
-    })
-
     observeEvent(input$optimiseInput, {
 
-        find909090 <- function(target, par) {
+        # Parameter Input Values
+        ParInput <- expand.grid(
+            Rho = seq(from = input$userOptRho_Range[1],to = input$userOptRho_Range[2],length.out = input$userOptRho_LengthOf),
+            Epsilon = seq(from = input$userOptEpsilon_Range[1],to = input$userOptEpsilon_Range[2],length.out = input$userOptEpsilon_LengthOf),
+            Kappa = seq(from = input$userOptKappa_Range[1],to = input$userOptKappa_Range[2],length.out = input$userOptKappa_LengthOf),
+            Gamma = seq(from = input$userOptGamma_Range[1],to = input$userOptGamma_Range[2],length.out = input$userOptGamma_LengthOf),
+            Sigma = seq(from = input$userOptSigma_Range[1],to = input$userOptSigma_Range[2],length.out = input$userOptSigma_LengthOf),
+            Omega = seq(from = input$userOptOmega_Range[1],to = input$userOptOmega_Range[2],length.out = input$userOptOmega_LengthOf)
+        )
 
-            optimisationValues$theRho <- par[1]
-            optimisationValues$theEpsilon <- par[4]
-            optimisationValues$theGamma <- par[2]
-            optimisationValues$theOmega <- par[3]
+        if(input$incidenceInput == TRUE) {
+            theInitial <- Initial()
+            Numerator <- NewInfections
+            Denominator <- as.double(((theInitial[["UnDx_500"]] + theInitial[["Dx_500"]] + theInitial[["Care_500"]] + theInitial[["PreLtfu_500"]] + theInitial[["Tx_Na_500"]] + theInitial[["Ltfu_500"]]) * 1.35) + ((theInitial[["UnDx_350500"]] + theInitial[["Dx_350500"]] + theInitial[["Care_350500"]] + theInitial[["PreLtfu_350500"]] + theInitial[["Tx_Na_350500"]] + theInitial[["Ltfu_350500"]]) * 1) + ((theInitial[["UnDx_250350"]] + theInitial[["Dx_250350"]] + theInitial[["Care_250350"]] + theInitial[["PreLtfu_250350"]] + theInitial[["Tx_Na_250350"]] + theInitial[["Ltfu_250350"]] + theInitial[["UnDx_200250"]] + theInitial[["Dx_200250"]] + theInitial[["Care_200250"]] + theInitial[["PreLtfu_200250"]] + theInitial[["Tx_Na_200250"]] + theInitial[["Ltfu_200250"]]) * 1.64) + ((theInitial[["UnDx_100200"]] + theInitial[["Dx_100200"]] + theInitial[["Care_100200"]] + theInitial[["PreLtfu_100200"]] + theInitial[["Tx_Na_100200"]] + theInitial[["Ltfu_100200"]] + theInitial[["UnDx_50100"]] + theInitial[["Dx_50100"]] + theInitial[["Care_50100"]] + theInitial[["PreLtfu_50100"]] + theInitial[["Tx_Na_50100"]] + theInitial[["Ltfu_50100"]] + theInitial[["UnDx_50"]] + theInitial[["Dx_50"]] + theInitial[["Care_50"]] + theInitial[["PreLtfu_50"]] + theInitial[["Tx_Na_50"]] + theInitial[["Ltfu_50"]]) * 5.17) + ((theInitial[["Tx_A_500"]] + theInitial[["Tx_A_350500"]] + theInitial[["Tx_A_250350"]] + theInitial[["Tx_A_200250"]] + theInitial[["Tx_A_100200"]] + theInitial[["Tx_A_50100"]] + theInitial[["Tx_A_50"]]) * 0.1))
+            # print(paste("Numerator =",Numerator))
+            # print(paste("Denominator =",Denominator))
+            Beta <<- Numerator / Denominator
+        } else {
+            Beta <<- 0
+        }
 
-            print(paste("par =",par))
+        RunSimulation <- function(par,target) {
+
+            OptPar <- c(
+                Nu_1 = 0.193634,
+                Nu_2 = 0.321304,
+                Nu_3 = 0.328285,
+                Nu_4 = 0.497247,
+                Nu_5 = 0.559090,
+                Nu_6 = 0.846406,
+                Rho = par[["Rho"]],
+                Epsilon = par[["Epsilon"]],
+                Kappa = par[["Kappa"]],
+                Gamma = par[["Gamma"]],
+                Theta = 1.511,
+                Omega = par[["Omega"]],
+                p = 0.95,
+                s_1 = 0.1,
+                s_2 = 0.2,
+                s_3 = 0.3,
+                s_4 = 0.4,
+                s_5 = 1,
+                s_6 = 2,
+                s_7 = 3,
+                Sigma = par[["Sigma"]],
+                Delta_1 = 1.58084765,
+                Delta_2 = 3.50371789,
+                Delta_3 = 3.50371789,
+                Delta_4 = 3.50371789,
+                Delta_5 = 3.50371789,
+                Alpha_1 = 0.004110,
+                Alpha_2 = 0.011670,
+                Alpha_3 = 0.009385,
+                Alpha_4 = 0.016394,
+                Alpha_5 = 0.027656,
+                Alpha_6 = 0.047877,
+                Alpha_7 = 1.081964,
+                Tau_1 = 0.003905,
+                Tau_2 = 0.011087,
+                Tau_3 = 0.008916,
+                Tau_4 = 0.015574,
+                Tau_5 = 0.026273,
+                Tau_6 = 0.045482,
+                Tau_7 = 1.02785,
+                Mu = 0.0374,
+                ART_All = input$userART_All,
+                ART_500 = input$userART_500,
+                ART_350 = input$userART_350,
+                ART_200 = input$userART_200,
+                Dx_unitCost = input$userDxUnitCost,
+                Linkage_unitCost = input$userLinkageUnitCost,
+                Annual_Care_unitCost = input$userAnnualCareUnit,
+                Annual_ART_unitCost = input$userAnnualARTUnitCost
+            )
 
             Time <- seq(0,5,0.02)
-
-            # Ability to turn off HIV incidence in the model.
-            if(input$incidenceInput == TRUE) {
-                theInitial <- Initial()
-                Numerator <- NewInfections
-                Denominator <- as.double(((theInitial[["UnDx_500"]] + theInitial[["Dx_500"]] + theInitial[["Care_500"]] + theInitial[["PreLtfu_500"]] + theInitial[["Tx_Na_500"]] + theInitial[["Ltfu_500"]]) * 1.35) + ((theInitial[["UnDx_350500"]] + theInitial[["Dx_350500"]] + theInitial[["Care_350500"]] + theInitial[["PreLtfu_350500"]] + theInitial[["Tx_Na_350500"]] + theInitial[["Ltfu_350500"]]) * 1) + ((theInitial[["UnDx_250350"]] + theInitial[["Dx_250350"]] + theInitial[["Care_250350"]] + theInitial[["PreLtfu_250350"]] + theInitial[["Tx_Na_250350"]] + theInitial[["Ltfu_250350"]] + theInitial[["UnDx_200250"]] + theInitial[["Dx_200250"]] + theInitial[["Care_200250"]] + theInitial[["PreLtfu_200250"]] + theInitial[["Tx_Na_200250"]] + theInitial[["Ltfu_200250"]]) * 1.64) + ((theInitial[["UnDx_100200"]] + theInitial[["Dx_100200"]] + theInitial[["Care_100200"]] + theInitial[["PreLtfu_100200"]] + theInitial[["Tx_Na_100200"]] + theInitial[["Ltfu_100200"]] + theInitial[["UnDx_50100"]] + theInitial[["Dx_50100"]] + theInitial[["Care_50100"]] + theInitial[["PreLtfu_50100"]] + theInitial[["Tx_Na_50100"]] + theInitial[["Ltfu_50100"]] + theInitial[["UnDx_50"]] + theInitial[["Dx_50"]] + theInitial[["Care_50"]] + theInitial[["PreLtfu_50"]] + theInitial[["Tx_Na_50"]] + theInitial[["Ltfu_50"]]) * 5.17) + ((theInitial[["Tx_A_500"]] + theInitial[["Tx_A_350500"]] + theInitial[["Tx_A_250350"]] + theInitial[["Tx_A_200250"]] + theInitial[["Tx_A_100200"]] + theInitial[["Tx_A_50100"]] + theInitial[["Tx_A_50"]]) * 0.1))
-                Beta <<- Numerator / Denominator
-            } else {
-                Beta <<- 0
-            }
-
-            theP <- Parameters()
-            theP["Rho"] = par[1]
-            theP["Gamma"] = par[2]
-            theP["Omega"] = par[3]
-            theP["Epsilon"] = par[4]
-
-            # The Model #
-            theOut <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=theP))
-            # --------- #
-
-            # Post-simulation mutation (creation of columns) etc.
+            theOut <- data.frame(ode(times=Time, y=Initial(), func=ComplexCascade, parms=OptPar))
             theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50 + Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50)
             theOut <- mutate(theOut,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
             theOut <- mutate(theOut,UnDx = (UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50) / N)
@@ -803,89 +812,110 @@ function(input, output, session) {
             theOut <- mutate(theOut,HivMortalityProp = HivMortality / N)
             theOut <- mutate(theOut,NewInfProp = NewInf / N)
             theOut <- mutate(theOut,TotalCost = Dx_Cost + Linkage_Cost + Annual_Care_Cost + Annual_ART_Cost)
-            theOut <- mutate(theOut,cd4_500 = (UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Tx_A_500 + Ltfu_500) / N)
-            theOut <- mutate(theOut,cd4_350500 = (UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Tx_A_350500 + Ltfu_350500) / N)
-            theOut <- mutate(theOut,cd4_250350 = (UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Tx_A_250350 + Ltfu_250350) / N)
-            theOut <- mutate(theOut,cd4_200250 = (UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Tx_A_200250 + Ltfu_200250) / N)
-            theOut <- mutate(theOut,cd4_100200 = (UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Tx_A_100200 + Ltfu_100200) / N)
-            theOut <- mutate(theOut,cd4_50100 = (UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Tx_A_50100 + Ltfu_50100) / N)
-            theOut <- mutate(theOut,cd4_50 = (UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Tx_A_50 + Ltfu_50) / N)
-           
-            PLHIV = as.double(sum(filter(theOut,time == 5) %>% select(N)))
-            dx = as.double(sum(filter(theOut,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
-            tx = as.double(sum(filter(theOut,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
-            vs = as.double(sum(filter(theOut,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
-            p_dx <- dx / PLHIV
-            p_tx <- tx / dx
-            p_vs <- vs / tx
-            results <- c(p_dx,p_tx,p_vs)
-            definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-            the909090 <- data.frame(definition,results)
-            output <- 1/3 * sum((target - the909090$results)^2)
-            return(output)
+            theOut <- mutate(theOut,DALY = (((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.053) +  # >350, no ART
+                                      ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.221) +  # 200-350, no ART
+                                      ((UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Ltfu_100200 + UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Ltfu_50100 + UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Ltfu_50) * 0.547) + # <200, no ART
+                                      ((Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) * 0.053))) # on ART and virally suppressed
+            # PLHIV = as.double(sum(filter(theOut,time == 5) %>% select(N)))
+            # dx = as.double(sum(filter(theOut,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+            # tx = as.double(sum(filter(theOut,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+            # vs = as.double(sum(filter(theOut,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+            # p_dx <- dx / PLHIV
+            # p_tx <- tx / dx
+            # p_vs <- vs / tx
+            # results <- c(p_dx,p_tx,p_vs)
+            # definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+            # the909090 <- data.frame(definition,results)
+
+            # Outputs to return
+            # cost <<- as.double(sum(filter(theOut,time == 5) %>% select(TotalCost)))
+            # output <- 1/3 * sum((target - the909090$results)^2)
+            # print(paste("Error =",output,"Cost =",dollar(cost)))
+            return(theOut)
         }
 
-        withProgress(message = 'Running optimisation', value = 0, {
-            incProgress(0.1/1, message = 'Running optimisation')
-            theResult <- optim(par = c(0.205,2.556,0.033,16.949), find909090, target = 0.9, lower = c(0.01,0.01,0.01,0.05), upper = c(5,5,5,20), method = 'L-BFGS-B')
-            incProgress(0.5/1, message = 'calculating results')
+        withProgress(min = 0, max = 1, {
 
-            # Fill out results table.
-            optimisationValues$theRho <- theResult$par[1]
-            optimisationValues$theEpsilon <- theResult$par[4]
-            optimisationValues$theGamma <- theResult$par[2]
-            optimisationValues$theOmega <- theResult$par[3]
+            setProgress(value = 0, message = 'Starting optimisation.', detail = 'This may take a while...')
 
-            # Update sliders on "Parameter" page.
-            updateSliderInput(session,"rho",value=theResult$par[1],min=0,max=5,step=0.01)
-            updateSliderInput(session,"epsilon",value=theResult$par[4],min=0,max=5,step=0.01)
-            updateSliderInput(session,"gamma",value=theResult$par[2],min=0,max=5,step=0.01)
-            updateSliderInput(session,"omega",value=theResult$par[3],min=0,max=5,step=0.01)
+            updateButton(session,"optFinished",label="OPTIMISATION RUNNING",style="warning",icon="")
+            
+            # Need for loop in here {}
+            Start.Time <- proc.time()[[1]]
+            theList <- list()
+            for(i in 1:dim(ParInput)[1]) {
+                setProgress(value = i/dim(ParInput)[1], message = paste(paste('Run ',i,".",sep=''),"Time =",round(proc.time()[[1]] - Start.Time,0),"sec"),detail = "")
+                theList[[rownames(ParInput)[i]]] <- RunSimulation(ParInput[i,],1)
+            }
 
-            print(theResult$par)
-            incProgress(1, message = 'Complete.')
+            Calc_Cost <- function(outFile) {
+                theCost <- as.double(filter(outFile,time == 5) %>% select(TotalCost))
+                return(theCost)
+            }
+
+            Calc_DALY <- function(outFile) {
+                theDALY <- select(outFile,DALY) %>% sum()
+                return(theDALY)
+            }
+
+            Calc_BaselineDALY <- function() {
+                BaselinePar <- c(
+                    Rho = 0.205,
+                    Epsilon = 16.949,
+                    Kappa = 1.079,
+                    Gamma = 2.556,
+                    Sigma = 0,
+                    Omega = 0.033
+                    )
+                Baseline <- RunSimulation(BaselinePar,1)
+                BaselineDALY <- Calc_DALY(Baseline)
+                return(BaselineDALY)
+            }
+
+            theBaselineDALY <- Calc_BaselineDALY()
+
+            Calc_DALYsAverted <- function(outFile,BaselineDALY) {
+                theDALY <- select(outFile,DALY) %>% sum()
+                return(BaselineDALY - theDALY)
+            }
+
+            ResultImpact <- c()
+            ResultCost <- c()
+            ResultPar_Rho <- c()
+            ResultPar_Epsilon <- c()
+            ResultPar_Kappa <- c()
+            ResultPar_Gamma <- c()
+            ResultPar_Sigma <- c()
+            ResultPar_Omega <- c()
+            for(i in 1:length(theList)) {
+                print(i)
+                ResultImpact[i] <- Calc_DALYsAverted(theList[[i]],theBaselineDALY)
+                ResultCost[i] <- Calc_Cost(theList[[i]])
+                ResultPar_Rho[i] <- ParInput[i,]$Rho
+                ResultPar_Epsilon[i] <- ParInput[i,]$Epsilon
+                ResultPar_Kappa[i] <- ParInput[i,]$Kappa
+                ResultPar_Gamma[i] <- ParInput[i,]$Gamma
+                ResultPar_Sigma[i] <- ParInput[i,]$Sigma
+                ResultPar_Omega[i] <- ParInput[i,]$Omega
+            }
+
+            ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
+
+            Result <<- data.frame(ResultNames,ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+
+            print(Result)
+            setProgress(value = 1, message = paste("Finished. Time =",round(proc.time()[[1]] - Start.Time,0),"sec"))
+            updateButton(session,"optFinished",label=" OPTIMISATION COMPLETE",style="success",icon=icon("check"))
         })
     })
 
-    output$plotOptimised909090 <- renderPlot({
-        # Should refresh when this button is pressed.
-        input$optimiseInput
-
-        out <- out()
+    output$plotOpt <- renderPlot({
         
-        PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-        # dx / PLHIV
-        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
-        # tx / dx
-        tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
-        # vs / tx
-        vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
-
-        p_dx <- dx / PLHIV
-        p_tx <- tx / dx
-        p_vs <- vs / tx
-
-        results <- c(p_dx,p_tx,p_vs)
-        definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-        Scenario <- c("Baseline")
-        the909090 <- data.frame(definition,results,Scenario)
-
-        levels(the909090$definition)
-        the909090$definition <- factor(the909090$definition, levels=c("% Diagnosed","% On Treatment","% Suppressed"))
-
-        fill.coll <- brewer.pal(4,"Set1")
-
-        o <- ggplot(the909090,aes(definition,results))
-        o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
-        o <- o + scale_fill_manual(values=fill.coll)
-        o <- o + geom_abline(intercept=0.9, slope=0)
+        o <- ggplot(Result,aes(x=ResultImpact,y=ResultCost))
+        o <- o + geom_point(aes(color=ResultNames))
         o <- o + theme_classic()
-        o <- o + theme(title=element_text(size=20))
-        o <- o + theme(axis.title=element_blank())
-        o <- o + theme(axis.text.x=element_text(size=18))
-        o <- o + theme(axis.text.y=element_text(size=18))
         o <- o + theme(legend.position="none")
+
         print(o)        
         },
         height=400,
