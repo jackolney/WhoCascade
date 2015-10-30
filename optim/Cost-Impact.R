@@ -216,161 +216,16 @@ Time.Elapsed <- proc.time() - Start.Time
 Time.Elapsed
 object_size(theList)
 
-# theList
-object_size(theList)
-
-# theList[[1]]$TotalCost
-
-# system.time(RunSimulation(ParInput[1,],1))
-
-# 90-90-90 Calculation for Sample (write into function)
-
-Calc_909090 <- function(outFile) {
-    PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(outFile,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
-    tx = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
-    vs = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
-    return(the909090)
-}
-
-Calc_909090(theList[[1]])
 
 Calc_Cost <- function(outFile) {
     theCost <- as.double(filter(outFile,time == 5) %>% select(TotalCost))
     return(theCost)
 }
 
-Calc_Cost(theList[[1]])
-
-CalcError_909090 <- function(outFile,target) {
-    PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(outFile,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
-    tx = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
-    vs = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
-    output <- 1/3 * sum((target - the909090$results)^2)
-    # output <- 1/1 * sum((target - the909090$results[3])^2)
-    return(output)
-}
-
-ResultError <- c()
-ResultCost <- c()
-for(i in 1:length(theList)) {
-    print(i)
-    ResultError[i] <- CalcError_909090(theList[[i]],1)
-    ResultCost[i] <- Calc_Cost(theList[[i]])
-}
-
-ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
-
-Result <- data.frame(ResultNames,ResultError,ResultCost)
-
-ggplot(Result,aes(x=ResultError,y=ResultCost)) +
-geom_point() +
-theme_classic()
-
-FindResults_909090 <- function(ResultList) {
-    theResultList <- list()
-    for(i in 1:length(ResultList)) {
-        print(i)
-        the909090 <- Calc_909090(ResultList[[i]])
-        Test <- c(0,0,0)
-        for(j in 1:length(the909090$results)) {
-            if(the909090$results[j] > 0.9) {
-                Test[j] <- 1
-            } else {
-                Test[j] <- 0
-            }
-        }
-        if(sum(Test) == 3) {
-            theResultList[[length(theResultList) + 1]] <- theList[[i]]
-        }
-    }
-    return(theResultList)
-}
-
-Result909090 <- FindResults_909090(theList)
-
-length(Result909090)
-object_size(Result909090)
-
-ResultError <- c()
-ResultCost <- c()
-for(i in 1:length(Result909090)) {
-    print(i)
-    ResultError[i] <- CalcError_909090(Result909090[[i]],0.9)
-    ResultCost[i] <- Calc_Cost(Result909090[[i]])
-}
-
-ResultNames <- paste("p",seq(1,length(Result909090),1),sep='')
-
-Result <- data.frame(ResultNames,ResultError,ResultCost)
-
-ggplot(Result,aes(x=ResultError,y=ResultCost)) +
-geom_point() +
-theme_classic()
-
-# ---------------- #
-# DALY Calculation #
-# ---------------- #
-
-# Deprecated. Functionality incorporated into RunSimulation()
-
-# AddDALY <- function(List) {
-#     for(i in 1:length(List)) {
-#         print(i)
-#         List[[i]] <- mutate(List[[i]],DALY = 
-#             (
-#                 ((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.053) +  # >350, no ART
-#                 ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.221) +  # 200-350, no ART
-#                 ((UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Ltfu_100200 + UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Ltfu_50100 + UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Ltfu_50) * 0.547) + # <200, no ART
-#                 ((Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) * 0.053) # on ART and virally suppressed
-#             )
-#         )
-#     }
-#     return(List)
-# }
-
-# theList <- AddDALY(theList)
-
-# plot(theList[[1]]$DALY,type='l')
-# cumsum(theList[[1]]$DALY)
-
 Calc_DALY <- function(outFile) {
     theDALY <- select(outFile,DALY) %>% sum()
     return(theDALY)
 }
-
-ResultImpact <- c()
-ResultCost <- c()
-for(i in 1:length(theList)) {
-    print(i)
-    ResultImpact[i] <- Calc_DALY(theList[[i]])
-    ResultCost[i] <- Calc_Cost(theList[[i]])
-}
-
-ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
-
-Result <- data.frame(ResultNames,ResultImpact,ResultCost)
-
-ggplot(Result,aes(x=ResultImpact,y=ResultCost)) +
-geom_point(aes(color=ResultNames)) +
-theme_classic()
-
-# ------------- #
-# DALYs Averted #
-# ------------- #
 
 Calc_BaselineDALY <- function() {
     BaselinePar <- c(
@@ -409,7 +264,6 @@ ggplot(Result,aes(x=ResultImpact,y=ResultCost)) +
 geom_point(aes(color=ResultNames)) +
 theme_classic() +
 theme(legend.position="none")
-
 
 # Save all those files.
 # dir("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October")
