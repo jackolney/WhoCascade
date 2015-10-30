@@ -200,12 +200,6 @@ RunSimulation <- function(par,target) {
     return(out)
 }
 
-# test <- RunSimulation(ParameterMatrix[1,],1)
-# theList <- list(p1 = test,p2 = test)
-# length(theList)
-# theList[["p3"]] <- test
-# object_size(test)
-
 Start.Time <- proc.time()
 theList <- list()
 for(i in 1:dim(ParInput)[1]) {

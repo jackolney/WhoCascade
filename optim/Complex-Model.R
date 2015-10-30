@@ -282,6 +282,7 @@ theme_classic()
 
 FindResults_909090 <- function(ResultList) {
     theResultList <- list()
+    theResultParList <- list()
     for(i in 1:length(ResultList)) {
         print(i)
         the909090 <- Calc_909090(ResultList[[i]])
@@ -294,28 +295,59 @@ FindResults_909090 <- function(ResultList) {
             }
         }
         if(sum(Test) == 3) {
+            theResultParList[[length(theResultList) + 1]] <- ParInput[i,]
             theResultList[[length(theResultList) + 1]] <- theList[[i]]
         }
     }
     return(theResultList)
 }
 
-Result909090 <- FindResults_909090(theList)
+FindPar_909090 <- function(ResultList) {
+    theResultParList <- list()
+    for(i in 1:length(ResultList)) {
+        print(i)
+        the909090 <- Calc_909090(ResultList[[i]])
+        Test <- c(0,0,0)
+        for(j in 1:length(the909090$results)) {
+            if(the909090$results[j] > 0.9) {
+                Test[j] <- 1
+            } else {
+                Test[j] <- 0
+            }
+        }
+        if(sum(Test) == 3) {
+            theResultParList[[length(theResultParList) + 1]] <- ParInput[i,]
+        }
+    }
+    return(theResultParList)
+}
 
-length(Result909090)
-object_size(Result909090)
+Result909090 <- FindResults_909090(theList)
+ResultPar909090 <- FindPar_909090(theList)
 
 ResultError <- c()
 ResultCost <- c()
+ResultPar_Rho <- c()
+ResultPar_Epsilon <- c()
+ResultPar_Kappa <- c()
+ResultPar_Gamma <- c()
+ResultPar_Sigma <- c()
+ResultPar_Omega <- c()
 for(i in 1:length(Result909090)) {
     print(i)
     ResultError[i] <- CalcError_909090(Result909090[[i]],0.9)
     ResultCost[i] <- Calc_Cost(Result909090[[i]])
+    ResultPar_Rho[i] <- ResultPar909090[[i]]$Rho
+    ResultPar_Epsilon[i] <- ResultPar909090[[i]]$Epsilon
+    ResultPar_Kappa[i] <- ResultPar909090[[i]]$Kappa
+    ResultPar_Gamma[i] <- ResultPar909090[[i]]$Gamma
+    ResultPar_Sigma[i] <- ResultPar909090[[i]]$Sigma
+    ResultPar_Omega[i] <- ResultPar909090[[i]]$Omega
 }
 
 ResultNames <- paste("p",seq(1,length(Result909090),1),sep='')
 
-Result <- data.frame(ResultNames,ResultError,ResultCost)
+Result <- data.frame(ResultNames,ResultError,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
 
 ggplot(Result,aes(x=ResultError,y=ResultCost)) +
 geom_point() +
@@ -395,21 +427,32 @@ Calc_DALYsAverted <- function(outFile,BaselineDALY) {
 
 ResultImpact <- c()
 ResultCost <- c()
+ResultPar_Rho <- c()
+ResultPar_Epsilon <- c()
+ResultPar_Kappa <- c()
+ResultPar_Gamma <- c()
+ResultPar_Sigma <- c()
+ResultPar_Omega <- c()
 for(i in 1:length(theList)) {
     print(i)
     ResultImpact[i] <- Calc_DALYsAverted(theList[[i]],theBaselineDALY)
     ResultCost[i] <- Calc_Cost(theList[[i]])
+    ResultPar_Rho[i] <- ParInput[i,]$Rho
+    ResultPar_Epsilon[i] <- ParInput[i,]$Epsilon
+    ResultPar_Kappa[i] <- ParInput[i,]$Kappa
+    ResultPar_Gamma[i] <- ParInput[i,]$Gamma
+    ResultPar_Sigma[i] <- ParInput[i,]$Sigma
+    ResultPar_Omega[i] <- ParInput[i,]$Omega
 }
 
 ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
 
-Result <- data.frame(ResultNames,ResultImpact,ResultCost)
+Result <- data.frame(ResultNames,ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
 
 ggplot(Result,aes(x=ResultImpact,y=ResultCost)) +
 geom_point(aes(color=ResultNames)) +
 theme_classic() +
 theme(legend.position="none")
-
 
 # Save all those files.
 # dir("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October")
