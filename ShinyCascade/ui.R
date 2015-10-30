@@ -383,21 +383,74 @@ shinyUI(
                     )
                 )
             ),
-        tabPanel("Results",
+        tabPanel("Parameter Selection",
             sidebarPanel(
-                h4("Optimisation"),
+                h4("Parameter Selection"),
                 p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button."),
                 helpText("Table will turn grey while optimisation algorithm runs."),
+                bsButton("resetSliders",label="RESET SLIDERS",style="danger"),
+                p(" "),
                 bsButton("optimiseInput",label="OPTIMISE",style="info"),
                 helpText("After optimisation is complete, flick back to 'parameter' tab to update model parameters, before returning to see the updated 90-90-90 plot."),
-                tableOutput("optimisationTable"),
-                h4("Cost of optimisation"),
-                tableOutput("optimisationCostTable"),
-                helpText("What about the counterfactual?"),
-                helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
+                tableOutput("optIterationTable")
                 ),
             mainPanel(
-                plotOutput('plotOptimised909090')
+                shinyjs::useShinyjs(),
+                id = "optimisation-panel",
+                wellPanel(
+                    h4("Rho"),
+                    sliderInput('userOptRho_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptRho_Range','Range of values:',min=0,max=50,value=c(0.205,20),step=0.001),
+                    tableOutput("optParTable_Rho")
+                    ),
+                wellPanel(
+                    h4("Epsilon"),
+                    sliderInput('userOptEpsilon_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptEpsilon_Range','Range of values:',min=0,max=50,value=c(16.949,30),step=0.001),
+                    tableOutput("optParTable_Epsilon")
+                    ),
+                wellPanel(
+                    h4("Kappa"),
+                    sliderInput('userOptKappa_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptKappa_Range','Range of values:',min=0,max=2,value=c(0.01,1.079),step=0.001),
+                    tableOutput("optParTable_Kappa")
+                    ),
+                wellPanel(
+                    h4("Gamma"),
+                    sliderInput('userOptGamma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptGamma_Range','Range of values:',min=0,max=50,value=c(2.556,20),step=0.001),
+                    tableOutput("optParTable_Gamma")
+                    ),
+                wellPanel(
+                    h4("Sigma"),
+                    sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptSigma_Range','Range of values:',min=0,max=10,value=c(0,5),step=0.001),
+                    tableOutput("optParTable_Sigma")
+                    ),
+                wellPanel(
+                    h4("Omega"),
+                    sliderInput('userOptOmega_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptOmega_Range','Range of values:',min=0,max=0.1,value=c(0.01,0.033),step=0.001),
+                    tableOutput("optParTable_Omega")
+                    )
+                )
+            ),
+        tabPanel("Results",
+            sidebarPanel(
+                h4("Results"),
+                p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button."),
+                helpText("Table will turn grey while optimisation algorithm runs.")
+                # bsButton("resetSliders",label="RESET SLIDERS",style="danger"),
+                # p(" "),
+                # bsButton("optimiseInput",label="OPTIMISE",style="info"),
+                # helpText("After optimisation is complete, flick back to 'parameter' tab to update model parameters, before returning to see the updated 90-90-90 plot."),
+                # tableOutput("optimisationTable"),
+                # h4("Cost of optimisation"),
+                # tableOutput("optimisationCostTable"),
+                # helpText("What about the counterfactual?"),
+                # helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
+                ),
+            mainPanel(
                 )
             )
         ),
