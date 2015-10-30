@@ -902,6 +902,7 @@ function(input, output, session) {
             ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
 
             Result <<- data.frame(ResultNames,ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+            colnames(Result) <<- c("Names","Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 
             print(Result)
             setProgress(value = 1, message = paste("Finished. Time =",round(proc.time()[[1]] - Start.Time,0),"sec"))
@@ -909,17 +910,53 @@ function(input, output, session) {
         })
     })
 
+    # Reactive ranges for plotOpt
+    plotOpt.ranges <- reactiveValues(x = NULL, y = NULL)
+
     output$plotOpt <- renderPlot({
-        
-        o <- ggplot(Result,aes(x=ResultImpact,y=ResultCost))
-        o <- o + geom_point(aes(color=ResultNames))
+
+        o <- ggplot(Result,aes(x=Impact,y=Cost))
+        o <- o + geom_point(aes(color=Names),size=5)
         o <- o + theme_classic()
         o <- o + theme(legend.position="none")
+        o <- o + theme(axis.text.x=element_text(size=18))
+        o <- o + theme(axis.text.y=element_text(size=18))
+        o <- o + theme(axis.title=element_text(size=20))
+        o <- o + xlab("Impact (DALYs Averted)")
+        o <- o + ylab("Cost (2013 USD)")
+        o <- o + coord_cartesian(xlim = plotOpt.ranges$x, ylim = plotOpt.ranges$y)
 
         print(o)        
         },
         height=400,
         width=700
+    )
+
+    # When a double-click happens, check if there's a brush on the plot.
+    # If so, zoom to the brush bounds; if not, reset the zoom.
+    observeEvent(input$plotOpt_dblclick, {
+        brush <- input$plotOpt_brush
+        print(brush)
+        if (!is.null(brush)) {
+            plotOpt.ranges$x <- c(brush$xmin, brush$xmax)
+            plotOpt.ranges$y <- c(brush$ymin, brush$ymax)
+        } else {
+            plotOpt.ranges$x <- NULL
+            plotOpt.ranges$y <- NULL
+            }
+        }
+    )
+
+    output$optTable <- DT::renderDataTable({
+        return(Result)
+        },
+        options=list(pageLength=25)
+    )
+
+    output$optTableBrushed <- DT::renderDataTable({
+        return(brushedPoints(Result, input$plotOpt_brush))
+        },
+        options=list(pageLength=25)
     )
 
     # Saving input values from setup tab.

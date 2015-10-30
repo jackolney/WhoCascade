@@ -386,12 +386,15 @@ shinyUI(
         tabPanel("Parameter Selection",
             sidebarPanel(
                 h4("Parameter Selection"),
-                p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button."),
-                helpText("Table will turn grey while optimisation algorithm runs."),
+                p("The optimisation algorithm takes six model parameters representing six hypothetical interventions and simulates the cost and impact of all permutations."),
+                helpText("For each intervention, select the number of parameter values to simulate and set the range of rates to sample from (rates are uniformally distributed within this range).
+                    The parameter values for each intervention are then displayed in the corresponding tables."),
                 bsButton("resetSliders",label="RESET SLIDERS",style="danger"),
                 p(" "),
+                helpText("Below is the number of iterations the model will simulate along with the estimated time to completion. Hit the 'OPTIMISE' button to begin the simulation. Note the progress bar 
+                    at the top of the screen, and the run number and elapsed time on the top right. Please wait until the optimisation algorithm has completed the below bar has turned green before proceeding to the results tab."),
                 bsButton("optimiseInput",label="OPTIMISE",style="info"),
-                helpText("After optimisation is complete, flick back to 'parameter' tab to update model parameters, before returning to see the updated 90-90-90 plot."),
+                p(" "),
                 tableOutput("optIterationTable"),
                 bsButton("optFinished",label="OPTIMISATION NOT RUN",style="danger",icon = icon("ban"),disabled = TRUE)
                 ),
@@ -412,25 +415,25 @@ shinyUI(
                     ),
                 wellPanel(
                     h4("Kappa"),
-                    sliderInput('userOptKappa_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptKappa_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
                     sliderInput('userOptKappa_Range','Range of values:',min=0,max=2,value=c(0.01,1.079),step=0.001),
                     tableOutput("optParTable_Kappa")
                     ),
                 wellPanel(
                     h4("Gamma"),
-                    sliderInput('userOptGamma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptGamma_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
                     sliderInput('userOptGamma_Range','Range of values:',min=0,max=50,value=c(2.556,20),step=0.001),
                     tableOutput("optParTable_Gamma")
                     ),
                 wellPanel(
                     h4("Sigma"),
-                    sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
                     sliderInput('userOptSigma_Range','Range of values:',min=0,max=10,value=c(0,5),step=0.001),
                     tableOutput("optParTable_Sigma")
                     ),
                 wellPanel(
                     h4("Omega"),
-                    sliderInput('userOptOmega_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptOmega_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
                     sliderInput('userOptOmega_Range','Range of values:',min=0,max=0.1,value=c(0.01,0.033),step=0.001),
                     tableOutput("optParTable_Omega")
                     )
@@ -439,20 +442,36 @@ shinyUI(
         tabPanel("Results",
             sidebarPanel(
                 h4("Results"),
-                p("To identify the most cost-effective strategy for achieving the UNAIDS 90-90-90 targets hit the 'optimise' button."),
-                helpText("Table will turn grey while optimisation algorithm runs.")
-                # bsButton("resetSliders",label="RESET SLIDERS",style="danger"),
-                # p(" "),
-                # bsButton("optimiseInput",label="OPTIMISE",style="info"),
-                # helpText("After optimisation is complete, flick back to 'parameter' tab to update model parameters, before returning to see the updated 90-90-90 plot."),
-                # tableOutput("optimisationTable"),
-                # h4("Cost of optimisation"),
-                # tableOutput("optimisationCostTable"),
-                # helpText("What about the counterfactual?"),
-                # helpText("What about if omega is already specified (ART dropout), do we still include that as a lever for optimisation?")
+                helpText("This section is still under development."),
+                bsButton("showOptTable",label="Show Result Table",style="primary"),
+                bsButton("showOptBrushedTable",label="Show Selected Result Table",style="primary")
                 ),
             mainPanel(
-                plotOutput('plotOpt')
+                bsModal(id = "optTableModal",title = "Result Table",trigger = "showOptTable",size = "large",
+                    DT::dataTableOutput('optTable', width = "100%")
+                ),
+                bsModal(id = "optTableBrushedModal",title = "Selected Result Table",trigger = "showOptBrushedTable",size = "large",
+                    DT::dataTableOutput('optTableBrushed', width = "100%")
+                ),
+                bsCollapse(id = 'optCollapse', open = "Plot All",
+                    bsCollapsePanel("Plot All",
+                        "This plot shows the cost and impact of all intervention combinations.",
+                        plotOutput('plotOpt',
+                            dblclick = "plotOpt_dblclick",
+                            brush = brushOpts(
+                                id = "plotOpt_brush",
+                                clip = TRUE,
+                                resetOnNew = TRUE
+                                )
+                            ),
+                        style = "success"
+                        ),
+                    bsCollapsePanel("Plot 90-90-90",
+                        "Plot only values fulfilling 90-90-90 targets.",
+                        # DT::dataTableOutput('optTable'),
+                        style = "info"
+                        )
+                    )
                 )
             )
         ),
@@ -475,12 +494,12 @@ shinyUI(
     tabPanel("Model Document",
         HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhckJ1bG1QRmdwTGM/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
         ),
-    tabPanel("Country Input Data",
-        HTML('<iframe src=\"https://drive.google.com/file/d/1rIMf-0vB77uwy7XO4rCM9Isd7_ReiCeOkwW1BvoxZw4/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
-        ),
-    tabPanel("Incidence Estimates",
-        HTML('<iframe src=\"https://drive.google.com/file/d/1-OVjcIl7m-QZt0T52WMcsU1Oxv4znTyc4eU0464L24I/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
-        ),
+    # tabPanel("Country Input Data",
+    #     HTML('<iframe src=\"https://drive.google.com/file/d/1rIMf-0vB77uwy7XO4rCM9Isd7_ReiCeOkwW1BvoxZw4/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
+    #     ),
+    # tabPanel("Incidence Estimates",
+    #     HTML('<iframe src=\"https://drive.google.com/file/d/1-OVjcIl7m-QZt0T52WMcsU1Oxv4znTyc4eU0464L24I/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
+    #     ),
     tabPanel("Raw Output",
         DT::dataTableOutput('outputTable')
         )
