@@ -15,6 +15,7 @@ require(scales)
 require(gridExtra)
 require(googlesheets)
 require(grid)
+require(pryr)
 
 # Set time step
 # Time <- seq(0,5,0.02)
@@ -67,14 +68,14 @@ print(paste("Beta =",Beta))
 ParameterMatrix <- matrix(0,4,6)
 
 Rho.Range <- seq(from = 0.205,to = 20,length.out = 4)
-# Epsilon.Range <- seq(from = 16.949,to = 30,length.out = 4)
-# Kappa.Range <- seq(from = 0.01,to = 1.079,length.out = 4)
+Epsilon.Range <- seq(from = 16.949,to = 30,length.out = 4)
+Kappa.Range <- seq(from = 0.01,to = 1.079,length.out = 4)
 Gamma.Range <- seq(from = 2.556,to = 20,length.out = 4)
 Sigma.Range <- seq(from = 0,to = 5,length.out = 4)
 Omega.Range <- seq(from = 0.01,to = 0.033,length.out = 4)
 
-Epsilon.Range <- 16.949
-Kappa.Range <- 0.01
+# Epsilon.Range <- 16.949
+# Kappa.Range <- 0.01
 # Gamma.Range <- 2.556
 # Sigma.Range <- 0
 # Omega.Range <- 0.01
@@ -178,24 +179,24 @@ RunSimulation <- function(par,target) {
     out <- mutate(out,HivMortalityProp = HivMortality / N)
     out <- mutate(out,NewInfProp = NewInf / N)
     out <- mutate(out,TotalCost = Dx_Cost + Linkage_Cost + Annual_Care_Cost + Annual_ART_Cost)
-    out <- mutate(out,DALY = (((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.053) +  # >350, no ART
-                              ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.221) +  # 200-350, no ART
-                              ((UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Ltfu_100200 + UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Ltfu_50100 + UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Ltfu_50) * 0.547) + # <200, no ART
-                              ((Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) * 0.053))) # on ART and virally suppressed
-    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
-    vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
+    out <- mutate(out,DALY = (((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.078) +  # >350, no ART
+                              ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.274) +  # 200-350, no ART
+                              ((UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Ltfu_100200 + UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Ltfu_50100 + UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Ltfu_50) * 0.582) + # <200, no ART
+                              ((Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) * 0.078))) # on ART and virally suppressed
+    # PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+    # dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+    # tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+    # vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+    # p_dx <- dx / PLHIV
+    # p_tx <- tx / dx
+    # p_vs <- vs / tx
+    # results <- c(p_dx,p_tx,p_vs)
+    # definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+    # the909090 <- data.frame(definition,results)
 
-    # Outputs to return
-    cost <<- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
-    output <- 1/3 * sum((target - the909090$results)^2)
+    # # Outputs to return
+    # cost <<- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
+    # output <- 1/3 * sum((target - the909090$results)^2)
     # print(paste("Error =",output,"Cost =",dollar(cost)))
     return(out)
 }
