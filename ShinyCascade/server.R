@@ -714,7 +714,7 @@ function(input, output, session) {
         )
         tbl <- matrix(0,nrow=2,ncol=1)
         tbl[1,] <- dim(ParInput)[1]
-        tbl[2,] <- (dim(ParInput)[1] * 0.35) / 60
+        tbl[2,] <- (dim(ParInput)[1] * 0.9745) / 60
         colnames(tbl) <- "Value"
         rownames(tbl) <- c("Number of iterations:","Estimated completion time (min):")
         return(tbl)
@@ -899,12 +899,107 @@ function(input, output, session) {
                 ResultPar_Omega[i] <- ParInput[i,]$Omega
             }
 
+            # ResultNames was used by ggplot for aes(color=Names) but is now deprecated
             ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
 
-            Result <<- data.frame(ResultNames,ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
-            colnames(Result) <<- c("Names","Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+            Result <<- data.frame(ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+            colnames(Result) <<- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 
+            # -------------- #
+            # 90-90-90 Stuff #
+            # -------------- #
+
+            Calc_909090 <- function(outFile) {
+                PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
+                dx = as.double(sum(filter(outFile,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+                tx = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+                vs = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+                p_dx <- dx / PLHIV
+                p_tx <- tx / dx
+                p_vs <- vs / tx
+                results <- c(p_dx,p_tx,p_vs)
+                definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+                the909090 <- data.frame(definition,results)
+                return(the909090)
+            }
+
+
+            FindResults_909090 <- function(ResultList) {
+                theResultList <- list()
+                for(i in 1:length(ResultList)) {
+                    print(i)
+                    the909090 <- Calc_909090(ResultList[[i]])
+                    Test <- c(0,0,0)
+                    for(j in 1:length(the909090$results)) {
+                        if(the909090$results[j] > 0.9) {
+                            Test[j] <- 1
+                        } else {
+                            Test[j] <- 0
+                        }
+                    }
+                    if(sum(Test) == 3) {
+                        theResultList[[length(theResultList) + 1]] <- theList[[i]]
+                    }
+                }
+                return(theResultList)
+            }
+
+            FindPar_909090 <- function(ResultList) {
+                theResultParList <- list()
+                for(i in 1:length(ResultList)) {
+                    print(i)
+                    the909090 <- Calc_909090(ResultList[[i]])
+                    Test <- c(0,0,0)
+                    for(j in 1:length(the909090$results)) {
+                        if(the909090$results[j] > 0.9) {
+                            Test[j] <- 1
+                        } else {
+                            Test[j] <- 0
+                        }
+                    }
+                    if(sum(Test) == 3) {
+                        theResultParList[[length(theResultParList) + 1]] <- ParInput[i,]
+                    }
+                }
+                return(theResultParList)
+            }
+
+            theList909090 <- FindResults_909090(theList)
+            ResultPar909090 <- FindPar_909090(theList)
+
+            Result909090Impact <- c()
+            Result909090Cost <- c()
+            Result909090Par_Rho <- c()
+            Result909090Par_Epsilon <- c()
+            Result909090Par_Kappa <- c()
+            Result909090Par_Gamma <- c()
+            Result909090Par_Sigma <- c()
+            Result909090Par_Omega <- c()
+            if(length(theList909090) > 0) {
+                for(i in 1:length(theList909090)) {
+                    print(i)
+                    Result909090Impact[i] <- Calc_DALYsAverted(theList909090[[i]],theBaselineDALY)
+                    Result909090Cost[i] <- Calc_Cost(theList909090[[i]])
+                    Result909090Par_Rho[i] <- ParInput[i,]$Rho
+                    Result909090Par_Epsilon[i] <- ParInput[i,]$Epsilon
+                    Result909090Par_Kappa[i] <- ParInput[i,]$Kappa
+                    Result909090Par_Gamma[i] <- ParInput[i,]$Gamma
+                    Result909090Par_Sigma[i] <- ParInput[i,]$Sigma
+                    Result909090Par_Omega[i] <- ParInput[i,]$Omega
+                }
+
+                Result909090 <<- data.frame(Result909090Impact,Result909090Cost,Result909090Par_Rho,Result909090Par_Epsilon,Result909090Par_Kappa,Result909090Par_Gamma,Result909090Par_Sigma,Result909090Par_Omega)
+                colnames(Result909090) <<- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+            } else {
+                Result909090 <<- data.frame(0,0,0,0,0,0,0,0)
+                colnames(Result909090) <<- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+            }
+            
+            print("Result =")
             print(Result)
+
+            print("Result909090 =")
+            print(Result909090)
             setProgress(value = 1, message = paste("Finished. Time =",round(proc.time()[[1]] - Start.Time,0),"sec"))
             updateButton(session,"optFinished",label=" OPTIMISATION COMPLETE",style="success",icon=icon("check"))
         })
@@ -912,11 +1007,12 @@ function(input, output, session) {
 
     # Reactive ranges for plotOpt
     plotOpt.ranges <- reactiveValues(x = NULL, y = NULL)
+    plotOpt909090.ranges <- reactiveValues(x = NULL, y = NULL)
 
     output$plotOpt <- renderPlot({
         input$optimiseInput
         ggplot(Result,aes(x=Impact,y=Cost)) + 
-        geom_point(aes(color=Names),size=5) + 
+        geom_point(aes(color=rownames(Result)),size=5) + 
         theme_classic() + 
         theme(legend.position="none") + 
         theme(axis.text.x=element_text(size=18)) + 
@@ -925,6 +1021,23 @@ function(input, output, session) {
         xlab("Impact (DALYs Averted)") + 
         ylab("Cost (2013 USD)") + 
         coord_cartesian(xlim = plotOpt.ranges$x, ylim = plotOpt.ranges$y)
+        },
+        height=400,
+        width=700
+    )
+
+    output$plotOpt909090 <- renderPlot({
+        input$optimiseInput
+        ggplot(Result909090,aes(x=Impact,y=Cost)) + 
+        geom_point(aes(color=rownames(Result909090)),size=5) + 
+        theme_classic() + 
+        theme(legend.position="none") + 
+        theme(axis.text.x=element_text(size=18)) + 
+        theme(axis.text.y=element_text(size=18)) + 
+        theme(axis.title=element_text(size=20)) + 
+        xlab("Impact (DALYs Averted)") + 
+        ylab("Cost (2013 USD)") + 
+        coord_cartesian(xlim = plotOpt909090.ranges$x, ylim = plotOpt909090.ranges$y)
         },
         height=400,
         width=700
@@ -944,6 +1057,26 @@ function(input, output, session) {
         }
     )
 
+    observeEvent(input$plotOpt909090_dblclick, {
+        brush <- input$plotOpt909090_brush
+        if (!is.null(brush)) {
+            plotOpt909090.ranges$x <- c(brush$xmin, brush$xmax)
+            plotOpt909090.ranges$y <- c(brush$ymin, brush$ymax)
+        } else {
+            plotOpt909090.ranges$x <- NULL
+            plotOpt909090.ranges$y <- NULL
+            }
+        }
+    )
+
+    observeEvent(input$showOptPlot, ({
+        updateCollapse(session, "optCollapse", open = "Plot All")
+    }))
+
+    observeEvent(input$showOpt909090Plot, ({
+        updateCollapse(session, "optCollapse", open = "Plot 90-90-90")
+    }))
+
     output$optTable <- DT::renderDataTable({
         return(Result)
         },
@@ -952,6 +1085,18 @@ function(input, output, session) {
 
     output$optTableBrushed <- DT::renderDataTable({
         return(brushedPoints(df = Result,brush = input$plotOpt_brush))
+        },
+        options=list(pageLength=25)
+    )
+
+    output$opt909090Table <- DT::renderDataTable({
+        return(Result909090)
+        },
+        options=list(pageLength=25)
+    )
+
+    output$opt909090TableBrushed <- DT::renderDataTable({
+        return(brushedPoints(df = Result909090,brush = input$plotOpt909090_brush))
         },
         options=list(pageLength=25)
     )
