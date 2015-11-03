@@ -258,11 +258,11 @@ Result <- data.frame(ResultNames,ResultImpact,ResultCost)
 ggplot(Result,aes(x=ResultImpact,y=ResultCost)) +
 geom_point(aes(color=ResultNames)) +
 theme_classic() +
-theme(legend.position="none")
+theme(legend.position="none") + 
+ggtitle("All 4,096 Results (2nd, November 2015)")
 
 # Save all those files.
 # dir("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October")
 # save.image("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October/sessionData.Rdata")
-
 
 
