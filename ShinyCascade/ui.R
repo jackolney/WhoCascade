@@ -114,6 +114,8 @@ CountryList <- c(
     "Zimbabwe"
     )
 
+InterventionList <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+
 shinyUI(
     navbarPage("Cascade App",
     theme = shinytheme("spacelab"),
@@ -452,7 +454,8 @@ shinyUI(
                 p("The results of the optimisation simulation are shown in the plot to the right. Hit 'Show Result Table' to view all data points and corresponding parameter values.
                     Zoom in on data points by drawing a box on the plot with the mouse and double clicking. To view the details of a specific point, draw a box with the mouse over the point and 
                     hit 'Show Selected Result Table'"),
-                br(),
+                p(" "),
+                selectInput("userStratPoint","Select parameter to stratify results by:",InterventionList,selected="Rho"),
                 p(" "),
                 tags$b("For all:"),
                 p(" "),

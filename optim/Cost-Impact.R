@@ -245,24 +245,48 @@ Calc_DALYsAverted <- function(outFile,BaselineDALY) {
 
 ResultImpact <- c()
 ResultCost <- c()
+ResultPar_Rho <- c()
+ResultPar_Epsilon <- c()
+ResultPar_Kappa <- c()
+ResultPar_Gamma <- c()
+ResultPar_Sigma <- c()
+ResultPar_Omega <- c()
 for(i in 1:length(theList)) {
     print(i)
     ResultImpact[i] <- Calc_DALYsAverted(theList[[i]],theBaselineDALY)
     ResultCost[i] <- Calc_Cost(theList[[i]])
+    ResultPar_Rho[i] <- ParInput[i,]$Rho
+    ResultPar_Epsilon[i] <- ParInput[i,]$Epsilon
+    ResultPar_Kappa[i] <- ParInput[i,]$Kappa
+    ResultPar_Gamma[i] <- ParInput[i,]$Gamma
+    ResultPar_Sigma[i] <- ParInput[i,]$Sigma
+    ResultPar_Omega[i] <- ParInput[i,]$Omega
 }
 
-ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
+Result <- data.frame(ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+colnames(Result) <- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+head(Result)
 
-Result <- data.frame(ResultNames,ResultImpact,ResultCost)
+Strat.Point <- Result$Sigma
 
-ggplot(Result,aes(x=ResultImpact,y=ResultCost)) +
-geom_point(aes(color=ResultNames)) +
+Legend.Labels <- c()
+for(i in 1:length(levels(as.factor(Result$Sigma)))) {
+    Legend.Labels[i] <- round(as.double(levels(as.factor(Result$Sigma))[i]),2)
+}
+
+ggplot(Result,aes(x=Impact,y=Cost)) +
+geom_point(aes(color=as.factor(Strat.Point))) +
 theme_classic() +
-theme(legend.position="none") + 
+scale_color_discrete(name="Sigma",labels = Legend.Labels) + 
+guides(colour = guide_legend(override.aes = list(size=4)))
+# theme(legend.position="none") + 
 ggtitle("All 4,096 Results (2nd, November 2015)")
 
 # Save all those files.
 # dir("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October")
 # save.image("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October/sessionData.Rdata")
 
+# LOAD
+# setwd("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October")
+# load("sessionData.Rdata")
 

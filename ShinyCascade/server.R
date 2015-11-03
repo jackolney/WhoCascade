@@ -1011,10 +1011,19 @@ function(input, output, session) {
 
     output$plotOpt <- renderPlot({
         input$optimiseInput
+
+        Legend.Labels <- c()
+        for(i in 1:length(levels(as.factor(Result[[input$userStratPoint]])))) {
+            Legend.Labels[i] <- round(as.double(levels(as.factor(Result[[input$userStratPoint]]))[i]),2)
+        }
+
         ggplot(Result,aes(x=Impact,y=Cost)) + 
-        geom_point(aes(color=rownames(Result)),size=5) + 
+        geom_point(aes(color=as.factor(get(input$userStratPoint))),size=5) +
         theme_classic() + 
-        theme(legend.position="none") + 
+        scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) + 
+        guides(colour = guide_legend(override.aes = list(size=4))) + 
+        theme(legend.title=element_text(size=15)) +
+        theme(legend.text=element_text(size=13)) +
         theme(axis.text.x=element_text(size=18)) + 
         theme(axis.text.y=element_text(size=18)) + 
         theme(axis.title=element_text(size=20)) + 
@@ -1023,15 +1032,24 @@ function(input, output, session) {
         coord_cartesian(xlim = plotOpt.ranges$x, ylim = plotOpt.ranges$y)
         },
         height=400,
-        width=700
+        width=900
     )
 
     output$plotOpt909090 <- renderPlot({
         input$optimiseInput
+
+        Legend.Labels <- c()
+        for(i in 1:length(levels(as.factor(Result[[input$userStratPoint]])))) {
+            Legend.Labels[i] <- round(as.double(levels(as.factor(Result[[input$userStratPoint]]))[i]),2)
+        }
+
         ggplot(Result909090,aes(x=Impact,y=Cost)) + 
-        geom_point(aes(color=rownames(Result909090)),size=5) + 
+        geom_point(aes(color=as.factor(get(input$userStratPoint))),size=5) +
         theme_classic() + 
-        theme(legend.position="none") + 
+        scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) + 
+        guides(colour = guide_legend(override.aes = list(size=4))) + 
+        theme(legend.title=element_text(size=15)) +
+        theme(legend.text=element_text(size=13)) +
         theme(axis.text.x=element_text(size=18)) + 
         theme(axis.text.y=element_text(size=18)) + 
         theme(axis.title=element_text(size=20)) + 
@@ -1040,7 +1058,7 @@ function(input, output, session) {
         coord_cartesian(xlim = plotOpt909090.ranges$x, ylim = plotOpt909090.ranges$y)
         },
         height=400,
-        width=700
+        width=900
     )
 
     # When a double-click happens, check if there's a brush on the plot.
