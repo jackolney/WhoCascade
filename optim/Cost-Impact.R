@@ -15,6 +15,7 @@ require(scales)
 require(gridExtra)
 require(googlesheets)
 require(grid)
+require(pryr)
 
 # Set time step
 # Time <- seq(0,5,0.02)
@@ -69,15 +70,15 @@ ParameterMatrix <- matrix(0,4,6)
 Rho.Range <- seq(from = 0.205,to = 20,length.out = 4)
 # Epsilon.Range <- seq(from = 16.949,to = 30,length.out = 4)
 # Kappa.Range <- seq(from = 0.01,to = 1.079,length.out = 4)
-Gamma.Range <- seq(from = 2.556,to = 20,length.out = 4)
+# Gamma.Range <- seq(from = 2.556,to = 20,length.out = 4)
 Sigma.Range <- seq(from = 0,to = 5,length.out = 4)
-Omega.Range <- seq(from = 0.01,to = 0.033,length.out = 4)
+# Omega.Range <- seq(from = 0.01,to = 0.033,length.out = 4)
 
 Epsilon.Range <- 16.949
 Kappa.Range <- 0.01
-# Gamma.Range <- 2.556
+Gamma.Range <- 2.556
 # Sigma.Range <- 0
-# Omega.Range <- 0.01
+Omega.Range <- 0.01
 
 ParameterMatrix[,1] <- Rho.Range
 ParameterMatrix[,2] <- Epsilon.Range
@@ -178,24 +179,24 @@ RunSimulation <- function(par,target) {
     out <- mutate(out,HivMortalityProp = HivMortality / N)
     out <- mutate(out,NewInfProp = NewInf / N)
     out <- mutate(out,TotalCost = Dx_Cost + Linkage_Cost + Annual_Care_Cost + Annual_ART_Cost)
-    out <- mutate(out,DALY = (((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.053) +  # >350, no ART
-                              ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.221) +  # 200-350, no ART
-                              ((UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Ltfu_100200 + UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Ltfu_50100 + UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Ltfu_50) * 0.547) + # <200, no ART
-                              ((Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) * 0.053))) # on ART and virally suppressed
-    PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
-    dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
-    tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
-    vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
-    p_dx <- dx / PLHIV
-    p_tx <- tx / dx
-    p_vs <- vs / tx
-    results <- c(p_dx,p_tx,p_vs)
-    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
-    the909090 <- data.frame(definition,results)
+    out <- mutate(out,DALY = (((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.078) +  # >350, no ART
+                              ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.274) +  # 200-350, no ART
+                              ((UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Ltfu_100200 + UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Ltfu_50100 + UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Ltfu_50) * 0.582) + # <200, no ART
+                              ((Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) * 0.078))) # on ART and virally suppressed
+    # PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+    # dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+    # tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+    # vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+    # p_dx <- dx / PLHIV
+    # p_tx <- tx / dx
+    # p_vs <- vs / tx
+    # results <- c(p_dx,p_tx,p_vs)
+    # definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+    # the909090 <- data.frame(definition,results)
 
-    # Outputs to return
-    cost <<- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
-    output <- 1/3 * sum((target - the909090$results)^2)
+    # # Outputs to return
+    # cost <<- as.double(sum(filter(out,time == 5) %>% select(TotalCost)))
+    # output <- 1/3 * sum((target - the909090$results)^2)
     # print(paste("Error =",output,"Cost =",dollar(cost)))
     return(out)
 }
@@ -207,7 +208,7 @@ for(i in 1:dim(ParInput)[1]) {
     theList[[rownames(ParInput)[i]]] <- RunSimulation(ParInput[i,],1)
 }
 Time.Elapsed <- proc.time() - Start.Time
-Time.Elapsed
+Time.Elapsed / 60
 object_size(theList)
 
 
@@ -242,26 +243,180 @@ Calc_DALYsAverted <- function(outFile,BaselineDALY) {
     return(BaselineDALY - theDALY)
 }
 
+Calc_BaselineCost <- function() {
+    BaselinePar <- c(
+        Rho = 0.205,
+        Epsilon = 16.949,
+        Kappa = 1.079,
+        Gamma = 2.556,
+        Sigma = 0,
+        Omega = 0.033
+        )
+    Baseline <- RunSimulation(BaselinePar,1)
+    BaselineCost <- Calc_Cost(Baseline)
+    return(BaselineCost)
+}
+
+theBaselineCost <- Calc_BaselineCost()
+
+Calc_AdditionalCost <- function(outFile,BaselineCost) {
+    theCost <- as.double(filter(outFile,time == 5) %>% select(TotalCost))
+    return(theCost - BaselineCost)
+}
+
 ResultImpact <- c()
 ResultCost <- c()
+ResultPar_Rho <- c()
+ResultPar_Epsilon <- c()
+ResultPar_Kappa <- c()
+ResultPar_Gamma <- c()
+ResultPar_Sigma <- c()
+ResultPar_Omega <- c()
 for(i in 1:length(theList)) {
     print(i)
     ResultImpact[i] <- Calc_DALYsAverted(theList[[i]],theBaselineDALY)
-    ResultCost[i] <- Calc_Cost(theList[[i]])
+    ResultCost[i] <- Calc_AdditionalCost(theList[[i]],theBaselineCost)
+    ResultPar_Rho[i] <- ParInput[i,]$Rho
+    ResultPar_Epsilon[i] <- ParInput[i,]$Epsilon
+    ResultPar_Kappa[i] <- ParInput[i,]$Kappa
+    ResultPar_Gamma[i] <- ParInput[i,]$Gamma
+    ResultPar_Sigma[i] <- ParInput[i,]$Sigma
+    ResultPar_Omega[i] <- ParInput[i,]$Omega
 }
 
-ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
+Result <- data.frame(ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+colnames(Result) <- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+head(Result)
 
-Result <- data.frame(ResultNames,ResultImpact,ResultCost)
+Strat.Point <- Result$Sigma
 
-ggplot(Result,aes(x=ResultImpact,y=ResultCost)) +
-geom_point(aes(color=ResultNames)) +
+Legend.Labels <- c()
+for(i in 1:length(levels(as.factor(Strat.Point)))) {
+    Legend.Labels[i] <- round(as.double(levels(as.factor(Strat.Point))[i]),2)
+}
+
+Legend.Labels.2 <- c()
+for(i in 1:length(levels(as.factor(Strat.Point)))) {
+    Legend.Labels.2[i] <- round(as.double(rev(levels(as.factor(Result$Rho)))[i]),2)
+}
+
+ggplot(Result,aes(x=Impact,y=Cost)) +
+geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Rho))),size=3) +
 theme_classic() +
-theme(legend.position="none")
+scale_color_discrete(name="Sigma",labels = Legend.Labels) + 
+scale_shape_discrete(name="Rho",labels = Legend.Labels.2) + 
+xlab("DALYs Averted (between 2015 and 2020)") + 
+ylab("Additional cost of care (2013 USD)") + 
+guides(colour = guide_legend(override.aes = list(size=4))) +
+ggtitle("Cost and Impact of adjusting rho and sigma, where impact is defined as DALYs averted")
 
 # Save all those files.
 # dir("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October")
 # save.image("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October/sessionData.Rdata")
 
+# LOAD
+# setwd("~/Google\ Drive/DIDE/HIVMC/WhoCascade/Model/29th-October")
+# load("sessionData.Rdata")
 
+# Now a comparison by looking at 90-90-90 Error
 
+Calc_909090 <- function(outFile) {
+    PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
+    dx = as.double(sum(filter(outFile,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+    tx = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+    vs = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+    p_dx <- dx / PLHIV
+    p_tx <- tx / dx
+    p_vs <- vs / tx
+    results <- c(p_dx,p_tx,p_vs)
+    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+    the909090 <- data.frame(definition,results)
+    return(the909090)
+}
+
+Calc_909090(theList[[1]])
+
+Calc_Cost <- function(outFile) {
+    theCost <- as.double(filter(outFile,time == 5) %>% select(TotalCost))
+    return(theCost)
+}
+
+Calc_Cost(theList[[1]])
+
+CalcError_909090 <- function(outFile,target) {
+    PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
+    dx = as.double(sum(filter(outFile,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+    tx = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+    vs = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+    p_dx <- dx / PLHIV
+    p_tx <- tx / dx
+    p_vs <- vs / tx
+    results <- c(p_dx,p_tx,p_vs)
+    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+    the909090 <- data.frame(definition,results)
+    # output <- 1/3 * sum((target - the909090$results)^2)
+    output <- 1/1 * sum((target - the909090$results[3])^2)
+    return(output)
+}
+
+Calc_BaselineCost <- function() {
+    BaselinePar <- c(
+        Rho = 0.205,
+        Epsilon = 16.949,
+        Kappa = 1.079,
+        Gamma = 2.556,
+        Sigma = 0,
+        Omega = 0.033
+        )
+    Baseline <- RunSimulation(BaselinePar,1)
+    BaselineCost <- Calc_Cost(Baseline)
+    return(BaselineCost)
+}
+
+theBaselineCost <- Calc_BaselineCost()
+
+Calc_AdditionalCost <- function(outFile,BaselineCost) {
+    theCost <- as.double(filter(outFile,time == 5) %>% select(TotalCost))
+    return(theCost - BaselineCost)
+}
+
+Result909090Error <- c()
+Result909090Cost <- c()
+ResultPar_Rho <- c()
+ResultPar_Epsilon <- c()
+ResultPar_Kappa <- c()
+ResultPar_Gamma <- c()
+ResultPar_Sigma <- c()
+ResultPar_Omega <- c()
+for(i in 1:length(theList)) {
+    print(i)
+    Result909090Error[i] <- CalcError_909090(theList[[i]],1)
+    Result909090Cost[i] <- Calc_AdditionalCost(theList[[i]],theBaselineCost)
+    ResultPar_Rho[i] <- ParInput[i,]$Rho
+    ResultPar_Epsilon[i] <- ParInput[i,]$Epsilon
+    ResultPar_Kappa[i] <- ParInput[i,]$Kappa
+    ResultPar_Gamma[i] <- ParInput[i,]$Gamma
+    ResultPar_Sigma[i] <- ParInput[i,]$Sigma
+    ResultPar_Omega[i] <- ParInput[i,]$Omega
+}
+
+Result909090 <- data.frame(Result909090Error,Result909090Cost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+colnames(Result909090) <- c("Error","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+head(Result909090)
+
+Strat.Point <- Result$Sigma
+
+Legend.Labels <- c()
+for(i in 1:length(levels(as.factor(Strat.Point)))) {
+    Legend.Labels[i] <- round(as.double(levels(as.factor(Strat.Point))[i]),2)
+}
+
+ggplot(Result909090,aes(x=Error,y=Cost)) +
+geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Rho))),size=3) +
+theme_classic() +
+scale_color_discrete(name="Sigma",labels = Legend.Labels) + 
+scale_shape_discrete(name="Rho",labels = Legend.Labels.2) + 
+xlab("MSE between model and achieving 100% viral suppression") + 
+ylab("Additional cost of care (2013 USD)") + 
+guides(colour = guide_legend(override.aes = list(size=4))) +
+ggtitle("Cost and Impact of adjusting rho and sigma, where impact is defined as\nMSE between model and achieving 100% viral suppression")

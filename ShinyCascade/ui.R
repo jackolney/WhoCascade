@@ -114,6 +114,8 @@ CountryList <- c(
     "Zimbabwe"
     )
 
+InterventionList <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+
 shinyUI(
     navbarPage("Cascade App",
     theme = shinytheme("spacelab"),
@@ -358,7 +360,7 @@ shinyUI(
     navbarMenu("Optimisation",
         tabPanel("Cost",
             sidebarPanel(
-                h4("Optimisation - Cost"),
+                h4("Cost"),
                 p("Review or edit the unit costs in each box."),
                 helpText("Click the 'optimisation' drop down menu and select 'results' to begin running the optimisation algorithm."),
                 bsButton("resetCost",label="RESET COST",style="danger"),
@@ -402,39 +404,45 @@ shinyUI(
                 shinyjs::useShinyjs(),
                 id = "optimisation-panel",
                 wellPanel(
-                    h4("Rho"),
+                    h4("HIV-Testing (rho)"),
+                    helpText("by varying diagnosis rate, rho"),
                     sliderInput('userOptRho_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
-                    sliderInput('userOptRho_Range','Range of values:',min=0,max=50,value=c(0.205,20),step=0.001),
+                    sliderInput('userOptRho_Range','Range of values (diagnoses/py):',min=0,max=50,value=c(0.205,20),step=0.001),
                     tableOutput("optParTable_Rho")
                     ),
                 wellPanel(
-                    h4("Epsilon"),
-                    sliderInput('userOptEpsilon_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
-                    sliderInput('userOptEpsilon_Range','Range of values:',min=0,max=50,value=c(16.949,30),step=0.001),
+                    h4("Linkage (epsilon)"),
+                    helpText("by varying care seeking rate, epsilon"),
+                    sliderInput('userOptEpsilon_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
+                    sliderInput('userOptEpsilon_Range','Range of values (persons seeking care/py):',min=0,max=50,value=c(16.949,30),step=0.001),
                     tableOutput("optParTable_Epsilon")
                     ),
                 wellPanel(
-                    h4("Kappa"),
+                    h4("Pre-ART Retention (kappa)"),
+                    helpText("by varying pre-ART dropout rate, kappa"),
                     sliderInput('userOptKappa_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-                    sliderInput('userOptKappa_Range','Range of values:',min=0,max=2,value=c(0.01,1.079),step=0.001),
+                    sliderInput('userOptKappa_Range','Range of values (person lost from pre-ART care/py):',min=0,max=2,value=c(0.01,1.079),step=0.001),
                     tableOutput("optParTable_Kappa")
                     ),
                 wellPanel(
-                    h4("Gamma"),
+                    h4("Treatment Initiation (gamma)"),
+                    helpText("by varying ART initiation rate, gamma"),
                     sliderInput('userOptGamma_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-                    sliderInput('userOptGamma_Range','Range of values:',min=0,max=50,value=c(2.556,20),step=0.001),
+                    sliderInput('userOptGamma_Range','Range of values (ART initiations/py):',min=0,max=50,value=c(2.556,20),step=0.001),
                     tableOutput("optParTable_Gamma")
                     ),
                 wellPanel(
-                    h4("Sigma"),
-                    sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-                    sliderInput('userOptSigma_Range','Range of values:',min=0,max=10,value=c(0,5),step=0.001),
+                    h4("Adherence (sigma)"),
+                    helpText("by varying rate at which patients not adhering to treatment start to adhere, sigma"),
+                    sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptSigma_Range','Range of values (persons transitioning from non-adherent to adherent/py):',min=0,max=10,value=c(0,5),step=0.001),
                     tableOutput("optParTable_Sigma")
                     ),
                 wellPanel(
-                    h4("Omega"),
+                    h4("ART Retention (omega)"),
+                    helpText("by varying rate at which patients are lost from ART care, omega"),
                     sliderInput('userOptOmega_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-                    sliderInput('userOptOmega_Range','Range of values:',min=0,max=0.1,value=c(0.01,0.033),step=0.001),
+                    sliderInput('userOptOmega_Range','Range of values (ART dropout/py):',min=0,max=0.1,value=c(0.01,0.033),step=0.001),
                     tableOutput("optParTable_Omega")
                     )
                 )
@@ -446,9 +454,24 @@ shinyUI(
                 p("The results of the optimisation simulation are shown in the plot to the right. Hit 'Show Result Table' to view all data points and corresponding parameter values.
                     Zoom in on data points by drawing a box on the plot with the mouse and double clicking. To view the details of a specific point, draw a box with the mouse over the point and 
                     hit 'Show Selected Result Table'"),
+                p(" "),
+                selectInput("userStratPoint","Select parameter to stratify results by:",InterventionList,selected="Rho"),
+                p(" "),
+                tags$b("For all:"),
+                p(" "),
+                bsButton("showOptPlot",label="Plot results",style="default"),
+                p(" "),
                 bsButton("showOptTable",label="Show Result Table",style="primary"),
                 p(" "),
-                bsButton("showOptBrushedTable",label="Show Selected Result Table",style="primary")
+                bsButton("showOptBrushedTable",label="Show Selected Result Table",style="primary"),
+                p(" "), br(),
+                tags$b("For results achieving 90-90-90:"),
+                p(" "),
+                bsButton("showOpt909090Plot",label="Plot results",style="default"),
+                p(" "),
+                bsButton("showOpt909090Table",label="Show Result Table",style="primary"),
+                p(" "),
+                bsButton("showOpt909090BrushedTable",label="Show Selected Result Table",style="primary")
                 ),
             mainPanel(
                 bsModal(id = "optTableModal",title = "Result Table",trigger = "showOptTable",size = "large",
@@ -457,9 +480,14 @@ shinyUI(
                 bsModal(id = "optTableBrushedModal",title = "Selected Result Table",trigger = "showOptBrushedTable",size = "large",
                     DT::dataTableOutput('optTableBrushed', width = "100%")
                 ),
+                bsModal(id = "opt909090TableModal",title = "Result Table (results achieving 90-90-90 targets)",trigger = "showOpt909090Table",size = "large",
+                    DT::dataTableOutput('opt909090Table', width = "100%")
+                ),
+                bsModal(id = "opt909090TableBrushedModal",title = "Selected Result Table (results achieving 90-90-90 targets)",trigger = "showOpt909090BrushedTable",size = "large",
+                    DT::dataTableOutput('opt909090TableBrushed', width = "100%")
+                ),
                 bsCollapse(id = 'optCollapse', open = "Plot All",
                     bsCollapsePanel("Plot All",
-                        "This plot shows the cost and impact of all intervention combinations.",
                         plotOutput('plotOpt',
                             dblclick = "plotOpt_dblclick",
                             brush = brushOpts(
@@ -471,11 +499,27 @@ shinyUI(
                         style = "success"
                         ),
                     bsCollapsePanel("Plot 90-90-90",
-                        "Plot only values fulfilling 90-90-90 targets.",
-                        # DT::dataTableOutput('optTable'),
+                        plotOutput('plotOpt909090',
+                            dblclick = "plotOpt909090_dblclick",
+                            brush = brushOpts(
+                                id = "plotOpt909090_brush",
+                                clip = TRUE,
+                                resetOnNew = TRUE
+                                )
+                            ),
                         style = "info"
                         )
                     )
+                )
+            ),
+        tabPanel("Budget",
+            sidebarPanel(
+                h4("Budget"),
+                helpText("Please enter a health care budget value in the box below to see a subset of results that do not exceed that value."),
+                numericInput("userBudget","Enter budget to subset results (2013 USD):", value = 0, min = 0, step = 1e+04)
+                ),
+            mainPanel(
+                DT::dataTableOutput('optBudgetTable', width = "100%")
                 )
             )
         ),
