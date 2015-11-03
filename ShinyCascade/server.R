@@ -1101,6 +1101,16 @@ function(input, output, session) {
         options=list(pageLength=25)
     )
 
+    output$optBudgetTable <- DT::renderDataTable({
+        theTable <- filter(Result,Cost <= input$userBudget)
+        return(theTable)
+        },
+        options=list(
+            order = list(list(1, 'desc')),
+            autoWidth = TRUE, 
+            pageLength=100)
+    )
+
     # Saving input values from setup tab.
     saveCascadeData <- function(data) {
         # Grab the Google Sheet

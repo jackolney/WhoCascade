@@ -358,7 +358,7 @@ shinyUI(
     navbarMenu("Optimisation",
         tabPanel("Cost",
             sidebarPanel(
-                h4("Optimisation - Cost"),
+                h4("Cost"),
                 p("Review or edit the unit costs in each box."),
                 helpText("Click the 'optimisation' drop down menu and select 'results' to begin running the optimisation algorithm."),
                 bsButton("resetCost",label="RESET COST",style="danger"),
@@ -507,6 +507,16 @@ shinyUI(
                         style = "info"
                         )
                     )
+                )
+            ),
+        tabPanel("Budget",
+            sidebarPanel(
+                h4("Budget"),
+                helpText("Please enter a health care budget value in the box below to see a subset of results that do not exceed that value."),
+                numericInput("userBudget","Enter budget to subset results (2013 USD):", value = 0, min = 0, step = 1)
+                ),
+            mainPanel(
+                DT::dataTableOutput('optBudgetTable', width = "100%")
                 )
             )
         ),

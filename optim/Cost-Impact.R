@@ -208,7 +208,7 @@ for(i in 1:dim(ParInput)[1]) {
     theList[[rownames(ParInput)[i]]] <- RunSimulation(ParInput[i,],1)
 }
 Time.Elapsed <- proc.time() - Start.Time
-Time.Elapsed
+Time.Elapsed / 60
 object_size(theList)
 
 
