@@ -413,7 +413,7 @@ shinyUI(
                 wellPanel(
                     h4("Linkage (epsilon)"),
                     helpText("by varying care seeking rate, epsilon"),
-                    sliderInput('userOptEpsilon_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptEpsilon_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
                     sliderInput('userOptEpsilon_Range','Range of values (persons seeking care/py):',min=0,max=50,value=c(16.949,30),step=0.001),
                     tableOutput("optParTable_Epsilon")
                     ),
@@ -434,7 +434,7 @@ shinyUI(
                 wellPanel(
                     h4("Adherence (sigma)"),
                     helpText("by varying rate at which patients not adhering to treatment start to adhere, sigma"),
-                    sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
+                    sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
                     sliderInput('userOptSigma_Range','Range of values (persons transitioning from non-adherent to adherent/py):',min=0,max=10,value=c(0,5),step=0.001),
                     tableOutput("optParTable_Sigma")
                     ),
@@ -516,7 +516,7 @@ shinyUI(
             sidebarPanel(
                 h4("Budget"),
                 helpText("Please enter a health care budget value in the box below to see a subset of results that do not exceed that value."),
-                numericInput("userBudget","Enter budget to subset results (2013 USD):", value = 0, min = 0, step = 1)
+                numericInput("userBudget","Enter budget to subset results (2013 USD):", value = 0, min = 0, step = 1e+04)
                 ),
             mainPanel(
                 DT::dataTableOutput('optBudgetTable', width = "100%")

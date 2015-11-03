@@ -879,6 +879,27 @@ function(input, output, session) {
                 return(BaselineDALY - theDALY)
             }
 
+            Calc_BaselineCost <- function() {
+                BaselinePar <- c(
+                    Rho = 0.205,
+                    Epsilon = 16.949,
+                    Kappa = 1.079,
+                    Gamma = 2.556,
+                    Sigma = 0,
+                    Omega = 0.033
+                    )
+                Baseline <- RunSimulation(BaselinePar,1)
+                BaselineCost <- Calc_Cost(Baseline)
+                return(BaselineCost)
+            }
+
+            theBaselineCost <- Calc_BaselineCost()
+
+            Calc_AdditionalCost <- function(outFile,BaselineCost) {
+                theCost <- as.double(filter(outFile,time == 5) %>% select(TotalCost))
+                return(theCost - BaselineCost)
+            }
+
             ResultImpact <- c()
             ResultCost <- c()
             ResultPar_Rho <- c()
@@ -890,7 +911,7 @@ function(input, output, session) {
             for(i in 1:length(theList)) {
                 print(i)
                 ResultImpact[i] <- Calc_DALYsAverted(theList[[i]],theBaselineDALY)
-                ResultCost[i] <- Calc_Cost(theList[[i]])
+                ResultCost[i] <- Calc_AdditionalCost(theList[[i]],theBaselineCost)
                 ResultPar_Rho[i] <- ParInput[i,]$Rho
                 ResultPar_Epsilon[i] <- ParInput[i,]$Epsilon
                 ResultPar_Kappa[i] <- ParInput[i,]$Kappa
@@ -979,7 +1000,7 @@ function(input, output, session) {
                 for(i in 1:length(theList909090)) {
                     print(i)
                     Result909090Impact[i] <- Calc_DALYsAverted(theList909090[[i]],theBaselineDALY)
-                    Result909090Cost[i] <- Calc_Cost(theList909090[[i]])
+                    Result909090Cost[i] <- Calc_AdditionalCost(theList909090[[i]],theBaselineCost)
                     Result909090Par_Rho[i] <- ParInput[i,]$Rho
                     Result909090Par_Epsilon[i] <- ParInput[i,]$Epsilon
                     Result909090Par_Kappa[i] <- ParInput[i,]$Kappa
@@ -994,12 +1015,13 @@ function(input, output, session) {
                 Result909090 <<- data.frame(0,0,0,0,0,0,0,0)
                 colnames(Result909090) <<- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
             }
-            
+
             print("Result =")
             print(Result)
 
             print("Result909090 =")
             print(Result909090)
+
             setProgress(value = 1, message = paste("Finished. Time =",round(proc.time()[[1]] - Start.Time,0),"sec"))
             updateButton(session,"optFinished",label=" OPTIMISATION COMPLETE",style="success",icon=icon("check"))
         })
@@ -1027,8 +1049,10 @@ function(input, output, session) {
         theme(axis.text.x=element_text(size=18)) + 
         theme(axis.text.y=element_text(size=18)) + 
         theme(axis.title=element_text(size=20)) + 
-        xlab("Impact (DALYs Averted)") + 
-        ylab("Cost (2013 USD)") + 
+        xlab("DALYs Averted (between 2015 and 2020)") + 
+        ylab("Additional cost of care (2013 USD)") + 
+        scale_y_continuous(labels = comma) + 
+        scale_x_continuous(labels = comma) + 
         coord_cartesian(xlim = plotOpt.ranges$x, ylim = plotOpt.ranges$y)
         },
         height=400,
@@ -1053,8 +1077,10 @@ function(input, output, session) {
         theme(axis.text.x=element_text(size=18)) + 
         theme(axis.text.y=element_text(size=18)) + 
         theme(axis.title=element_text(size=20)) + 
-        xlab("Impact (DALYs Averted)") + 
-        ylab("Cost (2013 USD)") + 
+        xlab("DALYs Averted (between 2015 and 2020)") + 
+        ylab("Additional cost of care (2013 USD)") + 
+        scale_y_continuous(labels = comma) + 
+        scale_x_continuous(labels = comma) +         
         coord_cartesian(xlim = plotOpt909090.ranges$x, ylim = plotOpt909090.ranges$y)
         },
         height=400,
@@ -1096,37 +1122,31 @@ function(input, output, session) {
     }))
 
     output$optTable <- DT::renderDataTable({
-        return(Result)
-        },
-        options=list(pageLength=25)
+        return(datatable(Result,options=list(pageLength=25)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
+        }
     )
 
     output$optTableBrushed <- DT::renderDataTable({
-        return(brushedPoints(df = Result,brush = input$plotOpt_brush))
-        },
-        options=list(pageLength=25)
+        theBrushed <- brushedPoints(df = Result,brush = input$plotOpt_brush)
+        return(datatable(theBrushed,options=list(pageLength=25)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
+        }
     )
 
     output$opt909090Table <- DT::renderDataTable({
-        return(Result909090)
-        },
-        options=list(pageLength=25)
+        return(datatable(Result909090,options=list(pageLength=25)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
+        }
     )
 
     output$opt909090TableBrushed <- DT::renderDataTable({
-        return(brushedPoints(df = Result909090,brush = input$plotOpt909090_brush))
-        },
-        options=list(pageLength=25)
+        theBrushed <- brushedPoints(df = Result909090,brush = input$plotOpt909090_brush)
+        return(datatable(theBrushed,options=list(pageLength=25)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
+        }
     )
 
     output$optBudgetTable <- DT::renderDataTable({
         theTable <- filter(Result,Cost <= input$userBudget)
-        return(theTable)
-        },
-        options=list(
-            order = list(list(1, 'desc')),
-            autoWidth = TRUE, 
-            pageLength=100)
+        return(datatable(theTable,options=list(order = list(list(1, 'desc')), autoWidth = TRUE, pageLength=100)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
+        }
     )
 
     # Saving input values from setup tab.
@@ -1181,7 +1201,7 @@ function(input, output, session) {
             prop_onART_50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50100))
             prop_onART_50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50))
         } else {
-            output$warningCD4Text <- renderText({return(paste(input$userCountry,"CD4 data loaded."))})
+            # output$warningCD4Text <- renderText({return(paste(input$userCountry,"CD4 data loaded."))})
             prop_preART_500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500))
             prop_preART_350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.350500))
             prop_preART_250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.250350))
