@@ -135,11 +135,11 @@ RunSimulation <- function(par,target) {
         s_6 = 2,
         s_7 = 3,
         Sigma = par[["Sigma"]],
-        Delta_1 = 1.58084765,
-        Delta_2 = 3.50371789,
-        Delta_3 = 3.50371789,
-        Delta_4 = 3.50371789,
-        Delta_5 = 3.50371789,
+        Delta_1 = 0.4896,
+        Delta_2 = 0.816,
+        Delta_3 = 0.832,
+        Delta_4 = 1.088,
+        Delta_5 = 2.376,
         Alpha_1 = 0.004110,
         Alpha_2 = 0.011670,
         Alpha_3 = 0.009385,
@@ -372,11 +372,11 @@ scale_size_discrete(name="Achieves 90-90-90",range = c(2,6),labels = c("no","yes
 theme_classic() +
 scale_color_discrete(name="Omega",labels = Legend.Labels) + 
 scale_shape_discrete(name="Sigma",labels = Legend.Labels.2) + 
-xlab("% Viral Suppression by 2020") + 
+xlab("Proportion achieving Viral Suppression by 2020") + 
 ylab("Additional cost of care (2013 USD)") + 
 guides(colour = guide_legend(override.aes = list(size=4))) +
 geom_vline(xintercept = 0.9^3) + 
-ggtitle("Strategies to achieve 73% viral suppression by 2020")
+ggtitle("Strategies to achieve 73% viral suppression and/or 90-90-90 by 2020")
 
 
 ggplot(Result,aes(x=ViralSuppression,y=Cost)) +
