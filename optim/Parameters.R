@@ -40,6 +40,7 @@ Parameters <- c(
     Tau_6 = 0.045482,
     Tau_7 = 1.02785,
     Mu = 0.0374,
+    ART_All = 1,
     ART_500 = 1,
     ART_350 = 1,
     ART_200 = 1,

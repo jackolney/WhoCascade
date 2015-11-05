@@ -67,18 +67,19 @@ print(paste("Beta =",Beta))
 
 ParameterMatrix <- matrix(0,4,6)
 
-Rho.Range <- seq(from = 0.205,to = 20,length.out = 4)
-# Epsilon.Range <- seq(from = 16.949,to = 30,length.out = 4)
+# Rho.Range <- seq(from = 0.205,to = 1,length.out = 4)
+# Epsilon.Range <- seq(from = 16.949,to = 30,length.out = 1)
 # Kappa.Range <- seq(from = 0.01,to = 1.079,length.out = 4)
-# Gamma.Range <- seq(from = 2.556,to = 20,length.out = 4)
-Sigma.Range <- seq(from = 0,to = 5,length.out = 4)
-# Omega.Range <- seq(from = 0.01,to = 0.033,length.out = 4)
+# Gamma.Range <- seq(from = 2.556,to = 5,length.out = 4)
+Sigma.Range <- seq(from = 0,to = 1,length.out = 6)
+Omega.Range <- seq(from = 0.005,to = 0.033,length.out = 6)
 
+Rho.Range <- 0.205
 Epsilon.Range <- 16.949
-Kappa.Range <- 0.01
+Kappa.Range <- 1.079
 Gamma.Range <- 2.556
 # Sigma.Range <- 0
-Omega.Range <- 0.01
+# Omega.Range <- 0.033
 
 ParameterMatrix[,1] <- Rho.Range
 ParameterMatrix[,2] <- Epsilon.Range
@@ -154,6 +155,7 @@ RunSimulation <- function(par,target) {
         Tau_6 = 0.045482,
         Tau_7 = 1.02785,
         Mu = 0.0374,
+        ART_All = 1,
         ART_500 = 1,
         ART_350 = 1,
         ART_200 = 1,
@@ -187,6 +189,11 @@ RunSimulation <- function(par,target) {
     # dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
     # tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
     # vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+
+    # out <- mutate(out,UNAIDS_90 = (Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50) / N)
+    # out <- mutate(out,UNAIDS_9090 = (Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50) / (Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50))
+    # out <- mutate(out,UNAIDS_909090 = (Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / (Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50))
+    
     # p_dx <- dx / PLHIV
     # p_tx <- tx / dx
     # p_vs <- vs / tx
@@ -264,6 +271,33 @@ Calc_AdditionalCost <- function(outFile,BaselineCost) {
     return(theCost - BaselineCost)
 }
 
+Calc_909090 <- function(outFile) {
+    PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
+    dx = as.double(sum(filter(outFile,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+    tx = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+    vs = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+    p_dx <- dx / PLHIV
+    p_tx <- tx / dx
+    p_vs <- vs / tx
+    results <- c(p_dx,p_tx,p_vs)
+    definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+    the909090 <- data.frame(definition,results)
+    return(results)
+}
+
+Calc_909090(theList[[1]])
+
+Calc_VS <- function(outFile) {
+    theVS <- as.double(filter(outFile,time == 5) %>% select(Vs))
+    return(theVS)
+}
+
+Calc_VS(theList[[1]])
+
+Result90 <- c()
+Result9090 <- c()
+Result909090 <- c()
+ResultVS <- c()
 ResultImpact <- c()
 ResultCost <- c()
 ResultPar_Rho <- c()
@@ -274,6 +308,10 @@ ResultPar_Sigma <- c()
 ResultPar_Omega <- c()
 for(i in 1:length(theList)) {
     print(i)
+    Result90[i] <- Calc_909090(theList[[i]])[1]
+    Result9090[i] <- Calc_909090(theList[[i]])[2]
+    Result909090[i] <- Calc_909090(theList[[i]])[3]
+    ResultVS[i] <- Calc_VS(theList[[i]])
     ResultImpact[i] <- Calc_DALYsAverted(theList[[i]],theBaselineDALY)
     ResultCost[i] <- Calc_AdditionalCost(theList[[i]],theBaselineCost)
     ResultPar_Rho[i] <- ParInput[i,]$Rho
@@ -284,21 +322,75 @@ for(i in 1:length(theList)) {
     ResultPar_Omega[i] <- ParInput[i,]$Omega
 }
 
-Result <- data.frame(ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
-colnames(Result) <- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+Result <- data.frame(Result90,Result9090,Result909090,ResultVS,ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+colnames(Result) <- c("First_90","Second_90","Third_90","ViralSuppression","Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 head(Result)
 
-Strat.Point <- Result$Sigma
+Strat.Point <- Result$Omega
+Strat.Point.2 <- Result$Sigma
 
 Legend.Labels <- c()
 for(i in 1:length(levels(as.factor(Strat.Point)))) {
-    Legend.Labels[i] <- round(as.double(levels(as.factor(Strat.Point))[i]),2)
+    Legend.Labels[i] <- round(as.double(levels(as.factor(Strat.Point))[i]),3)
 }
 
 Legend.Labels.2 <- c()
-for(i in 1:length(levels(as.factor(Strat.Point)))) {
-    Legend.Labels.2[i] <- round(as.double(rev(levels(as.factor(Result$Rho)))[i]),2)
+for(i in 1:length(levels(as.factor(Strat.Point.2)))) {
+    Legend.Labels.2[i] <- round(as.double(rev(levels(as.factor(Strat.Point.2)))[i]),3)
 }
+
+ggplot(Result,aes(x=ViralSuppression,y=Cost)) +
+geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Strat.Point.2))),size=3) +
+theme_classic() +
+scale_color_discrete(name="Omega",labels = Legend.Labels) + 
+scale_shape_discrete(name="Sigma",labels = Legend.Labels.2) + 
+xlab("% Viral Suppression by 2020") + 
+ylab("Additional cost of care (2013 USD)") + 
+guides(colour = guide_legend(override.aes = list(size=4))) +
+geom_vline(xintercept = 0.9^3) + 
+ggtitle("Strategies to achieve 73% viral suppression by 2020")
+
+filter(Result,First_90 >= 0.9)
+filter(Result,First_90 >= 0.9) %>% filter(Second_90 >= 0.9) 
+filter(Result,First_90 >= 0.9) %>% filter(Second_90 >= 0.9) %>% filter(Third_90 >= 0.9)
+
+test <- mutate(Result, the909090 = 0)
+
+for(i in 1:dim(test)[1]) {
+    if(test$First_90[i] >= 0.9) {
+        if(test$Second_90[i] >= 0.9) {
+            if(test$Third_90[i] >= 0.9) {
+                test$the909090[i] <- 1
+            }
+        }
+    }
+}
+
+ggplot(test,aes(x=ViralSuppression,y=Cost)) +
+geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Strat.Point.2)),size=as.factor(the909090))) +
+scale_size_discrete(name="Achieves 90-90-90",range = c(2,6),labels = c("no","yes")) + 
+theme_classic() +
+scale_color_discrete(name="Omega",labels = Legend.Labels) + 
+scale_shape_discrete(name="Sigma",labels = Legend.Labels.2) + 
+xlab("% Viral Suppression by 2020") + 
+ylab("Additional cost of care (2013 USD)") + 
+guides(colour = guide_legend(override.aes = list(size=4))) +
+geom_vline(xintercept = 0.9^3) + 
+ggtitle("Strategies to achieve 73% viral suppression by 2020")
+
+
+ggplot(Result,aes(x=ViralSuppression,y=Cost)) +
+geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Strat.Point.2))),size=3) +
+theme_classic() +
+scale_color_discrete(name="Omega",labels = Legend.Labels) + 
+scale_shape_discrete(name="Rho",labels = Legend.Labels.2) + 
+xlab("% Viral Suppression by 2020") + 
+ylab("Additional cost of care (2013 USD)") + 
+guides(colour = guide_legend(override.aes = list(size=4))) +
+geom_vline(xintercept = 0.9^3) + 
+ggtitle("Strategies to achieve 73% viral suppression by 2020")
+
+
 
 ggplot(Result,aes(x=Impact,y=Cost)) +
 geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Rho))),size=3) +
@@ -331,7 +423,7 @@ Calc_909090 <- function(outFile) {
     results <- c(p_dx,p_tx,p_vs)
     definition <- c("% Diagnosed","% On Treatment","% Suppressed")
     the909090 <- data.frame(definition,results)
-    return(the909090)
+    return(results)
 }
 
 Calc_909090(theList[[1]])
