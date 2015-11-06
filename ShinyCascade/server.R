@@ -1369,8 +1369,8 @@ function(input, output, session) {
                 formatRound("Sigma",3) %>%
                 formatRound("Omega",3) %>%
                 formatCurrency("Cost",'$')
-            )
-        }
+                )
+            }
 
         if(Budget$Switch == "DALYs") {
             theTable <- filter(Result_DALYs,Cost <= input$userBudget)
@@ -1388,20 +1388,8 @@ function(input, output, session) {
                 formatRound("Omega",3) %>%
                 formatCurrency("DALYs",'') %>%
                 formatCurrency("Cost",'$')
-            )
-        }
-
-        # theTable <- filter(Result_DALYs,Cost <= input$userBudget)
-        # return(datatable(theTable,options=list(order = list(list(1, 'desc')),autoWidth=TRUE,pageLength=100)) %>%
-        #     formatRound("Rho",3) %>%
-        #     formatRound("Epsilon",3) %>%
-        #     formatRound("Kappa",3) %>%
-        #     formatRound("Gamma",3) %>%
-        #     formatRound("Sigma",3) %>%
-        #     formatRound("Omega",3) %>%
-        #     formatCurrency("DALYs",'') %>%
-        #     formatCurrency("Cost",'$')
-        #     )
+                )
+            }
         }
     )
 
