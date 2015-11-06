@@ -118,7 +118,7 @@ InterventionList <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 
 shinyUI(
     navbarPage("Cascade App",
-    theme = shinytheme("spacelab"),
+    theme = shinytheme("flatly"),
     tabPanel("Introduction",
         # img(src="HIVMC-logo.jpg",height=100 * 0.75,width=300 * 0.75),
         h1("Introduction"),
@@ -134,6 +134,7 @@ shinyUI(
                 helpText("Jack J Olney, Jeffrey W Eaton, Ellen McRobie & Timothy B Hallett")
                 ),
             mainPanel(
+                bsAlert("startAlert"),
                 p("With the release of the Consolidated Information Guidelines for HIV by the World Health Organization (WHO)
                 in May 2015, a set of indicators have been agreed upon, based on the cascade of HIV services relating to impact in
                 terms of HIV incidence and mortality (see below). These guidelines provide a framework for countries to assess the current state
@@ -191,6 +192,7 @@ shinyUI(
                 bsButton("resetInput",label="RESET",style="danger"),
                 p(" "),
                 bsButton("demoInput",label="DEMO",style="primary"),
+                bsTooltip(id = "demoInput", title = "Population model with best estimates from Kenya.", placement = "left", trigger = "hover"),
                 p(" "),
                 helpText("Console output:"),
                 textOutput('saveText'),
@@ -457,25 +459,25 @@ shinyUI(
                 p(" "),
                 selectInput("userStratPoint","Select parameter to stratify results by:",InterventionList,selected="Rho"),
                 p(" "),
-                tags$b("For 90-90-90:"),
+                tags$b("Viral suppression against cost:"),
                 p(" "),
-                bsButton("showOpt909090Plot",label="Plot results",style="default"),
+                bsButton("showOpt909090Plot",label="Plot proportion achieving 90-90-90 targets by 2020",style="success"),
                 p(" "),
                 bsButton("showOpt909090Table",label="Show Result Table",style="primary"),
                 p(" "),
                 bsButton("showOpt909090BrushedTable",label="Show Selected Result Table",style="primary"),
+                p(" "), br(),
+                tags$b("DALYs averted against cost:"),
                 p(" "),
-                tags$b("For DALYs:"),
-                p(" "),
-                bsButton("showOptDALYsPlot",label="Plot results",style="default"),
+                bsButton("showOptDALYsPlot",label="Plot DALYs averted against cost",style="danger"),
                 p(" "),
                 bsButton("showOptDALYsTable",label="Show Result Table",style="primary"),
                 p(" "),
                 bsButton("showOptDALYsBrushedTable",label="Show Selected Result Table",style="primary"),
                 p(" "), br(),
-                tags$b("For results achieving 90-90-90 (DALYs):"),
+                tags$b("DALYs averted against cost (for subset achieving 90-90-90):"),
                 p(" "),
-                bsButton("showOptDALYs909090Plot",label="Plot results",style="default"),
+                bsButton("showOptDALYs909090Plot",label="Plot DALYs averted against cost (90-90-90)",style="info"),
                 p(" "),
                 bsButton("showOptDALYs909090Table",label="Show Result Table",style="primary"),
                 p(" "),
@@ -500,7 +502,7 @@ shinyUI(
                 bsModal(id = "optDALYs909090TableBrushedModal",title = "Selected Result Table (results achieving 90-90-90 targets)",trigger = "showOptDALYs909090BrushedTable",size = "large",
                     DT::dataTableOutput('optDALYs909090TableBrushed', width = "100%")
                 ),
-                bsCollapse(id = 'optCollapse', open = "Plot 90-90-90",
+                bsCollapse(id = 'optCollapse', open = NULL,
                     bsCollapsePanel("Plot 90-90-90",
                         plotOutput('plotOpt909090',
                             dblclick = "plotOpt909090_dblclick",
@@ -523,7 +525,7 @@ shinyUI(
                             ),
                         style = "danger"
                         ),
-                    bsCollapsePanel("Plot DALYs 90-90-90",
+                    bsCollapsePanel("Plot DALYs (90-90-90)",
                         plotOutput('plotOptDALYs909090',
                             dblclick = "plotOptDALYs909090_dblclick",
                             brush = brushOpts(
@@ -541,7 +543,12 @@ shinyUI(
             sidebarPanel(
                 h4("Budget"),
                 helpText("Please enter a health care budget value in the box below to see a subset of results that do not exceed that value."),
-                numericInput("userBudget","Enter budget to subset results (2013 USD):", value = 0, min = 0, step = 1e+04)
+                numericInput("userBudget","Enter budget to subset results (2013 USD):", value = 0, min = 0, step = 1e+04),
+                tags$b("Select output as 90-90-90 indicators or DALYs:"),
+                p(" "),
+                bsButton("showBudget909090",label="90-90-90",style="success"),
+                p(" "),
+                bsButton("showBudgetDALYs",label="DALYs",style="danger")
                 ),
             mainPanel(
                 DT::dataTableOutput('optBudgetTable', width = "100%")

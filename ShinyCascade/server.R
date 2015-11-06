@@ -16,6 +16,19 @@ source("TheModel.R")
 
 function(input, output, session) {
 
+    # StartUp Alert
+    createAlert(session, anchorId = "startAlert", 
+        alertId = NULL, 
+        title = "WARNING", 
+        content = "This interactive web-based model is still under deveopment. 
+        Any data entered into the model is done so at the users own risk. 
+        Clicking 'save' in any tab saves the current inputs to a centrally accessible spreadsheet hosted by Google. 
+        Results produced by this model are not finalised.
+        Use with caution!", 
+        style = "danger", 
+        dismiss = TRUE, 
+        append = TRUE)
+
     Parameters <- reactive({c(
         Nu_1 = 0.193634,
         Nu_2 = 0.321304,
@@ -953,9 +966,6 @@ function(input, output, session) {
             Result_909090 <<- data.frame(Result90,Result9090,Result909090,ResultVS,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
             colnames(Result_909090) <<- c("90","90-90","90-90-90","VS","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 
-            Result_909090_noVS <<- data.frame(Result90,Result9090,Result909090,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
-            colnames(Result_909090_noVS) <<- c("90","90-90","90-90-90","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
-
             # Result data.frame for plot(DALYs,cost)
             Result_DALYs <<- data.frame(ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
             colnames(Result_DALYs) <<- c("DALYs","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
@@ -1158,7 +1168,7 @@ function(input, output, session) {
 
     # When a double-click happens, check if there's a brush on the plot.
     # If so, zoom to the brush bounds; if not, reset the zoom.
-    
+
     # Plot 1
     observeEvent(input$plotOpt909090_dblclick, {
         brush <- input$plotOpt909090_brush
@@ -1212,22 +1222,23 @@ function(input, output, session) {
 
     # Plot 3
     observeEvent(input$showOptDALYs909090Plot, ({
-        updateCollapse(session, "optCollapse", open = "Plot DALYs 90-90-90")
+        updateCollapse(session, "optCollapse", open = "Plot DALYs (90-90-90)")
     }))
 
     # RenderDataTable Control
 
     # Plot 1
     output$opt909090Table <- DT::renderDataTable({
-        return(datatable(Result_909090_noVS,options=list(pageLength=25,autoWidth=TRUE)) %>%
+        return(datatable(Result_909090,options=list(pageLength=25,autoWidth=TRUE)) %>%
             formatRound("90",3) %>%
-            formatRound("90-90",3) %>% 
-            formatRound("90-90-90",3) %>% 
-            formatRound("Rho",3) %>% 
-            formatRound("Epsilon",3) %>% 
-            formatRound("Kappa",3) %>% 
-            formatRound("Gamma",3) %>% 
-            formatRound("Sigma",3) %>% 
+            formatRound("90-90",3) %>%
+            formatRound("90-90-90",3) %>%
+            formatRound("VS",3) %>%
+            formatRound("Rho",3) %>%
+            formatRound("Epsilon",3) %>%
+            formatRound("Kappa",3) %>%
+            formatRound("Gamma",3) %>%
+            formatRound("Sigma",3) %>%
             formatRound("Omega",3) %>%
             formatCurrency("Cost",'$')
             )
@@ -1236,16 +1247,17 @@ function(input, output, session) {
 
     # Plot 1 (brushed)
     output$opt909090TableBrushed <- DT::renderDataTable({
-        theBrushed <- brushedPoints(df = Result_909090_noVS,brush = input$plotOpt909090_brush)
+        theBrushed <- brushedPoints(df = Result_909090,brush = input$plotOpt909090_brush)
         return(datatable(theBrushed,options=list(pageLength=25,autoWidth=TRUE)) %>%
             formatRound("90",3) %>%
-            formatRound("90-90",3) %>% 
-            formatRound("90-90-90",3) %>% 
-            formatRound("Rho",3) %>% 
-            formatRound("Epsilon",3) %>% 
-            formatRound("Kappa",3) %>% 
-            formatRound("Gamma",3) %>% 
-            formatRound("Sigma",3) %>% 
+            formatRound("90-90",3) %>%
+            formatRound("90-90-90",3) %>%
+            formatRound("VS",3) %>%
+            formatRound("Rho",3) %>%
+            formatRound("Epsilon",3) %>%
+            formatRound("Kappa",3) %>%
+            formatRound("Gamma",3) %>%
+            formatRound("Sigma",3) %>%
             formatRound("Omega",3) %>%
             formatCurrency("Cost",'$')
             )
@@ -1255,11 +1267,11 @@ function(input, output, session) {
     # Plot 2
     output$optDALYsTable <- DT::renderDataTable({
         return(datatable(Result_DALYs,options=list(pageLength=25,autoWidth=TRUE)) %>%
-            formatRound("Rho",3) %>% 
-            formatRound("Epsilon",3) %>% 
-            formatRound("Kappa",3) %>% 
-            formatRound("Gamma",3) %>% 
-            formatRound("Sigma",3) %>% 
+            formatRound("Rho",3) %>%
+            formatRound("Epsilon",3) %>%
+            formatRound("Kappa",3) %>%
+            formatRound("Gamma",3) %>%
+            formatRound("Sigma",3) %>%
             formatRound("Omega",3) %>%
             formatCurrency("DALYs",'') %>%
             formatCurrency("Cost",'$')
@@ -1271,11 +1283,11 @@ function(input, output, session) {
     output$optDALYsTableBrushed <- DT::renderDataTable({
         theBrushed <- brushedPoints(df = Result_DALYs,brush = input$plotOptDALYs_brush)
         return(datatable(theBrushed,options=list(pageLength=25,autoWidth=TRUE)) %>%
-            formatRound("Rho",3) %>% 
-            formatRound("Epsilon",3) %>% 
-            formatRound("Kappa",3) %>% 
-            formatRound("Gamma",3) %>% 
-            formatRound("Sigma",3) %>% 
+            formatRound("Rho",3) %>%
+            formatRound("Epsilon",3) %>%
+            formatRound("Kappa",3) %>%
+            formatRound("Gamma",3) %>%
+            formatRound("Sigma",3) %>%
             formatRound("Omega",3) %>%
             formatCurrency("DALYs",'') %>%
             formatCurrency("Cost",'$')
@@ -1286,11 +1298,11 @@ function(input, output, session) {
     # Plot 3
     output$optDALYs909090Table <- DT::renderDataTable({
         return(datatable(Result_DALYs_909090,options=list(pageLength=25,autoWidth=TRUE)) %>%
-            formatRound("Rho",3) %>% 
-            formatRound("Epsilon",3) %>% 
-            formatRound("Kappa",3) %>% 
-            formatRound("Gamma",3) %>% 
-            formatRound("Sigma",3) %>% 
+            formatRound("Rho",3) %>%
+            formatRound("Epsilon",3) %>%
+            formatRound("Kappa",3) %>%
+            formatRound("Gamma",3) %>%
+            formatRound("Sigma",3) %>%
             formatRound("Omega",3) %>%
             formatCurrency("DALYs",'') %>%
             formatCurrency("Cost",'$')
@@ -1302,11 +1314,11 @@ function(input, output, session) {
     output$optDALYs909090TableBrushed <- DT::renderDataTable({
         theBrushed <- brushedPoints(df = Result_DALYs_909090,brush = input$plotOptDALYs909090_brush)
         return(datatable(theBrushed,options=list(pageLength=25,autoWidth=TRUE)) %>%
-            formatRound("Rho",3) %>% 
-            formatRound("Epsilon",3) %>% 
-            formatRound("Kappa",3) %>% 
-            formatRound("Gamma",3) %>% 
-            formatRound("Sigma",3) %>% 
+            formatRound("Rho",3) %>%
+            formatRound("Epsilon",3) %>%
+            formatRound("Kappa",3) %>%
+            formatRound("Gamma",3) %>%
+            formatRound("Sigma",3) %>%
             formatRound("Omega",3) %>%
             formatCurrency("DALYs",'') %>%
             formatCurrency("Cost",'$')
@@ -1318,11 +1330,11 @@ function(input, output, session) {
     output$optBudgetTable <- DT::renderDataTable({
         theTable <- filter(Result_DALYs,Cost <= input$userBudget)
         return(datatable(theTable,options=list(order = list(list(1, 'desc')),autoWidth=TRUE,pageLength=100)) %>%
-            formatRound("Rho",3) %>% 
-            formatRound("Epsilon",3) %>% 
-            formatRound("Kappa",3) %>% 
-            formatRound("Gamma",3) %>% 
-            formatRound("Sigma",3) %>% 
+            formatRound("Rho",3) %>%
+            formatRound("Epsilon",3) %>%
+            formatRound("Kappa",3) %>%
+            formatRound("Gamma",3) %>%
+            formatRound("Sigma",3) %>%
             formatRound("Omega",3) %>%
             formatCurrency("DALYs",'') %>%
             formatCurrency("Cost",'$')
