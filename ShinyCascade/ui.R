@@ -457,52 +457,77 @@ shinyUI(
                 p(" "),
                 selectInput("userStratPoint","Select parameter to stratify results by:",InterventionList,selected="Rho"),
                 p(" "),
-                tags$b("For all:"),
-                p(" "),
-                bsButton("showOptPlot",label="Plot results",style="default"),
-                p(" "),
-                bsButton("showOptTable",label="Show Result Table",style="primary"),
-                p(" "),
-                bsButton("showOptBrushedTable",label="Show Selected Result Table",style="primary"),
-                p(" "), br(),
-                tags$b("For results achieving 90-90-90:"),
+                tags$b("For 90-90-90:"),
                 p(" "),
                 bsButton("showOpt909090Plot",label="Plot results",style="default"),
                 p(" "),
                 bsButton("showOpt909090Table",label="Show Result Table",style="primary"),
                 p(" "),
-                bsButton("showOpt909090BrushedTable",label="Show Selected Result Table",style="primary")
+                bsButton("showOpt909090BrushedTable",label="Show Selected Result Table",style="primary"),
+                p(" "),
+                tags$b("For DALYs:"),
+                p(" "),
+                bsButton("showOptDALYsPlot",label="Plot results",style="default"),
+                p(" "),
+                bsButton("showOptDALYsTable",label="Show Result Table",style="primary"),
+                p(" "),
+                bsButton("showOptDALYsBrushedTable",label="Show Selected Result Table",style="primary"),
+                p(" "), br(),
+                tags$b("For results achieving 90-90-90 (DALYs):"),
+                p(" "),
+                bsButton("showOptDALYs909090Plot",label="Plot results",style="default"),
+                p(" "),
+                bsButton("showOptDALYs909090Table",label="Show Result Table",style="primary"),
+                p(" "),
+                bsButton("showOptDALYs909090BrushedTable",label="Show Selected Result Table",style="primary")
                 ),
             mainPanel(
-                bsModal(id = "optTableModal",title = "Result Table",trigger = "showOptTable",size = "large",
-                    DT::dataTableOutput('optTable', width = "100%")
-                ),
-                bsModal(id = "optTableBrushedModal",title = "Selected Result Table",trigger = "showOptBrushedTable",size = "large",
-                    DT::dataTableOutput('optTableBrushed', width = "100%")
-                ),
-                bsModal(id = "opt909090TableModal",title = "Result Table (results achieving 90-90-90 targets)",trigger = "showOpt909090Table",size = "large",
+                bsModal(id = "opt909090TableModal",title = "Result Table (showing 90-90-90 targets)",trigger = "showOpt909090Table",size = "large",
                     DT::dataTableOutput('opt909090Table', width = "100%")
                 ),
-                bsModal(id = "opt909090TableBrushedModal",title = "Selected Result Table (results achieving 90-90-90 targets)",trigger = "showOpt909090BrushedTable",size = "large",
+                bsModal(id = "opt909090TableBrushedModal",title = "Selected Result Table (showing 90-90-90 targets)",trigger = "showOpt909090BrushedTable",size = "large",
                     DT::dataTableOutput('opt909090TableBrushed', width = "100%")
                 ),
-                bsCollapse(id = 'optCollapse', open = "Plot All",
-                    bsCollapsePanel("Plot All",
-                        plotOutput('plotOpt',
-                            dblclick = "plotOpt_dblclick",
+                bsModal(id = "optDALYsTableModal",title = "Result Table",trigger = "showOptDALYsTable",size = "large",
+                    DT::dataTableOutput('optDALYsTable', width = "100%")
+                ),
+                bsModal(id = "optDALYsTableBrushedModal",title = "Selected Result Table",trigger = "showOptDALYsBrushedTable",size = "large",
+                    DT::dataTableOutput('optDALYsTableBrushed', width = "100%")
+                ),
+                bsModal(id = "optDALYs909090TableModal",title = "Result Table (results achieving 90-90-90 targets)",trigger = "showOptDALYs909090Table",size = "large",
+                    DT::dataTableOutput('optDALYs909090Table', width = "100%")
+                ),
+                bsModal(id = "optDALYs909090TableBrushedModal",title = "Selected Result Table (results achieving 90-90-90 targets)",trigger = "showOptDALYs909090BrushedTable",size = "large",
+                    DT::dataTableOutput('optDALYs909090TableBrushed', width = "100%")
+                ),
+                bsCollapse(id = 'optCollapse', open = "Plot 90-90-90",
+                    bsCollapsePanel("Plot 90-90-90",
+                        plotOutput('plotOpt909090',
+                            dblclick = "plotOpt909090_dblclick",
                             brush = brushOpts(
-                                id = "plotOpt_brush",
+                                id = "plotOpt909090_brush",
                                 clip = TRUE,
                                 resetOnNew = TRUE
                                 )
                             ),
                         style = "success"
                         ),
-                    bsCollapsePanel("Plot 90-90-90",
-                        plotOutput('plotOpt909090',
-                            dblclick = "plotOpt909090_dblclick",
+                    bsCollapsePanel("Plot DALYs",
+                        plotOutput('plotOptDALYs',
+                            dblclick = "plotOptDALYs_dblclick",
                             brush = brushOpts(
-                                id = "plotOpt909090_brush",
+                                id = "plotOptDALYs_brush",
+                                clip = TRUE,
+                                resetOnNew = TRUE
+                                )
+                            ),
+                        style = "danger"
+                        ),
+                    bsCollapsePanel("Plot DALYs 90-90-90",
+                        plotOutput('plotOptDALYs909090',
+                            dblclick = "plotOptDALYs909090_dblclick",
+                            brush = brushOpts(
+                                id = "plotOptDALYs909090_brush",
                                 clip = TRUE,
                                 resetOnNew = TRUE
                                 )

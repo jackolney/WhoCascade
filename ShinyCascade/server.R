@@ -135,7 +135,7 @@ function(input, output, session) {
         Ltfu_100200 = (input$userLtfu) * prop_preART_100200,
         Ltfu_50100 = (input$userLtfu) * prop_preART_50100,
         Ltfu_50 = (input$userLtfu) * prop_preART_50,
-        
+
         # Keeping track
         NewInf = 0,
         HivMortality = 0,
@@ -233,8 +233,8 @@ function(input, output, session) {
     })
 
     output$plotOne <- renderPlot({
-        p <- ggplot(out(), aes_string(x="time",y=input$y)) + 
-        geom_line(size=2) + 
+        p <- ggplot(out(), aes_string(x="time",y=input$y)) +
+        geom_line(size=2) +
         theme_classic() +
         # theme_economist() +
         theme(axis.text.x=element_text(size=18)) +
@@ -243,7 +243,7 @@ function(input, output, session) {
         xlab("Year") +
         scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
         print(p)
-        }, 
+        },
         height=500,
         width=700
     )
@@ -364,7 +364,7 @@ function(input, output, session) {
         t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t0_N
         t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50)))) / t0_N
         t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
-        
+
         t0_results <- c(t0_dx,t0_cx,t0_tx,t0_vs,t0_ltfu)
 
         definition <- c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU")
@@ -601,8 +601,8 @@ function(input, output, session) {
     })
 
     output$plotNewInf <- renderPlot({
-        p <- ggplot(out(), aes(x=time,y=NewInfProp)) + 
-            geom_line(size=2) + 
+        p <- ggplot(out(), aes(x=time,y=NewInfProp)) +
+            geom_line(size=2) +
             theme_classic() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -611,14 +611,14 @@ function(input, output, session) {
             ylab("# new infections / total infected population") +
             scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
         print(p)
-        }, 
+        },
         height=500,
         width=700
     )
 
     output$plotAidsDeaths <- renderPlot({
-        p <- ggplot(out(), aes(x=time,y=HivMortalityProp)) + 
-            geom_line(size=2) + 
+        p <- ggplot(out(), aes(x=time,y=HivMortalityProp)) +
+            geom_line(size=2) +
             theme_classic() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
@@ -627,7 +627,7 @@ function(input, output, session) {
             ylab("# AIDS deaths / total infected population") +
             scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
         print(p)
-        }, 
+        },
         height=500,
         width=700
     )
@@ -839,7 +839,7 @@ function(input, output, session) {
             setProgress(value = 0, message = 'Starting optimisation.', detail = 'This may take a while...')
 
             updateButton(session,"optFinished",label="OPTIMISATION RUNNING",style="warning",icon="")
-            
+
             # Need for loop in here {}
             Start.Time <- proc.time()[[1]]
             theList <- list()
@@ -900,6 +900,28 @@ function(input, output, session) {
                 return(theCost - BaselineCost)
             }
 
+            Calc_909090_Result <- function(outFile) {
+                PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
+                dx = as.double(sum(filter(outFile,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+                tx = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+                vs = as.double(sum(filter(outFile,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+                p_dx <- dx / PLHIV
+                p_tx <- tx / dx
+                p_vs <- vs / tx
+                results <- c(p_dx,p_tx,p_vs)
+                definition <- c("% Diagnosed","% On Treatment","% Suppressed")
+                the909090 <- data.frame(definition,results)
+                return(results)
+            }
+
+            Calc_VS <- function(outFile) {
+                return(as.double(filter(outFile,time == 5) %>% select(Vs)))
+            }
+
+            Result90 <- c()
+            Result9090 <- c()
+            Result909090 <- c()
+            ResultVS <- c()
             ResultImpact <- c()
             ResultCost <- c()
             ResultPar_Rho <- c()
@@ -910,6 +932,10 @@ function(input, output, session) {
             ResultPar_Omega <- c()
             for(i in 1:length(theList)) {
                 print(i)
+                Result90[i] <- Calc_909090_Result(theList[[i]])[1]
+                Result9090[i] <- Calc_909090_Result(theList[[i]])[2]
+                Result909090[i] <- Calc_909090_Result(theList[[i]])[3]
+                ResultVS[i] <- Calc_VS(theList[[i]])
                 ResultImpact[i] <- Calc_DALYsAverted(theList[[i]],theBaselineDALY)
                 ResultCost[i] <- Calc_AdditionalCost(theList[[i]],theBaselineCost)
                 ResultPar_Rho[i] <- ParInput[i,]$Rho
@@ -923,12 +949,20 @@ function(input, output, session) {
             # ResultNames was used by ggplot for aes(color=Names) but is now deprecated
             ResultNames <- paste("p",seq(1,dim(ParInput)[1],1),sep='')
 
-            Result <<- data.frame(ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
-            colnames(Result) <<- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+            # Result data.frame for plot(vs,cost)
+            Result_909090 <<- data.frame(Result90,Result9090,Result909090,ResultVS,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+            colnames(Result_909090) <<- c("90","90-90","90-90-90","VS","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 
-            # -------------- #
-            # 90-90-90 Stuff #
-            # -------------- #
+            Result_909090_noVS <<- data.frame(Result90,Result9090,Result909090,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+            colnames(Result_909090_noVS) <<- c("90","90-90","90-90-90","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+
+            # Result data.frame for plot(DALYs,cost)
+            Result_DALYs <<- data.frame(ResultImpact,ResultCost,ResultPar_Rho,ResultPar_Epsilon,ResultPar_Kappa,ResultPar_Gamma,ResultPar_Sigma,ResultPar_Omega)
+            colnames(Result_DALYs) <<- c("DALYs","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+
+            # ----------------------------------------- #
+            # Subsetting those achieving 90-90-90 Stuff #
+            # ----------------------------------------- #
 
             Calc_909090 <- function(outFile) {
                 PLHIV = as.double(sum(filter(outFile,time == 5) %>% select(N)))
@@ -1009,18 +1043,21 @@ function(input, output, session) {
                     Result909090Par_Omega[i] <- ParInput[i,]$Omega
                 }
 
-                Result909090 <<- data.frame(Result909090Impact,Result909090Cost,Result909090Par_Rho,Result909090Par_Epsilon,Result909090Par_Kappa,Result909090Par_Gamma,Result909090Par_Sigma,Result909090Par_Omega)
-                colnames(Result909090) <<- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+                Result_DALYs_909090 <<- data.frame(Result909090Impact,Result909090Cost,Result909090Par_Rho,Result909090Par_Epsilon,Result909090Par_Kappa,Result909090Par_Gamma,Result909090Par_Sigma,Result909090Par_Omega)
+                colnames(Result_DALYs_909090) <<- c("DALYs","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
             } else {
-                Result909090 <<- data.frame(0,0,0,0,0,0,0,0)
-                colnames(Result909090) <<- c("Impact","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
+                Result_DALYs_909090 <<- data.frame(0,0,0,0,0,0,0,0)
+                colnames(Result_DALYs_909090) <<- c("DALYs","Cost","Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
             }
 
-            print("Result =")
-            print(Result)
+            print("Result_909090 =")
+            print(Result_909090)
 
-            print("Result909090 =")
-            print(Result909090)
+            print("Result_DALYs =")
+            print(Result_DALYs)
+
+            print("Result_DALYs_909090 =")
+            print(Result_DALYs_909090)
 
             setProgress(value = 1, message = paste("Finished. Time =",round(proc.time()[[1]] - Start.Time,0),"sec"))
             updateButton(session,"optFinished",label=" OPTIMISATION COMPLETE",style="success",icon=icon("check"))
@@ -1028,60 +1065,92 @@ function(input, output, session) {
     })
 
     # Reactive ranges for plotOpt
-    plotOpt.ranges <- reactiveValues(x = NULL, y = NULL)
-    plotOpt909090.ranges <- reactiveValues(x = NULL, y = NULL)
+    plotOpt_909090.ranges <- reactiveValues(x = NULL, y = NULL)
+    plotOpt_DALYs.ranges <- reactiveValues(x = NULL, y = NULL)
+    plotOpt_DALYs_909090.ranges <- reactiveValues(x = NULL, y = NULL)
 
-    output$plotOpt <- renderPlot({
+    # Plot 1
+    output$plotOpt909090 <- renderPlot({
         input$optimiseInput
 
         Legend.Labels <- c()
-        for(i in 1:length(levels(as.factor(Result[[input$userStratPoint]])))) {
-            Legend.Labels[i] <- round(as.double(levels(as.factor(Result[[input$userStratPoint]]))[i]),2)
+        for(i in 1:length(levels(as.factor(Result_909090[[input$userStratPoint]])))) {
+            Legend.Labels[i] <- round(as.double(levels(as.factor(Result_909090[[input$userStratPoint]]))[i]),2)
         }
 
-        ggplot(Result,aes(x=Impact,y=Cost)) + 
+        ggplot(Result_909090,aes(x=VS,y=Cost)) +
         geom_point(aes(color=as.factor(get(input$userStratPoint))),size=5) +
-        theme_classic() + 
-        scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) + 
-        guides(colour = guide_legend(override.aes = list(size=4))) + 
+        theme_classic() +
+        scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) +
+        guides(colour = guide_legend(override.aes = list(size=4))) +
         theme(legend.title=element_text(size=15)) +
         theme(legend.text=element_text(size=13)) +
-        theme(axis.text.x=element_text(size=18)) + 
-        theme(axis.text.y=element_text(size=18)) + 
-        theme(axis.title=element_text(size=20)) + 
-        xlab("DALYs Averted (between 2015 and 2020)") + 
-        ylab("Additional cost of care (2013 USD)") + 
-        scale_y_continuous(labels = comma) + 
-        scale_x_continuous(labels = comma) + 
-        coord_cartesian(xlim = plotOpt.ranges$x, ylim = plotOpt.ranges$y)
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("Proportion achieving viral suppresion by 2020") +
+        ylab("Additional cost of care (2013 USD)") +
+        scale_y_continuous(labels = comma) +
+        scale_x_continuous(labels = comma) +
+        coord_cartesian(xlim = plotOpt_909090.ranges$x, ylim = plotOpt_909090.ranges$y)
         },
         height=400,
         width=900
     )
 
-    output$plotOpt909090 <- renderPlot({
+    # Plot 2
+    output$plotOptDALYs <- renderPlot({
         input$optimiseInput
 
         Legend.Labels <- c()
-        for(i in 1:length(levels(as.factor(Result[[input$userStratPoint]])))) {
-            Legend.Labels[i] <- round(as.double(levels(as.factor(Result[[input$userStratPoint]]))[i]),2)
+        for(i in 1:length(levels(as.factor(Result_DALYs[[input$userStratPoint]])))) {
+            Legend.Labels[i] <- round(as.double(levels(as.factor(Result_DALYs[[input$userStratPoint]]))[i]),2)
         }
 
-        ggplot(Result909090,aes(x=Impact,y=Cost)) + 
+        ggplot(Result_DALYs,aes(x=DALYs,y=Cost)) +
         geom_point(aes(color=as.factor(get(input$userStratPoint))),size=5) +
-        theme_classic() + 
-        scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) + 
-        guides(colour = guide_legend(override.aes = list(size=4))) + 
+        theme_classic() +
+        scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) +
+        guides(colour = guide_legend(override.aes = list(size=4))) +
         theme(legend.title=element_text(size=15)) +
         theme(legend.text=element_text(size=13)) +
-        theme(axis.text.x=element_text(size=18)) + 
-        theme(axis.text.y=element_text(size=18)) + 
-        theme(axis.title=element_text(size=20)) + 
-        xlab("DALYs Averted (between 2015 and 2020)") + 
-        ylab("Additional cost of care (2013 USD)") + 
-        scale_y_continuous(labels = comma) + 
-        scale_x_continuous(labels = comma) +         
-        coord_cartesian(xlim = plotOpt909090.ranges$x, ylim = plotOpt909090.ranges$y)
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("DALYs Averted (between 2015 and 2020)") +
+        ylab("Additional cost of care (2013 USD)") +
+        scale_y_continuous(labels = comma) +
+        scale_x_continuous(labels = comma) +
+        coord_cartesian(xlim = plotOpt_DALYs.ranges$x, ylim = plotOpt_DALYs.ranges$y)
+        },
+        height=400,
+        width=900
+    )
+
+    # Plot 3
+    output$plotOptDALYs909090 <- renderPlot({
+        input$optimiseInput
+
+        Legend.Labels <- c()
+        for(i in 1:length(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]])))) {
+            Legend.Labels[i] <- round(as.double(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]]))[i]),2)
+        }
+
+        ggplot(Result_DALYs_909090,aes(x=DALYs,y=Cost)) +
+        geom_point(aes(color=as.factor(get(input$userStratPoint))),size=5) +
+        theme_classic() +
+        scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) +
+        guides(colour = guide_legend(override.aes = list(size=4))) +
+        theme(legend.title=element_text(size=15)) +
+        theme(legend.text=element_text(size=13)) +
+        theme(axis.text.x=element_text(size=18)) +
+        theme(axis.text.y=element_text(size=18)) +
+        theme(axis.title=element_text(size=20)) +
+        xlab("DALYs Averted (between 2015 and 2020)") +
+        ylab("Additional cost of care (2013 USD)") +
+        scale_y_continuous(labels = comma) +
+        scale_x_continuous(labels = comma) +
+        coord_cartesian(xlim = plotOpt_DALYs_909090.ranges$x, ylim = plotOpt_DALYs_909090.ranges$y)
         },
         height=400,
         width=900
@@ -1089,63 +1158,175 @@ function(input, output, session) {
 
     # When a double-click happens, check if there's a brush on the plot.
     # If so, zoom to the brush bounds; if not, reset the zoom.
-    observeEvent(input$plotOpt_dblclick, {
-        brush <- input$plotOpt_brush
-        if (!is.null(brush)) {
-            plotOpt.ranges$x <- c(brush$xmin, brush$xmax)
-            plotOpt.ranges$y <- c(brush$ymin, brush$ymax)
-        } else {
-            plotOpt.ranges$x <- NULL
-            plotOpt.ranges$y <- NULL
-            }
-        }
-    )
-
+    
+    # Plot 1
     observeEvent(input$plotOpt909090_dblclick, {
         brush <- input$plotOpt909090_brush
         if (!is.null(brush)) {
-            plotOpt909090.ranges$x <- c(brush$xmin, brush$xmax)
-            plotOpt909090.ranges$y <- c(brush$ymin, brush$ymax)
+            plotOpt_909090.ranges$x <- c(brush$xmin, brush$xmax)
+            plotOpt_909090.ranges$y <- c(brush$ymin, brush$ymax)
         } else {
-            plotOpt909090.ranges$x <- NULL
-            plotOpt909090.ranges$y <- NULL
+            plotOpt_909090.ranges$x <- NULL
+            plotOpt_909090.ranges$y <- NULL
             }
         }
     )
 
-    observeEvent(input$showOptPlot, ({
-        updateCollapse(session, "optCollapse", open = "Plot All")
-    }))
+    # Plot 2
+    observeEvent(input$plotOptDALYs_dblclick, {
+        brush <- input$plotOptDALYs_brush
+        if (!is.null(brush)) {
+            plotOpt_DALYs.ranges$x <- c(brush$xmin, brush$xmax)
+            plotOpt_DALYs.ranges$y <- c(brush$ymin, brush$ymax)
+        } else {
+            plotOpt_DALYs.ranges$x <- NULL
+            plotOpt_DALYs.ranges$y <- NULL
+            }
+        }
+    )
 
+    # Plot 3
+    observeEvent(input$plotOptDALYs909090_dblclick, {
+        brush <- input$plotOptDALYs909090_brush
+        if (!is.null(brush)) {
+            plotOpt_DALYs_909090.ranges$x <- c(brush$xmin, brush$xmax)
+            plotOpt_DALYs_909090.ranges$y <- c(brush$ymin, brush$ymax)
+        } else {
+            plotOpt_DALYs_909090.ranges$x <- NULL
+            plotOpt_DALYs_909090.ranges$y <- NULL
+            }
+        }
+    )
+
+    # Button Control
+
+    # Plot 1
     observeEvent(input$showOpt909090Plot, ({
         updateCollapse(session, "optCollapse", open = "Plot 90-90-90")
     }))
 
-    output$optTable <- DT::renderDataTable({
-        return(datatable(Result,options=list(pageLength=25)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
-        }
-    )
+    # Plot 2
+    observeEvent(input$showOptDALYsPlot, ({
+        updateCollapse(session, "optCollapse", open = "Plot DALYs")
+    }))
 
-    output$optTableBrushed <- DT::renderDataTable({
-        theBrushed <- brushedPoints(df = Result,brush = input$plotOpt_brush)
-        return(datatable(theBrushed,options=list(pageLength=25)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
-        }
-    )
+    # Plot 3
+    observeEvent(input$showOptDALYs909090Plot, ({
+        updateCollapse(session, "optCollapse", open = "Plot DALYs 90-90-90")
+    }))
 
+    # RenderDataTable Control
+
+    # Plot 1
     output$opt909090Table <- DT::renderDataTable({
-        return(datatable(Result909090,options=list(pageLength=25)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
+        return(datatable(Result_909090_noVS,options=list(pageLength=25,autoWidth=TRUE)) %>%
+            formatRound("90",3) %>%
+            formatRound("90-90",3) %>% 
+            formatRound("90-90-90",3) %>% 
+            formatRound("Rho",3) %>% 
+            formatRound("Epsilon",3) %>% 
+            formatRound("Kappa",3) %>% 
+            formatRound("Gamma",3) %>% 
+            formatRound("Sigma",3) %>% 
+            formatRound("Omega",3) %>%
+            formatCurrency("Cost",'$')
+            )
         }
     )
 
+    # Plot 1 (brushed)
     output$opt909090TableBrushed <- DT::renderDataTable({
-        theBrushed <- brushedPoints(df = Result909090,brush = input$plotOpt909090_brush)
-        return(datatable(theBrushed,options=list(pageLength=25)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
+        theBrushed <- brushedPoints(df = Result_909090_noVS,brush = input$plotOpt909090_brush)
+        return(datatable(theBrushed,options=list(pageLength=25,autoWidth=TRUE)) %>%
+            formatRound("90",3) %>%
+            formatRound("90-90",3) %>% 
+            formatRound("90-90-90",3) %>% 
+            formatRound("Rho",3) %>% 
+            formatRound("Epsilon",3) %>% 
+            formatRound("Kappa",3) %>% 
+            formatRound("Gamma",3) %>% 
+            formatRound("Sigma",3) %>% 
+            formatRound("Omega",3) %>%
+            formatCurrency("Cost",'$')
+            )
         }
     )
 
+    # Plot 2
+    output$optDALYsTable <- DT::renderDataTable({
+        return(datatable(Result_DALYs,options=list(pageLength=25,autoWidth=TRUE)) %>%
+            formatRound("Rho",3) %>% 
+            formatRound("Epsilon",3) %>% 
+            formatRound("Kappa",3) %>% 
+            formatRound("Gamma",3) %>% 
+            formatRound("Sigma",3) %>% 
+            formatRound("Omega",3) %>%
+            formatCurrency("DALYs",'') %>%
+            formatCurrency("Cost",'$')
+            )
+        }
+    )
+
+    # Plot 2 (brushed)
+    output$optDALYsTableBrushed <- DT::renderDataTable({
+        theBrushed <- brushedPoints(df = Result_DALYs,brush = input$plotOptDALYs_brush)
+        return(datatable(theBrushed,options=list(pageLength=25,autoWidth=TRUE)) %>%
+            formatRound("Rho",3) %>% 
+            formatRound("Epsilon",3) %>% 
+            formatRound("Kappa",3) %>% 
+            formatRound("Gamma",3) %>% 
+            formatRound("Sigma",3) %>% 
+            formatRound("Omega",3) %>%
+            formatCurrency("DALYs",'') %>%
+            formatCurrency("Cost",'$')
+            )
+        }
+    )
+
+    # Plot 3
+    output$optDALYs909090Table <- DT::renderDataTable({
+        return(datatable(Result_DALYs_909090,options=list(pageLength=25,autoWidth=TRUE)) %>%
+            formatRound("Rho",3) %>% 
+            formatRound("Epsilon",3) %>% 
+            formatRound("Kappa",3) %>% 
+            formatRound("Gamma",3) %>% 
+            formatRound("Sigma",3) %>% 
+            formatRound("Omega",3) %>%
+            formatCurrency("DALYs",'') %>%
+            formatCurrency("Cost",'$')
+            )
+        }
+    )
+
+    # Plot 3 (brushed)
+    output$optDALYs909090TableBrushed <- DT::renderDataTable({
+        theBrushed <- brushedPoints(df = Result_DALYs_909090,brush = input$plotOptDALYs909090_brush)
+        return(datatable(theBrushed,options=list(pageLength=25,autoWidth=TRUE)) %>%
+            formatRound("Rho",3) %>% 
+            formatRound("Epsilon",3) %>% 
+            formatRound("Kappa",3) %>% 
+            formatRound("Gamma",3) %>% 
+            formatRound("Sigma",3) %>% 
+            formatRound("Omega",3) %>%
+            formatCurrency("DALYs",'') %>%
+            formatCurrency("Cost",'$')
+            )
+        }
+    )
+
+    # Render Budget Table
     output$optBudgetTable <- DT::renderDataTable({
-        theTable <- filter(Result,Cost <= input$userBudget)
-        return(datatable(theTable,options=list(order = list(list(1, 'desc')), autoWidth = TRUE, pageLength=100)) %>% formatCurrency(2,'$') %>% formatCurrency(1,''))
+        theTable <- filter(Result_DALYs,Cost <= input$userBudget)
+        return(datatable(theTable,options=list(order = list(list(1, 'desc')),autoWidth=TRUE,pageLength=100)) %>%
+            formatRound("Rho",3) %>% 
+            formatRound("Epsilon",3) %>% 
+            formatRound("Kappa",3) %>% 
+            formatRound("Gamma",3) %>% 
+            formatRound("Sigma",3) %>% 
+            formatRound("Omega",3) %>%
+            formatCurrency("DALYs",'') %>%
+            formatCurrency("Cost",'$')
+            )
         }
     )
 
@@ -1181,7 +1362,7 @@ function(input, output, session) {
             NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable),Country=="Kenya") %>% select(NewInfections2014)))
         } else {
             output$warningText <- renderText({return(paste(input$userCountry,"data loaded."))})
-        } 
+        }
         # Read CD4 distributions
         theCD4 <- getCD4Data(theTable)
         if(is.na(as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500)))) {
@@ -1230,7 +1411,7 @@ function(input, output, session) {
             as.integer(input$userLtfu))
         print(theResult)
         saveCascadeData(theResult)
-        output$saveText <- renderText({"Saved!"})  
+        output$saveText <- renderText({"Saved!"})
     })
 
     # Reset button stuff.
