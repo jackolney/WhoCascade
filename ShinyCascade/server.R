@@ -685,7 +685,7 @@ function(input, output, session) {
     },digits = 3)
 
     output$optParTable_Kappa <- renderTable({
-        theData <- seq(from = input$userOptKappa_Range[1],to = input$userOptKappa_Range[2],length.out = input$userOptKappa_LengthOf)
+        theData <- seq(from = input$userOptKappa_Range[2],to = input$userOptKappa_Range[1],length.out = input$userOptKappa_LengthOf)
         tbl <- matrix(theData,nrow=1,ncol=input$userOptKappa_LengthOf)
         rownames(tbl) <- "Values:"
         colnames(tbl) <- paste("p",seq(1,input$userOptKappa_LengthOf,1),sep='')
@@ -709,7 +709,7 @@ function(input, output, session) {
     },digits = 3)
 
     output$optParTable_Omega <- renderTable({
-        theData <- seq(from = input$userOptOmega_Range[1],to = input$userOptOmega_Range[2],length.out = input$userOptOmega_LengthOf)
+        theData <- seq(from = input$userOptOmega_Range[2],to = input$userOptOmega_Range[1],length.out = input$userOptOmega_LengthOf)
         tbl <- matrix(theData,nrow=1,ncol=input$userOptOmega_LengthOf)
         rownames(tbl) <- "Values:"
         colnames(tbl) <- paste("p",seq(1,input$userOptOmega_LengthOf,1),sep='')
@@ -720,10 +720,10 @@ function(input, output, session) {
         ParInput <- expand.grid(
             Rho = seq(from = input$userOptRho_Range[1],to = input$userOptRho_Range[2],length.out = input$userOptRho_LengthOf),
             Epsilon = seq(from = input$userOptEpsilon_Range[1],to = input$userOptEpsilon_Range[2],length.out = input$userOptEpsilon_LengthOf),
-            Kappa = seq(from = input$userOptKappa_Range[1],to = input$userOptKappa_Range[2],length.out = input$userOptKappa_LengthOf),
+            Kappa = seq(from = input$userOptKappa_Range[2],to = input$userOptKappa_Range[1],length.out = input$userOptKappa_LengthOf),
             Gamma = seq(from = input$userOptGamma_Range[1],to = input$userOptGamma_Range[2],length.out = input$userOptGamma_LengthOf),
             Sigma = seq(from = input$userOptSigma_Range[1],to = input$userOptSigma_Range[2],length.out = input$userOptSigma_LengthOf),
-            Omega = seq(from = input$userOptOmega_Range[1],to = input$userOptOmega_Range[2],length.out = input$userOptOmega_LengthOf)
+            Omega = seq(from = input$userOptOmega_Range[2],to = input$userOptOmega_Range[1],length.out = input$userOptOmega_LengthOf)
         )
         tbl <- matrix(0,nrow=2,ncol=1)
         tbl[1,] <- dim(ParInput)[1]
@@ -739,10 +739,10 @@ function(input, output, session) {
         ParInput <- expand.grid(
             Rho = seq(from = input$userOptRho_Range[1],to = input$userOptRho_Range[2],length.out = input$userOptRho_LengthOf),
             Epsilon = seq(from = input$userOptEpsilon_Range[1],to = input$userOptEpsilon_Range[2],length.out = input$userOptEpsilon_LengthOf),
-            Kappa = seq(from = input$userOptKappa_Range[1],to = input$userOptKappa_Range[2],length.out = input$userOptKappa_LengthOf),
+            Kappa = seq(from = input$userOptKappa_Range[2],to = input$userOptKappa_Range[1],length.out = input$userOptKappa_LengthOf),
             Gamma = seq(from = input$userOptGamma_Range[1],to = input$userOptGamma_Range[2],length.out = input$userOptGamma_LengthOf),
             Sigma = seq(from = input$userOptSigma_Range[1],to = input$userOptSigma_Range[2],length.out = input$userOptSigma_LengthOf),
-            Omega = seq(from = input$userOptOmega_Range[1],to = input$userOptOmega_Range[2],length.out = input$userOptOmega_LengthOf)
+            Omega = seq(from = input$userOptOmega_Range[2],to = input$userOptOmega_Range[1],length.out = input$userOptOmega_LengthOf)
         )
 
         if(input$incidenceInput == TRUE) {
@@ -1098,6 +1098,7 @@ function(input, output, session) {
         theme(axis.text.x=element_text(size=18)) +
         theme(axis.text.y=element_text(size=18)) +
         theme(axis.title=element_text(size=20)) +
+        geom_vline(xintercept = 0.9^3) + 
         xlab("Proportion achieving viral suppresion by 2020") +
         ylab("Additional cost of care (2013 USD)") +
         scale_y_continuous(labels = comma) +
@@ -1341,6 +1342,14 @@ function(input, output, session) {
             )
         }
     )
+
+    # PopOver
+    addPopover(session, id = "plotOpt909090", 
+        title = "Info", 
+        content = "Vertical line represents 73% viral suppression (end goal of 90-90-90 targets, 0.9^3 = 0.729).", 
+        placement = "bottom", 
+        trigger = "hover", 
+        options = NULL)
 
     # Saving input values from setup tab.
     saveCascadeData <- function(data) {
