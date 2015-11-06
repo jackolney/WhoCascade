@@ -252,7 +252,7 @@ function(input, output, session) {
         # theme_economist() +
         theme(axis.text.x=element_text(size=18)) +
         theme(axis.text.y=element_text(size=18)) +
-        theme(axis.title=element_text(size=20)) +
+        theme(axis.title=element_text(size=18)) +
         xlab("Year") +
         scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
         print(p)
@@ -267,7 +267,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -275,7 +275,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -283,7 +283,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -291,7 +291,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -299,7 +299,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -307,7 +307,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -315,7 +315,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -323,7 +323,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -331,7 +331,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -339,7 +339,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -347,7 +347,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -355,7 +355,7 @@ function(input, output, session) {
             geom_line() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             theme_classic()
 
@@ -619,7 +619,7 @@ function(input, output, session) {
             theme_classic() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             ylab("# new infections / total infected population") +
             scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
@@ -635,7 +635,7 @@ function(input, output, session) {
             theme_classic() +
             theme(axis.text.x=element_text(size=18)) +
             theme(axis.text.y=element_text(size=18)) +
-            theme(axis.title=element_text(size=20)) +
+            theme(axis.title=element_text(size=18)) +
             xlab("Year") +
             ylab("# AIDS deaths / total infected population") +
             scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
@@ -1088,16 +1088,30 @@ function(input, output, session) {
             Legend.Labels[i] <- round(as.double(levels(as.factor(Result_909090[[input$userStratPoint]]))[i]),2)
         }
 
-        ggplot(Result_909090,aes(x=VS,y=Cost)) +
-        geom_point(aes(color=as.factor(get(input$userStratPoint))),size=5) +
+        # Determining which interventions achieved 90-90-90
+        theResult <- mutate(Result_909090, the909090 = 0)
+
+        for(i in 1:dim(theResult)[1]) {
+            if(theResult[i,1] >= 0.9) {
+                if(theResult[i,2] >= 0.9) {
+                    if(theResult[i,3] >= 0.9) {
+                        theResult$the909090[i] <- 1
+                    }
+                }
+            }
+        }
+
+        ggplot(theResult,aes(x=VS,y=Cost)) +
+        geom_point(aes(color=as.factor(get(input$userStratPoint)),size=as.factor(the909090))) + 
         theme_classic() +
         scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) +
+        scale_size_discrete(name="Achieves 90-90-90",range = c(3,6),labels = c("no","yes")) +
         guides(colour = guide_legend(override.aes = list(size=4))) +
         theme(legend.title=element_text(size=15)) +
         theme(legend.text=element_text(size=13)) +
         theme(axis.text.x=element_text(size=18)) +
         theme(axis.text.y=element_text(size=18)) +
-        theme(axis.title=element_text(size=20)) +
+        theme(axis.title=element_text(size=18)) +
         geom_vline(xintercept = 0.9^3) + 
         xlab("Proportion achieving viral suppresion by 2020") +
         ylab("Additional cost of care (2013 USD)") +
@@ -1127,7 +1141,7 @@ function(input, output, session) {
         theme(legend.text=element_text(size=13)) +
         theme(axis.text.x=element_text(size=18)) +
         theme(axis.text.y=element_text(size=18)) +
-        theme(axis.title=element_text(size=20)) +
+        theme(axis.title=element_text(size=18)) +
         xlab("DALYs Averted (between 2015 and 2020)") +
         ylab("Additional cost of care (2013 USD)") +
         scale_y_continuous(labels = comma) +
@@ -1156,7 +1170,7 @@ function(input, output, session) {
         theme(legend.text=element_text(size=13)) +
         theme(axis.text.x=element_text(size=18)) +
         theme(axis.text.y=element_text(size=18)) +
-        theme(axis.title=element_text(size=20)) +
+        theme(axis.title=element_text(size=18)) +
         xlab("DALYs Averted (between 2015 and 2020)") +
         ylab("Additional cost of care (2013 USD)") +
         scale_y_continuous(labels = comma) +
@@ -1327,21 +1341,77 @@ function(input, output, session) {
         }
     )
 
+    # Reactive Budget Switch
+    Budget <- reactiveValues(Switch = "the909090")
+
     # Render Budget Table
     output$optBudgetTable <- DT::renderDataTable({
-        theTable <- filter(Result_DALYs,Cost <= input$userBudget)
-        return(datatable(theTable,options=list(order = list(list(1, 'desc')),autoWidth=TRUE,pageLength=100)) %>%
-            formatRound("Rho",3) %>%
-            formatRound("Epsilon",3) %>%
-            formatRound("Kappa",3) %>%
-            formatRound("Gamma",3) %>%
-            formatRound("Sigma",3) %>%
-            formatRound("Omega",3) %>%
-            formatCurrency("DALYs",'') %>%
-            formatCurrency("Cost",'$')
+        # Re-render upon button press
+        input$showBudget909090
+        input$showBudgetDALYs
+
+        if(Budget$Switch == "the909090") {
+            theTable <- filter(Result_909090,Cost <= input$userBudget)
+            return(datatable(theTable,
+                extensions = 'TableTools',
+                options=list(
+                dom = 'T<"clear">lfrtip',
+                tableTools = list(sSwfPath = copySWF('www')),
+                order = list(list(4, 'desc')),autoWidth=TRUE,pageLength=100)) %>%
+                formatRound("90",3) %>%
+                formatRound("90-90",3) %>%
+                formatRound("90-90-90",3) %>%
+                formatRound("VS",3) %>%
+                formatRound("Rho",3) %>%
+                formatRound("Epsilon",3) %>%
+                formatRound("Kappa",3) %>%
+                formatRound("Gamma",3) %>%
+                formatRound("Sigma",3) %>%
+                formatRound("Omega",3) %>%
+                formatCurrency("Cost",'$')
             )
         }
+
+        if(Budget$Switch == "DALYs") {
+            theTable <- filter(Result_DALYs,Cost <= input$userBudget)
+            return(datatable(theTable,
+                extensions = 'TableTools',
+                options=list(
+                dom = 'T<"clear">lfrtip',
+                tableTools = list(sSwfPath = copySWF('www')),
+                order = list(list(1, 'desc')),autoWidth=TRUE,pageLength=100)) %>%
+                formatRound("Rho",3) %>%
+                formatRound("Epsilon",3) %>%
+                formatRound("Kappa",3) %>%
+                formatRound("Gamma",3) %>%
+                formatRound("Sigma",3) %>%
+                formatRound("Omega",3) %>%
+                formatCurrency("DALYs",'') %>%
+                formatCurrency("Cost",'$')
+            )
+        }
+
+        # theTable <- filter(Result_DALYs,Cost <= input$userBudget)
+        # return(datatable(theTable,options=list(order = list(list(1, 'desc')),autoWidth=TRUE,pageLength=100)) %>%
+        #     formatRound("Rho",3) %>%
+        #     formatRound("Epsilon",3) %>%
+        #     formatRound("Kappa",3) %>%
+        #     formatRound("Gamma",3) %>%
+        #     formatRound("Sigma",3) %>%
+        #     formatRound("Omega",3) %>%
+        #     formatCurrency("DALYs",'') %>%
+        #     formatCurrency("Cost",'$')
+        #     )
+        }
     )
+
+    observeEvent(input$showBudget909090, ({
+        Budget$Switch <- "the909090"
+    }))
+
+    observeEvent(input$showBudgetDALYs, ({
+        Budget$Switch <- "DALYs"
+    }))
 
     # PopOver
     addPopover(session, id = "plotOpt909090", 

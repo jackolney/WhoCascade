@@ -398,6 +398,7 @@ shinyUI(
                 helpText("Below is the number of iterations the model will simulate along with the estimated time to completion. Hit the 'OPTIMISE' button to begin the simulation. Note the progress bar 
                     at the top of the screen, and the run number and elapsed time on the top right. Please wait until the optimisation algorithm has completed the below bar has turned green before proceeding to the results tab."),
                 bsButton("optimiseInput",label="OPTIMISE",style="info"),
+                bsTooltip(id = "optimiseInput", title = "Wait for progress bar to complete before proceeding.", placement = "right", trigger = "hover"),
                 p(" "),
                 tableOutput("optIterationTable"),
                 bsButton("optFinished",label="OPTIMISATION NOT RUN",style="danger",icon = icon("ban"),disabled = TRUE)
@@ -408,7 +409,7 @@ shinyUI(
                 wellPanel(
                     h4("HIV-Testing (rho)"),
                     helpText("by varying diagnosis rate, rho"),
-                    sliderInput('userOptRho_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptRho_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
                     sliderInput('userOptRho_Range','Range of values (diagnoses/py):',min=0,max=50,value=c(0.205,20),step=0.001),
                     tableOutput("optParTable_Rho")
                     ),
@@ -437,14 +438,14 @@ shinyUI(
                     h4("Adherence (sigma)"),
                     helpText("by varying rate at which patients not adhering to treatment start to adhere, sigma"),
                     sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
-                    sliderInput('userOptSigma_Range','Range of values (persons transitioning from non-adherent to adherent/py):',min=0,max=10,value=c(0,5),step=0.001),
+                    sliderInput('userOptSigma_Range','Range of values (persons transitioning from non-adherent to adherent/py):',min=0,max=1,value=c(0,1),step=0.001),
                     tableOutput("optParTable_Sigma")
                     ),
                 wellPanel(
                     h4("ART Retention (omega)"),
                     helpText("by varying rate at which patients are lost from ART care, omega"),
-                    sliderInput('userOptOmega_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-                    sliderInput('userOptOmega_Range','Range of values (ART dropout/py):',min=0,max=0.1,value=c(0.01,0.033),step=0.001),
+                    sliderInput('userOptOmega_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+                    sliderInput('userOptOmega_Range','Range of values (ART dropout/py):',min=0,max=0.1,value=c(0.005,0.033),step=0.001),
                     tableOutput("optParTable_Omega")
                     )
                 )
