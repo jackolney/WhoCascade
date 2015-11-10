@@ -285,6 +285,87 @@ shinyUI(
             )
         ),
     navbarMenu("Results",
+        tabPanel("Validation",
+            h1("Validation"),
+            
+            sidebarPanel(
+                tags$b("Number of PLHIV:"), 
+                p(""),
+                verbatimTextOutput("outPLHIV"),
+                tags$b("Percentage of total PLHIV:"), 
+                p(""),
+                verbatimTextOutput("outPLHIV_perc"),
+                p(""),
+                plotOutput('plotValidation_PLHIV',
+                    height = 'auto',
+                    width = 'auto'),
+                width = 6),
+
+            sidebarPanel(
+                tags$b("Number of PLHIV who have been diagnosed:"),
+                p(""),
+                verbatimTextOutput("outDIAG"),
+                tags$b("Percentage of PLHIV who have been diagnosed:"), 
+                p(""),
+                verbatimTextOutput("outDIAG_perc"),
+                p(""),
+                plotOutput('plotValidation_DIAG',
+                    height = 'auto',
+                    width = 'auto'),
+                width = 6),
+
+            sidebarPanel(
+                tags$b("Number of PLHIV in HIV care (including ART):"),
+                p(""),
+                verbatimTextOutput("outCARE"),
+                tags$b("Percentage of PLHIV in HIV care (including ART):"),
+                p(""),
+                verbatimTextOutput("outCARE_perc"),
+                p(""),
+                plotOutput('plotValidation_CARE',
+                    height = 'auto',
+                    width = 'auto'),
+                width = 6),
+
+            sidebarPanel(
+                tags$b("Number of PLHIV in HIV care and on ART:"),
+                p(""),
+                verbatimTextOutput("outART"),
+                tags$b("Percentage of PLHIV in HIV care and on ART:"),
+                p(""),
+                verbatimTextOutput("outART_perc"),
+                p(""),
+                plotOutput('plotValidation_ART',
+                    height = 'auto',
+                    width = 'auto'),
+                width = 6),
+
+            sidebarPanel(
+                tags$b("Number of PLHIV in HIV care, on ART and virally suppressed:"),
+                p(""),
+                verbatimTextOutput("outSUPP"),
+                tags$b("Percentage of PLHIV in HIV care, on ART and virally suppressed:"),
+                p(""),
+                verbatimTextOutput("outSUPP_perc"),
+                p(""),
+                plotOutput('plotValidation_SUPP',
+                    height = 'auto',
+                    width = 'auto'),
+                width = 6),
+
+            sidebarPanel(
+                tags$b("Number of PLHIV who dropped out of ART care:"),
+                p(""),
+                verbatimTextOutput("outLTFU"),
+                tags$b("Percentage of PLHIV who dropped out of ART care:"),
+                p(""),
+                verbatimTextOutput("outLTFU_perc"),
+                p(""),
+                plotOutput('plotValidation_LTFU',
+                    height = 'auto',
+                    width = 'auto'),
+                width = 6)
+            ),
         tabPanel("The Care Cascade",
             fluidRow(
                 plotOutput('plotCascade')
