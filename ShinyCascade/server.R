@@ -258,7 +258,7 @@ function(input, output, session) {
         print(p)
         },
         height=500,
-        width=700
+        width='auto'
     )
 
     output$plotTwo <- renderPlot({
@@ -364,8 +364,8 @@ function(input, output, session) {
         print(AllPlot)
 
         },
-        height=900,
-        width=900
+        height='auto',
+        width='auto'
     )
 
     GenerateCascadePlot <- function(highlight) {
@@ -447,21 +447,22 @@ function(input, output, session) {
         out <- out()
 
         t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
+        t0_all = t0_N / t0_N
         t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
         t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t0_N
         t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t0_N
         t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50)))) / t0_N
         t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
 
-        t0_results <- c(t0_dx,t0_cx,t0_tx,t0_vs,t0_ltfu)
+        t0_results <- c(t0_all,t0_dx,t0_cx,t0_tx,t0_vs,t0_ltfu)
 
-        definition <- c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU")
+        definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU")
         t0 <- data.frame(definition,t0_results)
 
         levels(t0$definition)
-        t0$definition <- factor(t0$definition, levels=c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU"))
+        t0$definition <- factor(t0$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU"))
 
-        fill.coll <- rev(brewer.pal(9,"Blues")[4:8])
+        fill.coll <- rev(brewer.pal(9,"Blues")[3:8])
 
         o <- ggplot(t0,aes(definition,t0_results))
         o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
@@ -471,26 +472,27 @@ function(input, output, session) {
         o <- o + theme_classic()
         o <- o + theme(title=element_text(size=18))
         o <- o + theme(axis.title=element_blank())
-        o <- o + theme(axis.text.x=element_text(size=15))
+        o <- o + theme(axis.text.x=element_text(size=13))
         o <- o + theme(axis.text.y=element_text(size=18))
         o <- o + theme(legend.position="none")
 
         t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
+        t5_all = t5_N / t5_N
         t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t5_N
         t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t5_N
         t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t5_N
         t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50)))) / t5_N
         t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t5_N
 
-        t5_results <- c(t5_dx,t5_cx,t5_tx,t5_vs,t5_ltfu)
+        t5_results <- c(t5_all,t5_dx,t5_cx,t5_tx,t5_vs,t5_ltfu)
 
-        definition <- c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU")
+        definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU")
         t5 <- data.frame(definition,t5_results)
 
         levels(t5$definition)
-        t5$definition <- factor(t5$definition, levels=c("% Diagnosed","% In Care","% On Treatment","% Suppressed","% LTFU"))
+        t5$definition <- factor(t5$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU"))
 
-        fill.coll <- rev(brewer.pal(9,"Blues")[4:8])
+        fill.coll <- rev(brewer.pal(9,"Blues")[3:8])
 
         p <- ggplot(t5,aes(definition,t5_results))
         p <- p + geom_bar(aes(fill=definition),position='dodge',stat='identity')
@@ -500,14 +502,14 @@ function(input, output, session) {
         p <- p + theme_classic()
         p <- p + theme(title=element_text(size=18))
         p <- p + theme(axis.title=element_blank())
-        p <- p + theme(axis.text.x=element_text(size=15))
+        p <- p + theme(axis.text.x=element_text(size=13))
         p <- p + theme(axis.text.y=element_text(size=18))
         p <- p + theme(legend.position="none")
 
         print(grid.arrange(o,p,nrow=1,ncol=2))
         },
         height=400,
-        width=1250
+        width='auto'
     )
 
     output$plotPowersCascade <- renderPlot({
@@ -538,15 +540,15 @@ function(input, output, session) {
 
         tOrder <- c(rep("All",7),
                     rep("Diagnosed",6),
-                    rep("In Care",3),
-                    rep("On Treatment",2),
-                    rep("Virally Suppressed",1),
+                    rep("Care",3),
+                    rep("Treatment",2),
+                    rep("Suppressed",1),
                     rep("LTFU",2))
 
         t0 <- data.frame(State,tResult,tOrder)
 
         levels(t0$tOrder)
-        t0$tOrder <- factor(t0$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
+        t0$tOrder <- factor(t0$tOrder, levels=c("All","Diagnosed","Care","Treatment","Suppressed","LTFU"))
 
         levels(t0$State)
         t0$State <- factor(t0$State, levels=c("% Suppressed","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
@@ -565,6 +567,8 @@ function(input, output, session) {
         o <- o + theme(axis.text.x=element_text(size=13))
         o <- o + theme(axis.text.y=element_text(size=15))
         o <- o + theme(legend.text=element_text(size=15))
+        o <- o + theme(legend.title=element_text(size=15))
+        o <- o + theme(legend.position="right")
 
         t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
         t5_undx = as.double(sum(filter(out,time == 5) %>% select(c(UnDx_500,UnDx_350500,UnDx_250350,UnDx_200250,UnDx_100200,UnDx_50100,UnDx_50)))) / t5_N
@@ -591,15 +595,15 @@ function(input, output, session) {
 
         tOrder <- c(rep("All",7),
                     rep("Diagnosed",6),
-                    rep("In Care",3),
-                    rep("On Treatment",2),
-                    rep("Virally Suppressed",1),
+                    rep("Care",3),
+                    rep("Treatment",2),
+                    rep("Suppressed",1),
                     rep("LTFU",2))
 
         t5 <- data.frame(State,tResult,tOrder)
 
         levels(t5$tOrder)
-        t5$tOrder <- factor(t5$tOrder, levels=c("All","Diagnosed","In Care","On Treatment","Virally Suppressed","LTFU"))
+        t5$tOrder <- factor(t5$tOrder, levels=c("All","Diagnosed","Care","Treatment","Suppressed","LTFU"))
 
         levels(t5$State)
         t5$State <- factor(t5$State, levels=c("% Suppressed","% On Treatment (non-adherent)","% In Care","% Diagnosed","% Undiagnosed","% pre-ART LTFU","% LTFU"))
@@ -618,9 +622,27 @@ function(input, output, session) {
         p <- p + theme(axis.text.y=element_text(size=15))
         p <- p + theme(legend.text=element_text(size=15))
 
-        return(grid.arrange(o,p,nrow=1,ncol=2))
+        g_legend<-function(a.gplot) {
+            tmp <- ggplot_gtable(ggplot_build(a.gplot))
+            leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+            legend <- tmp$grobs[[leg]]
+            return(legend)
+        }
+
+        mylegend <- g_legend(o)
+        lwidth <- sum(mylegend$width)
+
+        thePlot <- grid.arrange(
+            arrangeGrob(
+                o + theme(legend.position="none"), 
+                p + theme(legend.position="none"),
+                ncol=2),
+            mylegend,widths=grid::unit.c(unit(1, "npc") - lwidth, lwidth),nrow=1)
+
+        return(thePlot)
     },
-    height=400
+    height=400,
+    width='auto'
     )
 
     output$plot909090 <- renderPlot({
@@ -661,7 +683,7 @@ function(input, output, session) {
         print(o)
         },
         height=400,
-        width=700
+        width='auto'
     )
 
     output$table909090 <- renderTable({
@@ -701,7 +723,7 @@ function(input, output, session) {
         print(p)
         },
         height=500,
-        width=700
+        width='auto'
     )
 
     output$plotAidsDeaths <- renderPlot({
@@ -717,7 +739,7 @@ function(input, output, session) {
         print(p)
         },
         height=500,
-        width=700
+        width='auto'
     )
 
     output$outputTable <- DT::renderDataTable({
@@ -1195,7 +1217,7 @@ function(input, output, session) {
         coord_cartesian(xlim = plotOpt_909090.ranges$x, ylim = plotOpt_909090.ranges$y)
         },
         height=400,
-        width=900
+        width='auto'
     )
 
     # Plot 2
@@ -1224,7 +1246,7 @@ function(input, output, session) {
         coord_cartesian(xlim = plotOpt_DALYs.ranges$x, ylim = plotOpt_DALYs.ranges$y)
         },
         height=400,
-        width=900
+        width='auto'
     )
 
     # Plot 3
@@ -1253,7 +1275,7 @@ function(input, output, session) {
         coord_cartesian(xlim = plotOpt_DALYs_909090.ranges$x, ylim = plotOpt_DALYs_909090.ranges$y)
         },
         height=400,
-        width=900
+        width='auto'
     )
 
     # When a double-click happens, check if there's a brush on the plot.
