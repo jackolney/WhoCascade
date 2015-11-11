@@ -377,15 +377,14 @@ function(input, output, session) {
             t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t0_N
             t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t0_N
             t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50)))) / t0_N
-            t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
 
-            t0_results <- c(t0_all,t0_dx,t0_cx,t0_tx,t0_vs,t0_ltfu)
+            t0_results <- c(t0_all,t0_dx,t0_cx,t0_tx,t0_vs)
 
-            definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU")
+            definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed")
             t0 <- data.frame(definition,t0_results)
 
             levels(t0$definition)
-            t0$definition <- factor(t0$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU"))
+            t0$definition <- factor(t0$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed"))
 
             fill.coll <- rev(brewer.pal(9,"Blues")[3:8])
 
@@ -406,6 +405,8 @@ function(input, output, session) {
             o <- o + theme(panel.background=element_blank())
             return(o)
     }
+
+    output$CountryName <- renderText({return(paste("The Cascade of Care in",input$userCountry))})
 
     output$plotValidation_PLHIV <- renderPlot({ print(GenerateCascadePlot(1)) },
             height=300,
@@ -437,7 +438,33 @@ function(input, output, session) {
             bg="transparent"
         )
 
-    output$plotValidation_LTFU <- renderPlot({ print(GenerateCascadePlot(6)) },
+    output$plotValidation_LTFU <- renderPlot({
+            out <- out()
+            t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
+            t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
+            t0_results <- c(t0_ltfu)
+            definition <- c("% LTFU")
+            t0 <- data.frame(definition,t0_results)
+            levels(t0$definition)
+            t0$definition <- factor(t0$definition, levels=c("% LTFU"))
+
+            fill.coll <- "red"
+
+            o <- ggplot(t0,aes(definition,t0_results))
+            o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
+            o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+            o <- o + scale_fill_manual(values=fill.coll)
+            o <- o + ggtitle("Care Cascade in 2015")
+            o <- o + theme_classic()
+            o <- o + theme(title=element_text(size=15))
+            o <- o + theme(axis.title=element_blank())
+            o <- o + theme(axis.text.x=element_text(size=11))
+            o <- o + theme(axis.text.y=element_text(size=15))
+            o <- o + theme(legend.position="none")
+            o <- o + theme(plot.background=element_blank())
+            o <- o + theme(panel.background=element_blank())
+            return(o)
+            },
             height=300,
             width='auto',
             bg="transparent"

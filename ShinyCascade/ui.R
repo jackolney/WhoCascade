@@ -285,9 +285,8 @@ shinyUI(
             )
         ),
     navbarMenu("Results",
-        tabPanel("Validation",
-            h1("Validation"),
-            
+        tabPanel("Your Cascade",
+            h1(textOutput('CountryName')),
             sidebarPanel(
                 tags$b("Number of PLHIV:"), 
                 p(""),
