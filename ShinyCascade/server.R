@@ -479,15 +479,14 @@ function(input, output, session) {
         t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t0_N
         t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t0_N
         t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50)))) / t0_N
-        t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
 
-        t0_results <- c(t0_all,t0_dx,t0_cx,t0_tx,t0_vs,t0_ltfu)
+        t0_results <- c(t0_all,t0_dx,t0_cx,t0_tx,t0_vs)
 
-        definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU")
+        definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed")
         t0 <- data.frame(definition,t0_results)
 
         levels(t0$definition)
-        t0$definition <- factor(t0$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU"))
+        t0$definition <- factor(t0$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed"))
 
         fill.coll <- rev(brewer.pal(9,"Blues")[3:8])
 
@@ -509,15 +508,14 @@ function(input, output, session) {
         t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t5_N
         t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t5_N
         t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50)))) / t5_N
-        t5_ltfu = as.double(sum(filter(out,time == 5) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t5_N
 
-        t5_results <- c(t5_all,t5_dx,t5_cx,t5_tx,t5_vs,t5_ltfu)
+        t5_results <- c(t5_all,t5_dx,t5_cx,t5_tx,t5_vs)
 
-        definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU")
+        definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed")
         t5 <- data.frame(definition,t5_results)
 
         levels(t5$definition)
-        t5$definition <- factor(t5$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed","% LTFU"))
+        t5$definition <- factor(t5$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed"))
 
         fill.coll <- rev(brewer.pal(9,"Blues")[3:8])
 
