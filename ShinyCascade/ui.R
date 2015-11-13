@@ -120,7 +120,7 @@ shinyUI(
     navbarPage("Cascade App",
     theme = shinytheme("flatly"),
     tabPanel("Introduction",
-        # img(src="HIVMC-logo.jpg",height=100 * 0.75,width=300 * 0.75),
+        # img(src="HIVMC-logo.jpg", height = '100%', width = '100%'),
         h1("Introduction"),
         helpText("Welcome to the Cascade App."),
         sidebarLayout(position="right",
@@ -142,7 +142,7 @@ shinyUI(
                 p("Furthermore, as we pass the Millennium Development Goals of 2015 and focus attention on the UNAIDS 90-90-90 targets for 2020,
                 countries will be keen to understand whether they are on the right trajectory to achieve these goals. For this purpose, data from
                 countries can be input into a mathematical model and used to estimate future incidence, AIDS-deaths and the ascertainment of the 90-90-90 goals."),
-                img(src="WHO-Guidelines-Front-Crop.png",height=250,width='auto'),
+                img(src="WHO-Guidelines-Front-Crop.png", height = '100%', width = '100%'),
                 h3("Aims"),
                 p("This webpage contains an interactive model that allows data to be entered, parameters to be altered and results to be presented in real-time. 
                     No specialist software is required as all calculations are completed on a remote server, results are then returned and displayed, along with all visualisations, in the browser."),
@@ -165,7 +165,7 @@ shinyUI(
                         on treatment, virally suppressed and lost from care as long as they are diagnosed. However, the model is able to reconcile this by taking individual indicators and separating them into their 
                         components to specify the initial conditions for simulations."),
                     helpText("More details on the model can be found in the following pages, along with a detailed description under the 'more' table and 'Model Document'."),
-                img(src="ModelSimple.png",height=200,width='auto'),
+                img(src="ModelSimple.png", height = '100%', width = '100%'),
                 h3("Outcomes"),
                 tags$ol(
                     tags$li("Predict achievement of UNAIDS 90-90-90 targets in 2020."),
@@ -204,7 +204,7 @@ shinyUI(
                 id = "setup-panel",
                 helpText("Select country and fill in boxes to specify the initial values of the model. 
                     The boxes correlate with indicators in the Consolidated Information Guidelines (shown below), with numbers in brackets corresponding to numbers on the indicator figure."),
-                img(src="WHOGuidelinesCascade.png",height=400 * 0.9,width='auto'),
+                img(src="WHOGuidelinesCascade.png", height = '100%', width = '100%'),
                 br(), br(),
                 wellPanel(
                     selectInput("userCountry","Country:",CountryList,selected="Brazil")
@@ -262,8 +262,7 @@ shinyUI(
                     A table of parameter values is shown in the 'Help Panel' and several sliders are shown below which can be 
                     used to manipulate certain parameter values. Parameter values can be manipulated by changing the rate or the inverse of the rate (time to event). 
                     You only need to change one slider as the other updated auotmatically. Please note that the parameter table is 'live' and will update in real-time."),
-                # imageOutput("modelFlowImage"),
-                img(src="ModelSimple.png",height=250,width='auto'),
+                img(src = "ModelSimple.png",height = "100%",width = "100%"),
                 br(), br(),
                 wellPanel(
                     sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):',min=0,max=5,value=0.205,step=0.001,width=1000),

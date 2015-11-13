@@ -498,7 +498,7 @@ function(input, output, session) {
         o <- o + theme_classic()
         o <- o + theme(title=element_text(size=18))
         o <- o + theme(axis.title=element_blank())
-        o <- o + theme(axis.text.x=element_text(size=13))
+        o <- o + theme(axis.text.x=element_text(size=15))
         o <- o + theme(axis.text.y=element_text(size=18))
         o <- o + theme(legend.position="none")
 
@@ -527,7 +527,7 @@ function(input, output, session) {
         p <- p + theme_classic()
         p <- p + theme(title=element_text(size=18))
         p <- p + theme(axis.title=element_blank())
-        p <- p + theme(axis.text.x=element_text(size=13))
+        p <- p + theme(axis.text.x=element_text(size=15))
         p <- p + theme(axis.text.y=element_text(size=18))
         p <- p + theme(legend.position="none")
 
@@ -1636,11 +1636,10 @@ function(input, output, session) {
     # Render Flow Diagram of Model.
     output$modelFlowImage <- renderImage({
         return(list(
-            src='www/ModelSimple.png',
-            contentType='image/png',
-            alt='ModelFlowDiagram',
-            height=250,
-            width=1000))
+            src = 'www/ModelSimple.png',
+            contentType = 'image/png',
+            alt = 'ModelFlowDiagram')
+        )
     },
     deleteFile=FALSE)
 
