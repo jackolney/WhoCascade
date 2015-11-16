@@ -9,6 +9,7 @@ library(googlesheets)
 library(RColorBrewer)
 library(scales)
 library(ggthemes)
+library(grid)
 # devtools::install_github("shinyTable", "trestletech")
 # library(shinyTable)
 
@@ -166,11 +167,11 @@ function(input, output, session) {
 
         if(input$userPLHIV == 0 || is.na(input$userPLHIV)) {
             randPLHIV <- round(runif(1,1e+6,1e+7),0)
-            newDx <- round(randPLHIV * 0.831923,0)
-            newCare <- round(newDx * 0.606497,0)
-            newTx <- round(newCare * 0.490679,0)
-            newVs <- round(newTx * 0.466145,0)
-            newLtfu <- round(newDx * 0.051168,0)
+            newDx <- round(randPLHIV * 0.79262,0)
+            newCare <- round(randPLHIV * 0.59387,0)
+            newTx <- round(randPLHIV * 0.53039,0)
+            newVs <- round(randPLHIV * 0.50387,0)
+            newLtfu <- round(randPLHIV * 0.06256,0)
 
             updateNumericInput(session,"userPLHIV",value=randPLHIV)
             updateNumericInput(session,"userDx",value=newDx)
@@ -179,11 +180,11 @@ function(input, output, session) {
             updateNumericInput(session,"userVs",value=newVs)
             updateNumericInput(session,"userLtfu",value=newLtfu)
         } else {
-            newDx <- round(input$userPLHIV * 0.831923,0)
-            newCare <- round(newDx * 0.606497,0)
-            newTx <- round(newCare * 0.490679,0)
-            newVs <- round(newTx * 0.466145,0)
-            newLtfu <- round(newDx * 0.051168,0)
+            newDx <- round(input$userPLHIV * 0.79262,0)
+            newCare <- round(input$userPLHIV * 0.59387,0)
+            newTx <- round(input$userPLHIV * 0.53039,0)
+            newVs <- round(input$userPLHIV * 0.50387,0)
+            newLtfu <- round(input$userPLHIV * 0.06256,0)
 
             updateNumericInput(session,"userDx",value=newDx)
             updateNumericInput(session,"userCare",value=newCare)
@@ -1222,9 +1223,9 @@ function(input, output, session) {
                 }
             }
         }
-
+        theStratPoint <<- input$userStratPoint
         ggplot(theResult,aes(x=VS,y=Cost)) +
-        geom_point(aes(color=as.factor(get(input$userStratPoint)),size=as.factor(the909090))) + 
+        geom_point(aes(color=as.factor(get(theStratPoint)),size=as.factor(the909090))) + 
         theme_classic() +
         scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) +
         scale_size_discrete(name="Achieves 90-90-90",range = c(3,6),labels = c("no","yes")) +
@@ -1253,9 +1254,9 @@ function(input, output, session) {
         for(i in 1:length(levels(as.factor(Result_DALYs[[input$userStratPoint]])))) {
             Legend.Labels[i] <- round(as.double(levels(as.factor(Result_DALYs[[input$userStratPoint]]))[i]),2)
         }
-
+        theStratPoint <<- input$userStratPoint
         ggplot(Result_DALYs,aes(x=DALYs,y=Cost)) +
-        geom_point(aes(color=as.factor(get(input$userStratPoint))),size=5) +
+        geom_point(aes(color=as.factor(get(theStratPoint))),size=5) +
         theme_classic() +
         scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) +
         guides(colour = guide_legend(override.aes = list(size=4))) +
@@ -1282,9 +1283,9 @@ function(input, output, session) {
         for(i in 1:length(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]])))) {
             Legend.Labels[i] <- round(as.double(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]]))[i]),2)
         }
-
+        theStratPoint <<- input$userStratPoint
         ggplot(Result_DALYs_909090,aes(x=DALYs,y=Cost)) +
-        geom_point(aes(color=as.factor(get(input$userStratPoint))),size=5) +
+        geom_point(aes(color=as.factor(get(theStratPoint))),size=5) +
         theme_classic() +
         scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) +
         guides(colour = guide_legend(override.aes = list(size=4))) +

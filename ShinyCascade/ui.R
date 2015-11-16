@@ -537,7 +537,7 @@ shinyUI(
                     Zoom in on data points by drawing a box on the plot with the mouse and double clicking. To view the details of a specific point, draw a box with the mouse over the point and 
                     hit 'Show Selected Result Table'"),
                 p(" "),
-                selectInput("userStratPoint","Select parameter to stratify results by:",InterventionList,selected="Rho"),
+                selectInput("userStratPoint","Select parameter to stratify results by:", InterventionList, selected = "Rho"),
                 p(" "),
                 tags$b("Viral suppression against cost:"),
                 p(" "),
