@@ -192,7 +192,7 @@ shinyUI(
                 bsButton("resetInput",label="RESET",style="danger"),
                 p(" "),
                 bsButton("demoInput",label="DEMO",style="primary"),
-                bsTooltip(id = "demoInput", title = "Population model with best estimates from Kenya.", placement = "left", trigger = "hover"),
+                bsTooltip(id = "demoInput", title = "Populate model with best estimates from Kenya.", placement = "left", trigger = "hover"),
                 p(" "),
                 helpText("Console output:"),
                 textOutput('saveText'),
