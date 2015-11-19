@@ -166,26 +166,28 @@ function(input, output, session) {
         updateSelectInput(session,"userCountry",selected="Kenya")
 
         if(input$userPLHIV == 0 || is.na(input$userPLHIV)) {
-            randPLHIV <- round(runif(1,1e+6,1e+7),0)
-            newDx <- round(randPLHIV * 0.79262,0)
-            newCare <- round(randPLHIV * 0.59387,0)
-            newTx <- round(randPLHIV * 0.53039,0)
-            newVs <- round(randPLHIV * 0.50387,0)
-            newLtfu <- round(randPLHIV * 0.06256,0)
+            newPLHIV <- round(1.4e+6,0) # Estimate from Kenya (Marrakech)
+            newDx <- round(newPLHIV * 0.79262,0) # Estimate from AMPATH
+            newCare <- round(848018,0) # Estimate from Kenya (Marrakech)
+            newTx <- round(748000,0) # Estimate from Kenya (Marrakech)
+            newVs <- round(295000,0) # Estimate from Kenya (Marrakech)
+            newLtfu <- round(0,0) # Estimate from Kenya (Marrakech)
 
-            updateNumericInput(session,"userPLHIV",value=randPLHIV)
+            updateNumericInput(session,"userPLHIV",value=newPLHIV)
             updateNumericInput(session,"userDx",value=newDx)
             updateNumericInput(session,"userCare",value=newCare)
             updateNumericInput(session,"userTx",value=newTx)
             updateNumericInput(session,"userVs",value=newVs)
             updateNumericInput(session,"userLtfu",value=newLtfu)
         } else {
-            newDx <- round(input$userPLHIV * 0.79262,0)
-            newCare <- round(input$userPLHIV * 0.59387,0)
-            newTx <- round(input$userPLHIV * 0.53039,0)
-            newVs <- round(input$userPLHIV * 0.50387,0)
-            newLtfu <- round(input$userPLHIV * 0.06256,0)
+            newPLHIV <- round(1.4e+6,0) # Estimate from Kenya (Marrakech)
+            newDx <- round(newPLHIV * 0.79262,0) # Estimate from AMPATH
+            newCare <- round(848018,0) # Estimate from Kenya (Marrakech)
+            newTx <- round(748000,0) # Estimate from Kenya (Marrakech)
+            newVs <- round(295000,0) # Estimate from Kenya (Marrakech)
+            newLtfu <- round(0,0) # Estimate from Kenya (Marrakech)
 
+            updateNumericInput(session,"userPLHIV",value=newPLHIV)
             updateNumericInput(session,"userDx",value=newDx)
             updateNumericInput(session,"userCare",value=newCare)
             updateNumericInput(session,"userTx",value=newTx)
