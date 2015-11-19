@@ -1236,7 +1236,7 @@ function(input, output, session) {
         theme(axis.text.y=element_text(size=18)) +
         theme(axis.title=element_text(size=18)) +
         geom_vline(xintercept = 0.9^3) + 
-        xlab("Proportion achieving viral suppresion by 2020") +
+        xlab("Proportion achieving viral suppression by 2020") +
         ylab("Additional cost of care (2013 USD)") +
         scale_y_continuous(labels = comma) +
         scale_x_continuous(labels = comma) +
