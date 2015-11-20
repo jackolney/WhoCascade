@@ -103,6 +103,7 @@ CountryList <- c(
     "Myanmar",
     'Nigeria',
     "Pakistan",
+    "Philippines",
     "South Africa",
     "South Sudan",
     "Tanzania",

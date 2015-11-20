@@ -21,7 +21,7 @@ function(input, output, session) {
     createAlert(session, anchorId = "startAlert", 
         alertId = NULL, 
         title = "WARNING", 
-        content = "This interactive web-based model is still under deveopment. 
+        content = "This interactive web-based model is still under development. 
         Any data entered into the model is done so at the users own risk. 
         Clicking 'save' in any tab saves the current inputs to a centrally accessible spreadsheet hosted by Google. 
         Results produced by this model are not finalised.
