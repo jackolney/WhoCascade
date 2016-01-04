@@ -121,6 +121,7 @@ InterventionList <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 source("content/introduction.R")
 source("content/more.R")
 source("content/setup.R")
+source("content/parameters.R")
 
 dashboardPage(
     skin = "blue",
@@ -158,7 +159,7 @@ dashboardPage(
         tabItems(
             Tab_Introduction,
             Tab_Setup,
-            # Tab_Parameters,
+            Tab_Parameters,
             Tab_ModelDocument,
             Tab_SinglePlot,
             Tab_AllPlots
@@ -166,112 +167,7 @@ dashboardPage(
         )
     )
 
-#         ,
-#     tabPanel("Setup",
-#         h1("Model Setup"),
-#         sidebarLayout(position="right",
-#             sidebarPanel(
-#                 h4("Help Panel"),
-#                 helpText("Please fill in all boxes with relevant data, then hit 'SAVE' and wait for the confirmation below. 
-#                     Hit 'RESET' to reset all values to zero, and hit 'DEMO' for a random set of values to be generated. 
-#                     Unchecking the 'HIV incidence' checkbox prevents any new infections occurring in the model."),
-#                 checkboxInput("incidenceInput","HIV Incidence",value=TRUE),
-#                 bsButton("saveInput",label="SAVE",style="success"),
-#                 p(" "),
-#                 bsButton("resetInput",label="RESET",style="danger"),
-#                 p(" "),
-#                 bsButton("demoInput",label="DEMO",style="primary"),
-#                 bsTooltip(id = "demoInput", title = "Populate model with best estimates from Kenya.", placement = "left", trigger = "hover"),
-#                 p(" "),
-#                 helpText("Console output:"),
-#                 textOutput('saveText'),
-#                 textOutput('warningText'),
-#                 textOutput('warningCD4Text')
-#                 ),
-#             mainPanel(
-#                 shinyjs::useShinyjs(),
-#                 id = "setup-panel",
-#                 helpText("Select country and fill in boxes to specify the initial values of the model. 
-#                     The boxes correlate with indicators in the Consolidated Information Guidelines (shown below), with numbers in brackets corresponding to numbers on the indicator figure."),
-#                 img(src="WHOGuidelinesCascade.png", height = '100%', width = '100%'),
-#                 br(), br(),
-#                 wellPanel(
-#                     selectInput("userCountry","Country:",CountryList,selected="Brazil")
-#                     ),
-#                 wellPanel(
-#                     h4("ART Initiation Threshold"),
-#                     helpText("Please check the box corresponding to the correct treatment threshold. Boxes are reactive and nearby boxes will adjust to the selection made. Please note that unchecking all boxes will result in ART being witheld for all individuals."),
-#                     checkboxInput("userART_All","Immediate ART",value=TRUE),
-#                     checkboxInput("userART_500","CD4 <500",value=TRUE),
-#                     checkboxInput("userART_350","CD4 <350",value=TRUE),
-#                     checkboxInput("userART_200","CD4 <200",value=TRUE)
-#                     ),
-#                 wellPanel(
-#                     numericInput("userPLHIV","Number of PLHIV (1):",1e+6,min=0)
-#                     ),
-#                 wellPanel(
-#                     numericInput("userDx","Number of PLHIV who have been diagnosed (4):",0,min=0)
-#                     ),
-#                 wellPanel(
-#                     numericInput("userCare","Number of PLHIV in HIV care (including ART) (5):",0,min=0)
-#                     ),
-#                 wellPanel(
-#                     numericInput("userTx","Number of PLHIV in HIV care and on ART (6):",0,min=0)
-#                     ),
-#                 wellPanel(
-#                     numericInput("userVs","Number of PLHIV in HIV care, on ART and virally suppressed (8):",0,min=0)
-#                     ),
-#                 wellPanel(
-#                     numericInput("userLtfu","Number of PLHIV who dropped out of ART care:",0,min=0)
-#                     ),
-#                 em(h5("If this value is known please enter it, otherwise leave it blank:")),
-#                 wellPanel(
-#                     numericInput("userRetArt12mths","Percentage of PLHIV retained and surviving on ART 12 months after initiation (7):",0,min=0,max=1,step=0.01)
-#                     )
-#                 )
-#             )
-#         ),
-#     tabPanel("Parameters",
-#         h1("Parameter Values"),
-#         sidebarLayout(position="right",
-#             sidebarPanel(
-#                 h4("Help Panel"),
-#                 helpText("It is not neccessary to alter any of these values, but feel free to move the sliders around and see the values in the table change. 
-#                     Hit 'RESET PARAMETERS' to reset all parameters including the 'ART dropout rate' if specified in the 'Setup' tab."),
-#                 bsButton("resetParameters",label="RESET PARAMETERS",style="danger"),
-#                 p(" "),
-#                 tableOutput("parameterTable"),
-#                 helpText("Details regarding the origin of these parameter values are found in the 'Model Document', under the 'More' tab.")
-#                 ),
-#             mainPanel(
-#                 shinyjs::useShinyjs(),
-#                 id = "parameter-panel",
-#                 helpText("Below is a detailed diagram of the model showing the flow of patients through care and the progression of HIV, 
-#                     captured by the decline of CD4 counts when not on treatment and the recovery of CD4 counts when on ART. 
-#                     A table of parameter values is shown in the 'Help Panel' and several sliders are shown below which can be 
-#                     used to manipulate certain parameter values. Parameter values can be manipulated by changing the rate or the inverse of the rate (time to event). 
-#                     You only need to change one slider as the other updated auotmatically. Please note that the parameter table is 'live' and will update in real-time."),
-#                 img(src = "ModelSimple.png",height = "100%",width = "100%"),
-#                 br(), br(),
-#                 wellPanel(
-#                     sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):',min=0,max=5,value=0.205,step=0.001,width=1000),
-#                     sliderInput('invRho','Average time to diagnosis (years) (1 / rho):',min=0,max=100,value=1/0.205,step=0.001,width=1000)
-#                     ),
-#                 wellPanel(
-#                     sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):',min=0,max=20,value=16.949,step=0.001,width=1000),    
-#                     sliderInput('invEpsilon','Average time to seeking care (years) (1 / epsilon):',min=0,max=100,value=1/16.949,step=0.001,width=1000)
-#                     ),
-#                 wellPanel(
-#                     sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):',min=0,max=5,value=2.556,step=0.001,width=1000),    
-#                     sliderInput('invGamma','Average time to ART initiation (years) (1 / gamma):',min=0,max=100,value=1/2.556,step=0.001,width=1000)
-#                     ),
-#                 wellPanel(
-#                     sliderInput('omega','ART dropout rate (ART dropout/py) (omega):',min=0,max=5,value=0.033,step=0.001,width=1000),
-#                     sliderInput('invOmega','Average time to ART dropout (years) (1 / omega):',min=0,max=100,value=1/0.033,step=0.001,width=1000)
-#                     )
-#                 )
-#             )
-#         ),
+
 #     navbarMenu("Results",
 #         tabPanel("Your Cascade",
 #             h1(textOutput('CountryName')),
