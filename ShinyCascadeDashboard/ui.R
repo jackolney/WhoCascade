@@ -122,6 +122,7 @@ source("content/introduction.R")
 source("content/more.R")
 source("content/setup.R")
 source("content/parameters.R")
+source("content/results.R")
 
 dashboardPage(
     skin = "blue",
@@ -132,12 +133,12 @@ dashboardPage(
                 menuItem("Setup", tabName = "setup", icon = icon("cogs", lib = "font-awesome")),
                 menuItem("Parameters", tabName = "parameters", icon = icon("cog", lib = "font-awesome")),
                 menuItem("Results", icon = icon("line-chart", lib = "font-awesome"),
-                    menuSubItem("Your Cascade", tabName = "subitem1"),
-                    menuSubItem("The Care Cascade", tabName = "subitem2"),
-                    menuSubItem("The Power's Cascade", tabName = "subitem3"),
-                    menuSubItem("90-90-90", tabName = "subitem3"),
-                    menuSubItem("Incidence", tabName = "subitem4"),
-                    menuSubItem("AIDS Deaths", tabName = "subitem5")
+                    menuSubItem("Your Cascade", tabName = "your_cascade"),
+                    menuSubItem("The Care Cascade", tabName = "the_care_cascade"),
+                    menuSubItem("The Power's Cascade", tabName = "the_powers_cascade"),
+                    menuSubItem("90-90-90", tabName = "_909090"),
+                    menuSubItem("Incidence", tabName = "incidence"),
+                    menuSubItem("AIDS Deaths", tabName = "aids_deaths")
                     ),
                 
                 menuItem("Optimisation", tabName = "optimisation", icon = icon("pie-chart", lib = "font-awesome"),
@@ -160,6 +161,7 @@ dashboardPage(
             Tab_Introduction,
             Tab_Setup,
             Tab_Parameters,
+            Tab_YourCascade,
             Tab_ModelDocument,
             Tab_SinglePlot,
             Tab_AllPlots
