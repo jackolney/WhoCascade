@@ -120,6 +120,7 @@ InterventionList <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 
 source("content/introduction.R")
 source("content/more.R")
+source("content/setup.R")
 
 dashboardPage(
     skin = "blue",
@@ -127,9 +128,9 @@ dashboardPage(
     dashboardSidebar(
             sidebarMenu(
                 menuItem("Introduction", tabName = "introduction", icon = icon("home", lib = "font-awesome")),
-                menuItem("Setup", tabName = "widgets", icon = icon("cogs", lib = "font-awesome")),
-                menuItem("Parameters", tabName = "widgets", icon = icon("cog", lib = "font-awesome")),
-                menuItem("Results", tabName = "widgets", icon = icon("line-chart", lib = "font-awesome"),
+                menuItem("Setup", tabName = "setup", icon = icon("cogs", lib = "font-awesome")),
+                menuItem("Parameters", tabName = "parameters", icon = icon("cog", lib = "font-awesome")),
+                menuItem("Results", icon = icon("line-chart", lib = "font-awesome"),
                     menuSubItem("Your Cascade", tabName = "subitem1"),
                     menuSubItem("The Care Cascade", tabName = "subitem2"),
                     menuSubItem("The Power's Cascade", tabName = "subitem3"),
@@ -138,7 +139,7 @@ dashboardPage(
                     menuSubItem("AIDS Deaths", tabName = "subitem5")
                     ),
                 
-                menuItem("Optimisation", tabName = "widgets", icon = icon("pie-chart", lib = "font-awesome"),
+                menuItem("Optimisation", tabName = "optimisation", icon = icon("pie-chart", lib = "font-awesome"),
                     menuSubItem("Cost", tabName = "subitem1"),
                     menuSubItem("Parameter Selection", tabName = "subitem2"),
                     menuSubItem("Results", tabName = "subitem3"),
@@ -156,6 +157,8 @@ dashboardPage(
         # This contains tabItems(tabItem(tabName = "blah"))
         tabItems(
             Tab_Introduction,
+            Tab_Setup,
+            # Tab_Parameters,
             Tab_ModelDocument,
             Tab_SinglePlot,
             Tab_AllPlots
