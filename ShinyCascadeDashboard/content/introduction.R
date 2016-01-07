@@ -49,15 +49,17 @@ Tab_Introduction <- tabItem(tabName = "introduction",
     ),
     column(width = 4,
         box(width = NULL,
-            status = "warning",
+            # status = "warning",
+            background = "yellow",
             solidHeader = TRUE,
             title = "Quick Start",
-            helpText("If you want to skip the introduction and get modelling, jump to 'setup' and click on 'DEMO'. 
+            "If you want to skip the introduction and get modelling, jump to 'setup' and click on 'DEMO'. 
                 Data entered can be saved by clicking 'SAVE' on any relevant page. A pdf containing details about 
-                the entire model can be found in the 'more' tab along with links to spreadsheets containing data used in the model."),
+                the entire model can be found in the 'more' tab along with links to spreadsheets containing data used in the model.",
             br(),
-            h5("Contributors"),
-            helpText("Jack J Olney, Jeffrey W Eaton, Ellen McRobie & Timothy B Hallett")
-        )
+            h4("Contributors"),
+            "Jack J Olney, Jeffrey W Eaton, Ellen McRobie & Timothy B Hallett"
+        ),
+        bsButton(inputId = "test", label = "Start Wizard", style = "success", size = "large", icon = icon("magic", lib = "font-awesome"))
     )
 )

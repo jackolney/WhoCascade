@@ -8,126 +8,40 @@ library(shinydashboard)
 # devtools::install_github("shinyTable", "trestletech")
 # library(shinyTable)
 
-VariableNames <- c(
-    "UnDx_500",
-    "UnDx_350500",
-    "UnDx_250350",
-    "UnDx_200250",
-    "UnDx_100200",
-    "UnDx_50100",
-    "UnDx_50",
-    "Dx_500",
-    "Dx_350500",
-    "Dx_250350",
-    "Dx_200250",
-    "Dx_100200",
-    "Dx_50100",
-    "Dx_50",
-    "Care_500",
-    "Care_350500",
-    "Care_250350",
-    "Care_200250",
-    "Care_100200",
-    "Care_50100",
-    "Care_50",
-    "PreLtfu_500",
-    "PreLtfu_350500",
-    "PreLtfu_250350",
-    "PreLtfu_200250",
-    "PreLtfu_100200",
-    "PreLtfu_50100",
-    "PreLtfu_50",
-    "Tx_Na_500",
-    "Tx_Na_350500",
-    "Tx_Na_250350",
-    "Tx_Na_200250",
-    "Tx_Na_100200",
-    "Tx_Na_50100",
-    "Tx_Na_50",
-    "Tx_A_500",
-    "Tx_A_350500",
-    "Tx_A_250350",
-    "Tx_A_200250",
-    "Tx_A_100200",
-    "Tx_A_50100",
-    "Tx_A_50",
-    "Ltfu_500",
-    "Ltfu_350500",
-    "Ltfu_250350",
-    "Ltfu_200250",
-    "Ltfu_100200",
-    "Ltfu_50100",
-    "Ltfu_50",
-    "NewInf",
-    "HivMortality",
-    "NaturalMortality",
-    "N",
-    "ART",
-    "UnDx",
-    "Dx",
-    "Care",
-    "Tx",
-    "Vs",
-    "Ltfu",
-    "NaturalMortalityProp",
-    "HivMortalityProp",
-    "NewInfProp",
-    "Dx_Cost",
-    "Linkage_Cost",
-    "Annual_Care_Cost",
-    "Annual_ART_Cost",
-    "TotalCost",
-    "cd4_500",
-    "cd4_350500",
-    "cd4_250350",
-    "cd4_200250",
-    "cd4_100200",
-    "cd4_50100",
-    "cd4_50"
-    )
-
-CountryList <- c(
-    "Brazil",
-    "Cambodia",
-    "Cameroon",
-    "China",
-    "Cote d'Ivoire",
-    "DRC",
-    "Ethiopia",
-    "Haiti",
-    "India",
-    "Indonesia",
-    "Jamaica",
-    "Kenya",
-    "Malawi",
-    "Mozambique",
-    "Myanmar",
-    'Nigeria',
-    "Pakistan",
-    "Philippines",
-    "South Africa",
-    "South Sudan",
-    "Tanzania",
-    "Thailand",
-    "Uganda",
-    "Ukraine",
-    "Vietnam",
-    "Zambia",
-    "Zimbabwe"
-    )
-
-InterventionList <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
-
 source("content/introduction.R")
 source("content/more.R")
 source("content/setup.R")
 source("content/parameters.R")
 source("content/results.R")
 source("content/optimisation.R")
+source("content/wizard.R")
 
 dashboardPage(
     skin = "blue",
-    dashboardHeader(title = "Cascade App"),
+    dashboardHeader(title = "Cascade App",
+        dropdownMenu(type = "notifications",
+            notificationItem(
+                text = "5 new users today",
+                icon = icon("users")
+            ),
+            notificationItem(
+                text = "12 items delivered",
+                icon = icon("truck"),
+                status = "success"
+            ),
+            notificationItem(
+                text = "Server load at 86%",
+                icon = icon("exclamation-triangle"),
+                status = "warning"
+            )
+        ),
+        dropdownMenu(type = "tasks", badgeStatus = "danger",
+            taskItem(value = 70, color = "red",
+                "Setup"
+            )
+        )
+    ),
+
     dashboardSidebar(
             sidebarMenu(
                 menuItem("Introduction", tabName = "introduction", icon = icon("home", lib = "font-awesome")),
@@ -151,7 +65,8 @@ dashboardPage(
                     menuSubItem("Model Document", tabName = "model_document"),
                     menuSubItem("Single Plot", tabName = "single_plot"),
                     menuSubItem("All Plots", tabName = "all_plots")
-                    )
+                    ),
+                menuItem("Wizard", tabName = "test", icon = icon("magic", lib = "font-awesome"))
             )
         ),
     dashboardBody(
@@ -178,205 +93,10 @@ dashboardPage(
             # More
             Tab_ModelDocument,
             Tab_SinglePlot,
-            Tab_AllPlots
+            Tab_AllPlots,
+
+            # Wizard Test
+            Tab_Result_Test
             )
         )
     )
-
-#     navbarMenu("Optimisation",
-#         tabPanel("Cost",
-#             sidebarPanel(
-#                 h4("Cost"),
-#                 p("Review or edit the unit costs in each box."),
-#                 helpText("Click the 'optimisation' drop down menu and select 'results' to begin running the optimisation algorithm."),
-#                 bsButton("resetCost",label="RESET COST",style="danger"),
-#                 p(" "),
-#                 h4("Unit cost table"),
-#                 tableOutput("unitCostTable")
-#                 ),
-#             mainPanel(
-#                 shinyjs::useShinyjs(),
-#                 id = "cost-panel",
-#                 wellPanel(
-#                     sliderInput('userDxUnitCost','Unit cost of diagnosing a patient (USD):',min=0,max=100,value=10,step=1)
-#                     ),
-#                 wellPanel(
-#                     sliderInput('userLinkageUnitCost','Unit cost of linking a patient to care (USD):',min=0,max=100,value=40,step=1)
-#                     ),
-#                 wellPanel(
-#                     sliderInput('userAnnualCareUnit','Annual cost of keeping a patient in pre-ART care (USD):',min=0,max=100,value=40,step=1)
-#                     ),
-#                 wellPanel(
-#                     sliderInput('userAnnualARTUnitCost','Annual cost of ART (USD):',min=0,max=500,value=367,step=1)
-#                     )
-#                 )
-#             ),
-#         tabPanel("Parameter Selection",
-#             sidebarPanel(
-#                 h4("Parameter Selection"),
-#                 p("The optimisation algorithm takes six model parameters representing six hypothetical interventions and simulates the cost and impact of all permutations."),
-#                 helpText("For each intervention, select the number of parameter values to simulate and set the range of rates to sample from (rates are uniformally distributed within this range).
-#                     The parameter values for each intervention are then displayed in the corresponding tables."),
-#                 bsButton("resetSliders",label="RESET SLIDERS",style="danger"),
-#                 p(" "),
-#                 helpText("Below is the number of iterations the model will simulate along with the estimated time to completion. Hit the 'OPTIMISE' button to begin the simulation. Note the progress bar 
-#                     at the top of the screen, and the run number and elapsed time on the top right. Please wait until the optimisation algorithm has completed the below bar has turned green before proceeding to the results tab."),
-#                 bsButton("optimiseInput",label="OPTIMISE",style="info"),
-#                 bsTooltip(id = "optimiseInput", title = "Wait for progress bar to complete before proceeding.", placement = "right", trigger = "hover"),
-#                 p(" "),
-#                 tableOutput("optIterationTable"),
-#                 bsButton("optFinished",label="OPTIMISATION NOT RUN",style="danger",icon = icon("ban"),disabled = TRUE)
-#                 ),
-#             mainPanel(
-#                 shinyjs::useShinyjs(),
-#                 id = "optimisation-panel",
-#                 wellPanel(
-#                     h4("HIV-Testing (rho)"),
-#                     helpText("by varying diagnosis rate, rho"),
-#                     sliderInput('userOptRho_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-#                     sliderInput('userOptRho_Range','Range of values (diagnoses/py):',min=0,max=50,value=c(0.205,20),step=0.001),
-#                     tableOutput("optParTable_Rho")
-#                     ),
-#                 wellPanel(
-#                     h4("Linkage (epsilon)"),
-#                     helpText("by varying care seeking rate, epsilon"),
-#                     sliderInput('userOptEpsilon_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-#                     sliderInput('userOptEpsilon_Range','Range of values (persons seeking care/py):',min=0,max=50,value=c(16.949,30),step=0.001),
-#                     tableOutput("optParTable_Epsilon")
-#                     ),
-#                 wellPanel(
-#                     h4("Pre-ART Retention (kappa)"),
-#                     helpText("by varying pre-ART dropout rate, kappa"),
-#                     sliderInput('userOptKappa_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-#                     sliderInput('userOptKappa_Range','Range of values (person lost from pre-ART care/py):',min=0,max=2,value=c(0.01,1.079),step=0.001),
-#                     tableOutput("optParTable_Kappa")
-#                     ),
-#                 wellPanel(
-#                     h4("Treatment Initiation (gamma)"),
-#                     helpText("by varying ART initiation rate, gamma"),
-#                     sliderInput('userOptGamma_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-#                     sliderInput('userOptGamma_Range','Range of values (ART initiations/py):',min=0,max=50,value=c(2.556,20),step=0.001),
-#                     tableOutput("optParTable_Gamma")
-#                     ),
-#                 wellPanel(
-#                     h4("Adherence (sigma)"),
-#                     helpText("by varying rate at which patients not adhering to treatment start to adhere, sigma"),
-#                     sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
-#                     sliderInput('userOptSigma_Range','Range of values (persons transitioning from non-adherent to adherent/py):',min=0,max=1,value=c(0,1),step=0.001),
-#                     tableOutput("optParTable_Sigma")
-#                     ),
-#                 wellPanel(
-#                     h4("ART Retention (omega)"),
-#                     helpText("by varying rate at which patients are lost from ART care, omega"),
-#                     sliderInput('userOptOmega_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
-#                     sliderInput('userOptOmega_Range','Range of values (ART dropout/py):',min=0,max=0.1,value=c(0.005,0.033),step=0.001),
-#                     tableOutput("optParTable_Omega")
-#                     )
-#                 )
-#             ),
-#         tabPanel("Results",
-#             sidebarPanel(
-#                 h4("Results"),
-#                 helpText("This section is still under active development."),
-#                 p("The results of the optimisation simulation are shown in the plot to the right. Hit 'Show Result Table' to view all data points and corresponding parameter values.
-#                     Zoom in on data points by drawing a box on the plot with the mouse and double clicking. To view the details of a specific point, draw a box with the mouse over the point and 
-#                     hit 'Show Selected Result Table'"),
-#                 p(" "),
-#                 selectInput("userStratPoint","Select parameter to stratify results by:", InterventionList, selected = "Rho"),
-#                 p(" "),
-#                 tags$b("Viral suppression against cost:"),
-#                 p(" "),
-#                 bsButton("showOpt909090Plot",label="Plot proportion achieving 90-90-90 targets by 2020",style="success"),
-#                 p(" "),
-#                 bsButton("showOpt909090Table",label="Show Result Table",style="primary"),
-#                 p(" "),
-#                 bsButton("showOpt909090BrushedTable",label="Show Selected Result Table",style="primary"),
-#                 p(" "), br(),
-#                 tags$b("DALYs averted against cost:"),
-#                 p(" "),
-#                 bsButton("showOptDALYsPlot",label="Plot DALYs averted against cost",style="danger"),
-#                 p(" "),
-#                 bsButton("showOptDALYsTable",label="Show Result Table",style="primary"),
-#                 p(" "),
-#                 bsButton("showOptDALYsBrushedTable",label="Show Selected Result Table",style="primary"),
-#                 p(" "), br(),
-#                 tags$b("DALYs averted against cost (for subset achieving 90-90-90):"),
-#                 p(" "),
-#                 bsButton("showOptDALYs909090Plot",label="Plot DALYs averted against cost (90-90-90)",style="info"),
-#                 p(" "),
-#                 bsButton("showOptDALYs909090Table",label="Show Result Table",style="primary"),
-#                 p(" "),
-#                 bsButton("showOptDALYs909090BrushedTable",label="Show Selected Result Table",style="primary")
-#                 ),
-#             mainPanel(
-#                 bsModal(id = "opt909090TableModal",title = "Result Table (showing 90-90-90 targets)",trigger = "showOpt909090Table",size = "large",
-#                     DT::dataTableOutput('opt909090Table', width = "100%")
-#                 ),
-#                 bsModal(id = "opt909090TableBrushedModal",title = "Selected Result Table (showing 90-90-90 targets)",trigger = "showOpt909090BrushedTable",size = "large",
-#                     DT::dataTableOutput('opt909090TableBrushed', width = "100%")
-#                 ),
-#                 bsModal(id = "optDALYsTableModal",title = "Result Table",trigger = "showOptDALYsTable",size = "large",
-#                     DT::dataTableOutput('optDALYsTable', width = "100%")
-#                 ),
-#                 bsModal(id = "optDALYsTableBrushedModal",title = "Selected Result Table",trigger = "showOptDALYsBrushedTable",size = "large",
-#                     DT::dataTableOutput('optDALYsTableBrushed', width = "100%")
-#                 ),
-#                 bsModal(id = "optDALYs909090TableModal",title = "Result Table (results achieving 90-90-90 targets)",trigger = "showOptDALYs909090Table",size = "large",
-#                     DT::dataTableOutput('optDALYs909090Table', width = "100%")
-#                 ),
-#                 bsModal(id = "optDALYs909090TableBrushedModal",title = "Selected Result Table (results achieving 90-90-90 targets)",trigger = "showOptDALYs909090BrushedTable",size = "large",
-#                     DT::dataTableOutput('optDALYs909090TableBrushed', width = "100%")
-#                 ),
-#                 bsCollapse(id = 'optCollapse', open = NULL,
-#                     bsCollapsePanel("Plot 90-90-90",
-#                         plotOutput('plotOpt909090',
-#                             dblclick = "plotOpt909090_dblclick",
-#                             brush = brushOpts(
-#                                 id = "plotOpt909090_brush",
-#                                 clip = TRUE,
-#                                 resetOnNew = TRUE
-#                                 )
-#                             ),
-#                         style = "success"
-#                         ),
-#                     bsCollapsePanel("Plot DALYs",
-#                         plotOutput('plotOptDALYs',
-#                             dblclick = "plotOptDALYs_dblclick",
-#                             brush = brushOpts(
-#                                 id = "plotOptDALYs_brush",
-#                                 clip = TRUE,
-#                                 resetOnNew = TRUE
-#                                 )
-#                             ),
-#                         style = "danger"
-#                         ),
-#                     bsCollapsePanel("Plot DALYs (90-90-90)",
-#                         plotOutput('plotOptDALYs909090',
-#                             dblclick = "plotOptDALYs909090_dblclick",
-#                             brush = brushOpts(
-#                                 id = "plotOptDALYs909090_brush",
-#                                 clip = TRUE,
-#                                 resetOnNew = TRUE
-#                                 )
-#                             ),
-#                         style = "info"
-#                         )
-#                     )
-#                 )
-#             ),
-#         tabPanel("Budget",
-#             sidebarPanel(
-#                 h4("Budget"),
-#                 helpText("Please enter a health care budget value in the box below to see a subset of results that do not exceed that value."),
-#                 numericInput("userBudget","Enter budget to subset results (2013 USD):", value = 0, min = 0, step = 1e+04),
-#                 tags$b("Select output as 90-90-90 indicators or DALYs:"),
-#                 p(" "),
-#                 bsButton("showBudget909090",label="90-90-90",style="success"),
-#                 p(" "),
-#                 bsButton("showBudgetDALYs",label="DALYs",style="danger")
-#                 ),
-#             mainPanel(
-#                 DT::dataTableOutput('optBudgetTable', width = "100%")
-#                 )
-#             )
-#         ),
