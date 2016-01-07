@@ -123,6 +123,7 @@ source("content/more.R")
 source("content/setup.R")
 source("content/parameters.R")
 source("content/results.R")
+source("content/optimisation.R")
 
 dashboardPage(
     skin = "blue",
@@ -140,14 +141,12 @@ dashboardPage(
                     menuSubItem("Incidence", tabName = "incidence"),
                     menuSubItem("AIDS Deaths", tabName = "aids_deaths")
                     ),
-                
-                menuItem("Optimisation", tabName = "optimisation", icon = icon("pie-chart", lib = "font-awesome"),
-                    menuSubItem("Cost", tabName = "subitem1"),
-                    menuSubItem("Parameter Selection", tabName = "subitem2"),
-                    menuSubItem("Results", tabName = "subitem3"),
-                    menuSubItem("Budget", tabName = "subitem4")
+                menuItem("Optimisation", icon = icon("pie-chart", lib = "font-awesome"),
+                    menuSubItem("Cost", tabName = "opt_cost"),
+                    menuSubItem("Parameter Selection", tabName = "opt_parameter"),
+                    menuSubItem("Results", tabName = "opt_results"),
+                    menuSubItem("Budget", tabName = "opt_budget")
                     ),
-                
                 menuItem("More", icon = icon("question", lib = "font-awesome"),
                     menuSubItem("Model Document", tabName = "model_document"),
                     menuSubItem("Single Plot", tabName = "single_plot"),
@@ -161,21 +160,28 @@ dashboardPage(
             Tab_Introduction,
             Tab_Setup,
             Tab_Parameters,
+
+            # Results
             Tab_YourCascade,
             Tab_CareCascade,
             Tab_PowersCascade,
             Tab_909090,
             Tab_Incidence,
             Tab_AidsDeaths,
+
+            # Optimisation
+            Tab_Opt_Cost,
+            Tab_Opt_Parameter,
+            Tab_Opt_Results,
+            Tab_Opt_Budget,
+
+            # More
             Tab_ModelDocument,
             Tab_SinglePlot,
             Tab_AllPlots
             )
         )
     )
-
-
-#     navbarMenu("Results",
 
 #     navbarMenu("Optimisation",
 #         tabPanel("Cost",
@@ -374,33 +380,3 @@ dashboardPage(
 #                 )
 #             )
 #         ),
-#     navbarMenu("Diagnostics",
-#             tabPanel("Single Plot",
-#                 sidebarPanel(
-#                     selectInput('y','Y',VariableNames,selected="ART")
-#                     ),
-#                   mainPanel(
-#                     plotOutput('plotOne')
-#                     )
-#                 ),
-#             tabPanel("All Plots",
-#                 mainPanel(
-#                     plotOutput('plotTwo')
-#                     )
-#                 )
-#         ),
-#     navbarMenu("More",
-#     tabPanel("Model Document",
-#         HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhckJ1bG1QRmdwTGM/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
-#         ),
-#     # tabPanel("Country Input Data",
-#     #     HTML('<iframe src=\"https://drive.google.com/file/d/1rIMf-0vB77uwy7XO4rCM9Isd7_ReiCeOkwW1BvoxZw4/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
-#     #     ),
-#     # tabPanel("Incidence Estimates",
-#     #     HTML('<iframe src=\"https://drive.google.com/file/d/1-OVjcIl7m-QZt0T52WMcsU1Oxv4znTyc4eU0464L24I/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
-#     #     ),
-#     tabPanel("Raw Output",
-#         DT::dataTableOutput('outputTable')
-#         )
-#     )
-# ))
