@@ -134,3 +134,57 @@ Tab_PowersCascade <- tabItem(tabName = "powers_cascade",
         )
     )
 )
+
+Tab_909090 <- tabItem(tabName = "_909090",
+    column(width = 4,
+        box(width = NULL,
+            status = "warning",
+            solidHeader = FALSE,
+            h4("UNAIDS 90-90-90"),
+            p("By 2020, this is what the model predicts will be achieved in comparison to the UNAIDS goals of 90% diagnosed, 
+                90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any 
+                inefficiencies in care, then click on the 'Optimisation' tab."),
+            tableOutput("table909090")
+        )
+    ),
+    column(width = 8,
+        box(width = NULL,
+            status = "primary",
+            plotOutput('plot909090')
+        )
+    )
+)
+
+Tab_Incidence <- tabItem(tabName = "incidence",
+    column(width = 4,
+        box(width = NULL,
+            status = "warning",
+            solidHeader = FALSE,
+            h4("New Infections"),
+            p("Predictions of incident infections between 2015 and 2020, illustrated as a proportion of the total HIV-positive population.")
+        )
+    ),
+    column(width = 8,
+        box(width = NULL,
+            status = "primary",
+            plotOutput('plotNewInf')
+        )
+    )
+)
+
+Tab_AidsDeaths <- tabItem(tabName = "aids_deaths",
+    column(width = 4,
+        box(width = NULL,
+            status = "warning",
+            solidHeader = FALSE,
+            h4("AIDS Deaths"),
+            p("Predictions of AIDS deaths between 2015 and 2020, illustrated as a proportion of the total HIV-positive population.")
+        )
+    ),
+    column(width = 8,
+        box(width = NULL,
+            status = "primary",
+            plotOutput('plotAidsDeaths')
+        )
+    )
+)

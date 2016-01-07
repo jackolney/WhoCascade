@@ -164,6 +164,9 @@ dashboardPage(
             Tab_YourCascade,
             Tab_CareCascade,
             Tab_PowersCascade,
+            Tab_909090,
+            Tab_Incidence,
+            Tab_AidsDeaths,
             Tab_ModelDocument,
             Tab_SinglePlot,
             Tab_AllPlots
@@ -174,37 +177,6 @@ dashboardPage(
 
 #     navbarMenu("Results",
 
-#         tabPanel("90-90-90",
-#             sidebarPanel(
-#                 h4("UNAIDS 90-90-90"),
-#                 p("By 2020, this is what the model predicts will be achieved in comparison to the UNAIDS goals of 90% diagnosed, 
-#                     90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any 
-#                     inefficiencies in care, then click on the 'Optimisation' tab."),
-#                 tableOutput("table909090")
-#                 ),
-#             mainPanel(
-#                 plotOutput('plot909090')
-#                 )
-#             ),
-#         tabPanel("New Infections",
-#             sidebarPanel(
-#                 h4("New Infections"),
-#                 p("Predictions of incident infections between 2015 and 2020, illustrated as a proportion of the total HIV-positive population.")
-#                 ),
-#             mainPanel(
-#                 plotOutput('plotNewInf')
-#                 )
-#             ),
-#         tabPanel("AIDS Deaths",
-#             sidebarPanel(
-#                 h4("AIDS Deaths"),
-#                 p("Predictions of AIDS deaths between 2015 and 2020, illustrated as a proportion of the total HIV-positive population.")
-#                 ),
-#             mainPanel(
-#                 plotOutput('plotAidsDeaths')
-#                 )
-#             )
-#         ),
 #     navbarMenu("Optimisation",
 #         tabPanel("Cost",
 #             sidebarPanel(
