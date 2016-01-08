@@ -46,7 +46,7 @@ Tab_Result_Test <- tabItem(tabName = "test",
         wellPanel(
             sliderInput('userTest4','Annual cost of ART (USD):',min=0,max=500,value=367,step=1)
             ),
-        bsButton(inputId = "testStart", label = "Start", style = "success", size = "large", icon = icon("play", lib = "font-awesome")),
-        bsButton(inputId = "testStop", label = "Stop", style = "danger", size = "large", icon = icon("stop", lib = "font-awesome"))
+        bsButton(inputId = "testStart", label = "Start", style = "success", size = "large", block = TRUE, icon = icon("play", class = "fa-lg fa-fw", lib = "font-awesome")),
+        bsButton(inputId = "testStop", label = "Stop", style = "danger", size = "large", block = TRUE, icon = icon("stop", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

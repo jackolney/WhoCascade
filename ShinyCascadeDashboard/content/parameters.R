@@ -5,6 +5,9 @@ Tab_Parameters <- tabItem(tabName = "parameters",
             h1("Parameter Values"),
             shinyjs::useShinyjs(),
             id = "parameter-panel",
+            bsModal(id = "seeParameterTable", title = "Parameter Table", trigger = "viewParameterTable", size = "large",
+                DT::dataTableOutput('parameterTable', width = "100%")
+            ),
             helpText("Below is a detailed diagram of the model showing the flow of patients through care and the progression of HIV, 
                 captured by the decline of CD4 counts when not on treatment and the recovery of CD4 counts when on ART. 
                 A table of parameter values is shown in the 'Help Panel' and several sliders are shown below which can be 
@@ -37,10 +40,12 @@ Tab_Parameters <- tabItem(tabName = "parameters",
             title = "Help Panel",
             helpText("It is not neccessary to alter any of these values, but feel free to move the sliders around and see the values in the table change. 
                 Hit 'RESET PARAMETERS' to reset all parameters including the 'ART dropout rate' if specified in the 'Setup' tab."),
-            bsButton("resetParameters",label="RESET PARAMETERS",style="danger"),
-            p(" "),
-            tableOutput("parameterTable"),
+            bsButton("resetParameters", label = "RESET PARAMETERS", style = "danger", block = TRUE),
+            bsButton("viewParameterTable", label = "VIEW PARAMETERS", style = "primary", block = TRUE),
+            # p(" "),
+            # tableOutput("parameterTable"),
             helpText("Details regarding the origin of these parameter values are found in the 'Model Document', under the 'More' tab.")
-        )
+        ),
+        bsButton(inputId = "wizardResults_1", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

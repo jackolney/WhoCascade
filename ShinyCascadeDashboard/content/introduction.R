@@ -60,6 +60,6 @@ Tab_Introduction <- tabItem(tabName = "introduction",
             h4("Contributors"),
             "Jack J Olney, Jeffrey W Eaton, Ellen McRobie & Timothy B Hallett"
         ),
-        bsButton(inputId = "test", label = "Start Wizard", style = "success", size = "large", icon = icon("magic", lib = "font-awesome"))
+        bsButton(inputId = "wizardSetup", label = "Start Wizard", style = "success", size = "large", block = TRUE, icon = icon("magic", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

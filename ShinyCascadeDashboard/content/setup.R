@@ -82,18 +82,19 @@ Tab_Setup <- tabItem(tabName = "setup",
             helpText("Please fill in all boxes with relevant data, then hit 'SAVE' and wait for the confirmation below. 
                 Hit 'RESET' to reset all values to zero, and hit 'DEMO' for a random set of values to be generated. 
                 Unchecking the 'HIV incidence' checkbox prevents any new infections occurring in the model."),
-            checkboxInput("incidenceInput","HIV Incidence",value=TRUE),
-            bsButton("saveInput",label="SAVE",style="success"),
+            checkboxInput("incidenceInput","HIV Incidence", value = TRUE, width = "100%"),
+            bsButton("saveInput", label = "SAVE", style = "success", block = TRUE, size = "default", type = "toggle", value = FALSE),
             p(" "),
-            bsButton("resetInput",label="RESET",style="danger"),
+            bsButton("resetInput", label = "RESET", style = "danger", block = TRUE, size = "default", type = "action"),
             p(" "),
-            bsButton("demoInput",label="DEMO",style="primary"),
+            bsButton("demoInput", label = "DEMO", style = "primary", block = TRUE, size = "default", type = "action"),
             bsTooltip(id = "demoInput", title = "Populate model with best estimates from Kenya.", placement = "left", trigger = "hover"),
             p(" "),
             helpText("Console output:"),
             textOutput('saveText'),
             textOutput('warningText'),
             textOutput('warningCD4Text')
-        )
+        ),
+        bsButton(inputId = "wizardParameters", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )
