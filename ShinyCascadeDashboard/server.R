@@ -1003,7 +1003,8 @@ function(input, output, session) {
 
             setProgress(value = 0, message = 'Starting optimisation.', detail = 'This may take a while...')
 
-            updateButton(session,"optFinished",label="OPTIMISATION RUNNING",style="warning",icon="")
+            updateButton(session,"optFinished", label = " OPTIMISATION RUNNING", style = "warning", block = TRUE, size = "large", icon = icon("refresh", class = "fa-lg fa-spin", lib = "font-awesome"))
+            updateButton(session,"optimiseInput", label = "", style = "primary", block = TRUE, size = "large", icon = icon("refresh", class = "fa-lg fa-spin", lib = "font-awesome"))
 
             # Need for loop in here {}
             Start.Time <- proc.time()[[1]]
@@ -1222,7 +1223,8 @@ function(input, output, session) {
             print(Result_DALYs_909090)
 
             setProgress(value = 1, message = paste("Finished. Time =",round(proc.time()[[1]] - Start.Time,0),"sec"))
-            updateButton(session,"optFinished",label=" OPTIMISATION COMPLETE",style="success",icon=icon("check"))
+            updateButton(session, "optFinished", label = "OPTIMISATION COMPLETE", style = "success", size = "large", block = TRUE, icon = icon("check", class = "fa-lg fa-fw", lib = "font-awesome"))
+            updateButton(session, "optimiseInput", label = "", style = "primary", block = TRUE, size = "large", icon = icon("check", class = "fa-lg fa-fw", lib = "font-awesome"))
         })
     })
 
@@ -1735,6 +1737,22 @@ function(input, output, session) {
 
     observeEvent(input$wizardResults_5, {
         updateTabItems(session, inputId = "sideBar", selected = "incidence_mortality")
+    })
+
+    observeEvent(input$wizardOpt_1, {
+        updateTabItems(session, inputId = "sideBar", selected = "opt_cost")
+    })
+
+    observeEvent(input$wizardOpt_2, {
+        updateTabItems(session, inputId = "sideBar", selected = "opt_parameter")
+    })
+
+    observeEvent(input$wizardOpt_3, {
+        updateTabItems(session, inputId = "sideBar", selected = "opt_results")
+    })
+
+    observeEvent(input$wizardOpt_4, {
+        updateTabItems(session, inputId = "sideBar", selected = "opt_budget")
     })
 
     # Inverse sliders for parameter window #

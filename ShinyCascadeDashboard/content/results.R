@@ -171,7 +171,8 @@ Tab_IncidenceMortality <- tabItem(tabName = "incidence_mortality",
             p(""),
             h4("AIDS Deaths"),
             p("Predictions of AIDS deaths between 2015 and 2020, illustrated as a proportion of the total HIV-positive population.")
-        )
+        ),
+        bsButton(inputId = "wizardOpt_1", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     ),
     column(width = 8,
         tabBox(
