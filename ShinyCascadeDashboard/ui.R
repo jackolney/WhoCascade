@@ -50,14 +50,13 @@ dashboardPage(
                 id = "sideBar",
                 menuItem("Introduction", tabName = "introduction", icon = icon("home", class = "fa-lg fa-fw", lib = "font-awesome")),
                 menuItem("Setup", tabName = "setup", icon = icon("cogs", class = "fa-lg fa-fw", lib = "font-awesome")),
-                menuItem("Parameters", tabName = "parameters", icon = icon("cog", class = "fa-lg fa-fw", lib = "font-awesome")),
+                menuItem("Parameters", tabName = "parameters", icon = icon("wrench", class = "fa-lg fa-fw", lib = "font-awesome")),
                 menuItem("Results", icon = icon("line-chart", class = "fa-lg fa-fw", lib = "font-awesome"),
                     menuSubItem("Your Cascade", tabName = "your_cascade"),
                     menuSubItem("The Care Cascade", tabName = "care_cascade"),
                     menuSubItem("The Power's Cascade", tabName = "powers_cascade"),
                     menuSubItem("90-90-90", tabName = "_909090"),
-                    menuSubItem("Incidence", tabName = "incidence"),
-                    menuSubItem("AIDS Deaths", tabName = "aids_deaths")
+                    menuSubItem("Incidence / Mortality", tabName = "incidence_mortality")
                     ),
                 menuItem("Optimisation", icon = icon("pie-chart", class = "fa-lg fa-fw", lib = "font-awesome"),
                     menuSubItem("Cost", tabName = "opt_cost"),
@@ -85,8 +84,7 @@ dashboardPage(
             Tab_CareCascade,
             Tab_PowersCascade,
             Tab_909090,
-            Tab_Incidence,
-            Tab_AidsDeaths,
+            Tab_IncidenceMortality,
 
             # Optimisation
             Tab_Opt_Cost,

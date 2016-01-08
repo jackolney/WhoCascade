@@ -85,7 +85,8 @@ Tab_YourCascade <- tabItem(tabName = "your_cascade",
                 height = 'auto',
                 width = 'auto')
         )
-    )
+    ),
+    bsButton(inputId = "wizardResults_2", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
 )
 
 Tab_CareCascade <- tabItem(tabName = "care_cascade",
@@ -107,7 +108,8 @@ Tab_CareCascade <- tabItem(tabName = "care_cascade",
             tags$li("% virally suppressed = # persons on ART and virally suppressed / PLHIV"),
             tags$li("% LTFU = # persons lost from ART care / PLHIV.")
         )
-    )
+    ),
+    bsButton(inputId = "wizardResults_3", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
 )
 
 Tab_PowersCascade <- tabItem(tabName = "powers_cascade",
@@ -132,7 +134,8 @@ Tab_PowersCascade <- tabItem(tabName = "powers_cascade",
             tags$li("% Virally Suppressed = # persons diagnosed, in care, on ART, virally suppressed / PLHIV"),
             tags$li("% LTFU = # persons diagnosed, not in care, dropped out of ART / PLHIV.")
         )
-    )
+    ),
+    bsButton(inputId = "wizardResults_4", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
 )
 
 Tab_909090 <- tabItem(tabName = "_909090",
@@ -143,48 +146,44 @@ Tab_909090 <- tabItem(tabName = "_909090",
             h4("UNAIDS 90-90-90"),
             p("By 2020, this is what the model predicts will be achieved in comparison to the UNAIDS goals of 90% diagnosed, 
                 90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any 
-                inefficiencies in care, then click on the 'Optimisation' tab."),
-            tableOutput("table909090")
-        )
+                inefficiencies in care, then click on the 'Optimisation' tab.")
+        ),
+        bsButton(inputId = "wizardResults_5", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     ),
     column(width = 8,
         box(width = NULL,
             status = "primary",
             plotOutput('plot909090')
-        )
+        ),
+        valueBoxOutput("vb_90"),
+        valueBoxOutput("vb_9090"),
+        valueBoxOutput("vb_909090")
     )
 )
 
-Tab_Incidence <- tabItem(tabName = "incidence",
+Tab_IncidenceMortality <- tabItem(tabName = "incidence_mortality",
     column(width = 4,
         box(width = NULL,
             status = "warning",
             solidHeader = FALSE,
             h4("New Infections"),
-            p("Predictions of incident infections between 2015 and 2020, illustrated as a proportion of the total HIV-positive population.")
-        )
-    ),
-    column(width = 8,
-        box(width = NULL,
-            status = "primary",
-            plotOutput('plotNewInf')
-        )
-    )
-)
-
-Tab_AidsDeaths <- tabItem(tabName = "aids_deaths",
-    column(width = 4,
-        box(width = NULL,
-            status = "warning",
-            solidHeader = FALSE,
+            p("Predictions of incident infections between 2015 and 2020, illustrated as a proportion of the total HIV-positive population."),
+            p(""),
             h4("AIDS Deaths"),
             p("Predictions of AIDS deaths between 2015 and 2020, illustrated as a proportion of the total HIV-positive population.")
         )
     ),
     column(width = 8,
-        box(width = NULL,
-            status = "primary",
-            plotOutput('plotAidsDeaths')
+        tabBox(
+            width = NULL,
+            height = "600px",
+            title = "Results",
+            tabPanel("Incidence",
+                plotOutput('plotNewInf')
+            ),
+            tabPanel("AIDS Deaths",
+                plotOutput('plotAidsDeaths')
+            )
         )
     )
 )

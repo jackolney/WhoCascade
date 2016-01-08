@@ -15,23 +15,20 @@ Tab_Opt_Cost <- tabItem(tabName = "opt_cost",
         )
     ),
     column(width = 8,
-        box(width = NULL,
-            status = "primary",
-            shinyjs::useShinyjs(),
-            id = "cost-panel",
-            wellPanel(
-                sliderInput('userDxUnitCost','Unit cost of diagnosing a patient (USD):',min=0,max=100,value=10,step=1)
-                ),
-            wellPanel(
-                sliderInput('userLinkageUnitCost','Unit cost of linking a patient to care (USD):',min=0,max=100,value=40,step=1)
-                ),
-            wellPanel(
-                sliderInput('userAnnualCareUnit','Annual cost of keeping a patient in pre-ART care (USD):',min=0,max=100,value=40,step=1)
-                ),
-            wellPanel(
-                sliderInput('userAnnualARTUnitCost','Annual cost of ART (USD):',min=0,max=500,value=367,step=1)
-                )
-        )
+        shinyjs::useShinyjs(),
+        id = "cost-panel",
+        wellPanel(
+            sliderInput('userDxUnitCost','Unit cost of diagnosing a patient (USD):',min=0,max=100,value=10,step=1)
+            ),
+        wellPanel(
+            sliderInput('userLinkageUnitCost','Unit cost of linking a patient to care (USD):',min=0,max=100,value=40,step=1)
+            ),
+        wellPanel(
+            sliderInput('userAnnualCareUnit','Annual cost of keeping a patient in pre-ART care (USD):',min=0,max=100,value=40,step=1)
+            ),
+        wellPanel(
+            sliderInput('userAnnualARTUnitCost','Annual cost of ART (USD):',min=0,max=500,value=367,step=1)
+            )
     )
 )
 
@@ -56,53 +53,50 @@ Tab_Opt_Parameter <- tabItem(tabName = "opt_parameter",
         )
     ),
     column(width = 8,
-        box(width = NULL,
-            status = "primary",
-            shinyjs::useShinyjs(),
-            id = "optimisation-panel",
-            wellPanel(
-                h4("HIV-Testing (rho)"),
-                helpText("by varying diagnosis rate, rho"),
-                sliderInput('userOptRho_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-                sliderInput('userOptRho_Range','Range of values (diagnoses/py):',min=0,max=50,value=c(0.205,20),step=0.001),
-                tableOutput("optParTable_Rho")
-                ),
-            wellPanel(
-                h4("Linkage (epsilon)"),
-                helpText("by varying care seeking rate, epsilon"),
-                sliderInput('userOptEpsilon_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-                sliderInput('userOptEpsilon_Range','Range of values (persons seeking care/py):',min=0,max=50,value=c(16.949,30),step=0.001),
-                tableOutput("optParTable_Epsilon")
-                ),
-            wellPanel(
-                h4("Pre-ART Retention (kappa)"),
-                helpText("by varying pre-ART dropout rate, kappa"),
-                sliderInput('userOptKappa_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-                sliderInput('userOptKappa_Range','Range of values (person lost from pre-ART care/py):',min=0,max=2,value=c(0.01,1.079),step=0.001),
-                tableOutput("optParTable_Kappa")
-                ),
-            wellPanel(
-                h4("Treatment Initiation (gamma)"),
-                helpText("by varying ART initiation rate, gamma"),
-                sliderInput('userOptGamma_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
-                sliderInput('userOptGamma_Range','Range of values (ART initiations/py):',min=0,max=50,value=c(2.556,20),step=0.001),
-                tableOutput("optParTable_Gamma")
-                ),
-            wellPanel(
-                h4("Adherence (sigma)"),
-                helpText("by varying rate at which patients not adhering to treatment start to adhere, sigma"),
-                sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
-                sliderInput('userOptSigma_Range','Range of values (persons transitioning from non-adherent to adherent/py):',min=0,max=1,value=c(0,1),step=0.001),
-                tableOutput("optParTable_Sigma")
-                ),
-            wellPanel(
-                h4("ART Retention (omega)"),
-                helpText("by varying rate at which patients are lost from ART care, omega"),
-                sliderInput('userOptOmega_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
-                sliderInput('userOptOmega_Range','Range of values (ART dropout/py):',min=0,max=0.1,value=c(0.005,0.033),step=0.001),
-                tableOutput("optParTable_Omega")
-                )
-        )
+        shinyjs::useShinyjs(),
+        id = "optimisation-panel",
+        wellPanel(
+            h4("HIV-Testing (rho)"),
+            helpText("by varying diagnosis rate, rho"),
+            sliderInput('userOptRho_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
+            sliderInput('userOptRho_Range','Range of values (diagnoses/py):',min=0,max=50,value=c(0.205,20),step=0.001),
+            tableOutput("optParTable_Rho")
+            ),
+        wellPanel(
+            h4("Linkage (epsilon)"),
+            helpText("by varying care seeking rate, epsilon"),
+            sliderInput('userOptEpsilon_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
+            sliderInput('userOptEpsilon_Range','Range of values (persons seeking care/py):',min=0,max=50,value=c(16.949,30),step=0.001),
+            tableOutput("optParTable_Epsilon")
+            ),
+        wellPanel(
+            h4("Pre-ART Retention (kappa)"),
+            helpText("by varying pre-ART dropout rate, kappa"),
+            sliderInput('userOptKappa_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
+            sliderInput('userOptKappa_Range','Range of values (person lost from pre-ART care/py):',min=0,max=2,value=c(0.01,1.079),step=0.001),
+            tableOutput("optParTable_Kappa")
+            ),
+        wellPanel(
+            h4("Treatment Initiation (gamma)"),
+            helpText("by varying ART initiation rate, gamma"),
+            sliderInput('userOptGamma_LengthOf','Length of parameter range:',min=0,max=10,value=1,step=1),
+            sliderInput('userOptGamma_Range','Range of values (ART initiations/py):',min=0,max=50,value=c(2.556,20),step=0.001),
+            tableOutput("optParTable_Gamma")
+            ),
+        wellPanel(
+            h4("Adherence (sigma)"),
+            helpText("by varying rate at which patients not adhering to treatment start to adhere, sigma"),
+            sliderInput('userOptSigma_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+            sliderInput('userOptSigma_Range','Range of values (persons transitioning from non-adherent to adherent/py):',min=0,max=1,value=c(0,1),step=0.001),
+            tableOutput("optParTable_Sigma")
+            ),
+        wellPanel(
+            h4("ART Retention (omega)"),
+            helpText("by varying rate at which patients are lost from ART care, omega"),
+            sliderInput('userOptOmega_LengthOf','Length of parameter range:',min=0,max=10,value=4,step=1),
+            sliderInput('userOptOmega_Range','Range of values (ART dropout/py):',min=0,max=0.1,value=c(0.005,0.033),step=0.001),
+            tableOutput("optParTable_Omega")
+            )
     )
 )
 
