@@ -5,8 +5,8 @@ Tab_Result_Test <- tabItem(tabName = "test",
                 width = NULL,
                 height = "500px",
                 title = "Big Plot",
-                tabPanel("Tab1", "Some shit"),
-                tabPanel("Tab2", "Some more shit")
+                tabPanel("Tab1", "Some stuff"),
+                tabPanel("Tab2", "Some more stuff")
             )
         ),
         fluidRow(
