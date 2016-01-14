@@ -122,6 +122,7 @@ shinyUI(
     theme = shinytheme("flatly"),
     tabPanel("Introduction",
         # img(src="HIVMC-logo.jpg", height = '100%', width = '100%'),
+        tags$head(includeScript("google-analytics.js")),
         h1("Introduction"),
         helpText("Welcome to the Cascade App."),
         sidebarLayout(position="right",
