@@ -86,17 +86,6 @@ function(input, output, session) {
         Annual_ART_unitCost = input$userAnnualARTUnitCost
     )})
 
-    # output$parameterTable <- renderTable({
-    #     theP <- Parameters()
-    #     theParameters <- c(theP[["Rho"]],theP[["Epsilon"]],theP[["Kappa"]],theP[["Gamma"]],theP[["Theta"]],theP[["Omega"]],theP[["Nu_1"]],theP[["Nu_2"]],theP[["Nu_3"]],theP[["Nu_4"]],theP[["Nu_5"]],theP[["Nu_6"]],theP[["p"]],theP[["s_1"]],theP[["s_2"]],theP[["s_3"]],theP[["s_4"]],theP[["s_5"]],theP[["s_6"]],theP[["s_7"]],theP[["Sigma"]],theP[["Delta_1"]],theP[["Delta_2"]],theP[["Delta_3"]],theP[["Delta_4"]],theP[["Delta_5"]],theP[["Alpha_1"]],theP[["Alpha_2"]],theP[["Alpha_3"]],theP[["Alpha_4"]],theP[["Alpha_5"]],theP[["Alpha_6"]],theP[["Alpha_7"]],theP[["Tau_1"]],theP[["Tau_2"]],theP[["Tau_3"]],theP[["Tau_4"]],theP[["Tau_5"]],theP[["Tau_6"]],theP[["Tau_7"]],theP[["Mu"]],0.5251,0.2315,0.2401,0.0033)
-    #     ParameterNames <- c("Rho","Epsilon","Kappa","Gamma","Theta","Omega","Nu_1","Nu_2","Nu_3","Nu_4","Nu_5","Nu_6","p","s_1","s_2","s_3","s_4","s_5","s_6","s_7","Sigma","Delta_1","Delta_2","Delta_3","Delta_4","Delta_5","Alpha_1","Alpha_2","Alpha_3","Alpha_4","Alpha_5","Alpha_6","Alpha_7","Tau_1","Tau_2","Tau_3","Tau_4","Tau_5","Tau_6","Tau_7","Mu","Iota_1","Iota_2","Iota_3","Iota_4")
-    #     rows <- length(ParameterNames)
-    #     tbl <- matrix(theParameters,rows,ncol=2)
-    #     tbl[,1] <- ParameterNames
-    #     colnames(tbl) <- c("Parameter","Value")
-    #     return(tbl)
-    # })
-
     output$parameterTable <- DT::renderDataTable({
         # rely on button press
         input$viewParameterTable
@@ -111,8 +100,6 @@ function(input, output, session) {
         return(datatable(tbl, options = list(pageLength = 25, autoWidth = TRUE)))
         }
     )
-
-
 
     Initial <- reactive({c(
         UnDx_500 = (input$userPLHIV - input$userDx) * prop_preART_500,
@@ -416,7 +403,7 @@ function(input, output, session) {
 
             o <- ggplot(t0,aes(definition,t0_results))
             o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-            o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+            o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
             o <- o + scale_fill_manual(values=fill.coll)
             o <- o + ggtitle("Care Cascade in 2015")
             o <- o + theme_classic()
@@ -476,7 +463,7 @@ function(input, output, session) {
 
             o <- ggplot(t0,aes(definition,t0_results))
             o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-            o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+            o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
             o <- o + scale_fill_manual(values=fill.coll)
             o <- o + ggtitle("Care Cascade in 2015")
             o <- o + theme_classic()
@@ -516,7 +503,7 @@ function(input, output, session) {
 
         o <- ggplot(t0,aes(definition,t0_results))
         o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
         o <- o + scale_fill_manual(values=fill.coll)
         o <- o + ggtitle("Care Cascade in 2015")
         o <- o + theme_classic()
@@ -545,7 +532,7 @@ function(input, output, session) {
 
         p <- ggplot(t5,aes(definition,t5_results))
         p <- p + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-        p <- p + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        p <- p + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
         p <- p + scale_fill_manual(values=fill.coll)
         p <- p + ggtitle("Care Cascade in 2020")
         p <- p + theme_classic()
@@ -607,7 +594,7 @@ function(input, output, session) {
 
         o <- ggplot(t0,aes(x=tOrder,y=tResult,fill=State))
         o <- o + geom_bar(stat='identity')
-        o <- o + scale_y_continuous(breaks=seq(0,1,0.1),labels=percent)
+        o <- o + scale_y_continuous(breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
         o <- o + scale_fill_manual(values=power.col)
         o <- o + ggtitle("Care Cascade in 2015")
         o <- o + theme_classic()
@@ -661,7 +648,7 @@ function(input, output, session) {
 
         p <- ggplot(t5,aes(x=tOrder,y=tResult,fill=State))
         p <- p + geom_bar(stat='identity')
-        p <- p + scale_y_continuous(breaks=seq(0,1,0.1),labels=percent)
+        p <- p + scale_y_continuous(breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
         p <- p + scale_fill_manual(values=power.col)
         p <- p + ggtitle("Care Cascade in 2020")
         p <- p + theme_classic()
@@ -723,7 +710,7 @@ function(input, output, session) {
 
         o <- ggplot(the909090,aes(definition,results))
         o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent)
+        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
         o <- o + scale_fill_manual(values=fill.coll)
         o <- o + geom_abline(intercept=0.9, slope=0)
         o <- o + theme_classic()
@@ -1673,7 +1660,7 @@ function(input, output, session) {
             alt = 'ModelFlowDiagram')
         )
     },
-    deleteFile=FALSE)
+    deleteFile = FALSE)
 
     # ART Initiation Checkbox Rules #
     observeEvent(input$userART_All, {
@@ -1777,5 +1764,105 @@ function(input, output, session) {
     output$outSUPP_perc <- renderPrint({ noquote(paste(round(((input$userVs / input$userPLHIV) * 100),2), "%", sep = ''))  }, width = 300, quoted = FALSE)
     output$outLTFU <- renderPrint({ input$userLtfu }, width = 300, quoted = FALSE)
     output$outLTFU_perc <- renderPrint({ noquote(paste(round(((input$userLtfu / input$userPLHIV) * 100),2), "%", sep = ''))  }, width = 300, quoted = FALSE)
+
+    ##############
+    # WIZARD FUN #
+    ##############
+
+    output$plotCascade_wizard <- renderPlot({
+        out <- out()
+
+        t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
+        t5_all = t5_N / t5_N
+        t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t5_N
+        t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t5_N
+        t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t5_N
+        t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50)))) / t5_N
+
+        t5_results <- c(t5_all,t5_dx,t5_cx,t5_tx,t5_vs)
+
+        definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed")
+        t5 <- data.frame(definition,t5_results)
+
+        levels(t5$definition)
+        t5$definition <- factor(t5$definition, levels = c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed"))
+
+        fill.coll <- rev(brewer.pal(9,"Blues")[3:8])
+
+        p <- ggplot(t5,aes(definition,t5_results))
+        p <- p + geom_bar(aes(fill = definition), position = 'dodge', stat = 'identity')
+        p <- p + scale_y_continuous(limits = c(0,1), breaks = seq(0,1,0.1), labels = percent, expand = c(0,0))
+        p <- p + scale_fill_manual(values = fill.coll)
+        p <- p + ggtitle("Care Cascade in 2020")
+        p <- p + theme_classic()
+        p <- p + theme(title = element_text(size = 18))
+        p <- p + theme(axis.title = element_blank())
+        p <- p + theme(axis.text.x = element_text(size = 15))
+        p <- p + theme(axis.text.y = element_text(size = 18))
+        p <- p + theme(legend.position = "none")
+        print(p)
+        },
+        height = 'auto',
+        width = 'auto'
+    )
+
+    output$plotNewInf_wizard <- renderPlot({
+        p <- ggplot(out(), aes(x = time,y = NewInf)) +
+            geom_line(size = 2) +
+            theme_classic() +
+            theme(axis.text.x = element_text(size = 10)) +
+            theme(axis.text.y = element_text(size = 10)) +
+            theme(axis.title = element_text(size = 10)) +
+            xlab("Year") +
+            ylab("# new infections") +
+            scale_x_continuous(limits = c(0,5), breaks = seq(0,5,1), labels = seq(2015,2020,1))
+        print(p)
+        },
+        height = 240,
+        width = 'auto'
+    )
+
+    output$plotAidsDeaths_wizard <- renderPlot({
+        p <- ggplot(out(), aes(x = time,y = HivMortality)) +
+            geom_line(size = 2) +
+            theme_classic() +
+            theme(axis.text.x = element_text(size = 10)) +
+            theme(axis.text.y = element_text(size = 10)) +
+            theme(axis.title = element_text(size = 10)) +
+            xlab("Year") +
+            ylab("# AIDS deaths") +
+            scale_x_continuous(limits = c(0,5), breaks = seq(0,5,1), labels = seq(2015,2020,1))
+        print(p)
+        },
+        height = 240,
+        width = 'auto'
+    )
+
+    output$vb_90_wizard <- renderValueBox({
+        out <- out()
+        PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
+        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+        p_dx <- round((dx / PLHIV) * 100,0)
+        print(p_dx)
+        valueBox(paste0(p_dx, "%"), "Diagnosed", color = "red", icon = icon("medkit", lib = "font-awesome"))
+      })
+
+    output$vb_9090_wizard <- renderValueBox({
+        out <- out()
+        dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+        tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+        p_tx <- round((tx / dx) * 100,0)
+        print(p_tx)
+        valueBox(paste0(p_tx, "%"), "On Treatment", color = "yellow", icon = icon("medkit", lib = "font-awesome"))
+      })
+
+    output$vb_909090_wizard <- renderValueBox({
+        out <- out()
+        tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+        vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+        p_vs <- round((vs / tx) * 100,0)
+        print(p_vs)
+        valueBox(paste0(p_vs, "%"), "Virally Suppressed", color = "green", icon = icon("medkit", lib = "font-awesome"))
+      })
 
 }
