@@ -29,10 +29,34 @@ extern "C" {
     
     Euler(i, p, 0, 10,  0.02);
 
+    // Test Output Vector
+    SEXP OutputVector;
+    PROTECT(OutputVector = allocVector(REALSXP, 10 / 0.02));
+    double * pOutputVector = REAL(OutputVector);
+
+    SEXP VectorVector;
+    PROTECT(VectorVector = allocVector(VECSXP,1));
+    SET_VECTOR_ELT(VectorVector,0,OutputVector);
+
+    SEXP VectorNames;
+    PROTECT(VectorNames = allocVector(VECSXP,1));
+    SET_VECTOR_ELT(VectorNames,0,mkChar("Test"));
+    namesgets(VectorVector,VectorNames);
+
+
+    for(int i = 0; i<500; i++) {
+        pOutputVector[i] = 15;
+        // Where VectorStruct is part of a data structure (containing Vectors),
+        // That Euler() fills in as it goes along.
+        // Pass a vector of vectors TO the Euler();
+        // Fills out then WE RETURN THAT!
+    }
+
     delete p;
     delete i;
 
-    return(R_NilValue);
+    UNPROTECT(3);
+    return(VectorVector);
     }
 
 
@@ -86,6 +110,9 @@ int main() {
 
 // R Wish List:
 // 1) Compile and cout results (N) - Done.
-// 2) Return a vector
+// 2) Return a vector - Ongoing.
 // 3) Take an arguement
 // 4) All together now.
+
+// Fun Stuff:
+// Dynamic change of length of output vectors that matches (StopTime / Step) of model.
