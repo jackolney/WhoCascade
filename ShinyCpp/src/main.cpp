@@ -8,6 +8,7 @@
 
 #include <iomanip>
 #include <iostream>
+#include <vector>
 #include "euler.h"
 #include "parameters.h"
 #include "initial.h"
@@ -37,12 +38,17 @@ extern "C" {
     SEXP VectorVector;
     PROTECT(VectorVector = allocVector(VECSXP,1));
     SET_VECTOR_ELT(VectorVector,0,OutputVector);
+    // double * pVectorVector = coerceVector(VectorVector,VECSXP);
+
+    cout << "This = " << VECTOR_ELT(VectorVector,0) << endl;
+    cout << "Now This = " << VectorVector << endl;
+
+
 
     SEXP VectorNames;
     PROTECT(VectorNames = allocVector(VECSXP,1));
     SET_VECTOR_ELT(VectorNames,0,mkChar("Test"));
     namesgets(VectorVector,VectorNames);
-
 
     for(int i = 0; i<500; i++) {
         pOutputVector[i] = 15;
@@ -51,6 +57,10 @@ extern "C" {
         // Pass a vector of vectors TO the Euler();
         // Fills out then WE RETURN THAT!
     }
+
+    // cout << "Test = " << pVectorVector[i] << endl;
+
+    // warning("this is warning."); // prints a warning to R console.
 
     delete p;
     delete i;
