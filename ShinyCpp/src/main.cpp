@@ -85,7 +85,7 @@ int main() {
 // Beta placeholder is: 0.02466
 
 // R Wish List:
-// 1) Compile and cout results (N)
+// 1) Compile and cout results (N) - Done.
 // 2) Return a vector
 // 3) Take an arguement
 // 4) All together now.
