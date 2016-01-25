@@ -1,5 +1,4 @@
 # Control Rcpp script -- 25/01/16
-
 setwd("~/git/WhoCascade/dev/Rcpp")
 
 dir()
@@ -10,18 +9,12 @@ require(Rcpp)
 ls()
 sourceCpp("./src/main.cpp")
 
-ls()
+Run <- function(x = 1) {
+    for(i in 1:x) {
+        Cascade()
+    }
+}
 
-f1(x)
+system.time(Run())
 
-mean(x)
-meanC(x)
-
-mod <- lm(mpg ~ wt, data = mtcars)
-mpe(mod)
-
-Euler(Parameters)
-
-GetName(Parameters)
-
-Cascade(Parameters)
+system.time(Run(100))

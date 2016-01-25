@@ -8,7 +8,7 @@
 
 #include "parameters.h"
 
-params::params(double something) :
+params::params() :
 nu_1(0.193634),
 nu_2(0.321304),
 nu_3(0.328285),

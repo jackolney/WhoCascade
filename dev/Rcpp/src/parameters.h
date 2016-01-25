@@ -13,7 +13,7 @@
 
 class params {
 public:
-	params(double something); // constructor
+	params(); // constructor
 	~params(); // destructor
 	
 	/* stuff */
