@@ -203,10 +203,14 @@ List Cascade() {
     Out["Annual_Care_Cost"] = as<NumericVector>(Annual_Care_Cost);
     Out["Annual_ART_Cost"] = as<NumericVector>(Annual_ART_Cost);
 
+    delete p;
+    delete i;
+    delete o;
+
     return(Out);
 }
 
 /*** R
-# Here I can put code to run at compile-time.
-Cascade()
+# Call the below function to run the model:
+# Cascade()
 */

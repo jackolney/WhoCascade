@@ -22,7 +22,6 @@ void Euler(initial * i, params * p, output * o, int start, int stop, double step
 	int iteration = 0;
 	for (double t = start; t < stop; t += step) {
 
-		cout << fixed << setprecision(3) << t << " N = " << i->N << endl;
 		iteration++;
 
 		double beta = 0.02466;

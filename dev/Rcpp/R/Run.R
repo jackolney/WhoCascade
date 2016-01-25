@@ -1,13 +1,14 @@
 # Control Rcpp script -- 25/01/16
 setwd("~/git/WhoCascade/dev/Rcpp")
-
+rm(list=ls())
 dir()
 
 # Rcpp
 require(Rcpp)
 
-ls()
 sourceCpp("./src/main.cpp")
+
+a <- Cascade()
 
 Run <- function(x = 1) {
     for(i in 1:x) {
@@ -18,3 +19,7 @@ Run <- function(x = 1) {
 system.time(Run())
 
 system.time(Run(100))
+
+# Output - Done.
+# Input:
+#   Conversion from NumericVector to array? with .names()?
