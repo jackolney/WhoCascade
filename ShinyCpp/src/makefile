@@ -3,7 +3,7 @@ CXXFLAGS = "-mtune=native -03 -Wall -pedantic -Wconversion"
 
 ODIR = ./
 
-OBJ = main.cpp euler.cpp initial.cpp parameters.cpp
+OBJ = main.cpp euler.cpp initial.cpp parameters.cpp output.cpp
 
 OBJECTS = $(patsubst %,$(ODIR)/%,$(OBJ))
 
