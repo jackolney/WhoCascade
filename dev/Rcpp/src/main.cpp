@@ -1,10 +1,27 @@
 #include <iostream>
+#include <vector>
+#include "euler.h"
+#include "parameters.h"
+#include "initial.h"
 #include <Rcpp.h>
 
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List Euler() {
+List Cascade(NumericVector pInput, NumericVector iInput) {
+
+    params * p = new params(pInput);
+
+    initial * i = new initial(iInput);
+
+    Euler(i, p, 0, 10,  0.02);
+
+
+    //Print out p
+    // for(int i = 0; i < p.size(); ++i) {
+    //     // std::cout << p.names() << std::endl;
+    //     std::cout << p[i] << std::endl;
+    // }
 
     // Create an array
     List TestArray;
@@ -32,5 +49,5 @@ List Euler() {
 }
 
 /*** R
-Euler()
+# Here I can put code to run at compile-time.
 */

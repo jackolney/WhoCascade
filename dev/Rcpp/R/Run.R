@@ -8,7 +8,8 @@ dir()
 require(Rcpp)
 
 ls()
-sourceCpp("Euler.cpp")
+sourceCpp("./src/main.cpp")
+
 ls()
 
 f1(x)
@@ -19,4 +20,8 @@ meanC(x)
 mod <- lm(mpg ~ wt, data = mtcars)
 mpe(mod)
 
-Euler()
+Euler(Parameters)
+
+GetName(Parameters)
+
+Cascade(Parameters)
