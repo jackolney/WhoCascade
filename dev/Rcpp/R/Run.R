@@ -8,7 +8,9 @@ require(Rcpp)
 
 sourceCpp("./src/main.cpp")
 
-a <- Cascade()
+system.time(Cascade())
+
+Cascade()
 
 Run <- function(x = 1) {
     for(i in 1:x) {

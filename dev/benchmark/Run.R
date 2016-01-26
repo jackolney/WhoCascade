@@ -20,7 +20,7 @@ Run.Model <- function(x = 1) {
 
 Run.Model()
 
-system.time(Run.Model(5))
+system.time(Run.Model())
 
 # Benchmarking
 require(lineprof)
