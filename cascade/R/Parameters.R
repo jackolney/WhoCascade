@@ -69,7 +69,7 @@ parameters <- function(...) {
     w5 = 0.1,
     beta = 0.0275837)
     replace <- c(...)
-    if (length(replace) < 0L) {
+    if (length(replace) > 0L) {
         stopifnot(is.numeric(replace))
         stopifnot(all(names(replace) %in% names(default)))
         default[names(replace)] <- replace
