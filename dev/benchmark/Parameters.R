@@ -1,5 +1,5 @@
-Parameters <- c(
-    Nu_1 = 0.193634,
+Parameters <- function(...) {
+    default <- c(Nu_1 = 0.193634,
     Nu_2 = 0.321304,
     Nu_3 = 0.328285,
     Nu_4 = 0.497247,
@@ -47,5 +47,25 @@ Parameters <- c(
     Dx_unitCost = 10,
     Linkage_unitCost = 40,
     Annual_Care_unitCost = 40,
-    Annual_ART_unitCost = 367
-)
+    Annual_ART_unitCost = 367,
+    prop_preART_500 = 0.5251,
+    prop_preART_350500 = 0.2315,
+    prop_preART_250350 = 0.1787,
+    prop_preART_200250 = 0.0615,
+    prop_preART_100200 = 0.0011,
+    prop_preART_50100 = 0.0008,
+    prop_preART_50 = 0.0014,
+    w1 = 1.35,
+    w2 = 1,
+    w3 = 1.64,
+    w4 = 5.17,
+    w5 = 0.1,
+    beta = 0.0275837)
+    replace <- c(...)
+    if (length(replace) < 0L) {
+        stopifnot(is.numeric(replace))
+        stopifnot(all(names(replace) %in% names(default)))
+        default[names(replace)] <- replace
+    }
+    default
+}
