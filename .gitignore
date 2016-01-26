@@ -43,3 +43,4 @@ Thumbs.db
 .RData
 *.RData
 *.Rout
+Rprof.out

@@ -1,0 +1,1 @@
+[![Travis-CI Build Status](https://travis-ci.org/jackolney/WhoCascade.svg?branch=master)](https://travis-ci.org/jackolney/WhoCascade)
