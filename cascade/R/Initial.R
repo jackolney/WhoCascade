@@ -1,11 +1,11 @@
-#' Initial values.
+#' Initial values for model.
 #' 
-#' @title Initial values
+#' @title Initial values for model
 #'
 #' @param p parameters (from \code{\link{Parameters}})
 #'
 #' @export
-Initial <- function(p) {
+initial <- function(p) {
         userPLHIV <- 1.4e+6
         userDx <- 1109668
         userCare <- 848018

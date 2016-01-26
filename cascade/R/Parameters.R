@@ -1,11 +1,11 @@
-#' Parameters.
+#' Parameters for model.
 #' 
-#' @title Parameters
+#' @title Parameters for model
 #'
 #' @param ... vector of named arguements
 #'
 #' @export
-Parameters <- function(...) {
+parameters <- function(...) {
     default <- c(Nu_1 = 0.193634,
     Nu_2 = 0.321304,
     Nu_3 = 0.328285,
