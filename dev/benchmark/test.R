@@ -2,7 +2,7 @@ library(testthat)
 library(microbenchmark)
 
 dyn.load("model.so")
-
+# setwd("")
 source("TheModel.R")
 source("Parameters.R")
 source("Initial.R")
@@ -24,7 +24,7 @@ c = .Call("r_derivs", y, PACKAGE = "model"),
 r = ComplexCascade(0, y, p)[[1]]
     )
 
-
+require(deSolve)
 Time <- seq(0, 5, 0.02)
 theref <- ode(times = Time, y = y, func = ComplexCascade, parms = p)
 
