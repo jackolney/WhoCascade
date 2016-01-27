@@ -1,4 +1,4 @@
-Tab_Parameters <- tabItem(tabName = "parameters",
+tabItem(tabName = "parameters",
     column(width = 8,
         box(width = NULL,
             status = "primary",

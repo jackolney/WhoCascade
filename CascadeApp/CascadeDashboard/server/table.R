@@ -1,0 +1,77 @@
+output$unitCostTable <- renderTable({
+    theP <- Parameters()
+    Dx_unitCost <- dollar(as.double(theP["Dx_unitCost"]))
+    Linkage_unitCost <- dollar(as.double(theP["Linkage_unitCost"]))
+    Annual_Care_unitCost <- dollar(as.double(theP["Annual_Care_unitCost"]))
+    Annual_ART_unitCost <- dollar(as.double(theP["Annual_ART_unitCost"]))
+    Cost <- c(Dx_unitCost,Linkage_unitCost,Annual_Care_unitCost,Annual_ART_unitCost)
+    Unit <- c("HIV-testing","Linkage","Annual Care","Annual Treatment")
+    UnitCostTable <- data.frame(Unit,Cost)
+    UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels=c("HIV-testing","Linkage","Annual Care","Annual Treatment"))
+    return(UnitCostTable)
+})
+
+output$optParTable_Rho <- renderTable({
+    theData <- seq(from = input$userOptRho_Range[1],to = input$userOptRho_Range[2],length.out = input$userOptRho_LengthOf)
+    tbl <- matrix(theData,nrow=1,ncol=input$userOptRho_LengthOf)
+    rownames(tbl) <- "Values:"
+    colnames(tbl) <- paste("p",seq(1,input$userOptRho_LengthOf,1),sep='')
+    return(tbl)
+},digits = 3)
+
+output$optParTable_Epsilon <- renderTable({
+    theData <- seq(from = input$userOptEpsilon_Range[1],to = input$userOptEpsilon_Range[2],length.out = input$userOptEpsilon_LengthOf)
+    tbl <- matrix(theData,nrow=1,ncol=input$userOptEpsilon_LengthOf)
+    rownames(tbl) <- "Values:"
+    colnames(tbl) <- paste("p",seq(1,input$userOptEpsilon_LengthOf,1),sep='')
+    return(tbl)
+},digits = 3)
+
+output$optParTable_Kappa <- renderTable({
+    theData <- seq(from = input$userOptKappa_Range[2],to = input$userOptKappa_Range[1],length.out = input$userOptKappa_LengthOf)
+    tbl <- matrix(theData,nrow=1,ncol=input$userOptKappa_LengthOf)
+    rownames(tbl) <- "Values:"
+    colnames(tbl) <- paste("p",seq(1,input$userOptKappa_LengthOf,1),sep='')
+    return(tbl)
+},digits = 3)
+
+output$optParTable_Gamma <- renderTable({
+    theData <- seq(from = input$userOptGamma_Range[1],to = input$userOptGamma_Range[2],length.out = input$userOptGamma_LengthOf)
+    tbl <- matrix(theData,nrow=1,ncol=input$userOptGamma_LengthOf)
+    rownames(tbl) <- "Values:"
+    colnames(tbl) <- paste("p",seq(1,input$userOptGamma_LengthOf,1),sep='')
+    return(tbl)
+},digits = 3)
+
+output$optParTable_Sigma <- renderTable({
+    theData <- seq(from = input$userOptSigma_Range[1],to = input$userOptSigma_Range[2],length.out = input$userOptSigma_LengthOf)
+    tbl <- matrix(theData,nrow=1,ncol=input$userOptSigma_LengthOf)
+    rownames(tbl) <- "Values:"
+    colnames(tbl) <- paste("p",seq(1,input$userOptSigma_LengthOf,1),sep='')
+    return(tbl)
+},digits = 3)
+
+output$optParTable_Omega <- renderTable({
+    theData <- seq(from = input$userOptOmega_Range[2],to = input$userOptOmega_Range[1],length.out = input$userOptOmega_LengthOf)
+    tbl <- matrix(theData,nrow=1,ncol=input$userOptOmega_LengthOf)
+    rownames(tbl) <- "Values:"
+    colnames(tbl) <- paste("p",seq(1,input$userOptOmega_LengthOf,1),sep='')
+    return(tbl)
+},digits = 3)
+
+output$optIterationTable <- renderTable({
+    ParInput <- expand.grid(
+        Rho = seq(from = input$userOptRho_Range[1],to = input$userOptRho_Range[2],length.out = input$userOptRho_LengthOf),
+        Epsilon = seq(from = input$userOptEpsilon_Range[1],to = input$userOptEpsilon_Range[2],length.out = input$userOptEpsilon_LengthOf),
+        Kappa = seq(from = input$userOptKappa_Range[2],to = input$userOptKappa_Range[1],length.out = input$userOptKappa_LengthOf),
+        Gamma = seq(from = input$userOptGamma_Range[1],to = input$userOptGamma_Range[2],length.out = input$userOptGamma_LengthOf),
+        Sigma = seq(from = input$userOptSigma_Range[1],to = input$userOptSigma_Range[2],length.out = input$userOptSigma_LengthOf),
+        Omega = seq(from = input$userOptOmega_Range[2],to = input$userOptOmega_Range[1],length.out = input$userOptOmega_LengthOf)
+    )
+    tbl <- matrix(0,nrow=2,ncol=1)
+    tbl[1,] <- dim(ParInput)[1]
+    tbl[2,] <- (dim(ParInput)[1] * 0.9745) / 60
+    colnames(tbl) <- "Value"
+    rownames(tbl) <- c("Number of iterations:","Estimated completion time (min):")
+    return(tbl)
+})
