@@ -1,14 +1,6 @@
-p <- GetParameters()
-
-GetInitial <- function(
-    in_userPLHIV,
-    in_userDx,
-    in_userCare,
-    in_userTx,
-    in_userVs,
-    in_userLtfu) {
-     default <- c(
-        UnDx_500 = (in_userPLHIV - in_userDx) * p[["Iota_1"]],
+GetInitial <- reactive({
+    c(
+        UnDx_500 = (input$userPLHIV - input$userDx) * prop_preART_500,
         UnDx_350500 = (input$userPLHIV - input$userDx) * prop_preART_350500,
         UnDx_250350 = (input$userPLHIV - input$userDx) * prop_preART_250350,
         UnDx_200250 = (input$userPLHIV - input$userDx) * prop_preART_200250,
@@ -74,6 +66,5 @@ GetInitial <- function(
         Linkage_Cost = 0,
         Annual_Care_Cost = 0,
         Annual_ART_Cost = 0
-        )
-    default
-}
+    )
+})

@@ -1,32 +1,17 @@
-# If not arguements supplied then inputs will be zeroed.
-# Still need to add a clause that allows parameters to be altered on the fly
-# Must not get too messy though
-GetParameters <- function(
-        in_rho = 0,
-        in_epsilon = 0,
-        in_gamma = 0,
-        in_omega = 0,
-        in_userART_All = 0,
-        in_userART_500 = 0,
-        in_userART_350 = 0,
-        in_userART_200 = 0,
-        in_userDxUnitCost = 0,
-        in_userLinkageUnitCost = 0,
-        in_userAnnualCareUnit = 0,
-        in_userAnnualARTUnitCost = 0) {
-     default <- c(
+GetParameters <- reactive({
+      c(
             Nu_1 = 0.193634,
             Nu_2 = 0.321304,
             Nu_3 = 0.328285,
             Nu_4 = 0.497247,
             Nu_5 = 0.559090,
             Nu_6 = 0.846406,
-            Rho = in_rho,
-            Epsilon = in_epsilon,
+            Rho = input$rho,
+            Epsilon = input$epsilon,
             Kappa = 1.079,
-            Gamma = in_gamma,
+            Gamma = input$gamma,
             Theta = 1.511,
-            Omega = in_omega,
+            Omega = input$omega,
             p = 0.95,
             s_1 = 0.1,
             s_2 = 0.4,
@@ -56,14 +41,14 @@ GetParameters <- function(
             Tau_6 = 0.045482,
             Tau_7 = 1.02785,
             Mu = 0.0374,
-            ART_All = in_userART_All,
-            ART_500 = in_userART_500,
-            ART_350 = in_userART_350,
-            ART_200 = in_userART_200,
-            Dx_unitCost = in_userDxUnitCost,
-            Linkage_unitCost = in_userLinkageUnitCost,
-            Annual_Care_unitCost = in_userAnnualCareUnit,
-            Annual_ART_unitCost = in_userAnnualARTUnitCost,
+            ART_All = input$userART_All,
+            ART_500 = input$userART_500,
+            ART_350 = input$userART_350,
+            ART_200 = input$userART_200,
+            Dx_unitCost = input$userDxUnitCost,
+            Linkage_unitCost = input$userLinkageUnitCost,
+            Annual_Care_unitCost = input$userAnnualCareUnit,
+            Annual_ART_unitCost = input$userAnnualARTUnitCost,
             Iota_1 = 0.5251,
             Iota_2 = 0.2315,
             Iota_3 = 0.1787,
@@ -77,6 +62,5 @@ GetParameters <- function(
             w4 = 5.17,
             w5 = 0.1,
             beta = 0.0275837
-        )
-    default
-}
+      )
+})

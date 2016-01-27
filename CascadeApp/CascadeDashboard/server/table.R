@@ -1,5 +1,5 @@
 output$unitCostTable <- renderTable({
-    theP <- Parameters()
+    theP <- GetParameters()
     Dx_unitCost <- dollar(as.double(theP["Dx_unitCost"]))
     Linkage_unitCost <- dollar(as.double(theP["Linkage_unitCost"]))
     Annual_Care_unitCost <- dollar(as.double(theP["Annual_Care_unitCost"]))
