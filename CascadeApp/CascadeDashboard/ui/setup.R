@@ -28,14 +28,14 @@ CountryList <- c(
     "Zimbabwe"
     )
 
-Tab_Setup <- tabItem(tabName = "setup",
+tabItem(tabName = "setup",
     column(width = 8,
         box(width = NULL,
             status = "primary",
             h1("Model Setup"),
             shinyjs::useShinyjs(),
             id = "setup-panel",
-            helpText("Select country and fill in boxes to specify the initial values of the model. 
+            helpText("Select country and fill in boxes to specify the initial values of the model.
                 The boxes correlate with indicators in the Consolidated Information Guidelines (shown below), with numbers in brackets corresponding to numbers on the indicator figure."),
             img(src="WHOGuidelinesCascade.png", height = '100%', width = '100%'),
             br(), br(),
@@ -79,8 +79,8 @@ Tab_Setup <- tabItem(tabName = "setup",
             status = "warning",
             solidHeader = TRUE,
             title = "Help Panel",
-            helpText("Please fill in all boxes with relevant data, then hit 'SAVE' and wait for the confirmation below. 
-                Hit 'RESET' to reset all values to zero, and hit 'DEMO' for a random set of values to be generated. 
+            helpText("Please fill in all boxes with relevant data, then hit 'SAVE' and wait for the confirmation below.
+                Hit 'RESET' to reset all values to zero, and hit 'DEMO' for a random set of values to be generated.
                 Unchecking the 'HIV incidence' checkbox prevents any new infections occurring in the model."),
             checkboxInput("incidenceInput","HIV Incidence", value = TRUE, width = "100%"),
             bsButton("saveInput", label = "SAVE", style = "success", block = TRUE, size = "default"),

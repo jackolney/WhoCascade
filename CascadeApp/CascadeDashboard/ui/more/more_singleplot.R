@@ -1,7 +1,3 @@
-Tab_ModelDocument <- tabItem(tabName = "model_document",
-    HTML('<iframe src=\"https://drive.google.com/file/d/0B02uVauBTUwhckJ1bG1QRmdwTGM/preview\"style=\"border: 0; position:absolute; top:50px; left:0; right:0; width:100%; height:100%\"></iframe>')
-    )
-
 VariableNames <- c(
     "UnDx_500",
     "UnDx_350500",
@@ -80,7 +76,7 @@ VariableNames <- c(
     "cd4_50"
     )
 
-Tab_SinglePlot <- tabItem(tabName = "single_plot",
+tabItem(tabName = "single_plot",
         column(width = 4,
             box(width = NULL,
                 status = "info",
@@ -94,13 +90,5 @@ Tab_SinglePlot <- tabItem(tabName = "single_plot",
                 solidHeader = FALSE,
                 plotOutput("plotOne")
             )
-        )
-    )
-
-Tab_AllPlots <- tabItem(tabName = "all_plots",
-        box(width = NULL,
-            status = "primary",
-            solidHeader = FALSE,
-            plotOutput('plotTwo')
         )
     )

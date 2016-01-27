@@ -1,5 +1,3 @@
-InterventionList <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
-
 Tab_Opt_Cost <- tabItem(tabName = "opt_cost",
     column(width = 4,
         box(width = NULL,
@@ -43,7 +41,7 @@ Tab_Opt_Parameter <- tabItem(tabName = "opt_parameter",
                 The parameter values for each intervention are then displayed in the corresponding tables."),
             bsButton("resetSliders", label = "RESET SLIDERS", block = TRUE, style = "danger"),
             p(" "),
-            helpText("Below is the number of iterations the model will simulate along with the estimated time to completion. Hit the 'OPTIMISE' button to begin the simulation. Note the progress bar 
+            helpText("Below is the number of iterations the model will simulate along with the estimated time to completion. Hit the 'OPTIMISE' button to begin the simulation. Note the progress bar
                 at the top of the screen, and the run number and elapsed time on the top right. Please wait until the optimisation algorithm has completed the below bar has turned green before proceeding to the results tab."),
             bsButton("optimiseInput", label = "OPTIMISE", block = TRUE, size = "large", style = "primary"),
             bsTooltip(id = "optimiseInput", title = "Wait for progress bar to complete before proceeding.", placement = "right", trigger = "hover"),
@@ -101,6 +99,7 @@ Tab_Opt_Parameter <- tabItem(tabName = "opt_parameter",
     )
 )
 
+InterventionList <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 Tab_Opt_Results <- tabItem(tabName = "opt_results",
     column(width = 4,
         box(width = NULL,
@@ -109,7 +108,7 @@ Tab_Opt_Results <- tabItem(tabName = "opt_results",
             title = "Results",
             helpText("This section is still under active development."),
             p("The results of the optimisation simulation are shown in the plot to the right. Hit 'Show Result Table' to view all data points and corresponding parameter values.
-                Zoom in on data points by drawing a box on the plot with the mouse and double clicking. To view the details of a specific point, draw a box with the mouse over the point and 
+                Zoom in on data points by drawing a box on the plot with the mouse and double clicking. To view the details of a specific point, draw a box with the mouse over the point and
                 hit 'Show Selected Result Table'"),
             p(" "),
             selectInput("userStratPoint","Select parameter to stratify results by:", InterventionList, selected = "Rho"),

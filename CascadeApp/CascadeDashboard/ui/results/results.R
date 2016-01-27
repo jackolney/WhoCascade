@@ -1,12 +1,12 @@
-Tab_YourCascade <- tabItem(tabName = "your_cascade",
+tabItem(tabName = "your_cascade",
     h1(textOutput('CountryName')),
     fluidRow(
         box(width = 6,
             status = "primary",
-            tags$b("Number of PLHIV:"), 
+            tags$b("Number of PLHIV:"),
             p(""),
             verbatimTextOutput("outPLHIV"),
-            tags$b("Percentage of total PLHIV:"), 
+            tags$b("Percentage of total PLHIV:"),
             p(""),
             verbatimTextOutput("outPLHIV_perc"),
             p(""),
@@ -19,7 +19,7 @@ Tab_YourCascade <- tabItem(tabName = "your_cascade",
             tags$b("Number of PLHIV who have been diagnosed:"),
             p(""),
             verbatimTextOutput("outDIAG"),
-            tags$b("Percentage of PLHIV who have been diagnosed:"), 
+            tags$b("Percentage of PLHIV who have been diagnosed:"),
             p(""),
             verbatimTextOutput("outDIAG_perc"),
             p(""),
@@ -89,7 +89,7 @@ Tab_YourCascade <- tabItem(tabName = "your_cascade",
     bsButton(inputId = "wizardResults_2", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
 )
 
-Tab_CareCascade <- tabItem(tabName = "care_cascade",
+tabItem(tabName = "care_cascade",
     fluidRow(
         box(width = NULL,
             status = "primary",
@@ -112,7 +112,7 @@ Tab_CareCascade <- tabItem(tabName = "care_cascade",
     bsButton(inputId = "wizardResults_3", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
 )
 
-Tab_PowersCascade <- tabItem(tabName = "powers_cascade",
+tabItem(tabName = "powers_cascade",
     fluidRow(
         box(width = NULL,
             status = "primary",
@@ -126,7 +126,7 @@ Tab_PowersCascade <- tabItem(tabName = "powers_cascade",
         p("These figures illustrate the 'Care Cascade' in 2015 (at baseline), and the projection after 5 years (in 2020)."),
         helpText("Figures are based on those found in Powers et al. (2015)."),
         tags$ol(
-            tags$li("% Undiagnosed = # persons undiagnosed / PLHIV"),                            
+            tags$li("% Undiagnosed = # persons undiagnosed / PLHIV"),
             tags$li("% Diagnosed = # persons diagnosed and not in care / PLHIV"),
             tags$li("% In Care = # persons diagnosed, in care, not on ART / PLHIV"),
             tags$li("% On Treatment (non-adherent) = # persons diagnosed, in care, on ART, but not adhering and not virally suppressed / PLHIV"),
@@ -138,14 +138,14 @@ Tab_PowersCascade <- tabItem(tabName = "powers_cascade",
     bsButton(inputId = "wizardResults_4", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
 )
 
-Tab_909090 <- tabItem(tabName = "_909090",
+tabItem(tabName = "_909090",
     column(width = 4,
         box(width = NULL,
             status = "warning",
             solidHeader = FALSE,
             h4("UNAIDS 90-90-90"),
-            p("By 2020, this is what the model predicts will be achieved in comparison to the UNAIDS goals of 90% diagnosed, 
-                90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any 
+            p("By 2020, this is what the model predicts will be achieved in comparison to the UNAIDS goals of 90% diagnosed,
+                90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any
                 inefficiencies in care, then click on the 'Optimisation' tab.")
         ),
         bsButton(inputId = "wizardResults_5", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
@@ -161,7 +161,7 @@ Tab_909090 <- tabItem(tabName = "_909090",
     )
 )
 
-Tab_IncidenceMortality <- tabItem(tabName = "incidence_mortality",
+tabItem(tabName = "incidence_mortality",
     column(width = 4,
         box(width = NULL,
             status = "warning",

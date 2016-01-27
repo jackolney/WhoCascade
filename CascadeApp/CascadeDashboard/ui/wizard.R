@@ -1,4 +1,4 @@
-Tab_Result_Test <- tabItem(tabName = "test",
+tabItem(tabName = "wizard",
     column(width = 8,
         fluidRow(
             box(width = NULL,

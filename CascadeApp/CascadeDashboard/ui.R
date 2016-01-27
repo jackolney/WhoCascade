@@ -9,13 +9,13 @@ library(shinydashboard)
 # devtools::install_github("shinyTable", "trestletech")
 # library(shinyTable)
 
-source("content/introduction.R")
-source("content/more.R")
-source("content/setup.R")
-source("content/parameters.R")
-source("content/results.R")
-source("content/optimisation.R")
-source("content/wizard.R")
+
+# source("ui/more.R")
+# source("ui/setup.R")
+# source("ui/parameters.R")
+# source("ui/results.R")
+# source("ui/optimisation.R")
+source("ui/wizard.R")
 
 # extendShinyjs(text = 'shinyjs.hideSidebar = function(params) { $("body").addClass("sidebar-collapse") }')
 
@@ -69,36 +69,36 @@ dashboardPage(
                     menuSubItem("Single Plot", tabName = "single_plot"),
                     menuSubItem("All Plots", tabName = "all_plots")
                     ),
-                menuItem("Wizard", tabName = "test", icon = icon("magic", class = "fa-lg fa-fw", lib = "font-awesome"))
+                menuItem("Wizard", tabName = "wizard", icon = icon("magic", class = "fa-lg fa-fw", lib = "font-awesome"))
             )
         ),
     dashboardBody(
         # This contains tabItems(tabItem(tabName = "blah"))
         tabItems(
-            Tab_Introduction,
-            Tab_Setup,
-            Tab_Parameters,
+            source("ui/introduction.R", local = TRUE)$value,
+            source("ui/setup.R", local = TRUE)$value,
+            source("ui/parameters.R", local = TRUE)$value,
 
             # Results
-            Tab_YourCascade,
-            Tab_CareCascade,
-            Tab_PowersCascade,
-            Tab_909090,
-            Tab_IncidenceMortality,
+            source("ui/results/res_yourcascade.R", local = TRUE)$value,
+            source("ui/results/res_carecascade.R", local = TRUE)$value,
+            source("ui/results/res_powerscascade.R", local = TRUE)$value,
+            source("ui/results/res_909090.R", local = TRUE)$value,
+            source("ui/results/res_incidencemortality.R", local = TRUE)$value,
 
             # Optimisation
-            Tab_Opt_Cost,
-            Tab_Opt_Parameter,
-            Tab_Opt_Results,
-            Tab_Opt_Budget,
+            source("ui/optimisation/opt_cost.R", local = TRUE)$value,
+            source("ui/optimisation/opt_parameter.R", local = TRUE)$value,
+            source("ui/optimisation/opt_results.R", local = TRUE)$value,
+            source("ui/optimisation/opt_budget.R", local = TRUE)$value,
 
             # More
-            Tab_ModelDocument,
-            Tab_SinglePlot,
-            Tab_AllPlots,
+            source("ui/more/more_modeldocument.R", local = TRUE)$value,
+            source("ui/more/more_singleplot.R", local = TRUE)$value,
+            source("ui/more/more_allplot.R", local = TRUE)$value,
 
             # Wizard Test
-            Tab_Result_Test
+            source("ui/wizard.R", local = TRUE)$value
             )
         )
     )
