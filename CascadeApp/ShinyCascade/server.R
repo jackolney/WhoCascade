@@ -18,16 +18,16 @@ source("TheModel.R")
 function(input, output, session) {
 
     # StartUp Alert
-    createAlert(session, anchorId = "startAlert", 
-        alertId = NULL, 
-        title = "WARNING", 
-        content = "This interactive web-based model is still under development. 
-        Any data entered into the model is done so at the users own risk. 
-        Clicking 'save' in any tab saves the current inputs to a centrally accessible spreadsheet hosted by Google. 
+    createAlert(session, anchorId = "startAlert",
+        alertId = NULL,
+        title = "WARNING",
+        content = "This interactive web-based model is still under development.
+        Any data entered into the model is done so at the users own risk.
+        Clicking 'save' in any tab saves the current inputs to a centrally accessible spreadsheet hosted by Google.
         Results produced by this model are not finalised.
-        Use with caution!", 
-        style = "danger", 
-        dismiss = TRUE, 
+        Use with caution!",
+        style = "danger",
+        dismiss = TRUE,
         append = TRUE)
 
     Parameters <- reactive({c(
@@ -662,7 +662,7 @@ function(input, output, session) {
 
         thePlot <- grid.arrange(
             arrangeGrob(
-                o + theme(legend.position="none"), 
+                o + theme(legend.position="none"),
                 p + theme(legend.position="none"),
                 ncol=2),
             mylegend,widths=grid::unit.c(unit(1, "npc") - lwidth, lwidth),nrow=1)
@@ -1227,7 +1227,7 @@ function(input, output, session) {
         }
         theStratPoint <<- input$userStratPoint
         ggplot(theResult,aes(x=VS,y=Cost)) +
-        geom_point(aes(color=as.factor(get(theStratPoint)),size=as.factor(the909090))) + 
+        geom_point(aes(color=as.factor(get(theStratPoint)),size=as.factor(the909090))) +
         theme_classic() +
         scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) +
         scale_size_discrete(name="Achieves 90-90-90",range = c(3,6),labels = c("no","yes")) +
@@ -1237,7 +1237,7 @@ function(input, output, session) {
         theme(axis.text.x=element_text(size=18)) +
         theme(axis.text.y=element_text(size=18)) +
         theme(axis.title=element_text(size=18)) +
-        geom_vline(xintercept = 0.9^3) + 
+        geom_vline(xintercept = 0.9^3) +
         xlab("Proportion achieving viral suppression by 2020") +
         ylab("Additional cost of care (2013 USD)") +
         scale_y_continuous(labels = comma) +
@@ -1527,11 +1527,11 @@ function(input, output, session) {
     }))
 
     # PopOver
-    addPopover(session, id = "plotOpt909090", 
-        title = "Info", 
-        content = "Vertical line represents 73% viral suppression (end goal of 90-90-90 targets, 0.9^3 = 0.729).", 
-        placement = "bottom", 
-        trigger = "hover", 
+    addPopover(session, id = "plotOpt909090",
+        title = "Info",
+        content = "Vertical line represents 73% viral suppression (end goal of 90-90-90 targets, 0.9^3 = 0.729).",
+        placement = "bottom",
+        trigger = "hover",
         options = NULL)
 
     # Saving input values from setup tab.
