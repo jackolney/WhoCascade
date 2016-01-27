@@ -66,11 +66,6 @@ ComplexCascade <- function(t, y, parms) {
     dAnnual_Care_Cost <- (y[["Care_500"]] + y[["Care_350500"]] + y[["Care_250350"]] + y[["Care_200250"]] + y[["Care_100200"]] + y[["Care_50100"]] + y[["Care_50"]]) * parms[["Annual_Care_unitCost"]]
     dAnnual_ART_Cost <- (y[["Tx_Na_500"]] + y[["Tx_Na_350500"]] + y[["Tx_Na_250350"]] + y[["Tx_Na_200250"]] + y[["Tx_Na_100200"]] + y[["Tx_Na_50100"]] + y[["Tx_Na_50"]] + y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_250350"]] + y[["Tx_A_200250"]] + y[["Tx_A_100200"]] + y[["Tx_A_50100"]] + y[["Tx_A_50"]]) * parms[["Annual_ART_unitCost"]]
     
-    # Output variables
-    dN <- y[["UnDx_500"]] + y[["UnDx_350500"]] + y[["UnDx_250350"]] + y[["UnDx_200250"]] + y[["UnDx_100200"]] + y[["UnDx_50100"]] + y[["UnDx_50"]] + y[["Dx_500"]] + y[["Dx_350500"]] + y[["Dx_250350"]] + y[["Dx_200250"]] + y[["Dx_100200"]] + y[["Dx_50100"]] + y[["Dx_50"]] + y[["Care_500"]] + y[["Care_350500"]] + y[["Care_250350"]] + y[["Care_200250"]] + y[["Care_100200"]] + y[["Care_50100"]] + y[["Care_50"]] + y[["PreLtfu_500"]] + y[["PreLtfu_350500"]] + y[["PreLtfu_250350"]] + y[["PreLtfu_200250"]] + y[["PreLtfu_100200"]] + y[["PreLtfu_50100"]] + y[["PreLtfu_50"]] + y[["Tx_Na_500"]] + y[["Tx_Na_350500"]] + y[["Tx_Na_250350"]] + y[["Tx_Na_200250"]] + y[["Tx_Na_100200"]] + y[["Tx_Na_50100"]] + y[["Tx_Na_50"]] + y[["Tx_A_500"]] + y[["Tx_A_350500"]] + y[["Tx_A_250350"]] + y[["Tx_A_200250"]] + y[["Tx_A_100200"]] + y[["Tx_A_50100"]] + y[["Tx_A_50"]] + y[["Ltfu_500"]] + y[["Ltfu_350500"]] + y[["Ltfu_250350"]] + y[["Ltfu_200250"]] + y[["Ltfu_100200"]] + y[["Ltfu_50100"]] + y[["Ltfu_50"]]
-
-
-
     list(c(
         dUnDx_500,
         dUnDx_350500,
@@ -127,6 +122,5 @@ ComplexCascade <- function(t, y, parms) {
         dDx_Cost,
         dLinkage_Cost,
         dAnnual_Care_Cost,
-        dAnnual_ART_Cost,
-        dN))
+        dAnnual_ART_Cost))
 }

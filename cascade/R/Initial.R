@@ -80,10 +80,7 @@ initial <- function(p) {
         Dx_Cost = 0,
         Linkage_Cost = 0,
         Annual_Care_Cost = 0,
-        Annual_ART_Cost = 0,
-
-        # Output Variables
-        N = 0
+        Annual_ART_Cost = 0
     )
 
     default
