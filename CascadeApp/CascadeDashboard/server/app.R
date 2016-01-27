@@ -24,5 +24,8 @@ source("server/model/parameters.R", local = TRUE)
 # Need one for Initial
 source("server/model/initial.R", local = TRUE)
 
-# Need to be removed EVENTUALLY
+# Model call function
+source("server/model/model.R", local = TRUE)
+
+# R-version of Model
 source("TheModel.R")

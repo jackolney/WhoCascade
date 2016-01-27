@@ -117,32 +117,56 @@ observeEvent(input$optimiseInput, {
             Dx_unitCost = input$userDxUnitCost,
             Linkage_unitCost = input$userLinkageUnitCost,
             Annual_Care_unitCost = input$userAnnualCareUnit,
-            Annual_ART_unitCost = input$userAnnualARTUnitCost
+            Annual_ART_unitCost = input$userAnnualARTUnitCost,
+            Iota_1 = 0.5251,
+            Iota_2 = 0.2315,
+            Iota_3 = 0.1787,
+            Iota_4 = 0.0615,
+            Iota_5 = 0.0011,
+            Iota_6 = 0.0008,
+            Iota_7 = 0.0014,
+            w1 = 1.35,
+            w2 = 1,
+            w3 = 1.64,
+            w4 = 5.17,
+            w5 = 0.1,
+            beta = 0.0275837
         )
 
+        OptPar[["beta"]] <- Beta
+        OptPar[["Iota_1"]] <- p_preArt500
+        OptPar[["Iota_2"]] <- p_preArt350500
+        OptPar[["Iota_3"]] <- p_preArt250350
+        OptPar[["Iota_4"]] <- p_preArt200250
+        OptPar[["Iota_5"]] <- p_preArt100200
+        OptPar[["Iota_6"]] <- p_preArt50100
+        OptPar[["Iota_7"]] <- p_preArt50
+
+        y <- GetInitial()
+
         Time <- seq(0,5,0.02)
-        theOut <- data.frame(ode(times = Time, y = GetInitial(), func = ComplexCascade, parms = OptPar))
-        theOut <- mutate(theOut,N = UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50 + Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50)
-        theOut <- mutate(theOut,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
-        theOut <- mutate(theOut,UnDx = (UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50) / N)
-        theOut <- mutate(theOut,Dx = (Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50) / N)
-        theOut <- mutate(theOut,Care = (Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50) / N)
-        theOut <- mutate(theOut,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50) / N)
-        theOut <- mutate(theOut,Tx = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
-        theOut <- mutate(theOut,Vs = (Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
-        theOut <- mutate(theOut,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50) / N)
-        theOut <- mutate(theOut,NaturalMortalityProp = NaturalMortality / N)
-        theOut <- mutate(theOut,HivMortalityProp = HivMortality / N)
-        theOut <- mutate(theOut,NewInfProp = NewInf / N)
-        theOut <- mutate(theOut,TotalCost = Dx_Cost + Linkage_Cost + Annual_Care_Cost + Annual_ART_Cost)
-        theOut <- mutate(theOut,DALY = (((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.078) +  # >350, no ART
+        result <- data.frame(deSolve::ode(times = Time, y = y, func = "derivs", parms = OptPar, initfunc = "initmod", dllname = "cascade"))
+        result <- mutate(result,N = UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50 + Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50)
+        result <- mutate(result,ART = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
+        result <- mutate(result,UnDx = (UnDx_500 + UnDx_350500 + UnDx_250350 + UnDx_200250 + UnDx_100200 + UnDx_50100 + UnDx_50) / N)
+        result <- mutate(result,Dx = (Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50) / N)
+        result <- mutate(result,Care = (Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50) / N)
+        result <- mutate(result,PreLtfu = (PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50) / N)
+        result <- mutate(result,Tx = (Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
+        result <- mutate(result,Vs = (Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / N)
+        result <- mutate(result,Ltfu = (Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50) / N)
+        result <- mutate(result,NaturalMortalityProp = NaturalMortality / N)
+        result <- mutate(result,HivMortalityProp = HivMortality / N)
+        result <- mutate(result,NewInfProp = NewInf / N)
+        result <- mutate(result,TotalCost = Dx_Cost + Linkage_Cost + Annual_Care_Cost + Annual_ART_Cost)
+        result <- mutate(result,DALY = (((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.078) +  # >350, no ART
                                   ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.274) +  # 200-350, no ART
                                   ((UnDx_100200 + Dx_100200 + Care_100200 + PreLtfu_100200 + Tx_Na_100200 + Ltfu_100200 + UnDx_50100 + Dx_50100 + Care_50100 + PreLtfu_50100 + Tx_Na_50100 + Ltfu_50100 + UnDx_50 + Dx_50 + Care_50 + PreLtfu_50 + Tx_Na_50 + Ltfu_50) * 0.582) + # <200, no ART
                                   ((Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) * 0.078))) # on ART and virally suppressed
-        # PLHIV = as.double(sum(filter(theOut,time == 5) %>% select(N)))
-        # dx = as.double(sum(filter(theOut,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
-        # tx = as.double(sum(filter(theOut,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
-        # vs = as.double(sum(filter(theOut,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
+        # PLHIV = as.double(sum(filter(result,time == 5) %>% select(N)))
+        # dx = as.double(sum(filter(result,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
+        # tx = as.double(sum(filter(result,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50))))
+        # vs = as.double(sum(filter(result,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50))))
         # p_dx <- dx / PLHIV
         # p_tx <- tx / dx
         # p_vs <- vs / tx
@@ -151,10 +175,10 @@ observeEvent(input$optimiseInput, {
         # the909090 <- data.frame(definition,results)
 
         # Outputs to return
-        # cost <<- as.double(sum(filter(theOut,time == 5) %>% select(TotalCost)))
+        # cost <<- as.double(sum(filter(result,time == 5) %>% select(TotalCost)))
         # output <- 1/3 * sum((target - the909090$results)^2)
         # print(paste("Error =",output,"Cost =",dollar(cost)))
-        return(theOut)
+        return(result)
     }
 
     withProgress(min = 0, max = 1, {
@@ -468,36 +492,36 @@ observeEvent(input$userCountry, {
     theCD4 <- getCD4Data(theTable)
     if(is.na(as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500)))) {
         output$warningCD4Text <- renderText({return(paste("CD4 Warning! Using Kenya as default."))})
-        prop_preART_500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.500))
-        prop_preART_350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.350500))
-        prop_preART_250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.250350))
-        prop_preART_200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.200250))
-        prop_preART_100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.100200))
-        prop_preART_50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50100))
-        prop_preART_50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50))
-        prop_onART_500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.500))
-        prop_onART_350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.350500))
-        prop_onART_250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.250350))
-        prop_onART_200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.200250))
-        prop_onART_100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.100200))
-        prop_onART_50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50100))
-        prop_onART_50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50))
+        p_preArt500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.500))
+        p_preArt350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.350500))
+        p_preArt250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.250350))
+        p_preArt200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.200250))
+        p_preArt100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.100200))
+        p_preArt50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50100))
+        p_preArt50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50))
+        p_onArt500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.500))
+        p_onArt350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.350500))
+        p_onArt250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.250350))
+        p_onArt200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.200250))
+        p_onArt100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.100200))
+        p_onArt50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50100))
+        p_onArt50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50))
     } else {
         # output$warningCD4Text <- renderText({return(paste(input$userCountry,"CD4 data loaded."))})
-        prop_preART_500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500))
-        prop_preART_350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.350500))
-        prop_preART_250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.250350))
-        prop_preART_200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.200250))
-        prop_preART_100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.100200))
-        prop_preART_50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50100))
-        prop_preART_50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50))
-        prop_onART_500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.500))
-        prop_onART_350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.350500))
-        prop_onART_250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.250350))
-        prop_onART_200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.200250))
-        prop_onART_100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.100200))
-        prop_onART_50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50100))
-        prop_onART_50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50))
+        p_preArt500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500))
+        p_preArt350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.350500))
+        p_preArt250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.250350))
+        p_preArt200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.200250))
+        p_preArt100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.100200))
+        p_preArt50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50100))
+        p_preArt50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50))
+        p_onArt500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.500))
+        p_onArt350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.350500))
+        p_onArt250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.250350))
+        p_onArt200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.200250))
+        p_onArt100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.100200))
+        p_onArt50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50100))
+        p_onArt50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50))
     }
     print(paste("Country data:",NewInfections))
 })
