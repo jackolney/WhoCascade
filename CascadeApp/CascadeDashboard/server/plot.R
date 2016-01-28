@@ -1,176 +1,18 @@
-GenCascadePlot <- function(h) {
-        result <- CallModel()
+output$plotValidation_PLHIV <- renderPlot({ print(GenYourCascadePlot(1)) }, height = 300, width = 'auto', bg = "transparent")
 
-        t0_DX <- sum(result$Dx[1], result$Care[1], result$PreLtfu[1], result$ART[1], result$Ltfu[1])
-        t0_CX <- sum(result$Care[1], result$ART[1])
-        t0_TX <- result$ART[1]
-        t0_VS <- result$Vs[1]
-        t0_ <- c(1, t0_DX, t0_CX, t0_TX, t0_VS)
-        def <- c("% PLHIV", "% Diagnosed", "% In Care", "% Treatment", "% Suppressed")
-        t0 <- data.frame(def, t0_)
-        t0$def <- factor(t0$def, levels = c("% PLHIV", "% Diagnosed", "% In Care", "% Treatment", "% Suppressed"))
-        c.fill <- rev(brewer.pal(9, "Blues")[3:8])
-        c.fill[h] <- "red"
+output$plotValidation_DIAG <- renderPlot({ print(GenYourCascadePlot(2)) }, height = 300, width = 'auto', bg = "transparent")
 
-        o <- ggplot(t0, aes(def, t0_))
-        o <- o + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
-        o <- o + scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0))
-        o <- o + scale_fill_manual(values = c.fill)
-        o <- o + ggtitle("Care Cascade in 2015")
-        o <- o + theme_classic()
-        o <- o + theme(title = element_text(size = 15))
-        o <- o + theme(axis.title = element_blank())
-        o <- o + theme(axis.text.x = element_text(size = 11))
-        o <- o + theme(axis.text.y = element_text(size = 15))
-        o <- o + theme(legend.position = "none")
-        o <- o + theme(plot.background = element_blank())
-        o <- o + theme(panel.background = element_blank())
-        return(o)
-}
+output$plotValidation_CARE <- renderPlot({ print(GenYourCascadePlot(3)) }, height = 300, width = 'auto', bg = "transparent")
 
-output$plotValidation_PLHIV <- renderPlot({print(GenCascadePlot(1))}, height = 300, width = 'auto', bg = "transparent")
+output$plotValidation_ART <- renderPlot({ print(GenYourCascadePlot(4)) }, height = 300, width = 'auto', bg = "transparent")
 
-output$plotValidation_DIAG <- renderPlot({print(GenCascadePlot(2))}, height = 300, width = 'auto', bg = "transparent")
+output$plotValidation_SUPP <- renderPlot({ print(GenYourCascadePlot(5)) }, height = 300, width = 'auto', bg = "transparent")
 
-output$plotValidation_CARE <- renderPlot({print(GenCascadePlot(3))}, height = 300, width = 'auto', bg = "transparent")
+output$plotValidation_LTFU <- renderPlot({ print(GenLtfuPlot()) }, height = 300, width = 'auto', bg = "transparent")
 
-output$plotValidation_ART <- renderPlot({print(GenCascadePlot(4))}, height = 300, width = 'auto', bg = "transparent")
+output$plotCascade <- renderPlot({ print(GenCascadePlot()) }, height = 400, width = 'auto')
 
-output$plotValidation_SUPP <- renderPlot({print(GenCascadePlot(5))}, height = 300, width = 'auto', bg = "transparent")
 
-output$plotOne <- renderPlot({
-    p <- ggplot(CallModel(), aes_string(x="time",y=input$y)) +
-    geom_line(size=2) +
-    theme_classic() +
-    theme(axis.text.x=element_text(size=18)) +
-    theme(axis.text.y=element_text(size=18)) +
-    theme(axis.title=element_text(size=18)) +
-    xlab("Year") +
-    scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
-    print(p)
-    },
-    height=500,
-    width='auto'
-)
-
-output$plotTwo <- renderPlot({
-    out <- CallModel()
-    a <- ggplot(out,aes(x=time,y=UnDx)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    b <- ggplot(out,aes(x=time,y=Dx)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    c <- ggplot(out,aes(x=time,y=Care)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    d <- ggplot(out,aes(x=time,y=PreLtfu)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    e <- ggplot(out,aes(x=time,y=Tx)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    f <- ggplot(out,aes(x=time,y=Vs)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    g <- ggplot(out,aes(x=time,y=Ltfu)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    h <- ggplot(out,aes(x=time,y=N)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    i <- ggplot(out,aes(x=time,y=NewInf)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    j <- ggplot(out,aes(x=time,y=TotalCost)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    k <- ggplot(out,aes(x=time,y=HivMortalityProp)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    l <- ggplot(out,aes(x=time,y=NaturalMortalityProp)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
-    print(grid.arrange(a, b, c, d, e, f, g, h, i, j, k, l , nrow = 4, ncol = 3))
-    },
-    height='auto',
-    width='auto'
-)
-
-output$plotValidation_LTFU <- renderPlot({
-        out <- CallModel()
-        t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
-        t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
-        t0_results <- c(t0_ltfu)
-        definition <- c("% LTFU")
-        t0 <- data.frame(definition,t0_results)
-        levels(t0$definition)
-        t0$definition <- factor(t0$definition, levels=c("% LTFU"))
-
-        fill.coll <- "red"
-
-        o <- ggplot(t0,aes(definition,t0_results))
-        o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-        o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
-        o <- o + scale_fill_manual(values=fill.coll)
-        o <- o + ggtitle("Care Cascade in 2015")
-        o <- o + theme_classic()
-        o <- o + theme(title=element_text(size=15))
-        o <- o + theme(axis.title=element_blank())
-        o <- o + theme(axis.text.x=element_text(size=11))
-        o <- o + theme(axis.text.y=element_text(size=15))
-        o <- o + theme(legend.position="none")
-        o <- o + theme(plot.background=element_blank())
-        o <- o + theme(panel.background=element_blank())
-        return(o)
-        },
-        height=300,
-        width='auto',
-        bg="transparent"
-    )
-
-output$plotCascade <- renderPlot({
-    out <- CallModel()
-
-    t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
-    t0_all = t0_N / t0_N
-    t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
-    t0_cx = as.double(sum(filter(out,time == 0) %>% select(c(Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t0_N
-    t0_tx = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t0_N
-    t0_vs = as.double(sum(filter(out,time == 0) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50)))) / t0_N
-
-    t0_results <- c(t0_all,t0_dx,t0_cx,t0_tx,t0_vs)
-
-    definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed")
-    t0 <- data.frame(definition,t0_results)
-
-    levels(t0$definition)
-    t0$definition <- factor(t0$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed"))
-
-    fill.coll <- rev(brewer.pal(9,"Blues")[3:8])
-
-    o <- ggplot(t0,aes(definition,t0_results))
-    o <- o + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-    o <- o + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
-    o <- o + scale_fill_manual(values=fill.coll)
-    o <- o + ggtitle("Care Cascade in 2015")
-    o <- o + theme_classic()
-    o <- o + theme(title=element_text(size=18))
-    o <- o + theme(axis.title=element_blank())
-    o <- o + theme(axis.text.x=element_text(size=15))
-    o <- o + theme(axis.text.y=element_text(size=18))
-    o <- o + theme(legend.position="none")
-
-    t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
-    t5_all = t5_N / t5_N
-    t5_dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t5_N
-    t5_cx = as.double(sum(filter(out,time == 5) %>% select(c(Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t5_N
-    t5_tx = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50)))) / t5_N
-    t5_vs = as.double(sum(filter(out,time == 5) %>% select(c(Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50)))) / t5_N
-
-    t5_results <- c(t5_all,t5_dx,t5_cx,t5_tx,t5_vs)
-
-    definition <- c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed")
-    t5 <- data.frame(definition,t5_results)
-
-    levels(t5$definition)
-    t5$definition <- factor(t5$definition, levels=c("% PLHIV","% Diagnosed","% In Care","% Treatment","% Suppressed"))
-
-    fill.coll <- rev(brewer.pal(9,"Blues")[3:8])
-
-    p <- ggplot(t5,aes(definition,t5_results))
-    p <- p + geom_bar(aes(fill=definition),position='dodge',stat='identity')
-    p <- p + scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.1),labels=percent, expand = c(0,0))
-    p <- p + scale_fill_manual(values=fill.coll)
-    p <- p + ggtitle("Care Cascade in 2020")
-    p <- p + theme_classic()
-    p <- p + theme(title=element_text(size=18))
-    p <- p + theme(axis.title=element_blank())
-    p <- p + theme(axis.text.x=element_text(size=15))
-    p <- p + theme(axis.text.y=element_text(size=18))
-    p <- p + theme(legend.position="none")
-
-    print(grid.arrange(o,p,nrow=1,ncol=2))
-    },
-    height=400,
-    width='auto'
-)
 
 output$plotPowersCascade <- renderPlot({
     out <- CallModel()
@@ -557,4 +399,39 @@ output$plotAidsDeaths_wizard <- renderPlot({
     },
     height = 240,
     width = 'auto'
+)
+
+output$plotOne <- renderPlot({
+    p <- ggplot(CallModel(), aes_string(x="time",y=input$y)) +
+    geom_line(size=2) +
+    theme_classic() +
+    theme(axis.text.x=element_text(size=18)) +
+    theme(axis.text.y=element_text(size=18)) +
+    theme(axis.title=element_text(size=18)) +
+    xlab("Year") +
+    scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
+    print(p)
+    },
+    height=500,
+    width='auto'
+)
+
+output$plotTwo <- renderPlot({
+    out <- CallModel()
+    a <- ggplot(out,aes(x=time,y=UnDx)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    b <- ggplot(out,aes(x=time,y=Dx)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    c <- ggplot(out,aes(x=time,y=Care)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    d <- ggplot(out,aes(x=time,y=PreLtfu)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    e <- ggplot(out,aes(x=time,y=Tx)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    f <- ggplot(out,aes(x=time,y=Vs)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    g <- ggplot(out,aes(x=time,y=Ltfu)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    h <- ggplot(out,aes(x=time,y=N)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    i <- ggplot(out,aes(x=time,y=NewInf)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    j <- ggplot(out,aes(x=time,y=TotalCost)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    k <- ggplot(out,aes(x=time,y=HivMortalityProp)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    l <- ggplot(out,aes(x=time,y=NaturalMortalityProp)) + geom_line() + theme(axis.text.x=element_text(size=18)) + theme(axis.text.y=element_text(size=18)) + theme(axis.title=element_text(size=18)) + xlab("Year") + theme_classic()
+    print(grid.arrange(a, b, c, d, e, f, g, h, i, j, k, l , nrow = 4, ncol = 3))
+    },
+    height='auto',
+    width='auto'
 )
