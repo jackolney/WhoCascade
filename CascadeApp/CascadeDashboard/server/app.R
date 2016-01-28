@@ -24,6 +24,9 @@ source("server/model/parameters.R", local = TRUE)
 # Need one for Initial
 source("server/model/initial.R", local = TRUE)
 
+# Beta calculation
+source("server/model/beta.R", local = TRUE)
+
 # Model call function
 source("server/model/model.R", local = TRUE)
 

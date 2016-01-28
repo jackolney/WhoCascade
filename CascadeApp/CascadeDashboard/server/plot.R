@@ -1,5 +1,5 @@
 output$plotOne <- renderPlot({
-    p <- ggplot(out(), aes_string(x="time",y=input$y)) +
+    p <- ggplot(CallModel(), aes_string(x="time",y=input$y)) +
     geom_line(size=2) +
     theme_classic() +
     # theme_economist() +
@@ -15,7 +15,7 @@ output$plotOne <- renderPlot({
 )
 
 output$plotTwo <- renderPlot({
-    out <- out()
+    out <- CallModel()
     a <- ggplot(out,aes(x=time,y=UnDx)) +
         geom_line() +
         theme(axis.text.x=element_text(size=18)) +
@@ -122,7 +122,7 @@ output$plotTwo <- renderPlot({
 )
 
 GenerateCascadePlot <- function(highlight) {
-        out <- out()
+        out <- CallModel()
         t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
         t0_all = t0_N / t0_N
         t0_dx = as.double(sum(filter(out,time == 0) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
@@ -168,7 +168,7 @@ output$plotValidation_SUPP <- renderPlot({print(GenerateCascadePlot(5))},
 
 
 output$plotValidation_LTFU <- renderPlot({
-        out <- out()
+        out <- CallModel()
         t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
         t0_ltfu = as.double(sum(filter(out,time == 0) %>% select(c(PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50)))) / t0_N
         t0_results <- c(t0_ltfu)
@@ -200,7 +200,7 @@ output$plotValidation_LTFU <- renderPlot({
     )
 
 output$plotCascade <- renderPlot({
-    out <- out()
+    out <- CallModel()
 
     t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
     t0_all = t0_N / t0_N
@@ -267,7 +267,7 @@ output$plotCascade <- renderPlot({
 )
 
 output$plotPowersCascade <- renderPlot({
-    out <- out()
+    out <- CallModel()
 
     t0_N = as.double(sum(filter(out,time == 0) %>% select(N)))
     t0_undx = as.double(sum(filter(out,time == 0) %>% select(c(UnDx_500,UnDx_350500,UnDx_250350,UnDx_200250,UnDx_100200,UnDx_50100,UnDx_50)))) / t0_N
@@ -401,7 +401,7 @@ width='auto'
 
 
 output$plot909090 <- renderPlot({
-    out <- out()
+    out <- CallModel()
     PLHIV = as.double(sum(filter(out,time == 5) %>% select(N)))
     # dx / PLHIV
     dx = as.double(sum(filter(out,time == 5) %>% select(c(Dx_500,Dx_350500,Dx_250350,Dx_200250,Dx_100200,Dx_50100,Dx_50,Care_500,Care_350500,Care_250350,Care_200250,Care_100200,Care_50100,Care_50,PreLtfu_500,PreLtfu_350500,PreLtfu_250350,PreLtfu_200250,PreLtfu_100200,PreLtfu_50100,PreLtfu_50,Tx_Na_500,Tx_Na_350500,Tx_Na_250350,Tx_Na_200250,Tx_Na_100200,Tx_Na_50100,Tx_Na_50,Tx_A_500,Tx_A_350500,Tx_A_250350,Tx_A_200250,Tx_A_100200,Tx_A_50100,Tx_A_50,Ltfu_500,Ltfu_350500,Ltfu_250350,Ltfu_200250,Ltfu_100200,Ltfu_50100,Ltfu_50))))
@@ -446,7 +446,7 @@ output$plot909090 <- renderPlot({
 
 
 output$plotNewInf <- renderPlot({
-    p <- ggplot(out(), aes(x=time,y=NewInfProp)) +
+    p <- ggplot(CallModel(), aes(x=time,y=NewInfProp)) +
         geom_line(size=2) +
         theme_classic() +
         theme(axis.text.x=element_text(size=18)) +
@@ -462,7 +462,7 @@ output$plotNewInf <- renderPlot({
 )
 
 output$plotAidsDeaths <- renderPlot({
-    p <- ggplot(out(), aes(x=time,y=HivMortalityProp)) +
+    p <- ggplot(CallModel(), aes(x=time,y=HivMortalityProp)) +
         geom_line(size=2) +
         theme_classic() +
         theme(axis.text.x=element_text(size=18)) +
@@ -585,7 +585,7 @@ output$plotOptDALYs909090 <- renderPlot({
 ##############
 
 output$plotCascade_wizard <- renderPlot({
-    out <- out()
+    out <- CallModel()
 
     t5_N = as.double(sum(filter(out,time == 5) %>% select(N)))
     t5_all = t5_N / t5_N
@@ -622,7 +622,7 @@ output$plotCascade_wizard <- renderPlot({
 )
 
 output$plotNewInf_wizard <- renderPlot({
-    p <- ggplot(out(), aes(x = time,y = NewInf)) +
+    p <- ggplot(CallModel(), aes(x = time,y = NewInf)) +
         geom_line(size = 2) +
         theme_classic() +
         theme(axis.text.x = element_text(size = 10)) +
@@ -638,7 +638,7 @@ output$plotNewInf_wizard <- renderPlot({
 )
 
 output$plotAidsDeaths_wizard <- renderPlot({
-    p <- ggplot(out(), aes(x = time,y = HivMortality)) +
+    p <- ggplot(CallModel(), aes(x = time,y = HivMortality)) +
         geom_line(size = 2) +
         theme_classic() +
         theme(axis.text.x = element_text(size = 10)) +
