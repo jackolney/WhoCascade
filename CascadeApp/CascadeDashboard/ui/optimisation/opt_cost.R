@@ -16,16 +16,16 @@ tabItem(tabName = "opt_cost",
         shinyjs::useShinyjs(),
         id = "cost-panel",
         wellPanel(
-            sliderInput('userDxUnitCost','Unit cost of diagnosing a patient (USD):',min=0,max=100,value=10,step=1)
+            sliderInput('userDxUnitCost','Unit cost of diagnosing a patient (USD):', min = 0, max = 100, value = 10, step = 1)
             ),
         wellPanel(
-            sliderInput('userLinkageUnitCost','Unit cost of linking a patient to care (USD):',min=0,max=100,value=40,step=1)
+            sliderInput('userLinkageUnitCost','Unit cost of linking a patient to care (USD):', min = 0, max = 100, value = 40, step = 1)
             ),
         wellPanel(
-            sliderInput('userAnnualCareUnit','Annual cost of keeping a patient in pre-ART care (USD):',min=0,max=100,value=40,step=1)
+            sliderInput('userAnnualCareUnit','Annual cost of keeping a patient in pre-ART care (USD):', min = 0, max = 100, value = 40, step = 1)
             ),
         wellPanel(
-            sliderInput('userAnnualARTUnitCost','Annual cost of ART (USD):',min=0,max=500,value=367,step=1)
+            sliderInput('userAnnualARTUnitCost','Annual cost of ART (USD):', min = 0, max = 500, value = 367, step = 1)
             )
     )
 )

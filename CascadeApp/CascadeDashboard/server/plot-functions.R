@@ -174,3 +174,59 @@ GenAidsDeathsPlot <- function() {
     ylab("# AIDS deaths / total infected population") +
     scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
 }
+
+GenSinglePlot <- function() {
+    ggplot(CallModel(), aes_string(x = "time", y = input$y)) +
+    geom_line(size = 2) +
+    theme_classic() +
+    theme(axis.text.x = element_text(size = 18)) +
+    theme(axis.text.y = element_text(size = 18)) +
+    theme(axis.title = element_text(size = 18)) +
+    xlab("Year") +
+    scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+}
+
+GenAllPlot <- function() {
+    result <- CallModel()
+    grid.arrange(
+
+        ggplot(result, aes(x = time, y = UnDx)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = Dx)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = Care)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = PreLtfu)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = Tx)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = Vs)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = Ltfu)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = N)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = NewInf)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = TotalCost)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = HivMortalityProp)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        ggplot(result, aes(x = time, y = NaturalMortalityProp)) + geom_line() +
+        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+
+        nrow = 4,
+        ncol = 3
+    )
+}

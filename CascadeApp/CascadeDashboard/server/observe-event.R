@@ -1,5 +1,5 @@
 observeEvent(input$demoInput, {
-    updateSelectInput(session,"userCountry",selected="Kenya")
+    updateSelectInput(session, "userCountry", selected = "Kenya")
 
     if(input$userPLHIV == 0 || is.na(input$userPLHIV)) {
         newPLHIV <- round(1.4e+6,0) # Estimate from Kenya (Marrakech)
@@ -9,12 +9,12 @@ observeEvent(input$demoInput, {
         newVs <- round(295000,0) # Estimate from Kenya (Marrakech)
         newLtfu <- round(0,0) # Estimate from Kenya (Marrakech)
 
-        updateNumericInput(session,"userPLHIV",value=newPLHIV)
-        updateNumericInput(session,"userDx",value=newDx)
-        updateNumericInput(session,"userCare",value=newCare)
-        updateNumericInput(session,"userTx",value=newTx)
-        updateNumericInput(session,"userVs",value=newVs)
-        updateNumericInput(session,"userLtfu",value=newLtfu)
+        updateNumericInput(session, "userPLHIV", value = newPLHIV)
+        updateNumericInput(session, "userDx", value = newDx)
+        updateNumericInput(session, "userCare", value = newCare)
+        updateNumericInput(session, "userTx", value = newTx)
+        updateNumericInput(session, "userVs", value = newVs)
+        updateNumericInput(session, "userLtfu", value = newLtfu)
     } else {
         newPLHIV <- round(1.4e+6,0) # Estimate from Kenya (Marrakech)
         newDx <- round(newPLHIV * 0.79262,0) # Estimate from AMPATH
@@ -23,19 +23,19 @@ observeEvent(input$demoInput, {
         newVs <- round(295000,0) # Estimate from Kenya (Marrakech)
         newLtfu <- round(0,0) # Estimate from Kenya (Marrakech)
 
-        updateNumericInput(session,"userPLHIV",value=newPLHIV)
-        updateNumericInput(session,"userDx",value=newDx)
-        updateNumericInput(session,"userCare",value=newCare)
-        updateNumericInput(session,"userTx",value=newTx)
-        updateNumericInput(session,"userVs",value=newVs)
-        updateNumericInput(session,"userLtfu",value=newLtfu)
+        updateNumericInput(session, "userPLHIV", value = newPLHIV)
+        updateNumericInput(session, "userDx", value = newDx)
+        updateNumericInput(session, "userCare", value = newCare)
+        updateNumericInput(session, "userTx", value = newTx)
+        updateNumericInput(session, "userVs", value = newVs)
+        updateNumericInput(session, "userLtfu", value = newLtfu)
     }
 })
 
 observeEvent(input$userRetArt12mths, {
     if(input$userRetArt12mths != 0 || is.na(input$userRetArt12mths)) {
         newValue <- -log(input$userRetArt12mths)
-        updateSliderInput(session,"omega",value=newValue,min=0,max=5,step=0.01)
+        updateSliderInput(session, "omega", value = newValue, min = 0, max = 5, step = 0.01)
     }
 })
 
@@ -47,12 +47,12 @@ observeEvent(input$optimiseInput, {
 
     # Parameter Input Values
     ParInput <- expand.grid(
-        Rho = seq(from = input$userOptRho_Range[1],to = input$userOptRho_Range[2],length.out = input$userOptRho_LengthOf),
-        Epsilon = seq(from = input$userOptEpsilon_Range[1],to = input$userOptEpsilon_Range[2],length.out = input$userOptEpsilon_LengthOf),
-        Kappa = seq(from = input$userOptKappa_Range[2],to = input$userOptKappa_Range[1],length.out = input$userOptKappa_LengthOf),
-        Gamma = seq(from = input$userOptGamma_Range[1],to = input$userOptGamma_Range[2],length.out = input$userOptGamma_LengthOf),
-        Sigma = seq(from = input$userOptSigma_Range[1],to = input$userOptSigma_Range[2],length.out = input$userOptSigma_LengthOf),
-        Omega = seq(from = input$userOptOmega_Range[2],to = input$userOptOmega_Range[1],length.out = input$userOptOmega_LengthOf)
+        Rho = seq(from = input$userOptRho_Range[1], to = input$userOptRho_Range[2], length.out = input$userOptRho_LengthOf),
+        Epsilon = seq(from = input$userOptEpsilon_Range[1], to = input$userOptEpsilon_Range[2], length.out = input$userOptEpsilon_LengthOf),
+        Kappa = seq(from = input$userOptKappa_Range[2], to = input$userOptKappa_Range[1], length.out = input$userOptKappa_LengthOf),
+        Gamma = seq(from = input$userOptGamma_Range[1], to = input$userOptGamma_Range[2], length.out = input$userOptGamma_LengthOf),
+        Sigma = seq(from = input$userOptSigma_Range[1], to = input$userOptSigma_Range[2], length.out = input$userOptSigma_LengthOf),
+        Omega = seq(from = input$userOptOmega_Range[2], to = input$userOptOmega_Range[1], length.out = input$userOptOmega_LengthOf)
     )
 
     if(input$incidenceInput == TRUE) {
@@ -449,44 +449,36 @@ observeEvent(input$plotOptDALYs909090_dblclick, {
     }
 )
 
-# Button Control
+# -------------- #
+# Button Control #
+# -------------- #
 
 # Plot 1
-observeEvent(input$showOpt909090Plot, ({
-    updateCollapse(session, "optCollapse", open = "Plot 90-90-90")
-}))
+observeEvent(input$showOpt909090Plot, ({updateCollapse(session, "optCollapse", open = "Plot 90-90-90")}))
 
 # Plot 2
-observeEvent(input$showOptDALYsPlot, ({
-    updateCollapse(session, "optCollapse", open = "Plot DALYs")
-}))
+observeEvent(input$showOptDALYsPlot, ({updateCollapse(session, "optCollapse", open = "Plot DALYs")}))
 
 # Plot 3
-observeEvent(input$showOptDALYs909090Plot, ({
-    updateCollapse(session, "optCollapse", open = "Plot DALYs (90-90-90)")
-}))
+observeEvent(input$showOptDALYs909090Plot, ({updateCollapse(session, "optCollapse", open = "Plot DALYs (90-90-90)")}))
 
 # Reactive Budget Switch
 Budget <- reactiveValues(Switch = "the909090")
 
-observeEvent(input$showBudget909090, ({
-    Budget$Switch <- "the909090"
-}))
+observeEvent(input$showBudget909090, ({Budget$Switch <- "the909090"}))
 
-observeEvent(input$showBudgetDALYs, ({
-    Budget$Switch <- "DALYs"
-}))
+observeEvent(input$showBudgetDALYs, ({Budget$Switch <- "DALYs"}))
 
 observeEvent(input$userCountry, {
     # Find GSheet
     theTable <- locateSheet()
     # Read new infections
-    NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable),Country==input$userCountry) %>% select(NewInfections2014)))
+    NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable), Country == input$userCountry) %>% select(NewInfections2014)))
     if(is.na(NewInfections)) {
-        output$warningText <- renderText({return(paste("Warning! NA value returned from",input$userCountry,"data. Using Kenya as default."))})
-        NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable),Country=="Kenya") %>% select(NewInfections2014)))
+        output$warningText <- renderText({return(paste("Warning! NA value returned from", input$userCountry, "data. Using Kenya as default."))})
+        NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable), Country == "Kenya") %>% select(NewInfections2014)))
     } else {
-        output$warningText <- renderText({return(paste(input$userCountry,"data loaded."))})
+        output$warningText <- renderText({return(paste(input$userCountry, "data loaded."))})
     }
     # Read CD4 distributions
     theCD4 <- getCD4Data(theTable)
@@ -540,110 +532,89 @@ observeEvent(input$saveInput, {
 })
 
 # Reset button stuff.
-observeEvent(input$resetInput, {
-    shinyjs::reset("setup-panel")
-})
+observeEvent(input$resetInput, {shinyjs::reset("setup-panel")})
 
 observeEvent(input$resetParameters, {
     shinyjs::reset("parameter-panel")
     updateNumericInput(session,"userRetArt12mths",value=0)
 })
 
-observeEvent(input$resetCost, {
-    shinyjs::reset("cost-panel")
-})
+observeEvent(input$resetCost, {shinyjs::reset("cost-panel")})
 
-observeEvent(input$resetSliders, {
-    shinyjs::reset("optimisation-panel")
-})
+observeEvent(input$resetSliders, {shinyjs::reset("optimisation-panel")})
 
 
 # ART Initiation Checkbox Rules #
 observeEvent(input$userART_All, {
     if(input$userART_All == TRUE) {
-        updateCheckboxInput(session,"userART_500",value=TRUE)
-        updateCheckboxInput(session,"userART_350",value=TRUE)
-        updateCheckboxInput(session,"userART_200",value=TRUE)
+        updateCheckboxInput(session, "userART_500", value = TRUE)
+        updateCheckboxInput(session, "userART_350", value = TRUE)
+        updateCheckboxInput(session, "userART_200", value = TRUE)
     }
 })
 
 observeEvent(input$userART_500, {
     if(input$userART_500 == TRUE) {
-        updateCheckboxInput(session,"userART_350",value=TRUE)
-        updateCheckboxInput(session,"userART_200",value=TRUE)
+        updateCheckboxInput(session, "userART_350", value = TRUE)
+        updateCheckboxInput(session, "userART_200", value = TRUE)
     } else {
-        updateCheckboxInput(session,"userART_All",value=FALSE)
+        updateCheckboxInput(session, "userART_All", value = FALSE)
     }
 })
 
 observeEvent(input$userART_350, {
     if(input$userART_350 == TRUE) {
-        updateCheckboxInput(session,"userART_200",value=TRUE)
+        updateCheckboxInput(session, "userART_200", value = TRUE)
     } else {
-        updateCheckboxInput(session,"userART_All",value=FALSE)
-        updateCheckboxInput(session,"userART_500",value=FALSE)
+        updateCheckboxInput(session, "userART_All", value = FALSE)
+        updateCheckboxInput(session, "userART_500", value = FALSE)
     }
 })
 
 observeEvent(input$userART_200, {
     if(input$userART_200 == FALSE) {
-        updateCheckboxInput(session,"userART_All",value=FALSE)
-        updateCheckboxInput(session,"userART_500",value=FALSE)
-        updateCheckboxInput(session,"userART_350",value=FALSE)
+        updateCheckboxInput(session, "userART_All", value = FALSE)
+        updateCheckboxInput(session, "userART_500", value = FALSE)
+        updateCheckboxInput(session, "userART_350", value = FALSE)
     }
 })
 
 # Switch between tabs without menu.
-observeEvent(input$wizardSetup, {
-    updateTabItems(session, inputId = "sideBar", selected = "setup")
-})
+observeEvent(input$wizardSetup, {updateTabItems(session, inputId = "sideBar", selected = "setup")})
 
-observeEvent(input$wizardParameters, {
-    updateTabItems(session, inputId = "sideBar", selected = "parameters")
-})
+observeEvent(input$wizardParameters, {updateTabItems(session, inputId = "sideBar", selected = "parameters")})
 
-observeEvent(input$wizardResults_1, {
-    updateTabItems(session, inputId = "sideBar", selected = "your_cascade")
-})
+observeEvent(input$wizardResults_1, {updateTabItems(session, inputId = "sideBar", selected = "your_cascade")})
 
-observeEvent(input$wizardResults_2, {
-    updateTabItems(session, inputId = "sideBar", selected = "care_cascade")
-})
+observeEvent(input$wizardResults_2, {updateTabItems(session, inputId = "sideBar", selected = "care_cascade")})
 
-observeEvent(input$wizardResults_3, {
-    updateTabItems(session, inputId = "sideBar", selected = "powers_cascade")
-})
+observeEvent(input$wizardResults_3, {updateTabItems(session, inputId = "sideBar", selected = "powers_cascade")})
 
-observeEvent(input$wizardResults_4, {
-    updateTabItems(session, inputId = "sideBar", selected = "_909090")
-})
+observeEvent(input$wizardResults_4, {updateTabItems(session, inputId = "sideBar", selected = "_909090")})
 
-observeEvent(input$wizardResults_5, {
-    updateTabItems(session, inputId = "sideBar", selected = "incidence_mortality")
-})
+observeEvent(input$wizardResults_5, {updateTabItems(session, inputId = "sideBar", selected = "incidence_mortality")})
 
-observeEvent(input$wizardOpt_1, {
-    updateTabItems(session, inputId = "sideBar", selected = "opt_cost")
-})
+observeEvent(input$wizardOpt_1, {updateTabItems(session, inputId = "sideBar", selected = "opt_cost")})
 
-observeEvent(input$wizardOpt_2, {
-    updateTabItems(session, inputId = "sideBar", selected = "opt_parameter")
-})
+observeEvent(input$wizardOpt_2, {updateTabItems(session, inputId = "sideBar", selected = "opt_parameter")})
 
-observeEvent(input$wizardOpt_3, {
-    updateTabItems(session, inputId = "sideBar", selected = "opt_results")
-})
+observeEvent(input$wizardOpt_3, {updateTabItems(session, inputId = "sideBar", selected = "opt_results")})
 
-observeEvent(input$wizardOpt_4, {
-    updateTabItems(session, inputId = "sideBar", selected = "opt_budget")
-})
+observeEvent(input$wizardOpt_4, {updateTabItems(session, inputId = "sideBar", selected = "opt_budget")})
 
 # Inverse sliders for parameter window #
-observeEvent(input$rho, {updateSliderInput(session,"invRho",value=1/input$rho,min=0,max=100,step=0.001)})
-observeEvent(input$invRho, {updateSliderInput(session,"rho",value=1/input$invRho,min=0,max=5,step=0.001)})
-observeEvent(input$epsilon, {updateSliderInput(session,"invEpsilon",value=1/input$epsilon,min=0,max=100,step=0.001)})
-observeEvent(input$invEpsilon, {updateSliderInput(session,"epsilon",value=1/input$invEpsilon,min=0,max=20,step=0.001)})
-observeEvent(input$gamma, {updateSliderInput(session,"invGamma",value=1/input$gamma,min=0,max=100,step=0.001)})
-observeEvent(input$invGamma, {updateSliderInput(session,"gamma",value=1/input$invGamma,min=0,max=5,step=0.001)})
-observeEvent(input$omega, {updateSliderInput(session,"invOmega",value=1/input$omega,min=0,max=100,step=0.001)})
-observeEvent(input$invOmega, {updateSliderInput(session,"omega",value=1/input$invOmega,min=0,max=5,step=0.001)})
+observeEvent(input$rho, {updateSliderInput(session,"invRho", value = 1/input$rho, min = 0, max = 100, step = 0.001)})
+
+observeEvent(input$invRho, {updateSliderInput(session,"rho", value = 1/input$invRho, min = 0, max = 5, step = 0.001)})
+
+observeEvent(input$epsilon, {updateSliderInput(session,"invEpsilon", value = 1/input$epsilon, min = 0, max = 100, step = 0.001)})
+
+observeEvent(input$invEpsilon, {updateSliderInput(session,"epsilon", value = 1/input$invEpsilon, min = 0, max = 20, step = 0.001)})
+
+observeEvent(input$gamma, {updateSliderInput(session,"invGamma", value = 1/input$gamma, min = 0, max = 100, step = 0.001)})
+
+observeEvent(input$invGamma, {updateSliderInput(session,"gamma", value = 1/input$invGamma, min = 0, max = 5, step = 0.001)})
+
+observeEvent(input$omega, {updateSliderInput(session,"invOmega", value = 1/input$omega, min = 0, max = 100, step = 0.001)})
+
+observeEvent(input$invOmega, {updateSliderInput(session,"omega", value = 1/input$invOmega, min = 0, max = 5, step = 0.001)})

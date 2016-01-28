@@ -40,22 +40,22 @@ tabItem(tabName = "opt_results",
         bsButton(inputId = "wizardOpt_4", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     ),
     column(width = 8,
-        bsModal(id = "opt909090TableModal",title = "Result Table (showing 90-90-90 targets)",trigger = "showOpt909090Table",size = "large",
+        bsModal(id = "opt909090TableModal", title = "Result Table (showing 90-90-90 targets)", trigger = "showOpt909090Table", size = "large",
             DT::dataTableOutput('opt909090Table', width = "100%")
         ),
-        bsModal(id = "opt909090TableBrushedModal",title = "Selected Result Table (showing 90-90-90 targets)",trigger = "showOpt909090BrushedTable",size = "large",
+        bsModal(id = "opt909090TableBrushedModal", title = "Selected Result Table (showing 90-90-90 targets)", trigger = "showOpt909090BrushedTable", size = "large",
             DT::dataTableOutput('opt909090TableBrushed', width = "100%")
         ),
-        bsModal(id = "optDALYsTableModal",title = "Result Table",trigger = "showOptDALYsTable",size = "large",
+        bsModal(id = "optDALYsTableModal", title = "Result Table", trigger = "showOptDALYsTable", size = "large",
             DT::dataTableOutput('optDALYsTable', width = "100%")
         ),
-        bsModal(id = "optDALYsTableBrushedModal",title = "Selected Result Table",trigger = "showOptDALYsBrushedTable",size = "large",
+        bsModal(id = "optDALYsTableBrushedModal", title = "Selected Result Table", trigger = "showOptDALYsBrushedTable", size = "large",
             DT::dataTableOutput('optDALYsTableBrushed', width = "100%")
         ),
-        bsModal(id = "optDALYs909090TableModal",title = "Result Table (results achieving 90-90-90 targets)",trigger = "showOptDALYs909090Table",size = "large",
+        bsModal(id = "optDALYs909090TableModal", title = "Result Table (results achieving 90-90-90 targets)", trigger = "showOptDALYs909090Table", size = "large",
             DT::dataTableOutput('optDALYs909090Table', width = "100%")
         ),
-        bsModal(id = "optDALYs909090TableBrushedModal",title = "Selected Result Table (results achieving 90-90-90 targets)",trigger = "showOptDALYs909090BrushedTable",size = "large",
+        bsModal(id = "optDALYs909090TableBrushedModal", title = "Selected Result Table (results achieving 90-90-90 targets)", trigger = "showOptDALYs909090BrushedTable", size = "large",
             DT::dataTableOutput('optDALYs909090TableBrushed', width = "100%")
         ),
         bsCollapse(id = 'optCollapse', open = NULL,

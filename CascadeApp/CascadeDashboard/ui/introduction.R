@@ -12,7 +12,7 @@ tabItem(tabName = "introduction",
             p("Furthermore, as we pass the Millennium Development Goals of 2015 and focus attention on the UNAIDS 90-90-90 targets for 2020,
             countries will be keen to understand whether they are on the right trajectory to achieve these goals. For this purpose, data from
             countries can be input into a mathematical model and used to estimate future incidence, AIDS-deaths and the ascertainment of the 90-90-90 goals."),
-            img(src="WHO-Guidelines-Front-Crop.png", height = '100%', width = '100%'),
+            img(src = "WHO-Guidelines-Front-Crop.png", height = '100%', width = '100%'),
             h3("Aims"),
             p("This webpage contains an interactive model that allows data to be entered, parameters to be altered and results to be presented in real-time.
                 No specialist software is required as all calculations are completed on a remote server, results are then returned and displayed, along with all visualisations, in the browser."),
@@ -35,7 +35,7 @@ tabItem(tabName = "introduction",
                     on treatment, virally suppressed and lost from care as long as they are diagnosed. However, the model is able to reconcile this by taking individual indicators and separating them into their
                     components to specify the initial conditions for simulations."),
                 helpText("More details on the model can be found in the following pages, along with a detailed description under the 'more' table and 'Model Document'."),
-            img(src="ModelSimple.png", height = '100%', width = '100%'),
+            img(src = "ModelSimple.png", height = '100%', width = '100%'),
             h3("Outcomes"),
             tags$ol(
                 tags$li("Predict achievement of UNAIDS 90-90-90 targets in 2020."),

@@ -13,9 +13,9 @@ locateSheet <- function() {
 }
 
 getIncidenceData <- function(theTable) {
-    return(gs_read(theTable,ws="NewInfections"))
+    return(gs_read(theTable, ws = "NewInfections"))
 }
 
 getCD4Data <- function(theTable) {
-    return(gs_read(theTable,ws="CD4-Distribution"))
+    return(gs_read(theTable, ws = "CD4-Distribution"))
 }
