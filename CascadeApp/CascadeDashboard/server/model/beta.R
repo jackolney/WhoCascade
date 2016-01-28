@@ -1,5 +1,5 @@
 GetBeta <- function(y, p) {
-    # Ability to turn off HIV incidence in the model.
+    # incidence switch is embedded in setup tab.
     if(input$incidenceInput == TRUE) {
 
         # This comes from google-sheets (can we make this faster?)
