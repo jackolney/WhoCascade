@@ -4,6 +4,7 @@ GetBeta <- function(y, p) {
 
         # This comes from google-sheets (can we make this faster?)
         # Transpose to a csv and just pull that in when the site loads and access it later
+        # No decrease in speed if we remove the below statement
         Numerator <- NewInfections
 
         Denominator <- as.double((

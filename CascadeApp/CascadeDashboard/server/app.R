@@ -29,6 +29,3 @@ source("server/model/beta.R", local = TRUE)
 
 # Model call function
 source("server/model/model.R", local = TRUE)
-
-# R-version of Model
-source("TheModel.R")
