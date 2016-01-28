@@ -51,8 +51,8 @@ ExtractPowersCascadeData <- function(year) {
 }
 
 Extract909090Data <- function() {
+    result <- CallModel()
     year <- 251
-
     PLHIV <- result$N[year]
 
     DX <- sum(
@@ -71,9 +71,9 @@ Extract909090Data <- function() {
 
     VS <- sum(result$Tx_A_500[year], result$Tx_A_350500[year], result$Tx_A_250350[year], result$Tx_A_200250[year], result$Tx_A_100200[year], result$Tx_A_50100[year], result$Tx_A_50[year])
 
-    un_90 <- dx / PLHIV
-    un_9090 <- tx / dx
-    un_909090 <- vs / tx
+    un_90 <- DX / PLHIV
+    un_9090 <- TX / DX
+    un_909090 <- VS / TX
 
     res <- c(un_90, un_9090, un_909090)
     def <- c("% Diagnosed","% On Treatment","% Suppressed")

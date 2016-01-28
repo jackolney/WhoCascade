@@ -16,38 +16,9 @@ output$plotPowersCascade <- renderPlot({ print(GenPowersCascadePlot()) }, height
 
 output$plot909090 <- renderPlot({ print(Gen909090Plot()) }, height = 400, width = 'auto')
 
+output$plotNewInf <- renderPlot({ print(GenNewInfPlot()) }, height = 500, width = 'auto')
 
-output$plotNewInf <- renderPlot({
-    p <- ggplot(CallModel(), aes(x=time,y=NewInfProp)) +
-        geom_line(size=2) +
-        theme_classic() +
-        theme(axis.text.x=element_text(size=18)) +
-        theme(axis.text.y=element_text(size=18)) +
-        theme(axis.title=element_text(size=18)) +
-        xlab("Year") +
-        ylab("# new infections / total infected population") +
-        scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
-    print(p)
-    },
-    height=500,
-    width='auto'
-)
-
-output$plotAidsDeaths <- renderPlot({
-    p <- ggplot(CallModel(), aes(x=time,y=HivMortalityProp)) +
-        geom_line(size=2) +
-        theme_classic() +
-        theme(axis.text.x=element_text(size=18)) +
-        theme(axis.text.y=element_text(size=18)) +
-        theme(axis.title=element_text(size=18)) +
-        xlab("Year") +
-        ylab("# AIDS deaths / total infected population") +
-        scale_x_continuous(limits=c(0,5),breaks=seq(0,5,1),labels=seq(2015,2020,1))
-    print(p)
-    },
-    height=500,
-    width='auto'
-)
+output$plotAidsDeaths <- renderPlot({ print(GenAidsDeathsPlot()) }, height = 500, width = 'auto')
 
 output$plotOne <- renderPlot({
     p <- ggplot(CallModel(), aes_string(x="time",y=input$y)) +

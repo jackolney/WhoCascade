@@ -27,7 +27,7 @@ GenLtfuPlot <- function() {
     df$def <- factor(df$def, levels = "% LTFU")
 
     ggplot(df, aes(def, res)) +
-    geom_bar(aes(fill = definition), position = 'dodge', stat = 'identity') +
+    geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
     scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
     scale_fill_manual(values = "red") +
     ggtitle("Care Cascade in 2015") +
@@ -38,7 +38,7 @@ GenLtfuPlot <- function() {
     theme(axis.text.y = element_text(size = 15)) +
     theme(legend.position = "none") +
     theme(plot.background = element_blank()) +
-    theme(panel.background = element_blank()) +
+    theme(panel.background = element_blank())
 }
 
 GenCascadePlot <- function() {
@@ -71,7 +71,7 @@ GenCascadePlot <- function() {
     theme(axis.text.y = element_text(size = 18)) +
     theme(legend.position = "none")
 
-    grid.arrange(plot.one, plot.two, nrow = 1, ncol = 2))
+    grid.arrange(plot.one, plot.two, nrow = 1, ncol = 2)
 }
 
 GrabLegend <- function(a.ggplot) {
@@ -139,7 +139,7 @@ Gen909090Plot <- function() {
     c.fill <- c(red, yellow, green)
 
     ggplot(df, aes(def, res)) +
-    geom_bar(aes(fill = definition), position = 'dodge', stat = 'identity') +
+    geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
     scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
     scale_fill_manual(values = c.fill) +
     geom_abline(intercept = 0.9, slope = 0) +
@@ -149,4 +149,28 @@ Gen909090Plot <- function() {
     theme(axis.text.x = element_text(size = 18)) +
     theme(axis.text.y = element_text(size = 18)) +
     theme(legend.position = "none")
+}
+
+GenNewInfPlot <- function() {
+    ggplot(CallModel(), aes(x = time, y = NewInfProp)) +
+    geom_line(size = 2) +
+    theme_classic() +
+    theme(axis.text.x = element_text(size = 18)) +
+    theme(axis.text.y = element_text(size = 18)) +
+    theme(axis.title = element_text(size = 18)) +
+    xlab("Year") +
+    ylab("# new infections / total infected population") +
+    scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+}
+
+GenAidsDeathsPlot <- function() {
+    ggplot(CallModel(), aes(x = time, y = HivMortalityProp)) +
+    geom_line(size = 2) +
+    theme_classic() +
+    theme(axis.text.x = element_text(size = 18)) +
+    theme(axis.text.y = element_text(size = 18)) +
+    theme(axis.title = element_text(size = 18)) +
+    xlab("Year") +
+    ylab("# AIDS deaths / total infected population") +
+    scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
 }

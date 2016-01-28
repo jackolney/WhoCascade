@@ -1,5 +1,6 @@
 # Main Model Call
 CallModel <- reactive({
+    print("CallModel() called.")
     # Setup #
     # This does ignore the cascade::parameter and cascade::initial
     time <- seq(0, 5, 0.02)
