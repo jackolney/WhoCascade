@@ -46,6 +46,8 @@ observeEvent(input$optimiseInput, {
 
         base_DALY <- Calc_BaselineDALY()
         base_COST <- Calc_BaselineCost()
+        print(paste("base_DALY =", base_DALY))
+        print(paste("base_COST =", base_COST))
 
         Result90 <- c()
         Result9090 <- c()
@@ -61,6 +63,7 @@ observeEvent(input$optimiseInput, {
         ResultPar_Omega <- c()
         for(i in 1:length(theList)) {
             print(i)
+            setProgress(value = i/length(theList), message = 'Compiling results', detail = '')
             Result90[i] <- Calc_909090_Result(theList[[i]])[1]
             Result9090[i] <- Calc_909090_Result(theList[[i]])[2]
             Result909090[i] <- Calc_909090_Result(theList[[i]])[3]
@@ -88,6 +91,7 @@ observeEvent(input$optimiseInput, {
         # ----------------------------------------- #
 
         theList_909090 <- FindResults_909090(theList)
+
         ResultPar_909090 <- FindPar_909090(theList, par)
 
         Result909090Impact <- c()
@@ -98,11 +102,12 @@ observeEvent(input$optimiseInput, {
         Result909090Par_Gamma <- c()
         Result909090Par_Sigma <- c()
         Result909090Par_Omega <- c()
-        if(length(theList909090) > 0) {
-            for(i in 1:length(theList909090)) {
+        if(length(theList_909090) > 0) {
+            for(i in 1:length(theList_909090)) {
                 print(i)
-                Result909090Impact[i] <- Calc_DALYsAverted(theList909090[[i]], base_DALY)
-                Result909090Cost[i] <- Calc_AdditionalCost(theList909090[[i]], base_COST)
+                setProgress(value = i/length(theList_909090), message = 'Compiling results (90-90-90)', detail = '')
+                Result909090Impact[i] <- Calc_DALYsAverted(theList_909090[[i]], base_DALY)
+                Result909090Cost[i] <- Calc_AdditionalCost(theList_909090[[i]], base_COST)
                 Result909090Par_Rho[i] <- par[i,]$Rho
                 Result909090Par_Epsilon[i] <- par[i,]$Epsilon
                 Result909090Par_Kappa[i] <- par[i,]$Kappa
@@ -127,7 +132,7 @@ observeEvent(input$optimiseInput, {
         print("Result_DALYs_909090 =")
         print(Result_DALYs_909090)
 
-        setProgress(value = 1, message = paste("Finished. Time =", round(proc.time()[[1]] - Start.Time, 0), "sec"))
+        setProgress(value = 1, message = paste("Finished. Time =", round(proc.time()[[1]] - time, 0), "sec"))
         updateButton(session, "optFinished", label = "OPTIMISATION COMPLETE", style = "success", size = "large", block = TRUE, icon = icon("check", class = "fa-lg fa-fw", lib = "font-awesome"))
         updateButton(session, "optimiseInput", label = "", style = "primary", block = TRUE, size = "large", icon = icon("check", class = "fa-lg fa-fw", lib = "font-awesome"))
     })

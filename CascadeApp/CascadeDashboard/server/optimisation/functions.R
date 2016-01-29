@@ -19,23 +19,19 @@ Calc_DALY <- function(out) {
 }
 
 Calc_BaselineDALY <- function() {
-    base <- CallModel()
-    Calc_DALY(base)
+    Calc_DALY(CallModel())
 }
 
 Calc_BaselineCost <- function() {
-    base <- CallModel()
-    Calc_Cost(base)
+    Calc_Cost(CallModel())
 }
 
 Calc_DALYsAverted <- function(out, base_DALY) {
-    DALY <- Calc_DALY(out)
-    return(base_DALY - DALY)
+    return(base_DALY - Calc_DALY(out))
 }
 
 Calc_AdditionalCost <- function(out, base_COST) {
-    COST <- out$TotalCost[251]
-    return(COST - base_COST)
+    return(out$TotalCost[251] - base_COST)
 }
 
 Calc_909090_Result <- function(out) {
@@ -65,7 +61,7 @@ FindResults_909090 <- function(result) {
             }
         }
         if(sum(test) == 3) {
-            res_list[[length(res_list + 1]] <- result
+            res_list[[length(res_list) + 1]] <- result[[i]]
         }
     }
     return(res_list)

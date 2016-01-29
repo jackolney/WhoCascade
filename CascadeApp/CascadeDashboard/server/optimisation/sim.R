@@ -1,11 +1,11 @@
 RunSim <- function(par) {
     p <- GetOptPar(
-        Rho = par[1],
-        Epsilon = par[2],
-        Kappa = par[3],
-        Gamma = par[4],
-        Omega = par[5],
-        Sigma = par[6],
+        Rho = par[[1]],
+        Epsilon = par[[2]],
+        Kappa = par[[3]],
+        Gamma = par[[4]],
+        Sigma = par[[5]],
+        Omega = par[[6]],
         ART_All = input$userART_All,
         ART_500 = input$userART_500,
         ART_350 = input$userART_350,
@@ -21,12 +21,20 @@ RunSim <- function(par) {
         Iota_5 = p_preArt100200,
         Iota_6 = p_preArt50100,
         Iota_7 = p_preArt50
-        )
+    )
 
     time <- seq(0,5,0.02)
     y <- GetInitial()
     beta <- GetBeta(y, p)
     p[62] <- beta # p[["beta"]]
+
+    print("Sim.R")
+    print(paste("Rho = ",p[["Rho"]]))
+    print(paste("Epsilon = ",p[["Epsilon"]]))
+    print(paste("Kappa = ",p[["Kappa"]]))
+    print(paste("Gamma = ",p[["Gamma"]]))
+    print(paste("Sigma = ",p[["Sigma"]]))
+    print(paste("Omega = ",p[["Omega"]]))
 
     result <- deSolve::ode(times = time, y = y, func = "derivs", parms = p, initfunc = "initmod", dllname = "cascade")
 
