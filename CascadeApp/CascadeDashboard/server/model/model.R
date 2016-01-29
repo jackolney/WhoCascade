@@ -18,13 +18,6 @@ CallModel <- reactive({
     p[55] <- p_preArt50100 # p[["Iota_6"]]
     p[56] <- p_preArt50 # p[["Iota_7"]]
 
-    print("Model.R")
-    print(paste("Rho = ",p[["Rho"]]))
-    print(paste("Epsilon = ",p[["Epsilon"]]))
-    print(paste("Kappa = ",p[["Kappa"]]))
-    print(paste("Gamma = ",p[["Gamma"]]))
-    print(paste("Sigma = ",p[["Sigma"]]))
-    print(paste("Omega = ",p[["Omega"]]))
     # The Model #
     result <- deSolve::ode(times = time, y = y, func = "derivs", parms = p, initfunc = "initmod", dllname = "cascade")
     # --------- #

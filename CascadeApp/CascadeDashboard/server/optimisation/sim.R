@@ -28,14 +28,6 @@ RunSim <- function(par) {
     beta <- GetBeta(y, p)
     p[62] <- beta # p[["beta"]]
 
-    print("Sim.R")
-    print(paste("Rho = ",p[["Rho"]]))
-    print(paste("Epsilon = ",p[["Epsilon"]]))
-    print(paste("Kappa = ",p[["Kappa"]]))
-    print(paste("Gamma = ",p[["Gamma"]]))
-    print(paste("Sigma = ",p[["Sigma"]]))
-    print(paste("Omega = ",p[["Omega"]]))
-
     result <- deSolve::ode(times = time, y = y, func = "derivs", parms = p, initfunc = "initmod", dllname = "cascade")
 
     result <- cbind(result, N = rowSums(result[, c(
