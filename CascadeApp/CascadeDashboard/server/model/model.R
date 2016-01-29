@@ -75,7 +75,7 @@ CallModel <- reactive({
 
         TotalCost = rowSums(result[, c(
                 "Dx_Cost", "Linkage_Cost", "Annual_Care_Cost", "Annual_ART_Cost"
-                )]) / result[, "N"],
+                )]),
 
         cd4_500 = rowSums(result[, c(
                 "UnDx_500", "Dx_500", "Care_500", "PreLtfu_500", "Tx_Na_500", "Tx_A_500", "Ltfu_500"
