@@ -50,8 +50,14 @@ ExtractPowersCascadeData <- function(year) {
     df
 }
 
-Extract909090Data <- function() {
-    result <- CallModel()
+Extract909090Data <- function(...) {
+    data <- c(...)
+    if(length(data) > 0L) {
+        result <- data
+    } else {
+        result <- CallModel()
+    }
+
     year <- 251
     PLHIV <- result$N[year]
 
