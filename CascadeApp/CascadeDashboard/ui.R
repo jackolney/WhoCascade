@@ -30,6 +30,6 @@ dashboardPage(
 
             # Wizard Test
             source("ui/wizard.R", local = TRUE)$value
-            )
         )
     )
+)

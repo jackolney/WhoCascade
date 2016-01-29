@@ -8,3 +8,6 @@ library(shinyjs)
 library(shinyTable)
 library(shinythemes)
 library(V8)
+
+# source global-lists
+source("ui/global-lists.R", local = TRUE)
