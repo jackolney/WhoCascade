@@ -17,17 +17,23 @@ source("server/valuebox.R", local = TRUE)
 # Uncomment to hide sideBar at start (still flashes up though).
 # shinyjs::addClass(selector = "body", class = "sidebar-collapse")
 
-#-------#
+# ----- #
 # MODEL #
-#-------#
-# Model files are not in the server/model/
+# ----- #
+
 source("server/model/parameters.R", local = TRUE)
-
-# Need one for Initial
 source("server/model/initial.R", local = TRUE)
-
-# Beta calculation
 source("server/model/beta.R", local = TRUE)
-
-# Model call function
 source("server/model/model.R", local = TRUE)
+
+# ------------ #
+# OPTIMISATION #
+# ------------ #
+
+source("server/optimisation/functions.R", local = TRUE)
+source("server/optimisation/observe.R", local = TRUE)
+source("server/optimisation/optimise.R", local = TRUE)
+source("server/optimisation/parameters.R", local = TRUE)
+source("server/optimisation/plot-functions.R", local = TRUE)
+source("server/optimisation/plot.R", local = TRUE)
+source("server/optimisation/sim.R", local = TRUE)
