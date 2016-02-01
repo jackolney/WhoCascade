@@ -28,7 +28,7 @@ GenLtfuPlot <- function() {
 
     ggplot(df, aes(def, res)) +
     geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
+    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
     scale_fill_manual(values = "red") +
     ggtitle("Care Cascade in 2015") +
     theme_classic() +
@@ -71,7 +71,7 @@ GenCascadePlot <- function() {
     theme(axis.text.y = element_text(size = 18)) +
     theme(legend.position = "none")
 
-    grid.arrange(plot.one, plot.two, nrow = 1, ncol = 2)
+    grid.arrange(plot.one, plot.two, nrow = 1, ncol = 2)
 }
 
 GrabLegend <- function(a.ggplot) {
@@ -126,7 +126,7 @@ GenPowersCascadePlot <- function() {
             p + theme(legend.position = "none"),
             ncol = 2),
         my.legend,
-        widths = grid::unit.c(unit(1, "npc") - l.width, l.width),
+        widths = grid::unit.c(unit(1, "npc") - l.width, l.width),
         nrow = 1)
 }
 
@@ -140,7 +140,7 @@ Gen909090Plot <- function() {
 
     ggplot(df, aes(def, res)) +
     geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
+    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
     scale_fill_manual(values = c.fill) +
     geom_abline(intercept = 0.9, slope = 0) +
     theme_classic() +
@@ -176,7 +176,7 @@ GenAidsDeathsPlot <- function() {
 }
 
 GenSinglePlot <- function() {
-    ggplot(CallModel(), aes_string(x = "time", y = input$y)) +
+    ggplot(CallModel(), aes_string(x = "time", y = input$y)) +
     geom_line(size = 2) +
     theme_classic() +
     theme(axis.text.x = element_text(size = 18)) +

@@ -36,3 +36,5 @@ require(shinyapps)
 deployApp("./ShinyCascade")
 
 deployApp("./ShinyCascadeDashboard")
+
+deployApp("CascadeDashboard")

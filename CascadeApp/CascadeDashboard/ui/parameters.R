@@ -23,7 +23,7 @@ tabItem(tabName = "parameters",
             solidHeader = TRUE,
             id = "parameter-panel-1",
             sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):', min = 0, max = 5, value = 0.205, step = 0.001, width = 1000),
-            sliderInput('invRho','Average time to diagnosis (years) (1 / rho):', min = 0, max = 100, value = 1/0.205 , step = 0.001, width = 1000)
+            sliderInput('invRho','Average time to diagnosis (years) (1 / rho):', min = 0, max = 100, value = 1/0.205, step = 0.001, width = 1000)
         ),
         box(width = NULL,
             status = "warning",

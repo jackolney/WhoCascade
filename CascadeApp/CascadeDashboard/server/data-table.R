@@ -69,7 +69,7 @@ output$optDALYsTable <- DT::renderDataTable({
 # Optimisation Plot 2 (brushed)
 output$optDALYsTableBrushed <- DT::renderDataTable({
     theBrushed <- brushedPoints(df = Result_DALYs,brush = input$plotOptDALYs_brush)
-    return(datatable(theBrushed, options = list(pageLength = 25, autoWidth = TRUE)) %>%
+    return(datatable(theBrushed, options = list(pageLength = 25, autoWidth = TRUE)) %>%
         formatRound("Rho",3) %>%
         formatRound("Epsilon",3) %>%
         formatRound("Kappa",3) %>%
@@ -100,7 +100,7 @@ output$optDALYs909090Table <- DT::renderDataTable({
 # Optimisation Plot 3 (brushed)
 output$optDALYs909090TableBrushed <- DT::renderDataTable({
     theBrushed <- brushedPoints(df = Result_DALYs_909090,brush = input$plotOptDALYs909090_brush)
-    return(datatable(theBrushed, options = list(pageLength = 25, autoWidth = TRUE)) %>%
+    return(datatable(theBrushed, options = list(pageLength = 25, autoWidth = TRUE)) %>%
         formatRound("Rho",3) %>%
         formatRound("Epsilon",3) %>%
         formatRound("Kappa",3) %>%
