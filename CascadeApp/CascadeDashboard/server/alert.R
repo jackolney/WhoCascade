@@ -2,7 +2,7 @@
 createAlert(session,
     anchorId = "startAlert",
     alertId = NULL,
-    title = "WARNING",
+    title = paste(icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"), "WARNING"),
     content = "This interactive web-based model is still under development.
     Any data entered into the model is done so at the users own risk.
     Clicking 'save' in any tab saves the current inputs to a centrally accessible spreadsheet hosted by Google.
