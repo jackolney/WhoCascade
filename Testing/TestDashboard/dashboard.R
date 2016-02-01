@@ -17,7 +17,15 @@ ui <- dashboardPage(
     fluidRow(
       # Clicking this will increment the progress amount
       box(width = 4, actionButton("count", "Increment progress"))
-    )
+    ),
+    fluidRow(
+      sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):',
+        min = 0,
+        max = 5,
+        value = 0.205,
+        step = 0.001,
+        width = 1000),
+      )
   )
 )
 
