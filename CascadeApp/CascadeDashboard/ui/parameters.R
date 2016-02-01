@@ -1,10 +1,12 @@
 tabItem(tabName = "parameters",
     column(width = 8,
+        shinyjs::useShinyjs(),
         box(width = NULL,
             status = "primary",
-            h1("Parameter Values"),
-            shinyjs::useShinyjs(),
-            id = "parameter-panel",
+            solidHeader = TRUE,
+            title = "Parameter Values",
+            collapsible = TRUE,
+            collapsed = FALSE,
             bsModal(id = "seeParameterTable", title = "Parameter Table", trigger = "viewParameterTable", size = "large",
                 DT::dataTableOutput('parameterTable', width = "100%")
             ),
@@ -13,24 +15,39 @@ tabItem(tabName = "parameters",
                 A table of parameter values is shown in the 'Help Panel' and several sliders are shown below which can be
                 used to manipulate certain parameter values. Parameter values can be manipulated by changing the rate or the inverse of the rate (time to event).
                 You only need to change one slider as the other updated auotmatically. Please note that the parameter table is 'live' and will update in real-time."),
-            img(src = "ModelSimple.png", height = "100%", width = "100%"),
-            br(), br(),
-            wellPanel(
-                sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):', min = 0, max = 5, value = 0.205, step = 0.001, width = 1000),
-                sliderInput('invRho','Average time to diagnosis (years) (1 / rho):', min = 0, max = 100, value = 1/0.205 , step = 0.001, width = 1000)
-                ),
-            wellPanel(
-                sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):', min = 0, max = 20, value = 16.949, step = 0.001, width = 1000),
-                sliderInput('invEpsilon','Average time to seeking care (years) (1 / epsilon):', min = 0, max = 100, value = 1/16.949, step = 0.001, width = 1000)
-                ),
-            wellPanel(
-                sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):', min = 0, max = 5, value = 2.556, step = 0.001, width = 1000),
-                sliderInput('invGamma','Average time to ART initiation (years) (1 / gamma):', min = 0, max = 100, value = 1/2.556, step = 0.001, width = 1000)
-                ),
-            wellPanel(
-                sliderInput('omega','ART dropout rate (ART dropout/py) (omega):', min = 0, max = 5, value = 0.033, step = 0.001, width = 1000),
-                sliderInput('invOmega','Average time to ART dropout (years) (1 / omega):', min = 0, max = 100, value = 1/0.033, step = 0.001, width = 1000)
-                )
+            img(src = "ModelSimple.png", height = "100%", width = "100%")
+        ),
+        box(width = NULL,
+            status = "warning",
+            # background = "yellow",
+            solidHeader = TRUE,
+            id = "parameter-panel-1",
+            sliderInput('rho','Diagnosis rate (diagnoses/py) (rho):', min = 0, max = 5, value = 0.205, step = 0.001, width = 1000),
+            sliderInput('invRho','Average time to diagnosis (years) (1 / rho):', min = 0, max = 100, value = 1/0.205 , step = 0.001, width = 1000)
+        ),
+        box(width = NULL,
+            status = "warning",
+            # background = "yellow",
+            solidHeader = TRUE,
+            id = "parameter-panel-2",
+            sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):', min = 0, max = 20, value = 16.949, step = 0.001, width = 1000),
+            sliderInput('invEpsilon','Average time to seeking care (years) (1 / epsilon):', min = 0, max = 100, value = 1/16.949, step = 0.001, width = 1000)
+        ),
+        box(width = NULL,
+            status = "warning",
+            # background = "yellow",
+            solidHeader = TRUE,
+            id = "parameter-panel-3",
+            sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):', min = 0, max = 5, value = 2.556, step = 0.001, width = 1000),
+            sliderInput('invGamma','Average time to ART initiation (years) (1 / gamma):', min = 0, max = 100, value = 1/2.556, step = 0.001, width = 1000)
+        ),
+        box(width = NULL,
+            status = "warning",
+            # background = "yellow",
+            solidHeader = TRUE,
+            id = "parameter-panel-4",
+            sliderInput('omega','ART dropout rate (ART dropout/py) (omega):', min = 0, max = 5, value = 0.033, step = 0.001, width = 1000),
+            sliderInput('invOmega','Average time to ART dropout (years) (1 / omega):', min = 0, max = 100, value = 1/0.033, step = 0.001, width = 1000)
         )
     ),
     column(width = 4,

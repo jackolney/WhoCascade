@@ -8,6 +8,7 @@ dashboardPage(
         tabItems(
             source("ui/introduction.R", local = TRUE)$value,
             source("ui/setup.R", local = TRUE)$value,
+            source("ui/calibration.R", local = TRUE)$value,
             source("ui/parameters.R", local = TRUE)$value,
 
             # Results

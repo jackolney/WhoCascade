@@ -3,6 +3,7 @@ dashboardSidebar(
         id = "sideBar",
         menuItem("Introduction", tabName = "introduction", icon = icon("home", class = "fa-lg fa-fw", lib = "font-awesome")),
         menuItem("Setup", tabName = "setup", icon = icon("cogs", class = "fa-lg fa-fw", lib = "font-awesome")),
+        menuItem("Calibration", tabName = "calibration", icon = icon("bar-chart", class = "fa-lg fa-fw", lib = "font-awesome")),
         menuItem("Parameters", tabName = "parameters", icon = icon("wrench", class = "fa-lg fa-fw", lib = "font-awesome")),
         menuItem("Results", icon = icon("line-chart", class = "fa-lg fa-fw", lib = "font-awesome"),
             menuSubItem("Your Cascade", tabName = "your_cascade"),

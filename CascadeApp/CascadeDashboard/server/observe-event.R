@@ -164,8 +164,11 @@ observeEvent(input$saveInput, {
 observeEvent(input$resetInput, {shinyjs::reset("setup-panel")})
 
 observeEvent(input$resetParameters, {
-    shinyjs::reset("parameter-panel")
-    updateNumericInput(session,"userRetArt12mths",value=0)
+    shinyjs::reset("parameter-panel-1")
+    shinyjs::reset("parameter-panel-2")
+    shinyjs::reset("parameter-panel-3")
+    shinyjs::reset("parameter-panel-4")
+    updateNumericInput(session,"userRetArt12mths",value = 0)
 })
 
 observeEvent(input$resetCost, {shinyjs::reset("cost-panel")})
