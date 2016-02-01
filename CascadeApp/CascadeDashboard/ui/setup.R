@@ -101,6 +101,6 @@ tabItem(tabName = "setup",
             textOutput('warningText'),
             textOutput('warningCD4Text')
         ),
-        bsButton(inputId = "wizardParameters", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "wizardCalibration", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

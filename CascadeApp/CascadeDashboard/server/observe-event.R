@@ -214,7 +214,9 @@ observeEvent(input$userART_200, {
 # Switch between tabs without menu.
 observeEvent(input$wizardSetup, {updateTabItems(session, inputId = "sideBar", selected = "setup")})
 
-observeEvent(input$wizardParameters, {updateTabItems(session, inputId = "sideBar", selected = "parameters")})
+observeEvent(input$wizardCalibration, {updateTabItems(session, inputId = "sideBar", selected = "calibration")})
+
+observeEvent(input$calib_accept, {updateTabItems(session, inputId = "sideBar", selected = "parameters")})
 
 observeEvent(input$wizardResults_1, {updateTabItems(session, inputId = "sideBar", selected = "your_cascade")})
 
