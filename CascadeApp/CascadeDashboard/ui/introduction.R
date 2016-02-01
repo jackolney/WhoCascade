@@ -12,7 +12,10 @@ tabItem(tabName = "introduction",
             p("Furthermore, as we pass the Millennium Development Goals of 2015 and focus attention on the UNAIDS 90-90-90 targets for 2020,
             countries will be keen to understand whether they are on the right trajectory to achieve these goals. For this purpose, data from
             countries can be input into a mathematical model and used to estimate future incidence, AIDS-deaths and the ascertainment of the 90-90-90 goals."),
-            img(src = "WHO-Guidelines-Front-Crop.png", height = '100%', width = '100%'),
+            img(src = "WHO-Guidelines-Front-Crop.png", height = '100%', width = '100%')
+        ),
+        box(width = NULL,
+            status = "primary",
             h3("Aims"),
             p("This webpage contains an interactive model that allows data to be entered, parameters to be altered and results to be presented in real-time.
                 No specialist software is required as all calculations are completed on a remote server, results are then returned and displayed, along with all visualisations, in the browser."),
@@ -28,7 +31,10 @@ tabItem(tabName = "introduction",
                 tags$li("Non-specific interventions can be simulated that broadly illustrate the changes that can be made to care, along with with the costs of doing so,
                     to identify the most cost-effective strategy for reconciling any deficiencies in care (still in development)."),
                 tags$li("It is hoped that this model will help countries prioritise strategies and estimate the costs required to achieve future targets.")
-            ),
+            )
+        ),
+        box(width = NULL,
+            status = "primary",
             h3("The Model"),
                 p("The simplified structure of the model is shown below. State compartments do not exactly correlate with the indicators in Consolidated Indicator Guidelines,
                     as compartments in the model must be discrete and exhaustive, while the indicators listed are not all discrete; for example, 'Knowing HIV status' includes all patients who are in care,
