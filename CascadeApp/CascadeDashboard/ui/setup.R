@@ -7,41 +7,58 @@ tabItem(tabName = "setup",
             id = "setup-panel",
             helpText("Select country and fill in boxes to specify the initial values of the model.
                 The boxes correlate with indicators in the Consolidated Information Guidelines (shown below), with numbers in brackets corresponding to numbers on the indicator figure."),
-            img(src = "WHOGuidelinesCascade.png", height = '100%', width = '100%'),
-            br(), br(),
-            wellPanel(
-                selectInput("userCountry", "Country:", CountryList, selected = "Brazil")
-                ),
-            wellPanel(
-                h4("ART Initiation Threshold"),
-                helpText("Please check the box corresponding to the correct treatment threshold. Boxes are reactive and nearby boxes will adjust to the selection made. Please note that unchecking all boxes will result in ART being witheld for all individuals."),
-                checkboxInput("userART_All", "Immediate ART", value = TRUE),
-                checkboxInput("userART_500", "CD4 <500", value = TRUE),
-                checkboxInput("userART_350", "CD4 <350", value = TRUE),
-                checkboxInput("userART_200", "CD4 <200", value = TRUE)
-                ),
-            wellPanel(
-                numericInput("userPLHIV","Number of PLHIV (1):",1e+6, min = 0)
-                ),
-            wellPanel(
-                numericInput("userDx","Number of PLHIV who have been diagnosed (4):",  0, min = 0)
-                ),
-            wellPanel(
-                numericInput("userCare","Number of PLHIV in HIV care (including ART) (5):", 0, min = 0)
-                ),
-            wellPanel(
-                numericInput("userTx","Number of PLHIV in HIV care and on ART (6):", 0, min = 0)
-                ),
-            wellPanel(
-                numericInput("userVs","Number of PLHIV in HIV care, on ART and virally suppressed (8):", 0, min = 0)
-                ),
-            wellPanel(
-                numericInput("userLtfu","Number of PLHIV who dropped out of ART care:", 0, min = 0)
-                ),
-            em(h5("If this value is known please enter it, otherwise leave it blank:")),
-            wellPanel(
-                numericInput("userRetArt12mths","Percentage of PLHIV retained and surviving on ART 12 months after initiation (7):", 0, min = 0, max = 1, step = 0.01)
-                )
+            img(src = "WHOGuidelinesCascade.png", height = '100%', width = '100%')
+        ),
+        box(width = NULL,
+            background = "green",
+            solidHeader = TRUE,
+            selectInput("userCountry", "Country:", CountryList, selected = "Brazil")
+        ),
+        box(width = NULL,
+            background = "blue",
+            solidHeader = TRUE,
+            h4("ART Initiation Threshold"),
+            helpText("Please check the box corresponding to the correct treatment threshold. Boxes are reactive and nearby boxes will adjust to the selection made. Please note that unchecking all boxes will result in ART being witheld for all individuals."),
+            checkboxInput("userART_All", "Immediate ART", value = TRUE),
+            checkboxInput("userART_500", "CD4 <500", value = TRUE),
+            checkboxInput("userART_350", "CD4 <350", value = TRUE),
+            checkboxInput("userART_200", "CD4 <200", value = TRUE)
+        ),
+        box(width = 4,
+            background = "red",
+            solidHeader = TRUE,
+            numericInput("userPLHIV","Number of PLHIV (1):", value = 1e+6, min = 0, width = '100%')
+        ),
+        box(width = 4,
+            background = "blue",
+            solidHeader = TRUE,
+            numericInput("userDx","Number of PLHIV who have been diagnosed (4):", value = 0, min = 0, width = '100%')
+        ),
+        box(width = 4,
+            background = "blue",
+            solidHeader = TRUE,
+            numericInput("userCare","Number of PLHIV in HIV care (including ART) (5):", value = 0, min = 0)
+        ),
+        box(width = 4,
+            background = "blue",
+            solidHeader = TRUE,
+            numericInput("userTx","Number of PLHIV in HIV care and on ART (6):", value = 0, min = 0)
+        ),
+        box(width = 4,
+            background = "blue",
+            solidHeader = TRUE,
+            numericInput("userVs","Number of PLHIV in HIV care, on ART and virally suppressed (8):", value = 0, min = 0)
+        ),
+        box(width = 4,
+            background = "blue",
+            solidHeader = TRUE,
+            numericInput("userLtfu","Number of PLHIV who dropped out of ART care:", value = 0, min = 0)
+        ),
+        em(h5("If this value is known please enter it, otherwise leave it blank:")),
+        box(width = NULL,
+            background = "blue",
+            solidHeader = TRUE,
+            numericInput("userRetArt12mths","Percentage of PLHIV retained and surviving on ART 12 months after initiation (7):", value = 0, min = 0, max = 1, step = 0.01)
         )
     ),
     column(width = 4,
