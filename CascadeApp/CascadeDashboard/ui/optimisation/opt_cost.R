@@ -15,16 +15,28 @@ tabItem(tabName = "opt_cost",
     column(width = 8,
         shinyjs::useShinyjs(),
         id = "cost-panel",
-        wellPanel(
+        box(width = NULL,
+            height = '100%',
+            status = "warning",
+            solidHeader = TRUE,
             sliderInput('userDxUnitCost','Unit cost of diagnosing a patient (USD):', min = 0, max = 100, value = 10, step = 1)
         ),
-        wellPanel(
+        box(width = NULL,
+            height = '100%',
+            status = "warning",
+            solidHeader = TRUE,
             sliderInput('userLinkageUnitCost','Unit cost of linking a patient to care (USD):', min = 0, max = 100, value = 40, step = 1)
         ),
-        wellPanel(
+        box(width = NULL,
+            height = '100%',
+            status = "warning",
+            solidHeader = TRUE,
             sliderInput('userAnnualCareUnit','Annual cost of keeping a patient in pre-ART care (USD):', min = 0, max = 100, value = 40, step = 1)
         ),
-        wellPanel(
+        box(width = NULL,
+            height = '100%',
+            status = "warning",
+            solidHeader = TRUE,
             sliderInput('userAnnualARTUnitCost','Annual cost of ART (USD):', min = 0, max = 500, value = 367, step = 1)
         )
     )
