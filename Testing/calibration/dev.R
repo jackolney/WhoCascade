@@ -105,12 +105,12 @@ test <- list(p, incidence)
 names(test)[1] <- "r_par"
 names(test)[2] <- "r_inc"
 
-
+rm(list=ls())
 dyn.load("~/git/WhoCascade/cascade/src/cascade.so")
 # setwd("")
 
-source("~/git/WhoCascade/cascade/R/Parameters.R")
-source("~/git/WhoCascade/cascade/R/Initial.R")
+# source("~/git/WhoCascade/cascade/R/Parameters.R")
+# source("~/git/WhoCascade/cascade/R/Initial.R")
 
 p <- parameters()
 y <- initial(p)
@@ -126,16 +126,44 @@ result <- deSolve::ode(times = time, y = y, func = "calib_derivs", initfunc = "c
 head(result)
 out <- as.data.frame(result)
 
+# RunCalib(time, y, p, i)
+source("~/git/WhoCascade/Testing/calibration/model/run_calib.R")
+out <- RunCalib(time, y, p, i)
+head(out)
+
+plot(seq(1970,2015,1),out$N, type = 'b', lwd = 2)
+plot(out$DALY, type = 'l')
+lines(out$Dx)
+
 plot(out$Dx_Cost, type = 'l', lwd = 2)
 
+plot(out$NewInf, type = 'l', lwd = 2)
+lines(i, type = 'l', lwd = 2, col = "red")
+
+plot(i, type = 'l', lwd = 2)
+i
+out$NewInf
+
+out$NewInf / out$time
 # pass test to ode()
 
+reverse_cumsum <- function(x) {
+   shifted <- c(0,x[1:(length(x)-1)])
+   x-shifted
+}
+
+a <- reverse_cumsum(out$NewInf)
+
+plot(a)
+lines(i)
+lines(out$NewInf)
+lines(out$NewInf / out$time)
 
 # Need to let new deriv take an array of incidence.
 
 # Edit cascade package
-# 1) and include a training_deriv function that takes input from the incidence csv.
-# 2) Include ART initiation flags and changing guidelines
+# 1) and include a training_deriv function that takes input from the incidence csv. - DONE.
+# 2) Include ART initiation flags and changing guidelines - EVENTs ?? (although, that might just be for altering variables)
 # 3) Test to see what CD4 distribution looks like in 2015.
 # If it clashes. We could always calibrate model to avaiable data and then RESET cd4 distribution
 

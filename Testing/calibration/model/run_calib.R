@@ -1,8 +1,10 @@
-RunTraining <- function(time, y, p) {
+RunCalib <- function(time, y, p, i) {
 
-    result <- deSolve::ode(times = time, y = y, func = "training_derivs", parms = p, initfunc = 'initmod', dllname = 'cascade')
+    plist <- list(p, i)
+    names(plist) <- c("r_par", "r_inc")
 
-    dim(result)
+    result <- deSolve::ode(times = time, y = y, func = "calib_derivs", parms = plist, initfunc = "calib_initmod", dllname = "cascade")
+
     result <- cbind(result, N = rowSums(result[, c(
         "UnDx_500", "UnDx_350500", "UnDx_250350", "UnDx_200250", "UnDx_100200", "UnDx_50100", "UnDx_50",
         "Dx_500", "Dx_350500", "Dx_250350", "Dx_200250", "Dx_100200", "Dx_50100", "Dx_50",
