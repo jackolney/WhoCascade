@@ -33,8 +33,6 @@ p_onArt100200 = 0.225103218
 p_onArt50100 = 0.093872469
 p_onArt50 = 0.0558359
 
-
-
 time <- seq(0, 5, 0.02)
 p <- GetParameters()
 y <- GetInitial(
@@ -66,6 +64,21 @@ out <- RunSim(time, y, p)
 head(out)
 
 plot(out$N, type = 'l', lwd = 2)
+
+# Reading in some incidence
+incidence <- readr::read_csv("~/git/WhoCascade/CascadeApp/CascadeDashboard/server/data/incident-infections.csv", skip = 1)
+names(incidence)
+incidence$year
+length(incidence[["Kenya"]])
+
+# Edit cascade package
+# 1) and include a training_deriv function that takes input from the incidence csv.
+# 2) Include ART initiation flags and changing guidelines
+# 3) Test to see what CD4 distribution looks like in 2015.
+# If it clashes. We could always calibrate model to avaiable data and then RESET cd4 distribution
+
+
+
 
 out$N[250]
 out$N[251]
