@@ -36,7 +36,6 @@ p_onArt50 = 0.0558359
 time <- seq(0, 5, 0.02)
 p <- GetParameters()
 y <- GetInitial(
-    user_country = "Kenya",
     user_plhiv = 1400000,
     user_diag = 1109668,
     user_care = 848018,
@@ -66,10 +65,73 @@ head(out)
 plot(out$N, type = 'l', lwd = 2)
 
 # Reading in some incidence
-incidence <- readr::read_csv("~/git/WhoCascade/CascadeApp/CascadeDashboard/server/data/incident-infections.csv", skip = 1)
-names(incidence)
-incidence$year
-length(incidence[["Kenya"]])
+spectrum <- readr::read_csv("~/git/WhoCascade/CascadeApp/CascadeDashboard/server/data/incident-infections.csv", skip = 1)
+names(spectrum)
+spectrum$year
+length(spectrum[["Kenya"]])
+
+incidence <- spectrum[["Kenya"]]
+length(incidence)
+plot(incidence)
+
+y <- GetInitial(
+    user_plhiv = 0,
+    user_diag = 0,
+    user_care = 0,
+    user_tx = 0,
+    user_vs = 0,
+    user_ltfu = 0,
+    p_preArt500 = 0,
+    p_preArt350500 = 0,
+    p_preArt250350 = 0,
+    p_preArt200250 = 0,
+    p_preArt100200 = 0,
+    p_preArt50100 = 0,
+    p_preArt50 = 0,
+    p_onArt500 = 0,
+    p_onArt350500 = 0,
+    p_onArt250350 = 0,
+    p_onArt200250 = 0,
+    p_onArt100200 = 0,
+    p_onArt50100 = 0,
+    p_onArt50 = 0
+)
+
+# This keeps everything at ZERO initially.
+
+time <- seq(1, 45, 1)
+
+test <- list(p, incidence)
+names(test)[1] <- "r_par"
+names(test)[2] <- "r_inc"
+
+
+dyn.load("~/git/WhoCascade/cascade/src/cascade.so")
+# setwd("")
+
+source("~/git/WhoCascade/cascade/R/Parameters.R")
+source("~/git/WhoCascade/cascade/R/Initial.R")
+
+p <- parameters()
+y <- initial(p)
+i <- incidence()
+plist <- list(p, i)
+names(plist) <- c("r_par", "r_inc")
+.Call("r_calib_initmod", plist, PACKAGE = "cascade")
+result <- .Call("r_calib_derivs", y, PACKAGE = "cascade")
+result
+
+time <- seq(0, 45, 1)
+result <- deSolve::ode(times = time, y = y, func = "calib_derivs", initfunc = "calib_initmod", dllname = "cascade", parms = plist)
+head(result)
+out <- as.data.frame(result)
+
+plot(out$Dx_Cost, type = 'l', lwd = 2)
+
+# pass test to ode()
+
+
+# Need to let new deriv take an array of incidence.
 
 # Edit cascade package
 # 1) and include a training_deriv function that takes input from the incidence csv.

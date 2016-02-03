@@ -1,8 +1,8 @@
 #' Parameters for model.
-#' 
+#'
 #' @title Parameters for model
 #'
-#' @param ... vector of named arguements
+#' @param ... vector of named arguments
 #'
 #' @export
 parameters <- function(...) {
@@ -70,7 +70,7 @@ parameters <- function(...) {
         w5 = 0.1,
         beta = 0.0275837)
     replace <- c(...)
-    if (length(replace) > 0L) {
+    if(length(replace) > 0L) {
         stopifnot(is.numeric(replace))
         stopifnot(all(names(replace) %in% names(default)))
         default[names(replace)] <- replace

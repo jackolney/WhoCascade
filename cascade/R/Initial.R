@@ -1,8 +1,8 @@
 #' Initial values for model.
-#' 
+#'
 #' @title Initial values for model
 #'
-#' @param p parameters (from \code{\link{Parameters}})
+#' @param p parameters (from \code{\link{parameters}})
 #'
 #' @export
 initial <- function(p) {

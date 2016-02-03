@@ -1,6 +1,6 @@
 context("Reference")
 
-test_that("simple", {
+test_that("Simple", {
     source("TheModel.R", local = TRUE)
     p <- parameters()
     y <- initial(p)

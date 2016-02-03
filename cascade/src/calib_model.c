@@ -1,75 +1,7 @@
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-
-void derivs(int * neq, double *t, double *y, double *ydot, double *yout, int *ip);
-
-struct myparms {
-    double Nu_1;
-    double Nu_2;
-    double Nu_3;
-    double Nu_4;
-    double Nu_5;
-    double Nu_6;
-    double Rho;
-    double Epsilon;
-    double Kappa;
-    double Gamma;
-    double Theta;
-    double Omega;
-    double p;
-    double s_1;
-    double s_2;
-    double s_3;
-    double s_4;
-    double s_5;
-    double s_6;
-    double s_7;
-    double Sigma;
-    double Delta_1;
-    double Delta_2;
-    double Delta_3;
-    double Delta_4;
-    double Delta_5;
-    double Alpha_1;
-    double Alpha_2;
-    double Alpha_3;
-    double Alpha_4;
-    double Alpha_5;
-    double Alpha_6;
-    double Alpha_7;
-    double Tau_1;
-    double Tau_2;
-    double Tau_3;
-    double Tau_4;
-    double Tau_5;
-    double Tau_6;
-    double Tau_7;
-    double Mu;
-    double ART_All;
-    double ART_500;
-    double ART_350;
-    double ART_200;
-    double Dx_unitCost;
-    double Linkage_unitCost;
-    double Annual_Care_unitCost;
-    double Annual_ART_unitCost;
-    double prop_preART_500;
-    double prop_preART_350500;
-    double prop_preART_250350;
-    double prop_preART_200250;
-    double prop_preART_100200;
-    double prop_preART_50100;
-    double prop_preART_50;
-    double w1;
-    double w2;
-    double w3;
-    double w4;
-    double w5;
-    double beta;
-};
-
-static struct myparms parms;
+#include "calib_model.h"
 
 #define UnDx_500 0
 #define UnDx_350500 1
@@ -128,12 +60,32 @@ static struct myparms parms;
 #define Annual_Care_Cost 54
 #define Annual_ART_Cost 55
 
-SEXP r_initmod(SEXP rp) {
-    if(LENGTH(rp) != 62) {
+static struct myparms parms;
+
+static struct myinc inc;
+
+SEXP getListElement(SEXP list, const char *str)
+{
+    SEXP elmt = R_NilValue, names = getAttrib(list, R_NamesSymbol);
+    for (int i = 0; i < length(list); i++)
+    if(strcmp(CHAR(STRING_ELT(names, i)), str) == 0) {
+       elmt = VECTOR_ELT(list, i);
+       break;
+    }
+    return elmt;
+}
+
+SEXP r_calib_initmod(SEXP rp) {
+    if(LENGTH(getListElement(rp, "r_par")) != 62) {
         Rf_error("Invalid Parameters.");
     }
 
-    double * p = REAL(rp);
+    if(LENGTH(getListElement(rp, "r_inc")) != 46) {
+        Rf_error("Invalid Incidence.");
+    }
+
+    double * p = REAL(getListElement(rp, "r_par"));
+    double * i = REAL(getListElement(rp, "r_inc")); // For incidence
 
     parms.Nu_1 = p[0];
     parms.Nu_2 = p[1];
@@ -198,31 +150,35 @@ SEXP r_initmod(SEXP rp) {
     parms.w5 = p[60];
     parms.beta = p[61];
 
+    for(int j = 0; j < 46; j++) {
+        inc.inf[j] = i[j];
+    }
+
     return R_NilValue;
 }
 
-SEXP r_derivs(SEXP y) {
+SEXP r_calib_derivs(SEXP y) {
     int neq = LENGTH(y);
     SEXP ydot = PROTECT(allocVector(REALSXP, neq));
     double * yout = NULL;
     int ip = 0;
     double t = 0.0;
 
-    derivs(&neq, &t, REAL(y), REAL(ydot), yout, &ip);
+    calib_derivs(&neq, &t, REAL(y), REAL(ydot), yout, &ip);
     UNPROTECT(1);
     return ydot;
 }
 
-void initmod(void(* odeparms) (int *, double *)) {
+void calib_initmod(void(* odeparms) (int *, double *)) {
 
     DL_FUNC get_deSolve_gparms = R_GetCCallable("deSolve", "get_deSolve_gparms");
 
     SEXP rp = get_deSolve_gparms();
 
-    r_initmod(rp);
+    r_calib_initmod(rp);
 }
 
-void derivs(int * neq, double *t, double *y, double *ydot, double *yout, int *ip) {
+void calib_derivs(int * neq, double *t, double *y, double *ydot, double *yout, int *ip) {
 
     ydot[0] = parms.prop_preART_500 * (parms.beta * (((y[UnDx_500] + y[Dx_500] + y[Care_500] + y[PreLtfu_500] + y[Tx_Na_500] + y[Ltfu_500]) * parms.w1) + ((y[UnDx_350500] + y[Dx_350500] + y[Care_350500] + y[PreLtfu_350500] + y[Tx_Na_350500] + y[Ltfu_350500]) * parms.w2) + ((y[UnDx_250350] + y[Dx_250350] + y[Care_250350] + y[PreLtfu_250350] + y[Tx_Na_250350] + y[Ltfu_250350] + y[UnDx_200250] + y[Dx_200250] + y[Care_200250] + y[PreLtfu_200250] + y[Tx_Na_200250] + y[Ltfu_200250]) * parms.w3) + ((y[UnDx_100200] + y[Dx_100200] + y[Care_100200] + y[PreLtfu_100200] + y[Tx_Na_100200] + y[Ltfu_100200] + y[UnDx_50100] + y[Dx_50100] + y[Care_50100] + y[PreLtfu_50100] + y[Tx_Na_50100] + y[Ltfu_50100] + y[UnDx_50] + y[Dx_50] + y[Care_50] + y[PreLtfu_50] + y[Tx_Na_50] + y[Ltfu_50]) * parms.w4) + ((y[Tx_A_500] + y[Tx_A_350500] + y[Tx_A_250350] + y[Tx_A_200250] + y[Tx_A_100200] + y[Tx_A_50100] + y[Tx_A_50]) * parms.w5))) - (parms.Nu_1 + parms.Rho + (parms.ART_All * parms.s_1 * parms.p * parms.Theta) + (parms.ART_All * parms.s_1 * (1-parms.p) * parms.Theta) + parms.Alpha_1 + parms.Mu) * y[UnDx_500];
     ydot[1] = parms.prop_preART_350500 * (parms.beta * (((y[UnDx_500] + y[Dx_500] + y[Care_500] + y[PreLtfu_500] + y[Tx_Na_500] + y[Ltfu_500]) * parms.w1) + ((y[UnDx_350500] + y[Dx_350500] + y[Care_350500] + y[PreLtfu_350500] + y[Tx_Na_350500] + y[Ltfu_350500]) * parms.w2) + ((y[UnDx_250350] + y[Dx_250350] + y[Care_250350] + y[PreLtfu_250350] + y[Tx_Na_250350] + y[Ltfu_250350] + y[UnDx_200250] + y[Dx_200250] + y[Care_200250] + y[PreLtfu_200250] + y[Tx_Na_200250] + y[Ltfu_200250]) * parms.w3) + ((y[UnDx_100200] + y[Dx_100200] + y[Care_100200] + y[PreLtfu_100200] + y[Tx_Na_100200] + y[Ltfu_100200] + y[UnDx_50100] + y[Dx_50100] + y[Care_50100] + y[PreLtfu_50100] + y[Tx_Na_50100] + y[Ltfu_50100] + y[UnDx_50] + y[Dx_50] + y[Care_50] + y[PreLtfu_50] + y[Tx_Na_50] + y[Ltfu_50]) * parms.w4) + ((y[Tx_A_500] + y[Tx_A_350500] + y[Tx_A_250350] + y[Tx_A_200250] + y[Tx_A_100200] + y[Tx_A_50100] + y[Tx_A_50]) * parms.w5))) + parms.Nu_1 * y[UnDx_500] - (parms.Nu_2 + parms.Rho + (parms.ART_500 * parms.s_2 * parms.p * parms.Theta) + (parms.ART_500 * parms.s_2 * (1-parms.p) * parms.Theta) + parms.Alpha_2 + parms.Mu) * y[UnDx_350500];

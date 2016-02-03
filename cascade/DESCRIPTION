@@ -2,7 +2,7 @@ Package: cascade
 Title: Cascade Model
 Version: 0.0.0.9000
 Authors@R: person("Jack", "Olney", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: Simple HIV cascade model consisting of 49 ordinary differential equations. Two versions of the model exist in this package: a simulation and a calibration version.
 Depends: R (>= 3.2.3)
 License: GPL-2
 LazyData: true

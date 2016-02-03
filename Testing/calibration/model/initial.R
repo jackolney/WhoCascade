@@ -1,5 +1,4 @@
 GetInitial <- function(
-    user_country,
     user_plhiv,
     user_diag,
     user_care,
