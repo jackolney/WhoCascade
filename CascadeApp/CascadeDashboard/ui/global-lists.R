@@ -14,7 +14,7 @@ CountryList <- c(
     "Malawi",
     "Mozambique",
     "Myanmar",
-    'Nigeria',
+    "Nigeria",
     "Pakistan",
     "Philippines",
     "South Africa",
