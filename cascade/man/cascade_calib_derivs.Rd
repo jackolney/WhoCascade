@@ -7,9 +7,11 @@
 cascade_calib_derivs(y, p, i)
 }
 \arguments{
-\item{y}{initial.}
+\item{y}{initial state variable values.}
 
-\item{p}{list containing parameters and incidence.}
+\item{p}{list containing parameters.}
+
+\item{i}{list containing incidence.}
 }
 \description{
 Compute derivatives for cascade model (calibration).

@@ -2,9 +2,11 @@
 #'
 #' @title Compute derivatives for cascade model (calibration)
 #'
-#' @param y initial.
+#' @param y initial state variable values.
 #'
-#' @param p list containing parameters and incidence.
+#' @param p list containing parameters.
+#'
+#' @param i list containing incidence.
 #'
 #' @export
 #' @useDynLib cascade
