@@ -155,24 +155,63 @@ if(is.not.empty(calib.df$art)) {
 
 # calib.hiv_awareness_unaids
 if(is.not.empty(calib.df$hiv_awareness_unaids)) {
-    temp.hiv_awareness_unaids <- reshape2::melt(calib.df$hiv_awareness_unaids[c("country","year","value")],
-        id.vars = c("country", ""))
+    temp.hiv_awareness_unaids <- reshape2::melt(calib.df$hiv_awareness_unaids[c("country","year","indicator","value")],
+        id.vars = c("country", "indicator"),
+        variable.name = "year",
+        value.name = "value")
 }
 
-calib.hiv_awareness_unaids
-
 # calib.not_on_art
+if(is.not.empty(calib.df$not_on_art)) {
+    temp.not_on_art <- reshape2::melt(calib.df$not_on_art[c("country","indicator","2010","2011","2012","2013","2014","2015")],
+        id.vars = c("country", "indicator"),
+        variable.name = "year",
+        value.name = "value")
+}
 
 # calib.plhiv
+if(is.not.empty(calib.df$plhiv)) {
+    temp.plhiv <- reshape2::melt(calib.df$plhiv[c("country","indicator","2010","2011","2012","2013","2014","2015")],
+        id.vars = c("country","indicator"),
+        variable.name = "year",
+        value.name = "value")
+}
 
 # calib.previous_data
+if(is.not.empty(calib.df$previous_data)) {
+    temp.previous_data <- calib.df$previous_data[c("country","indicator","year","value")]
+}
 
 
 # List of temp.names
-temp.names <- c("blah","blah","blah")
-# if each exists, then cbind that shit.
+temp.names <- c(
+    "temp.art",
+    "temp.hiv_awareness_unaids",
+    "temp.not_on_art",
+    "temp.plhiv",
+    "temp.previous_data"
+    )
+
 exists("temp.art")
 
+which.exist <- function() {
+    report <- c()
+    for(i in 1:length(temp.names)) {
+        if(exists(temp.names[i])) {
+            report[i] <- TRUE
+        } else {
+            report[i] <- FALSE
+        }
+    }
+    return(report)
+}
+
+which.exist()
+# then based on the results of the report do some rbinding()
+
+rbind(temp.art,temp.plhiv)
+
+the.df <-
 
 calib.df
 
