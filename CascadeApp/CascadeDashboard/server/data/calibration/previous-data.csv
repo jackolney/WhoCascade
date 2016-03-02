@@ -1,4 +1,4 @@
-year,country,category,value,source,details
+year,country,indicator,value,source,details
 2008,Brazil,PLHIV on ART,184000,Data from Department of DST,Extracted from Juans thesis
 2009,Brazil,PLHIV on ART,212587,Data from Department of DST,Extracted from Juans thesis
 2010,Brazil,PLHIV on ART,240949,Data from Department of DST,Extracted from Juans thesis
