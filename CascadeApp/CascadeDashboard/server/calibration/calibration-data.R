@@ -123,7 +123,7 @@ is.not.empty <- function(ListElement) {
 
 
 # Wrap in a function then question the data.
-# uCountry = "DRC"
+# uCountry = "Brazil"
 
 GetCountryData <- function(uCountry) {
     calib.df <- list()
@@ -209,7 +209,7 @@ GetCountryData <- function(uCountry) {
 
     # calib.previous_data
     if(is.not.empty(calib.df$previous_data)) {
-        temp.previous_data <- calib.df$previous_data[c("country","indicator","year","value")]
+        temp.previous_data <- dplyr::filter(calib.df$previous_data[c("country","indicator","year","value")], year >= 2010)
     }
 
     # Assemble master.data.frame
@@ -242,9 +242,11 @@ GetCountryData <- function(uCountry) {
 
 GetCountryData("Kenya")
 
-test <- GetCountryData("Kenya")$calib
+test <- GetCountryData("Brazil")$calib
 
 ggplot(test, aes(x = year, y = value)) + geom_point(aes(color = indicator)) + theme_classic()
+
+
 
 
 # need to make judegment calls on each country. Regarding the data.
