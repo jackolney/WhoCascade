@@ -242,50 +242,62 @@ GetCountryData <- function(uCountry) {
 
 GetCountryData("Kenya")
 
-test <- GetCountryData("Brazil")$calib
+test <- GetCountryData("Kenya")$calib
 
-ggplot(test, aes(x = year, y = value)) + geom_point(aes(color = indicator)) + theme_classic()
+ggplot(test, aes(x = year, y = value)) + geom_point(aes(color = indicator))
+
+# need to make judgement calls on each country. Regarding the data.
+
+# So after GetCountryData() we need a MakeAssumptions() [to fill in the gaps]
+MakeAssumptions()
+
+PLHIV - PLHIV.on.ART = PLHIV.not.on.ART
+
+dplyr::filter(test, indicator == "PLHIV") %>% dplyr::filter(year == 2011)
+
+# What is we made the assumption of #diagnosed as the average of neighbouring countries? (for a particular time point)
+e.diag = 0.6436
+t.diag = 0.5859
+u.diag = 0.6274
+
+mean(e.diag,t.diag,u.diag)
+
+1307586 * mean(e.diag,t.diag,u.diag)
+test
 
 
 
+country <- "Kenya"
+indicator <- "PLHIV Diagnosed"
+year <- 2011
+value <- 1307586 * mean(e.diag,t.diag,u.diag)
+new <- data.frame(country,indicator,year,value)
 
-# need to make judegment calls on each country. Regarding the data.
+test2 <- rbind(test,new)
+
+ggplot(test2, aes(x = year, y = value)) + geom_point(aes(color = indicator))
+
+a <- dplyr::filter(test2, year == 2011)
+
+a.plhiv = a$value[3]
+a.plhiv.diag = a$value[4]
+a.plhiv.on.ART = a$value[1]
+a.plhiv.not.onART = a$value[2]
+
+a.plhiv - a.plhiv.on.ART
+a.plhiv.not.onART
+
+bar <- c(a.plhiv,a.plhiv.diag,a.plhiv.on.ART)
+
+barplot(bar)
+
+a.plhiv.care <- a.plhiv.diag - ((a.plhiv.diag - a.plhiv.on.ART) / 2)
+
+bar2 <- c(a.plhiv,a.plhiv.diag,a.plhiv.care,a.plhiv.on.ART)
+barplot(bar2)
 
 # master.df needs to include
 # incidence
 # cd4
 # rates
 # treatment guidelines
-
-
-test <- list(build.master.df())
-
-test[[1]]
-
-calib.df
-
-
-# I think this would iteratively rbind a total vector for use in the model.
-
-
-
-the.df <-
-
-calib.df
-
-(calib.df[[1]])
-# annoyingly, 'incidence' doesn't fit with everything else... urgh.
-calib.df
-
-# Need a list-wide check function that will tell us if any elements are missing.
-# Alert the user, then proceed to next step.
-
-# We essentially need a whole bunch of points in a single data.frame
-calib.df$previous_data
-
-calib.df
-
-
-test <- reshape2::melt(calib.art)
-
-a <- dplyr::filter(test, Country == "Kenya")$value
