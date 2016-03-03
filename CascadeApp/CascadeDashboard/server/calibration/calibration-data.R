@@ -72,7 +72,7 @@ calib.incidence[[userCountry]]
 
 # something along the lines of:
 
-GetCountryData <- function(uCountry) {
+# GetCountryData <- function(uCountry) {
     # This will then return a data.frame containing ALL available data.
 
     # But how do we handle counties with values missing?
@@ -82,7 +82,7 @@ GetCountryData <- function(uCountry) {
     #   [3] - Treatment Guideline changes for the specific country
     #   [4] - Rates (if available) [only will be possible for like 3 countries who supplied rates in Marrakech]
     # Think we need a standard format here??
-}
+# }
 
 # this will replace which.exist()
 # build.master.df <- function(temp.names, calib.df) {
@@ -151,6 +151,21 @@ GetCountryData <- function(uCountry) {
         "rates"
         )
 
+    # list temp.names
+    temp.names <- c(
+        "temp.art",
+        "temp.hiv_awareness_unaids",
+        "temp.not_on_art",
+        "temp.plhiv",
+        "temp.previous_data"
+        )
+
+    for(i in 1:length(temp.names)) {
+        if(exists(temp.names[i])) {
+            rm(list = temp.names[i])
+        }
+    }
+
     # Reshape data
     # calib.art
     if(is.not.empty(calib.df$art)) {
@@ -197,16 +212,6 @@ GetCountryData <- function(uCountry) {
         temp.previous_data <- calib.df$previous_data[c("country","indicator","year","value")]
     }
 
-
-    # List of temp.names
-    temp.names <- c(
-        "temp.art",
-        "temp.hiv_awareness_unaids",
-        "temp.not_on_art",
-        "temp.plhiv",
-        "temp.previous_data"
-        )
-
     # Assemble master.data.frame
     # master.df <- build.master.df(temp.names, calib.df)
     out <- c()
@@ -237,7 +242,7 @@ GetCountryData <- function(uCountry) {
 
 GetCountryData("Kenya")
 
-test <- GetCountryData("DRC")$calib
+test <- GetCountryData("Kenya")$calib
 
 ggplot(test, aes(x = year, y = value)) + geom_point(aes(color = indicator)) + theme_classic()
 
