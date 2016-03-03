@@ -293,8 +293,20 @@ barplot(bar)
 
 a.plhiv.care <- a.plhiv.diag - ((a.plhiv.diag - a.plhiv.on.ART) / 2)
 
-bar2 <- c(a.plhiv,a.plhiv.diag,a.plhiv.care,a.plhiv.on.ART)
+bar2 <- c(a.plhiv,a.plhiv.diag,a.plhiv * 0.57,a.plhiv.on.ART)
 barplot(bar2)
+
+
+# Do we carry these trends onwards? (over time)
+
+In 2015, 57% of PLHIV are on art
+
+
+a.plhiv.care
+a.plhiv.diag
+
+a.plhiv.on.ART
+
 
 # master.df needs to include
 # incidence
