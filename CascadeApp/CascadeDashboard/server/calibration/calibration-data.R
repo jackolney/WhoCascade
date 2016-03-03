@@ -1,5 +1,5 @@
 # require(readr)
-
+rm(list=ls())
 dir()
 
 # Setup Page -> Multiple Tabs
@@ -84,54 +84,34 @@ GetCountryData <- function(uCountry) {
     # Think we need a standard format here??
 }
 
+# this will replace which.exist()
+# build.master.df <- function(temp.names, calib.df) {
+#     out <- c()
+#     for(i in 1:length(temp.names)) {
+#         if(exists(temp.names[i])) {
+#             out <- rbind(out, get(temp.names[i]))
+#         }
+#     }
 
+#     out.list <- list(
+#         calib.df$incidence,
+#         calib.df$cd4,
+#         calib.df$treatment_guidelines,
+#         out,
+#         calib.df$rates
+#         )
 
+#     names(out.list) <- c(
+#         "incidence",
+#         "cd4",
+#         "treatment_guidelines",
+#         "calib",
+#         "rates"
+#         )
 
-calib.incidence$Kenya
+#     out.list
+# }
 
-# Essentials (list elements 1 and 2)
-calib.incidence[[userCountry]]
-dplyr::filter(calib.cd4, Country == userCountry)
-
-# Additional Stuff (to be pulled together somehow) (list element 3)
-dplyr::filter(calib.art, Country == userCountry)
-dplyr::filter(calib.hiv_awareness_unaids, country == userCountry)
-dplyr::filter(calib.not_on_art, Country == userCountry)
-dplyr::filter(calib.plhiv, Country == userCountry)
-dplyr::filter(calib.previous_data, country == userCountry)
-
-# (list element 4)
-dplyr::filter(calib.treatment_guidelines, country == userCountry)
-# (list element 5)
-dplyr::filter(calib.rates, country == userCountry)
-
-
-# Create List()
-calib.df <- list()
-calib.df[[1]] <- calib.incidence[[userCountry]]
-calib.df[[2]] <- dplyr::filter(calib.cd4, country == userCountry)
-calib.df[[3]] <- dplyr::filter(calib.art, country == userCountry)
-calib.df[[4]] <- dplyr::filter(calib.hiv_awareness_unaids, country == userCountry)
-calib.df[[5]] <- dplyr::filter(calib.not_on_art, country == userCountry)
-calib.df[[6]] <- dplyr::filter(calib.plhiv, country == userCountry)
-calib.df[[7]] <- dplyr::filter(calib.previous_data, country == userCountry)
-calib.df[[8]] <- dplyr::filter(calib.rates, country == userCountry)
-calib.df[[9]] <- dplyr::filter(calib.treatment_guidelines, country == userCountry)
-
-# Create a vector of data names
-names(calib.df) <- c(
-    "incidence",
-    "cd4",
-    "art",
-    "hiv_awareness_unaids",
-    "not_on_art",
-    "plhiv",
-    "previous_data",
-    "rates",
-    "treatment_guidelines"
-    )
-
-# Define is.not.empty function
 is.not.empty <- function(ListElement) {
     if(!is.list(ListElement)) stop("not a list")
     if(dim(ListElement)[1] == 0) {
@@ -141,75 +121,146 @@ is.not.empty <- function(ListElement) {
     }
 }
 
-is.not.empty(calib.df[[4]])
 
-# Start reshaping from here.
+# Wrap in a function then question the data.
+# uCountry = "DRC"
 
-# calib.art
-if(is.not.empty(calib.df$art)) {
-    temp.art <- reshape2::melt(calib.df$art[c("country","indicator","2010","2011","2012","2013","2014","2015")],
-        id.vars = c("country", "indicator"),
-        variable.name = "year",
-        value.name = "value")
-}
+GetCountryData <- function(uCountry) {
+    calib.df <- list()
+    calib.df[[1]] <- calib.incidence[[uCountry]]
+    calib.df[[2]] <- dplyr::filter(calib.cd4, country == uCountry)
+    calib.df[[3]] <- dplyr::filter(calib.treatment_guidelines, country == uCountry)
+    calib.df[[4]] <- dplyr::filter(calib.art, country == uCountry)
+    calib.df[[5]] <- dplyr::filter(calib.hiv_awareness_unaids, country == uCountry)
+    calib.df[[6]] <- dplyr::filter(calib.not_on_art, country == uCountry)
+    calib.df[[7]] <- dplyr::filter(calib.plhiv, country == uCountry)
+    calib.df[[8]] <- dplyr::filter(calib.previous_data, country == uCountry)
+    calib.df[[9]] <- dplyr::filter(calib.rates, country == uCountry)
+    calib.df[[10]] <- dplyr::filter(calib.treatment_guidelines, country == uCountry)
 
-# calib.hiv_awareness_unaids
-if(is.not.empty(calib.df$hiv_awareness_unaids)) {
-    temp.hiv_awareness_unaids <- reshape2::melt(calib.df$hiv_awareness_unaids[c("country","year","indicator","value")],
-        id.vars = c("country", "indicator"),
-        variable.name = "year",
-        value.name = "value")
-}
+    # Create a vector of data names
+    names(calib.df) <- c(
+        "incidence",
+        "cd4",
+        "treatment_guidelines",
+        "art",
+        "hiv_awareness_unaids",
+        "not_on_art",
+        "plhiv",
+        "previous_data",
+        "rates"
+        )
 
-# calib.not_on_art
-if(is.not.empty(calib.df$not_on_art)) {
-    temp.not_on_art <- reshape2::melt(calib.df$not_on_art[c("country","indicator","2010","2011","2012","2013","2014","2015")],
-        id.vars = c("country", "indicator"),
-        variable.name = "year",
-        value.name = "value")
-}
+    # Reshape data
+    # calib.art
+    if(is.not.empty(calib.df$art)) {
+        temp.art <- reshape2::melt(calib.df$art[c("country","indicator","2010","2011","2012","2013","2014","2015")],
+            id.vars = c("country", "indicator"),
+            variable.name = "year",
+            value.name = "value")
+    }
 
-# calib.plhiv
-if(is.not.empty(calib.df$plhiv)) {
-    temp.plhiv <- reshape2::melt(calib.df$plhiv[c("country","indicator","2010","2011","2012","2013","2014","2015")],
-        id.vars = c("country","indicator"),
-        variable.name = "year",
-        value.name = "value")
-}
+    # calib.not_on_art
+    if(is.not.empty(calib.df$not_on_art)) {
+        temp.not_on_art <- reshape2::melt(calib.df$not_on_art[c("country","indicator","2010","2011","2012","2013","2014","2015")],
+            id.vars = c("country", "indicator"),
+            variable.name = "year",
+            value.name = "value")
+    }
 
-# calib.previous_data
-if(is.not.empty(calib.df$previous_data)) {
-    temp.previous_data <- calib.df$previous_data[c("country","indicator","year","value")]
-}
+    # calib.plhiv
+    if(is.not.empty(calib.df$plhiv)) {
+        temp.plhiv <- reshape2::melt(calib.df$plhiv[c("country","indicator","2010","2011","2012","2013","2014","2015")],
+            id.vars = c("country","indicator"),
+            variable.name = "year",
+            value.name = "value")
+    }
 
+    # calib.hiv_awareness_unaids (remember this is a proportion of PLHIV)
+    # Needs to be matched to PLHIV from the SAME YEAR.
+    if(is.not.empty(calib.df$hiv_awareness_unaids)) {
+        temp.hiv_awareness_unaids <- calib.df$hiv_awareness_unaids[c("country","indicator","year","value")]
 
-# List of temp.names
-temp.names <- c(
-    "temp.art",
-    "temp.hiv_awareness_unaids",
-    "temp.not_on_art",
-    "temp.plhiv",
-    "temp.previous_data"
-    )
-
-exists("temp.art")
-
-which.exist <- function() {
-    report <- c()
-    for(i in 1:length(temp.names)) {
-        if(exists(temp.names[i])) {
-            report[i] <- TRUE
+        # Need to match PLHIV, if it doesn't exist for a particular year then we delete the value
+        if(exists("temp.plhiv") & exists("temp.hiv_awareness_unaids")) {
+            for(i in 1:dim(temp.hiv_awareness_unaids)[1]) {
+                t.plhiv <- dplyr::filter(temp.plhiv, year == temp.hiv_awareness_unaids$year[i])$value
+                temp.hiv_awareness_unaids[[i,"value"]] <- temp.hiv_awareness_unaids[[i,"value"]] * t.plhiv
+            }
         } else {
-            report[i] <- FALSE
+            rm(temp.hiv_awareness_unaids)
         }
     }
-    return(report)
+
+    # calib.previous_data
+    if(is.not.empty(calib.df$previous_data)) {
+        temp.previous_data <- calib.df$previous_data[c("country","indicator","year","value")]
+    }
+
+
+    # List of temp.names
+    temp.names <- c(
+        "temp.art",
+        "temp.hiv_awareness_unaids",
+        "temp.not_on_art",
+        "temp.plhiv",
+        "temp.previous_data"
+        )
+
+    # Assemble master.data.frame
+    # master.df <- build.master.df(temp.names, calib.df)
+    out <- c()
+    for(i in 1:length(temp.names)) {
+        if(exists(temp.names[i])) {
+            out <- rbind(out, get(temp.names[i]))
+        }
+    }
+
+    out.list <- list(
+        calib.df$incidence,
+        calib.df$cd4,
+        calib.df$treatment_guidelines,
+        out,
+        calib.df$rates
+        )
+
+    names(out.list) <- c(
+        "incidence",
+        "cd4",
+        "treatment_guidelines",
+        "calib",
+        "rates"
+        )
+
+    out.list
 }
 
-which.exist()
-# then based on the results of the report do some rbinding()
+GetCountryData("Kenya")
 
-rbind(temp.art,temp.plhiv)
+test <- GetCountryData("DRC")$calib
+
+ggplot(test, aes(x = year, y = value)) + geom_point(aes(color = indicator)) + theme_classic()
+
+
+# need to make judegment calls on each country. Regarding the data.
+
+# master.df needs to include
+# incidence
+# cd4
+# rates
+# treatment guidelines
+
+
+test <- list(build.master.df())
+
+test[[1]]
+
+calib.df
+
+
+# I think this would iteratively rbind a total vector for use in the model.
+
+
 
 the.df <-
 
