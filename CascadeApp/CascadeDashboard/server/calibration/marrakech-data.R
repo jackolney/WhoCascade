@@ -55,6 +55,8 @@ GetMarrakechData <- function(uCountry) {
         variable.name = "indicator",
         value.name = "value")
 
+    # Remove *_score (for now)
+    out <- out[grep("*_score", out$indicator, invert = TRUE),]
     out
 }
 
@@ -64,5 +66,4 @@ GetMarrakechData <- function(uCountry) {
 
 # Master dataframe should have the functionality to sort out conflicting data
 
-
-GetMarrakechData("Kenya")
+# GetMarrakechData("Kenya")
