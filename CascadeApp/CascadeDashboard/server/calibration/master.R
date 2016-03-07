@@ -15,3 +15,14 @@ source("marrakech-data.R")
 # This will be called / generated once someone clicks on the map / picks from the dropdown menu
 
 # This function will need to run some tests on the data.set to make sure that it is sensical.
+
+userCountry <- "Kenya"
+# countryData <- return from
+
+countryData <- GetCountryData(userCountry)
+countryAssumptions <- MakeAssumptions(userCountry, countryData)
+marrakechData <- GetMarrakechData(userCountry)
+
+# MASTER DATA SET (for calibration)
+countryMasterDataSet <- rbind(countryData, countryAssumptions, marrakechData)
+

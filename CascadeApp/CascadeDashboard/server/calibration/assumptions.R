@@ -67,7 +67,7 @@ MakeAssumptions <- function(uCountry, countryData) {
         # In 2015, PLHIV in CARE < PLHIV on ART. This gets overwritten by Marrakech data in any case.
         # Might just truncate the data from 2015 and leave the rest.
 
-        assumptions.return <- rbind(countryData, new.diag, new.care)
+        assumptions.return <- rbind(new.diag, new.care)
 
     } else {
         stop("No code written for generating assumptions on other countries aside from Kenya.")
@@ -77,6 +77,6 @@ MakeAssumptions <- function(uCountry, countryData) {
     assumptions.return
 }
 
-
+# Careful not to return the countryData too.
 MakeAssumptions("Kenya", countryData)
 
