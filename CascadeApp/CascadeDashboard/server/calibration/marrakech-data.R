@@ -18,3 +18,51 @@
 # Ready for model to be updated and fit to.
 # Weighting is just the sum of the errors between model and data.
 # We then adjust the contribution of individual errors to total error to make them more or less important.
+
+uCountry <- "Kenya"
+
+GetMarrakechData <- function(uCountry) {
+    # Pull out marrakech csv and fill it in (standard form),
+    # Return to master file.
+
+    m.data <- readr::read_csv("server/data/marrakech.csv", col_names = TRUE, skip = 0)
+    colnames(m.data) <- c(
+        "country",
+        "year",
+        "PLHIV",
+        "PLHIV Diagnosed",
+        "PLHIV in Care",
+        "PLHIV on ART",
+        "PLHIV Retained",
+        "PLHIV Suppressed",
+        "plhiv_score",
+        "diagnosed_score",
+        "care_score",
+        "art_score",
+        "retention_score",
+        "suppression_score")
+
+    # Check if country exists and
+    if(sum(m.data$country == uCountry) > 0) {
+        country.data <- dplyr::filter(m.data, country == uCountry)
+    } else {
+        stop("Country not found in dataset.")
+    }
+
+    # Melt
+    out <- reshape2::melt(dplyr::filter(country.data, country == uCountry),
+        id.vars = c("country", "year"),
+        variable.name = "indicator",
+        value.name = "value")
+
+    out
+}
+
+# What is standard form here?
+
+# Generate easily readable dataframe and return at end of function
+
+# Master dataframe should have the functionality to sort out conflicting data
+
+
+GetMarrakechData("Kenya")

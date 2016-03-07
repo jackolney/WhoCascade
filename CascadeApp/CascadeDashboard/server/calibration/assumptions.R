@@ -33,11 +33,11 @@ MakeAssumptions <- function(uCountry, countryData) {
         k.plhiv <- dplyr::filter(countryData, indicator == "PLHIV")$value # Kenya
 
         # Expanding over timeframe
-        country <- "Kenya"
+        country   <- "Kenya"
         indicator <- "PLHIV Diagnosed"
-        year <- seq(2010, 2015, 1)
-        value <- k.plhiv * mean(e.diag, t.diag, u.diag)
-        new.diag <- data.frame(country, indicator, year, value)
+        year      <- seq(2010, 2015, 1)
+        value     <- k.plhiv * mean(e.diag, t.diag, u.diag)
+        new.diag  <- data.frame(country, indicator, year, value)
 
         # test3 <- rbind(countryData, new.diag)
         # ggplot(test3, aes(x = year, y = value)) + geom_point(aes(color = indicator))
@@ -54,11 +54,11 @@ MakeAssumptions <- function(uCountry, countryData) {
         # As we don't have any care data for prior to 2015, we take this value and attach is for each year over time.
 
         # Building data.frame
-        country <- "Kenya"
+        country   <- "Kenya"
         indicator <- "PLHIV in Care"
-        year <- seq(2010, 2015, 1)
-        value <- dplyr::filter(countryData, indicator == "PLHIV")$value * 0.57
-        new.care <- data.frame(country, indicator, year, value)
+        year      <- seq(2010, 2015, 1)
+        value     <- dplyr::filter(countryData, indicator == "PLHIV")$value * 0.57
+        new.care  <- data.frame(country, indicator, year, value)
 
         # test4 <- rbind(countryData, new.diag, new.care)
         # ggplot(test4, aes(x = year, y = value)) + geom_point(aes(color = indicator))

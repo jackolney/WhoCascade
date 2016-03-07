@@ -23,6 +23,8 @@ countryData <- GetCountryData(userCountry)
 countryAssumptions <- MakeAssumptions(userCountry, countryData)
 marrakechData <- GetMarrakechData(userCountry)
 
+# FixConflicts!!
+
 # MASTER DATA SET (for calibration)
 countryMasterDataSet <- rbind(countryData, countryAssumptions, marrakechData)
 
