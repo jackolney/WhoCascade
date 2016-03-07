@@ -68,7 +68,8 @@ parameters <- function(...) {
         w3 = 1.64,
         w4 = 5.17,
         w5 = 0.1,
-        beta = 0.0275837)
+        beta = 0.0275837,
+        q = 0.5)
     replace <- c(...)
     if(length(replace) > 0L) {
         stopifnot(is.numeric(replace))

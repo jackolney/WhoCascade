@@ -63,6 +63,7 @@ struct myparms {
     double w4;
     double w5;
     double beta;
+    double q;
 };
 
 struct myinc {

@@ -76,7 +76,7 @@ SEXP getListElement(SEXP list, const char *str)
 }
 
 SEXP r_calib_initmod(SEXP rp) {
-    if(LENGTH(getListElement(rp, "r_par")) != 62) {
+    if(LENGTH(getListElement(rp, "r_par")) != 63) {
         Rf_error("Invalid Parameters.");
     }
 
@@ -149,6 +149,7 @@ SEXP r_calib_initmod(SEXP rp) {
     parms.w4 = p[59];
     parms.w5 = p[60];
     parms.beta = p[61];
+    parms.q = p[62];
 
     for(int j = 0; j < 46; j++) {
         inc.inf[j] = i[j];
