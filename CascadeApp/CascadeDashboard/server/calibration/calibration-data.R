@@ -1,5 +1,6 @@
 # require(readr)
 rm(list=ls())
+setwd("~/git/WhoCascade/CascadeApp/CascadeDashboard")
 dir()
 
 # Setup Page -> Multiple Tabs
@@ -33,24 +34,20 @@ dir()
 # Need to account for changing treatment guidelines in this period (have csv of dates, just need to configure it).
 
 # Country Selection
-userCountry = "Kenya"
+# userCountry = "Kenya"
 
 # What folders do I need to search through?
 
-
-calib.files.path <- c()
-for(i in 1:length(calib.files)) {
-    print(i)
-    calib.files.path[i] <- paste0("server/data/calibration/", calib.files[i])
-}
+# calib.files.path <- c()
+# for(i in 1:length(calib.files)) {
+#     print(i)
+#     calib.files.path[i] <- paste0("server/data/calibration/", calib.files[i])
+# }
 
 # For all files in calib.files.path, do readr and identify all those with Kenya
-readr::read_csv
-
-a <- readr::read_csv(calib.files.path[1])
-
-dplyr::filter(a, Country == "Kenya")
-
+# readr::read_csv
+# a <- readr::read_csv(calib.files.path[1])
+# dplyr::filter(a, Country == "Kenya")
 
 # Lets try that again.
 # Read all csv data in at applicataion start, then we can just jump between countries as and when we select them.
@@ -66,9 +63,8 @@ calib.rates                <- readr::read_csv(paste0(c.file.path, "/rates.csv"),
 calib.treatment_guidelines <- readr::read_csv(paste0(c.file.path, "/treatment-guidelines.csv"),  col_names = TRUE, skip = 0)
 
 # For each find userCountry
-userCountry
-
-calib.incidence[[userCountry]]
+# userCountry
+# calib.incidence[[userCountry]]
 
 # something along the lines of:
 
@@ -241,72 +237,6 @@ GetCountryData <- function(uCountry) {
 }
 
 GetCountryData("Kenya")
-
-test <- GetCountryData("Kenya")$calib
-
-ggplot(test, aes(x = year, y = value)) + geom_point(aes(color = indicator))
-
-# need to make judgement calls on each country. Regarding the data.
-
-# So after GetCountryData() we need a MakeAssumptions() [to fill in the gaps]
-MakeAssumptions()
-
-PLHIV - PLHIV.on.ART = PLHIV.not.on.ART
-
-dplyr::filter(test, indicator == "PLHIV") %>% dplyr::filter(year == 2011)
-
-# What is we made the assumption of #diagnosed as the average of neighbouring countries? (for a particular time point)
-e.diag = 0.6436
-t.diag = 0.5859
-u.diag = 0.6274
-
-mean(e.diag,t.diag,u.diag)
-
-1307586 * mean(e.diag,t.diag,u.diag)
-test
-
-
-
-country <- "Kenya"
-indicator <- "PLHIV Diagnosed"
-year <- 2011
-value <- 1307586 * mean(e.diag,t.diag,u.diag)
-new <- data.frame(country,indicator,year,value)
-
-test2 <- rbind(test,new)
-
-ggplot(test2, aes(x = year, y = value)) + geom_point(aes(color = indicator))
-
-a <- dplyr::filter(test2, year == 2011)
-
-a.plhiv = a$value[3]
-a.plhiv.diag = a$value[4]
-a.plhiv.on.ART = a$value[1]
-a.plhiv.not.onART = a$value[2]
-
-a.plhiv - a.plhiv.on.ART
-a.plhiv.not.onART
-
-bar <- c(a.plhiv,a.plhiv.diag,a.plhiv.on.ART)
-
-barplot(bar)
-
-a.plhiv.care <- a.plhiv.diag - ((a.plhiv.diag - a.plhiv.on.ART) / 2)
-
-bar2 <- c(a.plhiv,a.plhiv.diag,a.plhiv * 0.57,a.plhiv.on.ART)
-barplot(bar2)
-
-
-# Do we carry these trends onwards? (over time)
-
-In 2015, 57% of PLHIV are on art
-
-
-a.plhiv.care
-a.plhiv.diag
-
-a.plhiv.on.ART
-
 
 # master.df needs to include
 # incidence
