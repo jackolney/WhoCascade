@@ -2,7 +2,7 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
-void derivs(int * neq, double *t, double *y, double *ydot, double *yout, int *ip);
+void derivs(int *neq, double *t, double *y, double *ydot, double *yout, int *ip);
 
 struct myparms {
     double Nu_1;
@@ -224,7 +224,7 @@ void initmod(void(* odeparms) (int *, double *)) {
     r_initmod(rp);
 }
 
-void derivs(int * neq, double *t, double *y, double *ydot, double *yout, int *ip) {
+void derivs(int *neq, double *t, double *y, double *ydot, double *yout, int *ip) {
 
     ydot[0] = parms.prop_preART_500 * (parms.beta * (((y[UnDx_500] + y[Dx_500] + y[Care_500] + y[PreLtfu_500] + y[Tx_Na_500] + y[Ltfu_500]) * parms.w1) + ((y[UnDx_350500] + y[Dx_350500] + y[Care_350500] + y[PreLtfu_350500] + y[Tx_Na_350500] + y[Ltfu_350500]) * parms.w2) + ((y[UnDx_250350] + y[Dx_250350] + y[Care_250350] + y[PreLtfu_250350] + y[Tx_Na_250350] + y[Ltfu_250350] + y[UnDx_200250] + y[Dx_200250] + y[Care_200250] + y[PreLtfu_200250] + y[Tx_Na_200250] + y[Ltfu_200250]) * parms.w3) + ((y[UnDx_100200] + y[Dx_100200] + y[Care_100200] + y[PreLtfu_100200] + y[Tx_Na_100200] + y[Ltfu_100200] + y[UnDx_50100] + y[Dx_50100] + y[Care_50100] + y[PreLtfu_50100] + y[Tx_Na_50100] + y[Ltfu_50100] + y[UnDx_50] + y[Dx_50] + y[Care_50] + y[PreLtfu_50] + y[Tx_Na_50] + y[Ltfu_50]) * parms.w4) + ((y[Tx_A_500] + y[Tx_A_350500] + y[Tx_A_250350] + y[Tx_A_200250] + y[Tx_A_100200] + y[Tx_A_50100] + y[Tx_A_50]) * parms.w5))) - (parms.Nu_1 + parms.Rho + (parms.ART_All * parms.s_1 * parms.p * parms.Theta) + (parms.ART_All * parms.s_1 * (1-parms.p) * parms.Theta) + parms.Alpha_1 + parms.Mu) * y[UnDx_500];
     ydot[1] = parms.prop_preART_350500 * (parms.beta * (((y[UnDx_500] + y[Dx_500] + y[Care_500] + y[PreLtfu_500] + y[Tx_Na_500] + y[Ltfu_500]) * parms.w1) + ((y[UnDx_350500] + y[Dx_350500] + y[Care_350500] + y[PreLtfu_350500] + y[Tx_Na_350500] + y[Ltfu_350500]) * parms.w2) + ((y[UnDx_250350] + y[Dx_250350] + y[Care_250350] + y[PreLtfu_250350] + y[Tx_Na_250350] + y[Ltfu_250350] + y[UnDx_200250] + y[Dx_200250] + y[Care_200250] + y[PreLtfu_200250] + y[Tx_Na_200250] + y[Ltfu_200250]) * parms.w3) + ((y[UnDx_100200] + y[Dx_100200] + y[Care_100200] + y[PreLtfu_100200] + y[Tx_Na_100200] + y[Ltfu_100200] + y[UnDx_50100] + y[Dx_50100] + y[Care_50100] + y[PreLtfu_50100] + y[Tx_Na_50100] + y[Ltfu_50100] + y[UnDx_50] + y[Dx_50] + y[Care_50] + y[PreLtfu_50] + y[Tx_Na_50] + y[Ltfu_50]) * parms.w4) + ((y[Tx_A_500] + y[Tx_A_350500] + y[Tx_A_250350] + y[Tx_A_200250] + y[Tx_A_100200] + y[Tx_A_50100] + y[Tx_A_50]) * parms.w5))) + parms.Nu_1 * y[UnDx_500] - (parms.Nu_2 + parms.Rho + (parms.ART_500 * parms.s_2 * parms.p * parms.Theta) + (parms.ART_500 * parms.s_2 * (1-parms.p) * parms.Theta) + parms.Alpha_2 + parms.Mu) * y[UnDx_350500];

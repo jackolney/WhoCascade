@@ -179,7 +179,7 @@ void calib_initmod(void(* odeparms) (int *, double *)) {
     r_calib_initmod(rp);
 }
 
-void calib_derivs(int * neq, double *t, double *y, double *ydot, double *yout, int *ip) {
+void calib_derivs(int *neq, double *t, double *y, double *ydot, double *yout, int *ip) {
 
     int yr = (int)ceil(*t);
 
