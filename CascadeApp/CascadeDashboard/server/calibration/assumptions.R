@@ -5,8 +5,8 @@
     # i.e. a test to make sure values don't conflict - will need to be relatively clever too.
 
 # source("calibration-data.R")
-uCountry <- "Kenya"
-countryData <- GetCountryData("Kenya")
+# uCountry <- "Kenya"
+# countryData <- GetCountryData("Kenya")
 
 # need to make judgement calls on each country. Regarding the data.
 
@@ -78,5 +78,5 @@ MakeAssumptions <- function(uCountry, countryData) {
 }
 
 # Careful not to return the countryData too.
-MakeAssumptions("Kenya", countryData)
+# MakeAssumptions("Kenya", countryData)
 

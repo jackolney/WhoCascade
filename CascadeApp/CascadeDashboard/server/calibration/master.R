@@ -17,7 +17,7 @@ source("marrakech-data.R")
 # This function will need to run some tests on the data.set to make sure that it is sensical.
 
 # Set country
-userCountry <- "Kenya"
+# userCountry <- "Kenya"
 
 GetMasterDataSet <- function(userCountry) {
     # Get all the data (all your base)
@@ -43,4 +43,4 @@ GetMasterDataSet <- function(userCountry) {
     countryData
 }
 
-GetMasterDataSet("Kenya")[["calib"]]
+# GetMasterDataSet("Kenya")[["calib"]]

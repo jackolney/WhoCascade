@@ -1,10 +1,12 @@
 dashboardSidebar(
     sidebarMenu(
         id = "sideBar",
-        menuItem("Introduction", tabName = "introduction", icon = icon ("home",      class = "fa-lg fa-fw", lib = "font-awesome")),
-        menuItem("Setup",        tabName = "setup",        icon = icon ("cogs",      class = "fa-lg fa-fw", lib = "font-awesome")),
-        menuItem("Calibration",  tabName = "calibration",  icon = icon ("bar-chart", class = "fa-lg fa-fw", lib = "font-awesome")),
-        menuItem("Parameters",   tabName = "parameters",   icon = icon ("wrench",    class = "fa-lg fa-fw", lib = "font-awesome")),
+        menuItem("Introduction", tabName = "introduction", icon = icon("home", class = "fa-lg fa-fw", lib = "font-awesome")),
+        menuItem("Setup", icon = icon("cogs", class = "fa-lg fa-fw", lib = "font-awesome"),
+            menuSubItem("Setup",        tabName = "setup"),
+            menuSubItem("Calibration",  tabName = "calibration"),
+            menuSubItem("Parameters",   tabName = "parameters")
+            ),
         menuItem("Results", icon = icon("line-chart", class = "fa-lg fa-fw", lib = "font-awesome"),
             menuSubItem("Your Cascade",          tabName = "your_cascade"),
             menuSubItem("The Care Cascade",      tabName = "care_cascade"),
