@@ -41,6 +41,6 @@ test_that("Testing deSolve call", {
     i <- incidence()
     plist <- list(p, i)
     names(plist) <- c("r_par", "r_inc")
-    time <- seq(0, 45, 1)
+    time <- seq(0, 5, 1)
     expect_output(deSolve::ode(times = time, y = y, func = "calib_derivs", initfunc = "calib_initmod", dllname = "cascade", parms = plist), regexp = NA, info = "deSolve Error.")
 })
