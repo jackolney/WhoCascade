@@ -1,15 +1,5 @@
 ComplexCascadeCalib <- function(t, y, parms, inc) {
 
-    # yr <- as.integer(ceiling(t))
-    # print(t)
-    # print(paste("yr",yr,"inc",inc[yr]))
-    # print(paste("inc[yr]",inc[yr]))
-    # print(inc[yr])
-    # WHY DOESNT INC[YR] NOT WORK!?
-
-    # print(incidence[ceiling(t)])
-    # browser()
-
     dUnDx_500 <- (parms[["prop_preART_500"]] * inc[as.integer(ceiling(t+1))]) - (parms[["Nu_1"]] + parms[["Rho"]] + (parms[["ART_All"]] * parms[["s_1"]] * parms[["p"]] * parms[["Theta"]]) + (parms[["ART_All"]] * parms[["s_1"]] * (1-parms[["p"]]) * parms[["Theta"]]) + parms[["Alpha_1"]] + parms[["Mu"]]) * y[["UnDx_500"]]
     dUnDx_350500 <- (parms[["prop_preART_350500"]] * inc[as.integer(ceiling(t+1))]) + parms[["Nu_1"]] * y[["UnDx_500"]] - (parms[["Nu_2"]] + parms[["Rho"]] + (parms[["ART_500"]] * parms[["s_2"]] * parms[["p"]] * parms[["Theta"]]) + (parms[["ART_500"]] * parms[["s_2"]] * (1-parms[["p"]]) * parms[["Theta"]]) + parms[["Alpha_2"]] + parms[["Mu"]]) * y[["UnDx_350500"]]
     dUnDx_250350 <- (parms[["prop_preART_250350"]] * inc[as.integer(ceiling(t+1))]) + parms[["Nu_2"]] * y[["UnDx_350500"]] - (parms[["Nu_3"]] + parms[["Rho"]] + (parms[["ART_350"]] * parms[["s_3"]] * parms[["p"]] * parms[["Theta"]]) + (parms[["ART_350"]] * parms[["s_3"]] * (1-parms[["p"]]) * parms[["Theta"]]) + parms[["Alpha_3"]] + parms[["Mu"]]) * y[["UnDx_250350"]]
