@@ -3,6 +3,7 @@ dashboardSidebar(
         id = "sideBar",
         menuItem("Introduction", tabName = "introduction", icon = icon("home", class = "fa-lg fa-fw", lib = "font-awesome")),
         menuItem("Setup", icon = icon("cogs", class = "fa-lg fa-fw", lib = "font-awesome"),
+            menuSubItem("Country",      tabName = "country"),
             menuSubItem("Setup",        tabName = "setup"),
             menuSubItem("Calibration",  tabName = "calibration"),
             menuSubItem("Parameters",   tabName = "parameters")
