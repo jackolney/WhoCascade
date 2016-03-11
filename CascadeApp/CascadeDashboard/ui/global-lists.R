@@ -28,6 +28,35 @@ CountryList <- c(
     "Zimbabwe"
 )
 
+LeafletCountryList <- c(
+    "Brazil",
+    "Cambodia",
+    "Cameroon",
+    "C\xf4te d'Ivoire",
+    "Dem. Rep. Congo",
+    "Ethiopia",
+    "Haiti",
+    "India",
+    "Indonesia",
+    "Jamaica",
+    "Kenya",
+    "Malawi",
+    "Morocco",
+    "Mozambique",
+    "Myanmar",
+    "Nigeria",
+    "Pakistan",
+    "Philippines",
+    "Russia",
+    "South Africa",
+    "S. Sudan",
+    "Thailand",
+    "Uganda",
+    "Ukraine",
+    "Vietnam",
+    "Zimbabwe"
+)
+
 VariableNames <- c(
     "UnDx_500",
     "UnDx_350500",

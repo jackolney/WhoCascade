@@ -1,6 +1,8 @@
 # devtools::install_github("shinyTable", "trestletech")
 library(DT)
 library(ggplot2)
+library(leaflet)
+library(rgdal)
 library(shiny)
 library(shinyBS)
 library(shinydashboard)

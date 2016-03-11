@@ -3,16 +3,21 @@ tabItem(tabName = "country",
         box(width = NULL,
             status = "primary",
             solidHeader = TRUE,
-            title = "Country",
+            title = "Map",
             collapsible = TRUE,
             collapsed = FALSE,
             shinyjs::useShinyjs(),
             id = "country-panel",
-            helpText("Please select country from map or from dropdown menu.")
-            # Here we insert the leaflet();
+            leafletOutput("countryMap", width = "100%", height = 500)
         ),
-        box(width = NULL
-            # Here we have the checkInput stuff.
+        box(width = NULL,
+            status = "primary",
+            solidHeader = TRUE,
+            title = "Select Country",
+            selectInput("selectCountry",
+                label = NULL,
+                choices = LeafletCountryList,
+                selected = "Kenya")
         )
     ),
     column(width = 4,
@@ -20,12 +25,28 @@ tabItem(tabName = "country",
             status = "warning",
             solidHeader = TRUE,
             title = "Help Panel",
-            helpText("Just pick a country."),
+            helpText("Please click a country on the map, or select one from the drop-down menu below. 'Mission Control' provides additional information on available data from each country."),
             bsButton("resetInput", label = "RESET MAP", style = "danger", block = TRUE, size = "default")
         ),
-        bsButton(inputId = "_BLANK_", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
         # Perhaps a collapsible 'master check' warning panel, like at mission control. Call it "mission control".
         # It will contain a narrow and tall list of all the imported csv files, and will have deactivated buttons that will change colour depending on what gets loaded.
+        # When data loaded, the icon changes?
         # SUPER AWESOME.
+        box(width = NULL,
+            status = "danger",
+            # background = "black",
+            title = "Mission Control",
+            collapsible = TRUE,
+            collapsed = FALSE,
+            solidHeader = TRUE,
+            bsButton(inputId = "_Incidence_FLAG_", label = "Incidence (Spectrum)",   style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_CD4_FLAG_", label = "CD4 Distribution (Spectrum)",  style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_Treatment_FLAG_", label = "Treatment Guidelines",   style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_PLHIV_FLAG_", label = "PLHIV Estimates (Spectrum)", style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_ART_FLAG_", label = "ART Estimates (Spectrum)",     style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_Additional_FLAG_", label = "Additional Estimates",  style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_Rates_FLAG_", label = "Rates",                      style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome"))
+            ),
+        bsButton(inputId = "_BLANK_", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

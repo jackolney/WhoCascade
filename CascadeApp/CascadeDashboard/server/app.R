@@ -2,6 +2,7 @@ source("server/alert.R",          local = TRUE)
 source("server/data-table.R",     local = TRUE)
 source("server/extract-data.R",   local = TRUE)
 source("server/google-sheets.R",  local = TRUE)
+source("server/leaflet.R",        local = TRUE)
 source("server/observe-event.R",  local = TRUE)
 source("server/plot-functions.R", local = TRUE)
 source("server/plot.R",           local = TRUE)
@@ -9,6 +10,7 @@ source("server/reactive.R",       local = TRUE)
 source("server/render.R",         local = TRUE)
 source("server/table.R",          local = TRUE)
 source("server/valuebox.R",       local = TRUE)
+source("ui/global-lists.R",       local = TRUE)
 
 ## It appears as though no server code exists here.
 ## The reality is that it is all farmed out to other places.
