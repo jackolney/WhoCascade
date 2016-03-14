@@ -1,6 +1,8 @@
 ComplexCascadeCalib <- function(t, y, parms, inc) {
 
     # (as.integer(ceiling(t)) >= parms[["t_1"]])
+    # print(inc[as.integer(ceiling(t+1))])
+    # ifelse(as.integer(ceiling(t+1)) <= which.max(inc), inc[as.integer(ceiling(t+1))], inc[which.max(inc)])
 
     dUnDx_500 <-    (parms[["prop_preART_500"]] *       inc[as.integer(ceiling(t+1))]) - (parms[["Nu_1"]] + parms[["Rho"]] +                                        ((as.integer(ceiling(t)) >= parms[["t_1"]]) * parms[["s_1"]] * parms[["p"]] * parms[["Theta"]]) + ((as.integer(ceiling(t)) >= parms[["t_1"]]) * parms[["s_1"]] * (1-parms[["p"]]) * parms[["Theta"]]) + parms[["Alpha_1"]] + parms[["Mu"]]) * y[["UnDx_500"]]
     dUnDx_350500 <- (parms[["prop_preART_350500"]] *    inc[as.integer(ceiling(t+1))]) + parms[["Nu_1"]] * y[["UnDx_500"]] -    (parms[["Nu_2"]] + parms[["Rho"]] + ((as.integer(ceiling(t)) >= parms[["t_2"]]) * parms[["s_2"]] * parms[["p"]] * parms[["Theta"]]) + ((as.integer(ceiling(t)) >= parms[["t_2"]]) * parms[["s_2"]] * (1-parms[["p"]]) * parms[["Theta"]]) + parms[["Alpha_2"]] + parms[["Mu"]]) * y[["UnDx_350500"]]

@@ -72,5 +72,5 @@ struct myparms {
 };
 
 struct myinc {
-    double inf[46];
+    double inf[7];
 };

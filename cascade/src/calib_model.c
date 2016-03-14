@@ -80,7 +80,7 @@ SEXP r_calib_initmod(SEXP rp) {
         Rf_error("Invalid Parameters.");
     }
 
-    if(LENGTH(getListElement(rp, "r_inc")) != 46) {
+    if(LENGTH(getListElement(rp, "r_inc")) != 7) {
         Rf_error("Invalid Incidence.");
     }
 
@@ -156,7 +156,7 @@ SEXP r_calib_initmod(SEXP rp) {
     parms.t_4 = p[66];
     parms.t_5 = p[67];
 
-    for(int j = 0; j < 46; j++) {
+    for(int j = 0; j < 7; j++) {
         inc.inf[j] = i[j];
     }
 

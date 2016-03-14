@@ -21,7 +21,7 @@ test_that("Calibration Model", {
     result <- cascade_calib_derivs(y, p, i)
     ref <- ComplexCascadeCalib(0, y, p, i)[[1]]
     expect_equal(result, ref, info = "Non-equal model function error.")
-    Time <- seq(0, 5, 0.02)
+    Time <- seq(0, 5, 1)
     plist <- list(p, i)
     names(plist) <- c("r_par", "r_inc")
     theref <- deSolve::ode(times = Time, y = y, func = ComplexCascadeCalib, parms = p, inc = i)
