@@ -3,9 +3,9 @@
 #   - Assumptions (assumptions.R)
 #   - Marrakech data (as the end target) (marrakech-data.R)
 
-source("calibration-data.R")
-source("assumptions.R")
-source("marrakech-data.R")
+source("server/calibration/calibration-data.R")
+source("server/calibration/assumptions.R")
+source("server/calibration/marrakech-data.R")
 
 # Then pull all this together into one 'master function'.
 
