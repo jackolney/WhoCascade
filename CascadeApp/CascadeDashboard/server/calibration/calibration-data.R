@@ -132,7 +132,7 @@ GetCountryData <- function(uCountry) {
     calib.plhiv                <- readr::read_csv(paste0(c.file.path, "/plhiv.csv"),                 col_names = TRUE, skip = 1)
     calib.previous_data        <- readr::read_csv(paste0(c.file.path, "/previous-data.csv"),         col_names = TRUE, skip = 0)
     calib.rates                <- readr::read_csv(paste0(c.file.path, "/rates.csv"),                 col_names = TRUE, skip = 0)
-    calib.treatment_guidelines <- readr::read_csv(paste0(c.file.path, "/treatment-guidelines.csv"),  col_names = TRUE, skip = 0)
+    calib.treatment_guidelines <- readr::read_csv(paste0(c.file.path, "/treatment-guidelines-cd4.csv"),  col_names = TRUE, skip = 0)
 
     # Compile data.frame
     calib.df <- list()

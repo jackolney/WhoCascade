@@ -5,7 +5,7 @@
 #' @param p parameters (from \code{\link{parameters}})
 #'
 #' @export
-initial <- function(p) {
+initial <- function(p, ...) {
         userPLHIV <- 1.4e+6
         userDx <- 1109668
         userCare <- 848018
@@ -82,6 +82,13 @@ initial <- function(p) {
         Annual_Care_Cost = 0,
         Annual_ART_Cost = 0
     )
+
+    replace <- c(...)
+    if(length(replace) > 0L) {
+        stopifnot(is.numeric(replace))
+        stopifnot(all(names(replace) %in% names(default)))
+        default[names(replace)] <- replace
+    }
 
     default
 }
