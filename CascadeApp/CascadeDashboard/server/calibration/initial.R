@@ -1,5 +1,5 @@
-GetCalibInitial <- function(p) {
-    y <- initial(
+GetCalibInitial <- function(p, ...) {
+    default <- initial(
         p,
         UnDx_500 = 0,
         UnDx_350500 = 0,
@@ -59,5 +59,11 @@ GetCalibInitial <- function(p) {
         Ltfu_50100 = 0,
         Ltfu_50 = 0
     )
-    y
+    replace <- c(...)
+    if(length(replace) > 0L) {
+        stopifnot(is.numeric(replace))
+        stopifnot(all(names(replace) %in% names(default)))
+        default[names(replace)] <- replace
+    }
+    default
 }
