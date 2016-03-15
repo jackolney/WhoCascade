@@ -31,42 +31,31 @@ devtools::test(pkg = "~/git/WhoCascade/cascade")
 # Pull out functions used by the model
 source("server/calibration/initial.R", local = FALSE)
 time <- seq(0, 5, 1)
-p <- parameters()
-
-# This could be in a function.. (it is now.)
+p <- parameters(
+    prop_preART_500    = KenyaData[["cd4"]][1,"prop.Off.ART.500"][[1]],
+    prop_preART_350500 = KenyaData[["cd4"]][1,"prop.Off.ART.350500"][[1]],
+    prop_preART_250350 = KenyaData[["cd4"]][1,"prop.Off.ART.250350"][[1]],
+    prop_preART_200250 = KenyaData[["cd4"]][1,"prop.Off.ART.200250"][[1]],
+    prop_preART_100200 = KenyaData[["cd4"]][1,"prop.Off.ART.100200"][[1]],
+    prop_preART_50100  = KenyaData[["cd4"]][1,"prop.Off.ART.50100"][[1]],
+    prop_preART_50     = KenyaData[["cd4"]][1,"prop.Off.ART.50"][[1]],
+    t_1 = ConvertYear(KenyaData[["treatment_guidelines"]][["more500"]]),
+    t_2 = ConvertYear(KenyaData[["treatment_guidelines"]][["less500"]]),
+    t_3 = ConvertYear(KenyaData[["treatment_guidelines"]][["less350"]]),
+    t_4 = ConvertYear(KenyaData[["treatment_guidelines"]][["less250"]]),
+    t_5 = ConvertYear(KenyaData[["treatment_guidelines"]][["less200"]])
+    )
 y <- GetCalibInitial(p, KenyaData)
 i <- incidence(as.double(KenyaData[["incidence"]])) # Can only replace this array if you enter a replacement of the same length (7). Also, if not as.double() ode() throws an error.
 
 # Parameter update
 # beta <- GetBeta(y, p)
-# p[62] <- beta # p[["beta"]]
-p[50] <- KenyaData[["cd4"]][1,2][[1]] # p[["Iota_1"]]
-p[51] <- KenyaData[["cd4"]][1,3][[1]] # p[["Iota_2"]]
-p[52] <- KenyaData[["cd4"]][1,4][[1]] # p[["Iota_3"]]
-p[53] <- KenyaData[["cd4"]][1,5][[1]] # p[["Iota_4"]]
-p[54] <- KenyaData[["cd4"]][1,6][[1]] # p[["Iota_5"]]
-p[55] <- KenyaData[["cd4"]][1,7][[1]] # p[["Iota_6"]]
-p[56] <- KenyaData[["cd4"]][1,8][[1]] # p[["Iota_7"]]
 
 # Treatment Guidelines (t_1 to t_5)
 # Need some assumptions here around WHO Stage / CD4 levels
 
 # ConvertYear to alter treatment_guidelines into something that the model can understand
-ConvertYear <- function(year) {
-    if(is.na(year)) return(10)
-    if(!is.numeric(year)) stop("Non-numeric value passed to ConvertYear()")
-    if((year - 2010) <= 0) {
-        return(0)
-    } else {
-        return(year - 2010)
-    }
-}
 
-p[["t_1"]] <- ConvertYear(KenyaData[["treatment_guidelines"]][["more500"]])
-p[["t_2"]] <- ConvertYear(KenyaData[["treatment_guidelines"]][["less500"]])
-p[["t_3"]] <- ConvertYear(KenyaData[["treatment_guidelines"]][["less350"]])
-p[["t_4"]] <- ConvertYear(KenyaData[["treatment_guidelines"]][["less250"]])
-p[["t_5"]] <- ConvertYear(KenyaData[["treatment_guidelines"]][["less200"]])
 
 # source calibration model function (with setup and data.frame return)
 source("server/calibration/model.R", local = FALSE)
@@ -76,72 +65,20 @@ result <- CallCalibModel(time, y, p, i)
 
 # Feed values for "kenya" into calibration version of the model
 # Compare 'KenyaData' to 'result'
-test <- KenyaData[["calib"]]
-test
-
-names(result)
 
 # Test with one variable at a time.
 # The way I see this, is that we have a quartz window with 4 segments.
 # Each a comparison between model and data (eventually will be merged onto one plot).
 # Functions to show the error between model and data.
 
-# PLHIV
-year <- result$time + 2010
-value <- result$N
-indicator <- "PLHIV"
-country <- "Kenya"
-source <- "model"
-
-modelOutput <- data.frame(country, indicator, source, year, value)
-
-dataOutput <- dplyr::filter(KenyaData[["calib"]], indicator == "PLHIV")
-
-dataOutput <- dplyr::mutate(dataOutput, source = "data")
-
-output <- rbind(dataOutput, modelOutput)
-output
-
-ggplot(output, aes(x = year, y = value, group = source)) + geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
-
-output
-
 # Function to calculate error in a data.frame
 # Throw this into the error.R file.
 source("server/calibration/error.R", local = FALSE)
 
-PLHIV_Error <- SSE(output)
-
-test <- dplyr::filter(PLHIV_Error, source %in% c("model", "data"))
-
-ggplot(test, aes(x = year, y = value, group = source)) + geom_point(aes(color = source))
-
-# Need a calculate error function.
-# how many types of error? (4)
-
-KenyaData[["calib"]]
-
-# PLHIV = DONE.
-
-###########
-# TUESDAY #
-###########
-# Finish creating error calculations and functions. = DONE.
-# All numbers should be absolute at this stage (CallCalibModel now only returns absolute numbers) = DONE.
-# Do each seperately first, then the pull them all together. = DONE.
-# Alter assumptions around what values we put in at the start of calibration? (assuming ZERO PLHIV etc. maybe crazy!?) (ONGOING)
-
 # this function is held in error.R
-df <- AssembleComparisonDataFrame(
-    country = "Kenya",
-    model = result,
-    data = KenyaData[["calib"]]
-    )
+df <- AssembleComparisonDataFrame(country = "Kenya", model = result, data = KenyaData)
 
 ## Pass to SSE() and return an updated data.frame
-# how to pass df to SSE()??
-df
-
 # Genius
 error <- SSE(df)
 
@@ -180,9 +117,88 @@ graphics.off()
 quartz.options(w = 10, h = 5)
 gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 
-# Do we have estimates of all four indicators in 2010? ... YES.
-dplyr::filter(KenyaData[["calib"]], year == 2010)
+# Pull out error.
+a <- dplyr::filter(error, source == "error")
 
+ggplot(a, aes(x = year, y = value)) + geom_point(aes(color = indicator), size = 3)
+
+# TOTAL ERROR! (to minimise)
+sum(a$value)
+
+#####################
+# START OF FUNCTION #
+#####################
+
+# GetCountryMasterData
+KenyaData <- GetMasterDataSet("Kenya")
+
+# Set some crap.
+time <- seq(0, 5, 1)
+p <- parameters(
+    prop_preART_500    = data[["cd4"]][1,"prop.Off.ART.500"][[1]],
+    prop_preART_350500 = data[["cd4"]][1,"prop.Off.ART.350500"][[1]],
+    prop_preART_250350 = data[["cd4"]][1,"prop.Off.ART.250350"][[1]],
+    prop_preART_200250 = data[["cd4"]][1,"prop.Off.ART.200250"][[1]],
+    prop_preART_100200 = data[["cd4"]][1,"prop.Off.ART.100200"][[1]],
+    prop_preART_50100  = data[["cd4"]][1,"prop.Off.ART.50100"][[1]],
+    prop_preART_50     = data[["cd4"]][1,"prop.Off.ART.50"][[1]],
+    t_1 = ConvertYear(data[["treatment_guidelines"]][["more500"]]),
+    t_2 = ConvertYear(data[["treatment_guidelines"]][["less500"]]),
+    t_3 = ConvertYear(data[["treatment_guidelines"]][["less350"]]),
+    t_4 = ConvertYear(data[["treatment_guidelines"]][["less250"]]),
+    t_5 = ConvertYear(data[["treatment_guidelines"]][["less200"]])
+    )
+y <- GetCalibInitial(p, data)
+i <- incidence(as.double(data[["incidence"]]))
+
+# The following parameters can then be updated on the fly.
+p[["Rho"]]
+p[["Epsilon"]]
+p[["q"]]
+p[["Kappa"]]
+p[["Gamma"]]
+p[["Theta"]]
+p[["Omega"]]
+
+# Need a SINGLE FUNCTION, that:
+    # - Assembles model
+    # - Takes changing parameter values (p)
+    # - Runs model
+    # - Analyses data & calculates ERROR
+
+ERROR <- function(data, p) {
+
+# data = MasterDataSet for a particular country
+# Idea is that this function will be called multiple times and therefore needs to be relatively fast.
+
+    out <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
+
+}
+
+# Hadleys new visual profiler (awesome, cool).
+profvis::profvis({
+    SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = KenyaData))
+})
+
+#############
+# WEDNESDAY #
+#############
+# Create a parameter set
+# Use: FME::Latinhyper
+help(Latinhyper)
+
+# Example
+parRange <- data.frame(min = c(0, 1, 2, 3), max = c(10, 9, 8, 7))
+rownames(parRange) <- c("par1", "par2", "par3", "par4")
+parRange
+FME::Latinhyper(parRange, num = 10)
+
+# We can then apply this to a function, i.e. SSE(AssembleComparisonDataFrame(CallCalibModel()))
+
+# Finish creating error calculations and functions. = DONE.
+# All numbers should be absolute at this stage (CallCalibModel now only returns absolute numbers) = DONE.
+# Do each seperately first, then the pull them all together. = DONE.
+# Alter assumptions around what values we put in at the start of calibration? (assuming ZERO PLHIV etc. maybe crazy!?) = DONE.
 
 
 # ----------- #
