@@ -29,7 +29,7 @@ devtools::load_all(pkg = "~/git/WhoCascade/cascade")
 devtools::test(pkg = "~/git/WhoCascade/cascade")
 
 # Pull out functions used by the model
-source("server/calibration/initial.R")
+source("server/calibration/initial.R", local = FALSE)
 time <- seq(0, 5, 1)
 p <- parameters()
 iPLHIV <- (dplyr::filter(KenyaData[["calib"]], indicator == "PLHIV") %>% dplyr::filter(year == 2010) %>% select(value))[[1]]
@@ -43,9 +43,6 @@ y <- GetCalibInitial(p,
     UnDx_50 =     iPLHIV * KenyaData[["cd4"]][1,8][[1]]
 )
 i <- incidence(as.double(KenyaData[["incidence"]])) # Can only replace this array if you enter a replacement of the same length (7). Also, if not as.double() ode() throws an error.
-
-
-
 
 # Parameter update
 # beta <- GetBeta(y, p)
@@ -79,8 +76,9 @@ p[["t_4"]] <- ConvertYear(KenyaData[["treatment_guidelines"]][["less250"]])
 p[["t_5"]] <- ConvertYear(KenyaData[["treatment_guidelines"]][["less200"]])
 
 # source calibration model function (with setup and data.frame return)
-source("server/calibration/model.R")
+source("server/calibration/model.R", local = FALSE)
 
+# Running the model
 result <- CallCalibModel(time, y, p, i)
 
 # Feed values for "kenya" into calibration version of the model
@@ -115,34 +113,11 @@ ggplot(output, aes(x = year, y = value, group = source)) + geom_line() + geom_po
 
 output
 
-length(unique(df$year))
-
 # Function to calculate error in a data.frame
 # Throw this into the error.R file.
-SSE <- function(df) {
-    if(!is.data.frame(df)) stop("Not passing a data frame.")
-
-    uniqueYears <- unique(df$year)
-
-    for(i in 1:length(uniqueYears)) {
-        iYr <- dplyr::filter(df, year == uniqueYears[i])
-
-        iData  <- (dplyr::filter(iYr, source == "data") %>% select(value))[[1]]
-        iModel <- (dplyr::filter(iYr, source == "model") %>% select(value))[[1]]
-
-        value <- sum((iData - iModel)^2)
-
-        year <- uniqueYears[i]
-
-        iError <- data.frame(country = df$country[1], indicator = df$indicator[1], year, value, source = "error")
-
-        df <- rbind(df, iError)
-    }
-    df
-}
+source("server/calibration/error.R", local = FALSE)
 
 PLHIV_Error <- SSE(output)
-
 
 test <- dplyr::filter(PLHIV_Error, source %in% c("model", "data"))
 
@@ -158,13 +133,102 @@ KenyaData[["calib"]]
 ###########
 # TUESDAY #
 ###########
-# Finish creating error calculations and functions.
+# Finish creating error calculations and functions. = DONE.
+# All numbers should be absolute at this stage (CallCalibModel now only returns absolute numbers) = DONE.
+# Do each seperately first, then the pull them all together.
+# Alter assumptions around what values we put in at the start of calibration? (assuming ZERO PLHIV etc. maybe crazy!?)
 
 # PLHIV Diagnosed
+year <- result$time + 2010
+value <- result$Dx
+indicator <- "PLHIV Diagnosed"
+country <- "Kenya"
+source <- "model"
+
+modelOutput <- data.frame(country, indicator, source, year, value)
+modelOutput
+
+dataOutput <- dplyr::filter(KenyaData[["calib"]], indicator == "PLHIV Diagnosed")
+dataOutput <- dplyr::mutate(dataOutput, source = "data")
+
+output <- rbind(dataOutput, modelOutput)
+output
+
+ggplot(output, aes(x = year, y = value, group = source)) +
+    geom_line() +
+    geom_point(aes(color = indicator, shape = source), size = 3)
+
+# NOTES #
+# perhaps what needs to occur is that we initially population the model with a distribution and an assumption here??
+
+PLHIV_Diag_Error <- SSE(output)
+
+ggplot(PLHIV_Diag_Error, aes(x = year, y = value, group = source)) +
+    geom_line() +
+    geom_point(aes(color = indicator, shape = source), size = 3)
+
 
 # PLHIV in Care
+year <- result$time + 2010
+value <- result$Care
+indicator <- "PLHIV in Care"
+country <- "Kenya"
+source <- "model"
+
+modelOutput <- data.frame(country, indicator, source, year, value)
+modelOutput
+
+dataOutput <- dplyr::filter(KenyaData[["calib"]], indicator == "PLHIV in Care")
+dataOutput <- dplyr::mutate(dataOutput, source = "data")
+dataOutput
+
+output <- rbind(dataOutput, modelOutput)
+output
+
+ggplot(output, aes(x = year, y = value, group = source)) +
+    geom_line() +
+    geom_point(aes(color = indicator, shape = source), size = 3)
+
+PLHIV_Care_Error <- SSE(output)
+
+ggplot(PLHIV_Care_Error, aes(x = year, y = value, group = source)) +
+    geom_line() +
+    geom_point(aes(color = indicator, shape = source), size = 3)
+
 
 # PLHIV on ART
+year <- result$time + 2010
+value <- result$Tx
+indicator <- "PLHIV on ART"
+country <- "Kenya"
+source <- "model"
+
+modelOutput <- data.frame(country, indicator, source, year, value)
+modelOutput
+
+dataOutput <- dplyr::filter(KenyaData[["calib"]], indicator == "PLHIV on ART")
+dataOutput <- dplyr::mutate(dataOutput, source = "data")
+
+output <- rbind(dataOutput, modelOutput)
+output
+
+ggplot(output, aes(x = year, y = value, group = source)) +
+    geom_line() +
+    geom_point(aes(color = indicator, shape = source), size = 3)
+
+# The issue:
+# dplyr::filter(output, year == 2012)
+# TWO DATA POINTS!!
+# REMOVED ONE...
+# But SSE() will take an average of any iData fed to it with multiple data points
+
+
+PLHIV_ART_Error <- SSE(output)
+
+ggplot(PLHIV_ART_Error, aes(x = year, y = value, group = source)) +
+    geom_line() +
+    geom_point(aes(color = indicator, shape = source), size = 3)
+
 
 
 
@@ -176,6 +240,11 @@ KenyaData[["calib"]]
 # Plot test outputs
 # dynamic labelling of input data
 # What is the best strategy?
+
+# IDEA:
+    # - Pull all 'error' values together.
+    # - Multiply by some weight, depending on what they are
+    # - Ensure that we are still able to minimise values to ZERO.
 
 # --------- #
 # WEIGHTING #

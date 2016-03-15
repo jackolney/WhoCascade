@@ -11,6 +11,8 @@ SSE <- function(df) {
         iYr <- dplyr::filter(df, year == uniqueYears[i])
 
         iData  <- (dplyr::filter(iYr, source == "data") %>% select(value))[[1]]
+        if(length(iData) > 1) iData <- mean(iData)
+
         iModel <- (dplyr::filter(iYr, source == "model") %>% select(value))[[1]]
 
         value <- sum((iData - iModel)^2)
