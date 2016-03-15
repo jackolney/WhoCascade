@@ -75,5 +75,3 @@ GetCalibInitial <- function(p, data) {
     )
     default
 }
-
-GetCalibInitial(p, KenyaData)
