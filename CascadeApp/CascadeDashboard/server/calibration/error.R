@@ -33,13 +33,13 @@ AssembleComparisonDataFrame <- function(country, model, data) {
 
     for(i in 1:4) {
         if(i == 1) {
-            dOutput <- dplyr::filter(data, indicator == "PLHIV")
+            dOutput <- dplyr::filter(data[["calib"]], indicator == "PLHIV")
         } else if(i == 2) {
-            dOutput <- dplyr::filter(data, indicator == "PLHIV Diagnosed")
+            dOutput <- dplyr::filter(data[["calib"]], indicator == "PLHIV Diagnosed")
         } else if(i == 3) {
-            dOutput <- dplyr::filter(data, indicator == "PLHIV in Care")
+            dOutput <- dplyr::filter(data[["calib"]], indicator == "PLHIV in Care")
         } else if(i == 4) {
-            dOutput <- dplyr::filter(data, indicator == "PLHIV on ART")
+            dOutput <- dplyr::filter(data[["calib"]], indicator == "PLHIV on ART")
         }
         dOutput <- dplyr::mutate(dOutput, source = "data")
         dataOutput <- rbind(dataOutput, dOutput)
