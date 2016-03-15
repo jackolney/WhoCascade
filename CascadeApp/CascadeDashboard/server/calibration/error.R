@@ -1,27 +1,85 @@
 # Script to contain error calculation functions
 # Function to calculate error in a data.frame
 
+# AssembleComparisonDataFrame for passing to Error function
+AssembleComparisonDataFrame <- function(country, model, data) {
+
+    # Create Model data.frame
+    modelOutput <- data.frame()
+    for(i in 1:4) {
+        year <- model$time + 2010
+        source <- "model"
+        if(i == 1) {
+            value <- model$N
+            indicator <- "PLHIV"
+        } else if(i == 2) {
+            value <- model$Dx
+            indicator <- "PLHIV Diagnosed"
+        } else if(i == 3) {
+            value <- model$Care
+            indicator <- "PLHIV in Care"
+        } else if(i == 4) {
+            value <- model$Tx
+            indicator <- "PLHIV on ART"
+        }
+
+        iOutput <- data.frame(country, indicator, source, year, value)
+        modelOutput <- rbind(modelOutput, iOutput)
+    }
+    modelOutput
+
+    # Create Data data.frame
+    dataOutput <- data.frame()
+
+    for(i in 1:4) {
+        if(i == 1) {
+            dOutput <- dplyr::filter(data, indicator == "PLHIV")
+        } else if(i == 2) {
+            dOutput <- dplyr::filter(data, indicator == "PLHIV Diagnosed")
+        } else if(i == 3) {
+            dOutput <- dplyr::filter(data, indicator == "PLHIV in Care")
+        } else if(i == 4) {
+            dOutput <- dplyr::filter(data, indicator == "PLHIV on ART")
+        }
+        dOutput <- dplyr::mutate(dOutput, source = "data")
+        dataOutput <- rbind(dataOutput, dOutput)
+    }
+    dataOutput
+
+    output <- rbind(dataOutput, modelOutput)
+    output
+}
+
 # This will need to be able to handle ALL FOUR ERRORS and return a neat data.frame of errors in return.
 SSE <- function(df) {
     if(!is.data.frame(df)) stop("Not passing a data frame.")
 
-    uniqueYears <- unique(df$year)
+    # Master output
+    # df
 
-    for(i in 1:length(uniqueYears)) {
-        iYr <- dplyr::filter(df, year == uniqueYears[i])
+    # Needs another nest
+    uniqueIndicators <- unique(df$indicator)
+    for(i in 1:length(uniqueIndicators)) {
+        data <- dplyr::filter(df, indicator == uniqueIndicators[i])
 
-        iData  <- (dplyr::filter(iYr, source == "data") %>% select(value))[[1]]
-        if(length(iData) > 1) iData <- mean(iData)
+        uniqueYears <- unique(data$year)
 
-        iModel <- (dplyr::filter(iYr, source == "model") %>% select(value))[[1]]
+        for(j in 1:length(uniqueYears)) {
+            iYr <- dplyr::filter(data, year == uniqueYears[j])
 
-        value <- sum((iData - iModel)^2)
+            iData  <- (dplyr::filter(iYr, source == "data") %>% select(value))[[1]]
+            if(length(iData) > 1) iData <- mean(iData)
 
-        year <- uniqueYears[i]
+            iModel <- (dplyr::filter(iYr, source == "model") %>% select(value))[[1]]
 
-        iError <- data.frame(country = df$country[1], indicator = df$indicator[1], year, value, source = "error")
+            value <- sum((iData - iModel)^2)
 
-        df <- rbind(df, iError)
+            year <- uniqueYears[j]
+
+            iError <- data.frame(country = data$country[1], indicator = data$indicator[1], year, value, source = "error")
+
+            df <- rbind(df, iError)
+        }
     }
     df
 }

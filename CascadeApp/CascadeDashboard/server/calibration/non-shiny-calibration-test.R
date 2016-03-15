@@ -229,7 +229,24 @@ ggplot(PLHIV_ART_Error, aes(x = year, y = value, group = source)) +
     geom_line() +
     geom_point(aes(color = indicator, shape = source), size = 3)
 
+## How to pull all this together and just have ONE data.frame WITH ALL MODEL + DATA
+# Assume standard form of data.frame construction
 
+# this function is held in error.R
+df <- AssembleComparisonDataFrame(
+    country = "Kenya",
+    model = result,
+    data = KenyaData[["calib"]]
+    )
+
+df
+
+## Pass to SSE() and return an updated data.frame
+# how to pass df to SSE()??
+df
+
+# Fuckin' A
+SSE(df)
 
 
 # ----------- #
