@@ -33,15 +33,15 @@ AssembleComparisonDataFrame <- function(country, model, data) {
 
     for(i in 1:4) {
         if(i == 1) {
-            dOutput <- dplyr::filter(data[["calib"]], indicator == "PLHIV")
+            dOutput <- data[["calib"]][data[["calib"]]$indicator == "PLHIV",]
         } else if(i == 2) {
-            dOutput <- dplyr::filter(data[["calib"]], indicator == "PLHIV Diagnosed")
+            dOutput <- data[["calib"]][data[["calib"]]$indicator == "PLHIV Diagnosed",]
         } else if(i == 3) {
-            dOutput <- dplyr::filter(data[["calib"]], indicator == "PLHIV in Care")
+            dOutput <- data[["calib"]][data[["calib"]]$indicator == "PLHIV in Care",]
         } else if(i == 4) {
-            dOutput <- dplyr::filter(data[["calib"]], indicator == "PLHIV on ART")
+            dOutput <- data[["calib"]][data[["calib"]]$indicator == "PLHIV on ART",]
         }
-        dOutput <- dplyr::mutate(dOutput, source = "data")
+        dOutput$source <- "data"
         dataOutput <- rbind(dataOutput, dOutput)
     }
     dataOutput
@@ -52,21 +52,21 @@ AssembleComparisonDataFrame <- function(country, model, data) {
 
 # This will need to be able to handle ALL FOUR ERRORS and return a neat data.frame of errors in return.
 SSE <- function(df) {
-    if(!is.data.frame(df)) stop("Not passing a data frame.")
+    # if(!is.data.frame(df)) stop("Not passing a data frame.")
     uniqueIndicators <- unique(df$indicator)
     for(i in 1:length(uniqueIndicators)) {
-        data <- dplyr::filter(df, indicator == uniqueIndicators[i])
+        data <- df[df$indicator == uniqueIndicators[i],]
 
         uniqueYears <- unique(data$year)
 
         for(j in 1:length(uniqueYears)) {
-            iYr <- dplyr::filter(data, year == uniqueYears[j])
+            iYr <- data[data$year == uniqueYears[j],]
 
-            iData  <- (dplyr::filter(iYr, source == "data") %>% select(value))[[1]]
+            iData  <- iYr[iYr$source == "data","value"]
             if(any(is.na(iData))) next
             if(length(iData) > 1) iData <- mean(iData)
 
-            iModel <- (dplyr::filter(iYr, source == "model") %>% select(value))[[1]]
+            iModel <- iYr[iYr$source == "model","value"]
 
             value <- sum((iData - iModel)^2)
 
