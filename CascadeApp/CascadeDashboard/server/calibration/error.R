@@ -13,10 +13,10 @@ AssembleComparisonDataFrame <- function(country, model, data) {
             value <- model$N
             indicator <- "PLHIV"
         } else if(i == 2) {
-            value <- model$Dx
+            value <- model$Dx + model$Care + model$PreLtfu + model$Tx + model$Ltfu
             indicator <- "PLHIV Diagnosed"
         } else if(i == 3) {
-            value <- model$Care
+            value <- model$Care + model$Tx
             indicator <- "PLHIV in Care"
         } else if(i == 4) {
             value <- model$Tx
@@ -68,6 +68,7 @@ SSE <- function(df) {
             iYr <- dplyr::filter(data, year == uniqueYears[j])
 
             iData  <- (dplyr::filter(iYr, source == "data") %>% select(value))[[1]]
+            if(any(is.na(iData))) next
             if(length(iData) > 1) iData <- mean(iData)
 
             iModel <- (dplyr::filter(iYr, source == "model") %>% select(value))[[1]]
