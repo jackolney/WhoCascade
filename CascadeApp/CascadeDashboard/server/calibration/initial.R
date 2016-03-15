@@ -1,3 +1,13 @@
+ConvertYear <- function(year) {
+    if(is.na(year)) return(10)
+    if(!is.numeric(year)) stop("Non-numeric value passed to ConvertYear()")
+    if((year - 2010) <= 0) {
+        return(0)
+    } else {
+        return(year - 2010)
+    }
+}
+
 GetCalibInitial <- function(p, data) {
     if(!is.list(data)) stop("Not a list.")
 
