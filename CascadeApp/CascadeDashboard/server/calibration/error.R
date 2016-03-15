@@ -53,11 +53,6 @@ AssembleComparisonDataFrame <- function(country, model, data) {
 # This will need to be able to handle ALL FOUR ERRORS and return a neat data.frame of errors in return.
 SSE <- function(df) {
     if(!is.data.frame(df)) stop("Not passing a data frame.")
-
-    # Master output
-    # df
-
-    # Needs another nest
     uniqueIndicators <- unique(df$indicator)
     for(i in 1:length(uniqueIndicators)) {
         data <- dplyr::filter(df, indicator == uniqueIndicators[i])
