@@ -32,16 +32,9 @@ devtools::test(pkg = "~/git/WhoCascade/cascade")
 source("server/calibration/initial.R", local = FALSE)
 time <- seq(0, 5, 1)
 p <- parameters()
-iPLHIV <- (dplyr::filter(KenyaData[["calib"]], indicator == "PLHIV") %>% dplyr::filter(year == 2010) %>% select(value))[[1]]
-y <- GetCalibInitial(p,
-    UnDx_500 =    iPLHIV * KenyaData[["cd4"]][1,2][[1]],
-    UnDx_350500 = iPLHIV * KenyaData[["cd4"]][1,3][[1]],
-    UnDx_250350 = iPLHIV * KenyaData[["cd4"]][1,4][[1]],
-    UnDx_200250 = iPLHIV * KenyaData[["cd4"]][1,5][[1]],
-    UnDx_100200 = iPLHIV * KenyaData[["cd4"]][1,6][[1]],
-    UnDx_50100 =  iPLHIV * KenyaData[["cd4"]][1,7][[1]],
-    UnDx_50 =     iPLHIV * KenyaData[["cd4"]][1,8][[1]]
-)
+
+# This could be in a function.. (it is now.)
+y <- GetCalibInitial(p, KenyaData)
 i <- incidence(as.double(KenyaData[["incidence"]])) # Can only replace this array if you enter a replacement of the same length (7). Also, if not as.double() ode() throws an error.
 
 # Parameter update
@@ -135,102 +128,8 @@ KenyaData[["calib"]]
 ###########
 # Finish creating error calculations and functions. = DONE.
 # All numbers should be absolute at this stage (CallCalibModel now only returns absolute numbers) = DONE.
-# Do each seperately first, then the pull them all together.
-# Alter assumptions around what values we put in at the start of calibration? (assuming ZERO PLHIV etc. maybe crazy!?)
-
-# PLHIV Diagnosed
-year <- result$time + 2010
-value <- result$Dx
-indicator <- "PLHIV Diagnosed"
-country <- "Kenya"
-source <- "model"
-
-modelOutput <- data.frame(country, indicator, source, year, value)
-modelOutput
-
-dataOutput <- dplyr::filter(KenyaData[["calib"]], indicator == "PLHIV Diagnosed")
-dataOutput <- dplyr::mutate(dataOutput, source = "data")
-
-output <- rbind(dataOutput, modelOutput)
-output
-
-ggplot(output, aes(x = year, y = value, group = source)) +
-    geom_line() +
-    geom_point(aes(color = indicator, shape = source), size = 3)
-
-# NOTES #
-# perhaps what needs to occur is that we initially population the model with a distribution and an assumption here??
-
-PLHIV_Diag_Error <- SSE(output)
-
-ggplot(PLHIV_Diag_Error, aes(x = year, y = value, group = source)) +
-    geom_line() +
-    geom_point(aes(color = indicator, shape = source), size = 3)
-
-
-# PLHIV in Care
-year <- result$time + 2010
-value <- result$Care
-indicator <- "PLHIV in Care"
-country <- "Kenya"
-source <- "model"
-
-modelOutput <- data.frame(country, indicator, source, year, value)
-modelOutput
-
-dataOutput <- dplyr::filter(KenyaData[["calib"]], indicator == "PLHIV in Care")
-dataOutput <- dplyr::mutate(dataOutput, source = "data")
-dataOutput
-
-output <- rbind(dataOutput, modelOutput)
-output
-
-ggplot(output, aes(x = year, y = value, group = source)) +
-    geom_line() +
-    geom_point(aes(color = indicator, shape = source), size = 3)
-
-PLHIV_Care_Error <- SSE(output)
-
-ggplot(PLHIV_Care_Error, aes(x = year, y = value, group = source)) +
-    geom_line() +
-    geom_point(aes(color = indicator, shape = source), size = 3)
-
-
-# PLHIV on ART
-year <- result$time + 2010
-value <- result$Tx
-indicator <- "PLHIV on ART"
-country <- "Kenya"
-source <- "model"
-
-modelOutput <- data.frame(country, indicator, source, year, value)
-modelOutput
-
-dataOutput <- dplyr::filter(KenyaData[["calib"]], indicator == "PLHIV on ART")
-dataOutput <- dplyr::mutate(dataOutput, source = "data")
-
-output <- rbind(dataOutput, modelOutput)
-output
-
-ggplot(output, aes(x = year, y = value, group = source)) +
-    geom_line() +
-    geom_point(aes(color = indicator, shape = source), size = 3)
-
-# The issue:
-# dplyr::filter(output, year == 2012)
-# TWO DATA POINTS!!
-# REMOVED ONE...
-# But SSE() will take an average of any iData fed to it with multiple data points
-
-
-PLHIV_ART_Error <- SSE(output)
-
-ggplot(PLHIV_ART_Error, aes(x = year, y = value, group = source)) +
-    geom_line() +
-    geom_point(aes(color = indicator, shape = source), size = 3)
-
-## How to pull all this together and just have ONE data.frame WITH ALL MODEL + DATA
-# Assume standard form of data.frame construction
+# Do each seperately first, then the pull them all together. = DONE.
+# Alter assumptions around what values we put in at the start of calibration? (assuming ZERO PLHIV etc. maybe crazy!?) (ONGOING)
 
 # this function is held in error.R
 df <- AssembleComparisonDataFrame(
@@ -239,14 +138,51 @@ df <- AssembleComparisonDataFrame(
     data = KenyaData[["calib"]]
     )
 
-df
-
 ## Pass to SSE() and return an updated data.frame
 # how to pass df to SSE()??
 df
 
-# Fuckin' A
-SSE(df)
+# Genius
+error <- SSE(df)
+
+p1 <- ggplot(dplyr::filter(error, indicator == "PLHIV"), aes(x = year, y = value, group = source)) +
+    geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+
+p2 <- ggplot(dplyr::filter(error, indicator == "PLHIV Diagnosed"), aes(x = year, y = value, group = source)) +
+    geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+
+p3 <- ggplot(dplyr::filter(error, indicator == "PLHIV in Care"), aes(x = year, y = value, group = source)) +
+    geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+
+p4 <- ggplot(dplyr::filter(error, indicator == "PLHIV on ART"), aes(x = year, y = value, group = source)) +
+    geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+
+graphics.off()
+quartz.options(w = 10, h = 5)
+gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
+
+
+# Without Error in data.frame #
+error2 <- dplyr::filter(error, source != "error")
+p1 <- ggplot(dplyr::filter(error2, indicator == "PLHIV"), aes(x = year, y = value, group = source)) +
+    geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+
+p2 <- ggplot(dplyr::filter(error2, indicator == "PLHIV Diagnosed"), aes(x = year, y = value, group = source)) +
+    geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+
+p3 <- ggplot(dplyr::filter(error2, indicator == "PLHIV in Care"), aes(x = year, y = value, group = source)) +
+    geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+
+p4 <- ggplot(dplyr::filter(error2, indicator == "PLHIV on ART"), aes(x = year, y = value, group = source)) +
+    geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+
+graphics.off()
+quartz.options(w = 10, h = 5)
+gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
+
+# Do we have estimates of all four indicators in 2010? ... YES.
+dplyr::filter(KenyaData[["calib"]], year == 2010)
+
 
 
 # ----------- #
