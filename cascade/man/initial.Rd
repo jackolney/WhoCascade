@@ -4,10 +4,12 @@
 \alias{initial}
 \title{Initial values for model}
 \usage{
-initial(p)
+initial(p, ...)
 }
 \arguments{
 \item{p}{parameters (from \code{\link{parameters}})}
+
+\item{...}{vector of named arguments}
 }
 \description{
 Initial values for model.

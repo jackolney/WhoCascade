@@ -4,6 +4,8 @@
 #'
 #' @param p parameters (from \code{\link{parameters}})
 #'
+#' @param ... vector of named arguments
+#'
 #' @export
 initial <- function(p, ...) {
         userPLHIV <- 1.4e+6
