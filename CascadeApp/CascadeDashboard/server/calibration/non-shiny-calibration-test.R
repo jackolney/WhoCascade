@@ -5,7 +5,9 @@
 # Create all functions external to this script.
 rm(list=ls())
 setwd("~/git/WhoCascade/CascadeApp/CascadeDashboard")
-dir()
+# dir()
+graphics.off()
+quartz.options(w = 10, h = 5)
 
 # -------- #
 # WORKFLOW #
@@ -47,11 +49,8 @@ RunBaselineModel()
 #     SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = KenyaData))
 # })
 
-#############
-# WEDNESDAY #
-#############
 # Create a parameter set
-# Use: FME::Latinhyper
+# Use: FME::Latinhyper = DONE.
 
 # WHAT assumptions do we make about model parameters here?
 # These are ALL based on the previous Kenya model - perhaps we should start with a more blank slate here?
@@ -59,43 +58,55 @@ RunBaselineModel()
 
 # BASELINE SIMULATION.
 # BREAK IT DOWN. ONLY LOOK AT ONE PARAMETER AT A TIME.
-# Start with RHO
+# Start with RHO and then expand.
+# HOW WILL I WEIGHT THIS?
+
+# -------------------------------------------------------------------------------- #
+# Allowing natural mortality to be adjusted, allows us to better fit to PLHIV data #
+# -------------------------------------------------------------------------------- #
 
 # Run Calibration Model
 RunCalibration(100)
 
-# Varying RHO pushing it down super far so that it is rediculously quick.
+# 1000 simulations and picking the top 100 takes 48 seconds.
 
-1 / lhs[,"rho"][k]
-1 / lhs[,"epsilon"][k]
-1 / lhs[,"kappa"][k]
-1 / lhs[,"gamma"][k]
-1 / lhs[,"theta"][k]
-1 / lhs[,"omega"][k]
-lhs[,"q"][k]
+# The outcome of the calibration is two-fold:
+    # 1) Return a range of values (min, max) of "ghost values". = DONE.
+    # 2) Return a barplot of the "CASCADE"
 
 
-# We can then apply this to a function, i.e. SSE(AssembleComparisonDataFrame(CallCalibModel()))
+############
+# THURSDAY #
+############
 
-# Finish creating error calculations and functions. = DONE.
-# All numbers should be absolute at this stage (CallCalibModel now only returns absolute numbers) = DONE.
-# Do each seperately first, then the pull them all together. = DONE.
-# Alter assumptions around what values we put in at the start of calibration? (assuming ZERO PLHIV etc. maybe crazy!?) = DONE.
+1) Get calibration to return barplot of the cascade.
+2) Are we getting reasonable parameter values?
+3) Are we ready to share?
+4) How easily can we do the 'whole thing' here?
+
+
+# LONG TERM GOAL (BEFORE FLORIDA HOLIDAY),
+# Have the 'whole thing' done for KENYA.
+
+# THERE AFTER, expand.
+# end of this week, produce calibrated version of Kenya.
+
+
 
 
 # ----------- #
 # CALIBRATION #
 # ----------- #
 
-# LHS or optim()
-# Plot test outputs
-# dynamic labelling of input data
-# What is the best strategy?
+# LHS or optim(). Going with LHS for now. Can always pivot back.
+# Plot test outputs.
+# dynamic labelling of input data (what the hell do I mean here?)
+# What is the best strategy? LHS and brute force.
 
 # IDEA:
     # - Pull all 'error' values together.
     # - Multiply by some weight, depending on what they are
-    # - Ensure that we are still able to minimise values to ZERO.
+    # - Ensure that we are still able to minimise values to ZERO (well, I can dream)
 
 # --------- #
 # WEIGHTING #

@@ -187,7 +187,7 @@ RunCalibration <- function(iterations) {
     }
 
 
-    # Calculate the min and max of the vectors.
+    # Calculate the min and max of the parameters simulated.
     param <- data.frame(
         min = apply(pOut, 2, min),
         max = apply(pOut, 2, max)
@@ -239,5 +239,7 @@ RunCalibration <- function(iterations) {
 
     gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 
+    # Return parameter data.frame that contains the max and min values of all parameters used in the simulations.
+    # Also a ggplot (four plots) should be printed to the screen.
     return(param)
 }
