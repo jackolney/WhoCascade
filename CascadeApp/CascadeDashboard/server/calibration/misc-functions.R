@@ -49,16 +49,20 @@ RunBaselineModel <- function() {
     # Without Error in data.frame #
     error2 <- dplyr::filter(original, source != "error")
     p1 <- ggplot(dplyr::filter(error2, indicator == "PLHIV"), aes(x = year, y = value, group = source)) +
-        geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+        geom_line() + geom_point(aes(color = source), size = 3) +
+        ggtitle("PLHIV")
 
     p2 <- ggplot(dplyr::filter(error2, indicator == "PLHIV Diagnosed"), aes(x = year, y = value, group = source)) +
-        geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+        geom_line() + geom_point(aes(color = source), size = 3) +
+        ggtitle("PLHIV Diagnosed")
 
     p3 <- ggplot(dplyr::filter(error2, indicator == "PLHIV in Care"), aes(x = year, y = value, group = source)) +
-        geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+        geom_line() + geom_point(aes(color = source), size = 3) +
+        ggtitle("PLHIV in Care")
 
     p4 <- ggplot(dplyr::filter(error2, indicator == "PLHIV on ART"), aes(x = year, y = value, group = source)) +
-        geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+        geom_line() + geom_point(aes(color = source), size = 3) +
+        ggtitle("PLHIV on ART")
 
     # graphics.off()
     # quartz.options(w = 10, h = 5)
@@ -66,7 +70,7 @@ RunBaselineModel <- function() {
 }
 
 RunCalibration <- function(iterations) {
-
+    # iterations = 100
     KenyaData <- GetMasterDataSet("Kenya")
 
     time <- seq(0, 5, 1)
@@ -130,7 +134,7 @@ RunCalibration <- function(iterations) {
         p[["Gamma"]]   <- lhs[,"gamma"][k]
         p[["Theta"]]   <- lhs[,"theta"][k]
         p[["Omega"]]   <- lhs[,"omega"][k]
-        p[["Mu"]]   <- lhs[,"mu"][k]
+        p[["Mu"]]      <- lhs[,"mu"][k]
         p[["q"]]       <- lhs[,"q"][k]
 
         out <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = KenyaData))
@@ -139,8 +143,6 @@ RunCalibration <- function(iterations) {
     # plot(error)
 
     a <- order(error)[1:(iterations * 0.1)]
-
-    lhs[,"rho"][a]
 
     out <- c()
     for(l in 1:(iterations * 0.1)) {
@@ -151,11 +153,46 @@ RunCalibration <- function(iterations) {
         p[["Gamma"]]   <- lhs[,"gamma"][a[l]]
         p[["Theta"]]   <- lhs[,"theta"][a[l]]
         p[["Omega"]]   <- lhs[,"omega"][a[l]]
+        p[["Mu"]]      <- lhs[,"mu"][a[l]]
         p[["q"]]       <- lhs[,"q"][a[l]]
 
         iOut <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = KenyaData))
         out <- rbind(out, iOut)
     }
+
+    # Need to create a dataframe containg all parameter values, THEN max and minimum on them.
+    # Just apply over a col (MARGIN = 2)
+
+    pOut <- data.frame(
+        rho = 0,
+        epsilon = 0,
+        kappa = 0,
+        gamma = 0,
+        theta = 0,
+        omega = 0,
+        mu = 0,
+        q = 0
+        )
+
+    for(l in 1:(iterations * 0.1)) {
+        # Fill that shit out.
+        pOut[l,"rho"]     = lhs[,"rho"][a[l]]
+        pOut[l,"epsilon"] = lhs[,"epsilon"][a[l]]
+        pOut[l,"kappa"]   = lhs[,"kappa"][a[l]]
+        pOut[l,"gamma"]   = lhs[,"gamma"][a[l]]
+        pOut[l,"theta"]   = lhs[,"theta"][a[l]]
+        pOut[l,"omega"]   = lhs[,"omega"][a[l]]
+        pOut[l,"mu"]      = lhs[,"mu"][a[l]]
+        pOut[l,"q"]       = lhs[,"q"][a[l]]
+    }
+
+
+    # Calculate the min and max of the vectors.
+    param <- data.frame(
+        min = apply(pOut, 2, min),
+        max = apply(pOut, 2, max)
+        )
+    # These need to be returned to box() in the app.
 
     # Find Minimums & Maximums
     # OF ONLY MODEL
@@ -179,22 +216,28 @@ RunCalibration <- function(iterations) {
 
     p1 <- ggplot(data = outdata[outdata$indicator == "PLHIV",], aes(x = year, y = value, group = source)) +
         geom_ribbon(data = out_min_max[out_min_max$indicator == "PLHIV",], aes(x = year, ymin = min, ymax = max, group = source), fill = "grey70") +
-        geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+        geom_line() + geom_point(aes(color = source), size = 3) +
+        ggtitle("PLHIV")
 
     p2 <- ggplot(data = outdata[outdata$indicator == "PLHIV Diagnosed",], aes(x = year, y = value, group = source)) +
         geom_ribbon(data = out_min_max[out_min_max$indicator == "PLHIV Diagnosed",], aes(x = year, ymin = min, ymax = max, group = source), fill = "grey70") +
-        geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+        geom_line() + geom_point(aes(color = source), size = 3) +
+        ggtitle("PLHIV Diagnosed")
 
 
     p3 <- ggplot(data = outdata[outdata$indicator == "PLHIV in Care",], aes(x = year, y = value, group = source)) +
         geom_ribbon(data = out_min_max[out_min_max$indicator == "PLHIV in Care",], aes(x = year, ymin = min, ymax = max, group = source), fill = "grey70") +
-        geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+        geom_line() + geom_point(aes(color = source), size = 3) +
+        ggtitle("PLHIV in Care")
 
 
     p4 <- ggplot(data = outdata[outdata$indicator == "PLHIV on ART",], aes(x = year, y = value, group = source)) +
         geom_ribbon(data = out_min_max[out_min_max$indicator == "PLHIV on ART",], aes(x = year, ymin = min, ymax = max, group = source), fill = "grey70") +
-        geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
+        geom_line() + geom_point(aes(color = source), size = 3) +
+        ggtitle("PLHIV on ART")
 
 
     gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
+
+    return(param)
 }
