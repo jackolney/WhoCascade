@@ -6,7 +6,7 @@ AssembleComparisonDataFrame <- function(country, model, data) {
 
     # Create Model data.frame
     modelOutput <- data.frame()
-    for(i in 1:4) {
+    for(i in 1:5) {
         year <- model$time + 2010
         source <- "model"
         if(i == 1) {
@@ -21,6 +21,9 @@ AssembleComparisonDataFrame <- function(country, model, data) {
         } else if(i == 4) {
             value <- model$Tx
             indicator <- "PLHIV on ART"
+        } else if(i == 5) {
+            value <- model$Vs
+            indicator <- "PLHIV Suppressed"
         }
 
         iOutput <- data.frame(country, indicator, source, year, value)
@@ -63,6 +66,7 @@ SSE <- function(df) {
             iYr <- data[data$year == uniqueYears[j],]
 
             iData  <- iYr[iYr$source == "data","value"]
+            if(isEmpty(iData)) next
             if(any(is.na(iData))) next
             if(length(iData) > 1) iData <- mean(iData)
 
@@ -78,4 +82,8 @@ SSE <- function(df) {
         }
     }
     df
+}
+
+isEmpty <- function(x) {
+    return(length(x) == 0)
 }
