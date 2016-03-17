@@ -160,6 +160,7 @@ GetCountryData <- function(uCountry) {
         "rates"
         )
 
+    ## All of the below goes into data[["calib"]]
     # list temp.names
     temp.names <- c(
         "temp.art",
@@ -182,6 +183,7 @@ GetCountryData <- function(uCountry) {
             id.vars = c("country", "indicator"),
             variable.name = "year",
             value.name = "value")
+        temp.art$weight <- "green"
     }
 
     # calib.not_on_art
@@ -190,6 +192,7 @@ GetCountryData <- function(uCountry) {
             id.vars = c("country", "indicator"),
             variable.name = "year",
             value.name = "value")
+        temp.not_on_art$weight <- "green"
     }
 
     # calib.plhiv
@@ -198,6 +201,7 @@ GetCountryData <- function(uCountry) {
             id.vars = c("country","indicator"),
             variable.name = "year",
             value.name = "value")
+        temp.plhiv$weight <- "green"
     }
 
     # calib.hiv_awareness_unaids (remember this is a proportion of PLHIV)
@@ -210,6 +214,7 @@ GetCountryData <- function(uCountry) {
             for(i in 1:dim(temp.hiv_awareness_unaids)[1]) {
                 t.plhiv <- dplyr::filter(temp.plhiv, year == temp.hiv_awareness_unaids$year[i])$value
                 temp.hiv_awareness_unaids[[i,"value"]] <- temp.hiv_awareness_unaids[[i,"value"]] * t.plhiv
+                temp.hiv_awareness_unaids$weight <- "green"
             }
         } else {
             rm(temp.hiv_awareness_unaids)
@@ -218,7 +223,7 @@ GetCountryData <- function(uCountry) {
 
     # calib.previous_data
     if(is.not.empty(calib.df$previous_data)) {
-        temp.previous_data <- dplyr::filter(calib.df$previous_data[c("country","indicator","year","value")], year >= 2010)
+        temp.previous_data <- dplyr::filter(calib.df$previous_data[c("country","indicator","year","value","weight")], year >= 2010)
     }
 
     # Assemble master.data.frame
