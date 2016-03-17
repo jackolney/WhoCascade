@@ -64,6 +64,7 @@ GetMarrakechData <- function(uCountry) {
         weights[i] <- out[grep("*_score", out$indicator, invert = FALSE),][i,"value"]
     }
     final$weight <- weights
+    final$value <- as.double(final$value)
 
     final
 }
