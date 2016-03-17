@@ -218,13 +218,13 @@ RunCalibration <- function(iterations) {
         ggtitle("PLHIV on ART", subtitle = "Points are data, shading shows upper and lower model estimates") +
         theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
-    p5 <- ggplot(out_details[out_details$year == 2010,][1:4,], aes(x = indicator, y = mean)) +
+    p5 <- ggplot(out_details[out_details$year == 2010,][1:5,], aes(x = indicator, y = mean)) +
         geom_bar(aes(fill = indicator), stat = "identity") +
         ggtitle("Cascade in 2010") +
         theme_classic() +
         theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
-    p6 <- ggplot(out_details[out_details$year == 2015,][1:4,], aes(x = indicator, y = mean)) +
+    p6 <- ggplot(out_details[out_details$year == 2015,][1:5,], aes(x = indicator, y = mean)) +
         geom_bar(aes(fill = indicator), stat = "identity") +
         geom_errorbar(mapping = aes(x = indicator, ymin = min, ymax = max), width = 0.2, size = 0.5) +
         ggtitle("Cascade in 2015", subtitle = "Error bars illustrate result ranges from best 10% of model fits") +
