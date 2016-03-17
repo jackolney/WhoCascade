@@ -7,7 +7,7 @@ rm(list=ls())
 setwd("~/git/WhoCascade/CascadeApp/CascadeDashboard")
 # dir()
 graphics.off()
-quartz.options(w = 10, h = 5)
+quartz.options(w = 10, h = 8)
 
 # -------- #
 # WORKFLOW #
@@ -32,7 +32,6 @@ devtools::test(pkg = "~/git/WhoCascade/cascade")
 
 # Run baseline model (nothing fancy)
 RunBaselineModel()
-
 
 #####################
 # START OF FUNCTION #
@@ -79,10 +78,18 @@ RunCalibration(100)
 # THURSDAY #
 ############
 
-1) Get calibration to return barplot of the cascade.
-2) Are we getting reasonable parameter values?
-3) Are we ready to share?
-4) How easily can we do the 'whole thing' here?
+# 1) Get calibration to return barplot of the cascade. = DONE.
+#     - Mean of the runs as the bar with shaded area around it? (just some error_bars)
+
+RunCalibration(100)
+
+# 2) Are we getting reasonable parameter values?
+
+RunCalibration(1000)
+
+# 3) Are we ready to share?
+# 4) How easily can we do the 'whole thing' here?
+# 5) Expand to include "PLHIV Virally Suppressed".
 
 
 # LONG TERM GOAL (BEFORE FLORIDA HOLIDAY),
