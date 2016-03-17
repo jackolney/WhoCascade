@@ -103,6 +103,7 @@ RunCalibration <- function(iterations) {
             theta   = p[["Theta"]]   * min_term,
             omega   = p[["Omega"]]   * min_term,
             mu      = p[["Mu"]]      * 1,
+            p       = if(p[["p"]] * min_term > 1) {1} else {p[["p"]] * min_term},
             q       = if(p[["q"]] * min_term > 1) {1} else {p[["q"]] * min_term}
         ),
         max = c(
@@ -113,6 +114,7 @@ RunCalibration <- function(iterations) {
             theta   = p[["Theta"]]   * max_term,
             omega   = p[["Omega"]]   * max_term,
             mu      = p[["Mu"]]      * 0,
+            p       = if(p[["p"]] * max_term > 1) {1} else {p[["p"]] * max_term},
             q       = if(p[["q"]] * max_term > 1) {1} else {p[["q"]] * max_term}
         )
     )
@@ -130,6 +132,7 @@ RunCalibration <- function(iterations) {
         p[["Theta"]]   <- lhs[,"theta"][k]
         p[["Omega"]]   <- lhs[,"omega"][k]
         p[["Mu"]]      <- lhs[,"mu"][k]
+        p[["p"]]       <- lhs[,"p"][k]
         p[["q"]]       <- lhs[,"q"][k]
 
         out <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = KenyaData))
@@ -148,6 +151,7 @@ RunCalibration <- function(iterations) {
         p[["Theta"]]   <- lhs[,"theta"][best_10percent[l]]
         p[["Omega"]]   <- lhs[,"omega"][best_10percent[l]]
         p[["Mu"]]      <- lhs[,"mu"][best_10percent[l]]
+        p[["p"]]       <- lhs[,"p"][best_10percent[l]]
         p[["q"]]       <- lhs[,"q"][best_10percent[l]]
 
         iOut <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = KenyaData))
@@ -165,6 +169,7 @@ RunCalibration <- function(iterations) {
         theta = 0,
         omega = 0,
         mu = 0,
+        p = 0,
         q = 0
         )
 
@@ -177,6 +182,7 @@ RunCalibration <- function(iterations) {
         pOut[l,"theta"]   = lhs[,"theta"][best_10percent[l]]
         pOut[l,"omega"]   = lhs[,"omega"][best_10percent[l]]
         pOut[l,"mu"]      = lhs[,"mu"][best_10percent[l]]
+        pOut[l,"p"]       = lhs[,"p"][best_10percent[l]]
         pOut[l,"q"]       = lhs[,"q"][best_10percent[l]]
     }
 
@@ -222,14 +228,19 @@ RunCalibration <- function(iterations) {
         geom_bar(aes(fill = indicator), stat = "identity") +
         ggtitle("Cascade in 2010") +
         theme_classic() +
-        theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
+        theme(legend.position = "none",
+            text = element_text(family = "OpenSans-CondensedLight"),
+            axis.title = element_blank())
 
     p6 <- ggplot(out_details[out_details$year == 2015,][1:5,], aes(x = indicator, y = mean)) +
         geom_bar(aes(fill = indicator), stat = "identity") +
         geom_errorbar(mapping = aes(x = indicator, ymin = min, ymax = max), width = 0.2, size = 0.5) +
-        ggtitle("Cascade in 2015", subtitle = "Error bars illustrate result ranges from best 10% of model fits") +
+        geom_point(data = KenyaData[["calib"]][KenyaData[["calib"]]$year == 2015 & KenyaData[["calib"]]$indicator != "PLHIV Retained",], aes(x = indicator, y = value), color = "black", size = 2) +
+        ggtitle("Cascade in 2015", subtitle = "Error bars illustrate result ranges from best 10% of model fits, points are data") +
         theme_classic() +
-        theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
+        theme(legend.position = "none",
+            text = element_text(family = "OpenSans-CondensedLight"),
+            axis.title = element_blank())
 
     gridExtra::grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2, nrow = 3)
 
