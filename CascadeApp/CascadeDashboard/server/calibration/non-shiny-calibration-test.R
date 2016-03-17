@@ -90,7 +90,7 @@ RunCalibration(1000)
 
 # 3) Are we ready to share?
     # - Not quite.
-    # - What about WEIGHTING???? (not just yet)
+    # - What about WEIGHTING???? (not just yet) YES YES YES! DONE.
         # - Just multiply each error by some value between 0 and 1, depending on additional info in iData.
         # - Color data points with 'traffic light' scheme (red/amber/green)
         # - Weighting the data will just be a case of adding a column to the .csv files and then including it in the AssembleComparisonDataFrame()
@@ -107,6 +107,7 @@ RunCalibration(1000)
 # 6) What should be returned to shiny is a dataframe containing ALL parameters used for each run.
     # - Idea is that then we blast through them to produce each result with the 'projection' model.
 
+# READY TO SHARE I THINK!!!
 
 # LONG TERM GOAL (BEFORE FLORIDA HOLIDAY),
 # Have the 'whole thing' done for KENYA.
