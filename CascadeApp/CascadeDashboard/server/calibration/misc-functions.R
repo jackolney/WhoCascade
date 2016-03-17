@@ -227,7 +227,7 @@ RunCalibration <- function(iterations) {
     p6 <- ggplot(out_details[out_details$year == 2015,][1:4,], aes(x = indicator, y = mean)) +
         geom_bar(aes(fill = indicator), stat = "identity") +
         geom_errorbar(mapping = aes(x = indicator, ymin = min, ymax = max), width = 0.2, size = 0.5) +
-        ggtitle("Cascade in 2015") +
+        ggtitle("Cascade in 2015", subtitle = "Error bars illustrate result ranges from best 10% of model fits") +
         theme_classic() +
         theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
