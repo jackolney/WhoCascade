@@ -37,7 +37,8 @@ MakeAssumptions <- function(uCountry, countryData) {
         indicator <- "PLHIV Diagnosed"
         year      <- seq(2010, 2015, 1)
         value     <- k.plhiv * mean(e.diag, t.diag, u.diag)
-        new.diag  <- data.frame(country, indicator, year, value)
+        weight    <- "red"
+        new.diag  <- data.frame(country, indicator, year, value, weight)
 
         # test3 <- rbind(countryData, new.diag)
         # ggplot(test3, aes(x = year, y = value)) + geom_point(aes(color = indicator))
@@ -58,7 +59,8 @@ MakeAssumptions <- function(uCountry, countryData) {
         indicator <- "PLHIV in Care"
         year      <- seq(2010, 2015, 1)
         value     <- dplyr::filter(countryData, indicator == "PLHIV")$value * 0.57
-        new.care  <- data.frame(country, indicator, year, value)
+        weight    <- "red"
+        new.care  <- data.frame(country, indicator, year, value, weight)
 
         # test4 <- rbind(countryData, new.diag, new.care)
         # ggplot(test4, aes(x = year, y = value)) + geom_point(aes(color = indicator))
