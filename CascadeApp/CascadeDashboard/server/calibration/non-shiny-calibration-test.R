@@ -33,6 +33,9 @@ devtools::test(pkg = "~/git/WhoCascade/cascade")
 # Run baseline model (nothing fancy)
 RunBaselineModel()
 
+
+
+KenyaData <- GetMasterDataSet("Kenya")
 #####################
 # START OF FUNCTION #
 #####################
@@ -84,12 +87,28 @@ RunCalibration(100)
 RunCalibration(100)
 
 # 2) Are we getting reasonable parameter values?
+    # - They aren't totally nuts.
 
 RunCalibration(1000)
 
 # 3) Are we ready to share?
+    # - Not quite.
+    # - What about WEIGHTING???? (not just yet)
+        # - Just multiply each error by some value between 0 and 1, depending on additional info in iData.
+        # - Color data points with 'traffic light' scheme (red/amber/green)
+        # - Weighting the data will just be a case of adding a column to the .csv files and then including it in the AssembleComparisonDataFrame()
+        # - Then choosing colours for each value.
+    # - Add data points from 2015 estimates to barplot = DONE.
+    # - Calibration to "PLHIV Suppressed" = DONE.
+    # - Neaten up source code (will need to translate into shiny friendly code relatively soon) = DONE.
+
 # 4) How easily can we do the 'whole thing' here?
-# 5) Expand to include "PLHIV Virally Suppressed".
+    # - Need some UI tweaks, but they are coming!!
+
+# 5) Expand to include "PLHIV Virally Suppressed" in cascade plot. = DONE.
+
+# 6) What should be returned to shiny is a dataframe containing ALL parameters used for each run.
+    # - Idea is that then we blast through them to produce each result with the 'projection' model.
 
 
 # LONG TERM GOAL (BEFORE FLORIDA HOLIDAY),
@@ -98,7 +117,12 @@ RunCalibration(1000)
 # THERE AFTER, expand.
 # end of this week, produce calibrated version of Kenya.
 
-
+# --------- #
+# QUESTIONS #
+# --------- #
+# (1) - How do we define the upper and lower bounds of parameters?
+# (2) - How do we weight the data? (just divide it into 3 equal segments of 0.33?)
+# (3) - Is the best 100 of 1k runs sufficient?
 
 
 # ----------- #
