@@ -26,7 +26,7 @@ AssembleComparisonDataFrame <- function(country, model, data) {
             indicator <- "PLHIV Suppressed"
         }
 
-        iOutput <- data.frame(country, indicator, source, year, value)
+        iOutput <- data.frame(country, indicator, source, year, value, weight = NA)
         modelOutput <- rbind(modelOutput, iOutput)
     }
     modelOutput
@@ -72,13 +72,23 @@ SSE <- function(df) {
             if(any(is.na(iData))) next
             if(length(iData) > 1) iData <- mean(iData)
 
+            iWeight <- iYr[iYr$source == "data","weight"]
+            if(isEmpty(iWeight)) next
+            if(iWeight == "green") {
+                w <- 3/3
+            } else if(iWeight == "amber") {
+                w <- 2/3
+            } else if(iWeight == "red") {
+                w <- 1/3
+            }
+
             iModel <- iYr[iYr$source == "model","value"]
 
-            value <- sum((iData - iModel)^2)
+            value <- sum((iData - iModel)^2) * w
 
             year <- uniqueYears[j]
 
-            iError <- data.frame(country = data$country[1], indicator = data$indicator[1], year, value, source = "error")
+            iError <- data.frame(country = data$country[1], indicator = data$indicator[1], year, value, source = "error", weight = iWeight)
 
             df <- rbind(df, iError)
         }
