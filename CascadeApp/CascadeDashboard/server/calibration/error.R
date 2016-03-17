@@ -34,7 +34,7 @@ AssembleComparisonDataFrame <- function(country, model, data) {
     # Create Data data.frame
     dataOutput <- data.frame()
 
-    for(i in 1:4) {
+    for(i in 1:5) {
         if(i == 1) {
             dOutput <- data[["calib"]][data[["calib"]]$indicator == "PLHIV",]
         } else if(i == 2) {
@@ -43,6 +43,8 @@ AssembleComparisonDataFrame <- function(country, model, data) {
             dOutput <- data[["calib"]][data[["calib"]]$indicator == "PLHIV in Care",]
         } else if(i == 4) {
             dOutput <- data[["calib"]][data[["calib"]]$indicator == "PLHIV on ART",]
+        } else if(i == 5) {
+            dOutput <- data[["calib"]][data[["calib"]]$indicator == "PLHIV Suppressed",]
         }
         dOutput$source <- "data"
         dataOutput <- rbind(dataOutput, dOutput)
