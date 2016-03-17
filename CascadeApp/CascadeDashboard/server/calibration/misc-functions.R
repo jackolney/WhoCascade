@@ -2,8 +2,10 @@
 
 RunBaselineModel <- function() {
 
+    # Get country master data set
     KenyaData <- GetMasterDataSet("Kenya")
 
+    # Set important parameters
     time <- seq(0, 5, 1)
     p <- parameters(
         prop_preART_500    = KenyaData[["cd4"]][1,"prop.Off.ART.500"][[1]],
@@ -22,57 +24,58 @@ RunBaselineModel <- function() {
     y <- GetCalibInitial(p, KenyaData)
     i <- incidence(as.double(KenyaData[["incidence"]]))
 
-
-    # THE GUTS #
+    # Run C++ model
     result <- CallCalibModel(time, y, p, i)
+
+    # Assemble output data.frame
     df <- AssembleComparisonDataFrame(country = "Kenya", model = result, data = KenyaData)
+
+    # Calculate mean squared error between model and data
     original <- SSE(df)
-    # THE END #
 
-    # p1 <- ggplot(dplyr::filter(error, indicator == "PLHIV"), aes(x = year, y = value, group = source)) +
+    # A plot of error (commented out)
+    # p1 <- ggplot(original[original$indicator == "PLHIV",], aes(x = year, y = value, group = source)) +
     #     geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
 
-    # p2 <- ggplot(dplyr::filter(error, indicator == "PLHIV Diagnosed"), aes(x = year, y = value, group = source)) +
+    # p2 <- ggplot(original[original$indicator == "PLHIV Diagnosed",], aes(x = year, y = value, group = source)) +
     #     geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
 
-    # p3 <- ggplot(dplyr::filter(error, indicator == "PLHIV in Care"), aes(x = year, y = value, group = source)) +
+    # p3 <- ggplot(original[original$indicator == "PLHIV in Care",], aes(x = year, y = value, group = source)) +
     #     geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
 
-    # p4 <- ggplot(dplyr::filter(error, indicator == "PLHIV on ART"), aes(x = year, y = value, group = source)) +
+    # p4 <- ggplot(original[original$indicator == "PLHIV on ART",], aes(x = year, y = value, group = source)) +
     #     geom_line() + geom_point(aes(color = indicator, shape = source), size = 3)
 
-    # graphics.off()
-    # quartz.options(w = 10, h = 5)
     # gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 
-
-    # Without Error in data.frame #
-    error2 <- dplyr::filter(original, source != "error")
-    p1 <- ggplot(dplyr::filter(error2, indicator == "PLHIV"), aes(x = year, y = value, group = source)) +
+    # A plot of model vs. data
+    error2 <- original[original$source != "error",]
+    p1 <- ggplot(error2[error2$indicator == "PLHIV",], aes(x = year, y = value, group = source)) +
         geom_line() + geom_point(aes(color = source), size = 3) +
         ggtitle("PLHIV")
 
-    p2 <- ggplot(dplyr::filter(error2, indicator == "PLHIV Diagnosed"), aes(x = year, y = value, group = source)) +
+    p2 <- ggplot(error2[error2$indicator == "PLHIV Diagnosed",], aes(x = year, y = value, group = source)) +
         geom_line() + geom_point(aes(color = source), size = 3) +
         ggtitle("PLHIV Diagnosed")
 
-    p3 <- ggplot(dplyr::filter(error2, indicator == "PLHIV in Care"), aes(x = year, y = value, group = source)) +
+    p3 <- ggplot(error2[error2$indicator == "PLHIV in Care",], aes(x = year, y = value, group = source)) +
         geom_line() + geom_point(aes(color = source), size = 3) +
         ggtitle("PLHIV in Care")
 
-    p4 <- ggplot(dplyr::filter(error2, indicator == "PLHIV on ART"), aes(x = year, y = value, group = source)) +
+    p4 <- ggplot(error2[error2$indicator == "PLHIV on ART",], aes(x = year, y = value, group = source)) +
         geom_line() + geom_point(aes(color = source), size = 3) +
         ggtitle("PLHIV on ART")
 
-    # graphics.off()
-    # quartz.options(w = 10, h = 5)
     gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 }
 
-RunCalibration <- function(iterations) {
+RunCalibration <- function(iterations = 100) {
+
     # iterations = 100
+    # Load country master dataset
     KenyaData <- GetMasterDataSet("Kenya")
 
+    # Set important parameters
     time <- seq(0, 5, 1)
     p <- parameters(
         prop_preART_500    = KenyaData[["cd4"]][1,"prop.Off.ART.500"][[1]],
@@ -91,9 +94,12 @@ RunCalibration <- function(iterations) {
     y <- GetCalibInitial(p, KenyaData)
     i <- incidence(as.double(KenyaData[["incidence"]]))
 
+    ## Parameter Sampling
+    # Pick maximum and minimum terms
     min_term = 5
     max_term = 0.1
 
+    # Put together max and min parRange data.frame
     parRange <- data.frame(
         min = c(
             rho     = p[["Rho"]]     * min_term,
@@ -120,8 +126,10 @@ RunCalibration <- function(iterations) {
     )
     parRange
 
+    # Use Latin Hypercube Sampling to randomly sample from parRange n times
     lhs <- FME::Latinhyper(parRange, num = iterations)
 
+    # For each draw, update parameter vector (p), run model, calculate error and store it.
     error <- c()
     for(k in 1:dim(lhs)[1]) {
         # print(k)
@@ -139,8 +147,11 @@ RunCalibration <- function(iterations) {
         error[k] <- sum(out[out$source == "error","value"])
     }
 
+    # Order sum of total error from lowest to highest and pick the lowest 10%
     best_10percent <- order(error)[1:(iterations * 0.1)]
 
+    ## For the best 10%, update the parameter vector (p), re-run simulations and store results
+    # Faster than storing ALL results in the first place (I think)
     out <- c()
     for(l in 1:(iterations * 0.1)) {
 
@@ -158,9 +169,7 @@ RunCalibration <- function(iterations) {
         out <- rbind(out, iOut)
     }
 
-    # Need to create a dataframe containg all parameter values, THEN max and minimum on them.
-    # Just apply over a col (MARGIN = 2)
-
+    # Create data.frame to hold all parameter values used by top 10%
     pOut <- data.frame(
         rho = 0,
         epsilon = 0,
@@ -173,8 +182,8 @@ RunCalibration <- function(iterations) {
         q = 0
         )
 
+    # Loop through all iterations and fill out pOut
     for(l in 1:(iterations * 0.1)) {
-        # Fill that shit out.
         pOut[l,"rho"]     = lhs[,"rho"][best_10percent[l]]
         pOut[l,"epsilon"] = lhs[,"epsilon"][best_10percent[l]]
         pOut[l,"kappa"]   = lhs[,"kappa"][best_10percent[l]]
@@ -186,15 +195,14 @@ RunCalibration <- function(iterations) {
         pOut[l,"q"]       = lhs[,"q"][best_10percent[l]]
     }
 
-
-    # Calculate the min and max of the parameters simulated.
+    # Calculate min and max values used by parameter set
     param <- data.frame(
         min = apply(pOut, 2, min),
         max = apply(pOut, 2, max)
-        )
-    # These need to be returned to box() in the app.
+    )
 
-    outdata <- dplyr::filter(out, source == "data")
+    # Subset data to show only 'data'
+    outdata <- out[out$source == "data",]
 
     # Find Minimums & Maximums & Mean of data.
     out_details <- AppendMinMaxMean(out[out$source == "model",])
@@ -242,10 +250,10 @@ RunCalibration <- function(iterations) {
             text = element_text(family = "OpenSans-CondensedLight"),
             axis.title = element_blank())
 
+    # Throw together in a big plot window
     gridExtra::grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2, nrow = 3)
 
-    # Return parameter data.frame that contains the max and min values of all parameters used in the simulations.
-    # Also a ggplot (four plots) should be printed to the screen.
+    # Return min and max values used for all parameters.
     return(param)
 }
 
