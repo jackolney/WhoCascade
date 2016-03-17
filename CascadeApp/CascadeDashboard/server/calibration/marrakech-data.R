@@ -56,8 +56,16 @@ GetMarrakechData <- function(uCountry) {
         value.name = "value")
 
     # Remove *_score (for now)
-    out <- out[grep("*_score", out$indicator, invert = TRUE),]
-    out
+    final <- out[grep("*_score", out$indicator, invert = TRUE),]
+
+    # Add weights to the melted data.frame
+    weights <- c()
+    for(i in 1:length(unique(final$indicator))) {
+        weights[i] <- out[grep("*_score", out$indicator, invert = FALSE),][i,"value"]
+    }
+    final$weight <- weights
+
+    final
 }
 
 # What is standard form here?
