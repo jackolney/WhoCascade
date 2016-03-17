@@ -33,9 +33,6 @@ devtools::test(pkg = "~/git/WhoCascade/cascade")
 # Run baseline model (nothing fancy)
 RunBaselineModel()
 
-
-
-KenyaData <- GetMasterDataSet("Kenya")
 #####################
 # START OF FUNCTION #
 #####################
