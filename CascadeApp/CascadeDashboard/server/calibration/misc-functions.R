@@ -48,22 +48,32 @@ RunBaselineModel <- function() {
 
     # gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 
+    # col_pairs <- brewer.pal(12, "Paired")
+    # cols <- c(test[4],test[8],test[6])
+    cols <- c(ggColorHue(10)[1],ggColorHue(10)[2],ggColorHue(10)[4])
+    names(cols) <- c("red", "amber", "green")
+    mycol <- scale_colour_manual(name = "weight", values = cols)
+
     # A plot of model vs. data
     error2 <- original[original$source != "error",]
-    p1 <- ggplot(error2[error2$indicator == "PLHIV",], aes(x = year, y = value, group = source)) +
-        geom_line() + geom_point(aes(color = source), size = 3) +
+    p1 <- ggplot(error2[error2$indicator == "PLHIV",], aes(x = year, y = value, group = weight)) +
+        geom_line() + geom_point(aes(color = weight), size = 3) +
+        mycol +
         ggtitle("PLHIV")
 
-    p2 <- ggplot(error2[error2$indicator == "PLHIV Diagnosed",], aes(x = year, y = value, group = source)) +
-        geom_line() + geom_point(aes(color = source), size = 3) +
+    p2 <- ggplot(error2[error2$indicator == "PLHIV Diagnosed",], aes(x = year, y = value, group = weight)) +
+        geom_line() + geom_point(aes(color = weight), size = 3) +
+        mycol +
         ggtitle("PLHIV Diagnosed")
 
-    p3 <- ggplot(error2[error2$indicator == "PLHIV in Care",], aes(x = year, y = value, group = source)) +
-        geom_line() + geom_point(aes(color = source), size = 3) +
+    p3 <- ggplot(error2[error2$indicator == "PLHIV in Care",], aes(x = year, y = value, group = weight)) +
+        geom_line() + geom_point(aes(color = weight), size = 3) +
+        mycol +
         ggtitle("PLHIV in Care")
 
-    p4 <- ggplot(error2[error2$indicator == "PLHIV on ART",], aes(x = year, y = value, group = source)) +
-        geom_line() + geom_point(aes(color = source), size = 3) +
+    p4 <- ggplot(error2[error2$indicator == "PLHIV on ART",], aes(x = year, y = value, group = weight)) +
+        geom_line() + geom_point(aes(color = weight), size = 3) +
+        mycol +
         ggtitle("PLHIV on ART")
 
     gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
@@ -207,28 +217,37 @@ RunCalibration <- function(iterations = 100) {
     # Find Minimums & Maximums & Mean of data.
     out_details <- AppendMinMaxMean(out[out$source == "model",])
 
+    # Set Colors
+    cols <- c(ggColorHue(10)[1],ggColorHue(10)[2],ggColorHue(10)[4])
+    names(cols) <- c("red", "amber", "green")
+    mycol <- scale_colour_manual(name = "weight", values = cols)
+
     # Create some pretty output plots
-    p1 <- ggplot(data = outdata[outdata$indicator == "PLHIV",], aes(x = year, y = value, group = source)) +
-        geom_ribbon(data = out_details[out_details$indicator == "PLHIV",], aes(x = year, ymin = min, ymax = max, group = source), fill = "grey70") +
-        geom_line() + geom_point(aes(color = source), size = 3) +
+    p1 <- ggplot(data = outdata[outdata$indicator == "PLHIV",], aes(x = year, y = value, group = weight)) +
+        geom_ribbon(data = out_details[out_details$indicator == "PLHIV",], aes(x = year, ymin = min, ymax = max, group = weight), fill = "grey70") +
+        geom_line() + geom_point(aes(color = weight), size = 3) +
+        mycol +
         ggtitle("PLHIV", subtitle = "Points are data, shading shows upper and lower model estimates") +
         theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
-    p2 <- ggplot(data = outdata[outdata$indicator == "PLHIV Diagnosed",], aes(x = year, y = value, group = source)) +
-        geom_ribbon(data = out_details[out_details$indicator == "PLHIV Diagnosed",], aes(x = year, ymin = min, ymax = max, group = source), fill = "grey70") +
-        geom_line() + geom_point(aes(color = source), size = 3) +
+    p2 <- ggplot(data = outdata[outdata$indicator == "PLHIV Diagnosed",], aes(x = year, y = value, group = weight)) +
+        geom_ribbon(data = out_details[out_details$indicator == "PLHIV Diagnosed",], aes(x = year, ymin = min, ymax = max, group = weight), fill = "grey70") +
+        geom_line() + geom_point(aes(color = weight), size = 3) +
+        mycol +
         ggtitle("PLHIV Diagnosed", subtitle = "Points are data, shading shows upper and lower model estimates") +
         theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
-    p3 <- ggplot(data = outdata[outdata$indicator == "PLHIV in Care",], aes(x = year, y = value, group = source)) +
-        geom_ribbon(data = out_details[out_details$indicator == "PLHIV in Care",], aes(x = year, ymin = min, ymax = max, group = source), fill = "grey70") +
-        geom_line() + geom_point(aes(color = source), size = 3) +
+    p3 <- ggplot(data = outdata[outdata$indicator == "PLHIV in Care",], aes(x = year, y = value, group = weight)) +
+        geom_ribbon(data = out_details[out_details$indicator == "PLHIV in Care",], aes(x = year, ymin = min, ymax = max, group = weight), fill = "grey70") +
+        geom_line() + geom_point(aes(color = weight), size = 3) +
+        mycol +
         ggtitle("PLHIV in Care", subtitle = "Points are data, shading shows upper and lower model estimates") +
         theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
-    p4 <- ggplot(data = outdata[outdata$indicator == "PLHIV on ART",], aes(x = year, y = value, group = source)) +
-        geom_ribbon(data = out_details[out_details$indicator == "PLHIV on ART",], aes(x = year, ymin = min, ymax = max, group = source), fill = "grey70") +
-        geom_line() + geom_point(aes(color = source), size = 3) +
+    p4 <- ggplot(data = outdata[outdata$indicator == "PLHIV on ART",], aes(x = year, y = value, group = weight)) +
+        geom_ribbon(data = out_details[out_details$indicator == "PLHIV on ART",], aes(x = year, ymin = min, ymax = max, group = weight), fill = "grey70") +
+        geom_line() + geom_point(aes(color = weight), size = 3) +
+        mycol +
         ggtitle("PLHIV on ART", subtitle = "Points are data, shading shows upper and lower model estimates") +
         theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
