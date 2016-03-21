@@ -6,8 +6,6 @@ tabItem(tabName = "country",
             title = "Map",
             collapsible = TRUE,
             collapsed = FALSE,
-            shinyjs::useShinyjs(),
-            id = "country-panel",
             leafletOutput("countryMap", width = "100%", height = 500)
         ),
         box(width = NULL,
@@ -26,7 +24,7 @@ tabItem(tabName = "country",
             solidHeader = TRUE,
             title = "Help Panel",
             helpText("Please click a country on the map, or select one from the drop-down menu below. 'Mission Control' provides additional information on available data from each country."),
-            bsButton("resetInput", label = "RESET MAP", style = "danger", block = TRUE, size = "default")
+            bsButton("resetMap", label = "RESET MAP", style = "danger", block = TRUE, size = "default")
         ),
         # Perhaps a collapsible 'master check' warning panel, like at mission control. Call it "mission control".
         # It will contain a narrow and tall list of all the imported csv files, and will have deactivated buttons that will change colour depending on what gets loaded.
