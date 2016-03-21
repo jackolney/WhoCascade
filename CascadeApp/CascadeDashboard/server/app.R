@@ -28,6 +28,13 @@ source("server/model/initial.R",    local = TRUE)
 source("server/model/beta.R",       local = TRUE)
 source("server/model/model.R",      local = TRUE)
 
+# ---------- #
+# CALBRATION #
+# ---------- #
+
+source("server/calibration/mission-control.R", local = TRUE)
+source("server/calibration/check-csv.R",       local = TRUE)
+
 # ------------ #
 # OPTIMISATION #
 # ------------ #
