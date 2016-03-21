@@ -12,15 +12,16 @@ output$countryMap <- renderLeaflet({
     mapData <- LoadCountryMapData()
 
     leaflet() %>%
-    addProviderTiles("Hydda.Base") %>%
-    # addProviderTiles("MapQuestOpen.Aerial") %>%
+    # addTiles() %>%                                # Base Map
+    # addProviderTiles("Hydda.Base") %>%            # Dark Blue with Blank Countries
+    addProviderTiles("MapQuestOpen.Aerial") %>%     # Satellite Imagery
     setView(lng = 0, lat = 30, zoom = 2) %>%
     addPolygons(
         data = mapData,
         layerId = mapData$name,
         weight = 3,
         stroke = TRUE,
-        color = "green",
+        color = "white",
         popup = mapData$name
     )
 })
