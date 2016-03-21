@@ -163,6 +163,10 @@ observeEvent(input$saveInput, {
 # Reset button stuff.
 observeEvent(input$resetInput, {shinyjs::reset("setup-panel")})
 
+observeEvent(input$resetMap, {
+    leafletProxy("countryMap") %>% setView(lng = 0, lat = 30, zoom = 2)
+})
+
 observeEvent(input$resetParameters, {
     shinyjs::reset("parameter-panel-1")
     shinyjs::reset("parameter-panel-2")
