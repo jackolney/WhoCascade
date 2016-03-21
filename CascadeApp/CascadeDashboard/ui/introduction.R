@@ -6,7 +6,6 @@ tabItem(tabName = "introduction",
             collapsible = TRUE,
             collapsed = FALSE,
             title = "Introduction",
-            helpText("Welcome to the Cascade App."),
             bsAlert("startAlert"),
             p("With the release of the Consolidated Information Guidelines for HIV by the World Health Organization (WHO)
             in May 2015, a set of indicators have been agreed upon, based on the cascade of HIV services relating to impact in
