@@ -12,11 +12,13 @@ CountryList <- c(
     "Jamaica",
     "Kenya",
     "Malawi",
+    "Morocco",
     "Mozambique",
     "Myanmar",
     "Nigeria",
     "Pakistan",
     "Philippines",
+    "Russia",
     "South Africa",
     "South Sudan",
     "Tanzania",
@@ -32,7 +34,8 @@ LeafletCountryList <- c(
     "Brazil",
     "Cambodia",
     "Cameroon",
-    "C\xf4te d'Ivoire",
+    "China",
+    "C<f4>te d'Ivoire",
     "Dem. Rep. Congo",
     "Ethiopia",
     "Haiti",
@@ -50,12 +53,17 @@ LeafletCountryList <- c(
     "Russia",
     "South Africa",
     "S. Sudan",
+    "Tanzania",
     "Thailand",
     "Uganda",
     "Ukraine",
     "Vietnam",
-    "Zimbabwe"
+    "Zambia",
+    "Zimbabwe",
+    "C\364te d'Ivoire"
 )
+
+# Lists are of identical length, so just use the [i] to locate one another.
 
 VariableNames <- c(
     "UnDx_500",

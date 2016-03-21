@@ -14,7 +14,7 @@ tabItem(tabName = "country",
             title = "Select Country",
             selectInput("selectCountry",
                 label = NULL,
-                choices = LeafletCountryList,
+                choices = CountryList,
                 selected = "Brazil")
         )
     ),

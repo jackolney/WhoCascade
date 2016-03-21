@@ -43,4 +43,8 @@ observeEvent(input$selectCountry, {
         updateButton(session, inputId = "_Rates_FLAG_",      style = "danger",  icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome"))
     }
 
+    # This will need to call the GetMasterDataSet function() at this point.
+    # But After, calibration checks are all made.
+    # Using correct Country List
+
 })

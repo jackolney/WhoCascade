@@ -14,7 +14,6 @@ CheckCSV_CD4 <- function(uCountry) {
     if(dim(out)[1] == 0) {
         return(FALSE)
     } else {
-        print("T")
         return(TRUE)
     }
 }
