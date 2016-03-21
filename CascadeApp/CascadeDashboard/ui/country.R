@@ -39,13 +39,13 @@ tabItem(tabName = "country",
             collapsible = TRUE,
             collapsed = FALSE,
             solidHeader = TRUE,
-            bsButton(inputId = "_Incidence_FLAG_", label = "Incidence (Spectrum)",   style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
-            bsButton(inputId = "_CD4_FLAG_", label = "CD4 Distribution (Spectrum)",  style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
-            bsButton(inputId = "_Treatment_FLAG_", label = "Treatment Guidelines",   style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
-            bsButton(inputId = "_PLHIV_FLAG_", label = "PLHIV Estimates (Spectrum)", style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
-            bsButton(inputId = "_ART_FLAG_", label = "ART Estimates (Spectrum)",     style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
-            bsButton(inputId = "_Additional_FLAG_", label = "Additional Estimates",  style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
-            bsButton(inputId = "_Rates_FLAG_", label = "Rates",                      style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome"))
+            bsButton(inputId = "_Incidence_FLAG_",  label = "Incidence (Spectrum)",        style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_CD4_FLAG_",        label = "CD4 Distribution (Spectrum)", style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_Treatment_FLAG_",  label = "Treatment Guidelines",        style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_PLHIV_FLAG_",      label = "PLHIV Estimates (Spectrum)",  style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_ART_FLAG_",        label = "ART Estimates (Spectrum)",    style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_Additional_FLAG_", label = "Additional Estimates",        style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "_Rates_FLAG_",      label = "Rates",                       style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome"))
             ),
         bsButton(inputId = "_BLANK_", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
