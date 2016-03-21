@@ -15,7 +15,7 @@ tabItem(tabName = "country",
             selectInput("selectCountry",
                 label = NULL,
                 choices = LeafletCountryList,
-                selected = "Kenya")
+                selected = "Brazil")
         )
     ),
     column(width = 4,
@@ -23,7 +23,7 @@ tabItem(tabName = "country",
             status = "warning",
             solidHeader = TRUE,
             title = "Help Panel",
-            helpText("Please click a country on the map, or select one from the drop-down menu below. 'Mission Control' provides additional information on available data from each country."),
+            helpText("Please click a country on the map, or select one from the drop-down menu below. Hit 'Reset Map' to reset map zoom. 'Mission Control' provides additional information on available data from each country."),
             bsButton("resetMap", label = "RESET MAP", style = "danger", block = TRUE, size = "default")
         ),
         # Perhaps a collapsible 'master check' warning panel, like at mission control. Call it "mission control".
