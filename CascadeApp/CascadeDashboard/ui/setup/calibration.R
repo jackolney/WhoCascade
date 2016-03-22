@@ -7,8 +7,18 @@ tabItem(tabName = "calibration",
             collapsible = TRUE,
             collapsed = FALSE
             # Here will be the output plot from the calibration
+        ),
+        box(width = NULL,
+            status = "warning",
+            solidHeader = FALSE,
+            collapsible = FALSE,
+            collapsed = FALSE,
+            p(strong("Calibration Progress"), class = "text-center"),
+            uiOutput(outputId = "progressOne"),
+            uiOutput(outputId = "progressTwo"),
+            uiOutput(outputId = "progressThree"),
+            uiOutput(outputId = "progressFour")
         )
-        # PROGRESS BARS HERE.
     ),
     column(width = 4,
         box(width = NULL,
