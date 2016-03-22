@@ -9,7 +9,7 @@ tabItem(tabName = "diagnosis",
             # background = "blue",
             div(img(src = "si-indicators/diagnosed.png", height = '30%', width = '30%'), style="text-align: center;"),
             br(),
-            numericInput("uDIAG","Number of people in HIV care:", value = 0, min = 0, width = '100%'),
+            numericInput("uDIAG","Number of people diagnosed with HIV:", value = 0, min = 0, width = '100%'),
             selectInput("uDIAG_source", "Source of Data:", SourceList, selected = "Please select source...")
         )
     ),
