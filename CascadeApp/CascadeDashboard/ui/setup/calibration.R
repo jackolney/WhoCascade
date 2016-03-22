@@ -3,9 +3,12 @@ tabItem(tabName = "calibration",
         box(width = NULL,
             status = "primary",
             solidHeader = TRUE,
-            title = "Calibration Result"
+            title = "Calibration Result",
+            collapsible = TRUE,
+            collapsed = FALSE
             # Here will be the output plot from the calibration
         )
+        # PROGRESS BARS HERE.
     ),
     column(width = 4,
         box(width = NULL,
@@ -17,5 +20,3 @@ tabItem(tabName = "calibration",
         )
     )
 )
-
-# include a progress bar shooting across the top.

@@ -8,7 +8,7 @@ dashboardSidebar(
             menuSubItem("Diagnosed Individuals",  tabName = "diagnosis"),
             menuSubItem("HIV Care Coverage",      tabName = "linkage"),
             menuSubItem("Treatment Coverage",     tabName = "treatment"),
-            menuSubItem("Treatment Retention",    tabName = "retention"),
+            menuSubItem("Viral Suppression",      tabName = "suppression"),
             menuSubItem("Calibration",            tabName = "calibration"),
             menuSubItem("Setup",                  tabName = "setup"),
             menuSubItem("Parameters",             tabName = "parameters")

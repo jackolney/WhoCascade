@@ -14,7 +14,7 @@ dashboardPage(
             source("ui/setup/diagnosis.R",   local = TRUE)$value,
             source("ui/setup/linkage.R",     local = TRUE)$value,
             source("ui/setup/treatment.R",   local = TRUE)$value,
-            source("ui/setup/retention.R",   local = TRUE)$value,
+            source("ui/setup/suppression.R", local = TRUE)$value,
             source("ui/setup/calibration.R", local = TRUE)$value,
 
             # TO BE REMOVED (eventually)

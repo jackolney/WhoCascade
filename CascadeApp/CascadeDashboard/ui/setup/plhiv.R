@@ -9,7 +9,7 @@ tabItem(tabName = "plhiv",
             # background = "blue",
             div(img(src = "si-indicators/plhiv.png", height = '30%', width = '30%'), style="text-align: center;"),
             br(),
-            numericInput("uPLHIV","Number of people living with HIV:", value = 0, min = 0, width = '100%'),
+            numericInput("uPLHIV", "Number of people living with HIV:", value = 0, min = 0, width = '100%'),
             selectInput("uPLHIV_source", "Source of Data:", SourceList, selected = "Please select source...")
         )
     ),
@@ -18,8 +18,7 @@ tabItem(tabName = "plhiv",
             status = "warning",
             solidHeader = TRUE,
             title = "Help Panel",
-            helpText("
-                Please fill in the boxes with details regarding each of the strategic information indicators,
+            helpText("Please fill in the boxes with details regarding each of the strategic information indicators,
                 then select the source of the data from the drop-down menu below.
                 Once entered hit 'Next' to proceed. For further details please see:"),
             a(href = "http://who.int/hiv/pub/guidelines/strategic-information-guidelines/en/", "WHO - Consolidated Strategic Information Guidelines for HIV in the Health Sector."),
