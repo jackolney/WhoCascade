@@ -6,7 +6,11 @@ tabItem(tabName = "diagnosis",
             title = "People Diagnosed with HIV",
             collapsible = TRUE,
             collapsed = FALSE,
-            helpText("Hello.")
+            # background = "blue",
+            div(img(src = "si-indicators/diagnosed.png", height = '30%', width = '30%'), style="text-align: center;"),
+            br(),
+            numericInput("uDIAG","Number of people in HIV care:", value = 0, min = 0, width = '100%'),
+            selectInput("uDIAG_source", "Source of Data:", SourceList, selected = "Please select source...")
         )
     ),
     column(width = 4,
@@ -14,10 +18,14 @@ tabItem(tabName = "diagnosis",
             status = "warning",
             solidHeader = TRUE,
             title = "Help Panel",
-            helpText("Please fill in all boxes with relevant data, then hit 'SAVE' and wait for the confirmation below.
-                Hit 'RESET' to reset all values to zero, and hit 'DEMO' for a random set of values to be generated.
-                Unchecking the 'HIV incidence' checkbox prevents any new infections occurring in the model.")
+            helpText("
+                Please fill in the boxes with details regarding each of the strategic information indicators,
+                then select the source of the data from the drop-down menu below.
+                Once entered hit 'Next' to proceed. For further details please see:"),
+            a(href = "http://who.int/hiv/pub/guidelines/strategic-information-guidelines/en/", "WHO - Consolidated Strategic Information Guidelines for HIV in the Health Sector."),
+            br(),
+            uiOutput(outputId = "uDIAG_quality")
         ),
-        bsButton(inputId = "wizardCalibration", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "NEXT_diag", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )
