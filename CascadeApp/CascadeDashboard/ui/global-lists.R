@@ -64,6 +64,7 @@ LeafletCountryList <- c(
 )
 
 SourceList <- c(
+    "Please select source...",
     "Mathematical Model",
     "Nationally Representative Study",
     "Peer-reviewed Study",

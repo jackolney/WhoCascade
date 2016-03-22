@@ -33,6 +33,7 @@ source("server/model/model.R",      local = TRUE)
 # ---------- #
 
 source("server/calibration/mission-control.R",  local = TRUE)
+source("server/calibration/observe.R",          local = TRUE)
 source("server/calibration/check-csv.R",        local = TRUE)
 source("server/calibration/master.R",           local = TRUE)
 source("server/calibration/calibration-data.R", local = TRUE)
