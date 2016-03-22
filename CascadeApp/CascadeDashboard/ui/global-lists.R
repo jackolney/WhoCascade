@@ -63,7 +63,12 @@ LeafletCountryList <- c(
     "C\364te d'Ivoire"
 )
 
-# Lists are of identical length, so just use the [i] to locate one another.
+SourceList <- c(
+    "Mathematical Model",
+    "Nationally Representative Study",
+    "Peer-reviewed Study",
+    "Estimate"
+    )
 
 VariableNames <- c(
     "UnDx_500",

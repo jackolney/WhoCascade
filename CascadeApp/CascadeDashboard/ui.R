@@ -7,10 +7,19 @@ dashboardPage(
     dashboardBody(
         tabItems(
             source("ui/introduction.R", local = TRUE)$value,
-            source("ui/country.R",      local = TRUE)$value,
-            source("ui/setup.R",        local = TRUE)$value,
-            source("ui/calibration.R",  local = TRUE)$value,
-            source("ui/parameters.R",   local = TRUE)$value,
+
+            # Setup
+            source("ui/setup/country.R",     local = TRUE)$value,
+            source("ui/setup/plhiv.R",       local = TRUE)$value,
+            source("ui/setup/diagnosis.R",   local = TRUE)$value,
+            source("ui/setup/linkage.R",     local = TRUE)$value,
+            source("ui/setup/treatment.R",   local = TRUE)$value,
+            source("ui/setup/retention.R",   local = TRUE)$value,
+            source("ui/setup/calibration.R", local = TRUE)$value,
+
+            # TO BE REMOVED (eventually)
+            source("ui/setup/setup.R",        local = TRUE)$value,
+            source("ui/setup/parameters.R",   local = TRUE)$value,
 
             # Results
             source("ui/results/res_yourcascade.R",        local = TRUE)$value,
