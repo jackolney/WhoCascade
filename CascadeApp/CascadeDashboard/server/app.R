@@ -32,8 +32,12 @@ source("server/model/model.R",      local = TRUE)
 # CALBRATION #
 # ---------- #
 
-source("server/calibration/mission-control.R", local = TRUE)
-source("server/calibration/check-csv.R",       local = TRUE)
+source("server/calibration/mission-control.R",  local = TRUE)
+source("server/calibration/check-csv.R",        local = TRUE)
+source("server/calibration/master.R",           local = TRUE)
+source("server/calibration/calibration-data.R", local = TRUE)
+source("server/calibration/assumptions.R",      local = TRUE)
+source("server/calibration/marrakech-data.R",   local = TRUE)
 
 # ------------ #
 # OPTIMISATION #

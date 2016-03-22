@@ -43,8 +43,13 @@ observeEvent(input$selectCountry, {
         updateButton(session, inputId = "_Rates_FLAG_",      style = "danger",  icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome"))
     }
 
-    # This will need to call the GetMasterDataSet function() at this point.
-    # But After, calibration checks are all made.
-    # Using correct Country List
+    # If MasterData exists then destroy it, then re-assign.
+    if(exists("MasterData")) rm(MasterData, pos = ".GlobalEnv")
+    try(MasterData <<- GetMasterDataSet(input$selectCountry), silent = FALSE)
+    if(exists("MasterData")) {
+        updateButton(session, inputId = "_PROCEED_", label = "PROCEED", style = "success", icon = icon("thumbs-up ", class = "fa-lg fa-fw", lib = "font-awesome"))
+    } else {
+        updateButton(session, inputId = "_PROCEED_", label = "DO NOT PROCEED", style = "danger", icon = icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"))
+    }
 
 })
