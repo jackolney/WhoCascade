@@ -74,6 +74,6 @@ tabItem(tabName = "introduction",
             h4("Contributors"),
             "Jack J Olney, Jeffrey W Eaton, Ellen McRobie & Timothy B Hallett"
         ),
-        bsButton(inputId = "wizardSetup", label = "Start Wizard", style = "success", size = "large", block = TRUE, icon = icon("magic", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "NEXT_intro", label = "Start Wizard", style = "success", size = "large", block = TRUE, icon = icon("magic", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

@@ -215,31 +215,6 @@ observeEvent(input$userART_200, {
     }
 })
 
-# Switch between tabs without menu.
-observeEvent(input$wizardSetup, {updateTabItems(session, inputId = "sideBar", selected = "setup")})
-
-observeEvent(input$wizardCalibration, {updateTabItems(session, inputId = "sideBar", selected = "calibration")})
-
-observeEvent(input$calib_accept, {updateTabItems(session, inputId = "sideBar", selected = "parameters")})
-
-observeEvent(input$wizardResults_1, {updateTabItems(session, inputId = "sideBar", selected = "your_cascade")})
-
-observeEvent(input$wizardResults_2, {updateTabItems(session, inputId = "sideBar", selected = "care_cascade")})
-
-observeEvent(input$wizardResults_3, {updateTabItems(session, inputId = "sideBar", selected = "powers_cascade")})
-
-observeEvent(input$wizardResults_4, {updateTabItems(session, inputId = "sideBar", selected = "_909090")})
-
-observeEvent(input$wizardResults_5, {updateTabItems(session, inputId = "sideBar", selected = "incidence_mortality")})
-
-observeEvent(input$wizardOpt_1, {updateTabItems(session, inputId = "sideBar", selected = "opt_cost")})
-
-observeEvent(input$wizardOpt_2, {updateTabItems(session, inputId = "sideBar", selected = "opt_parameter")})
-
-observeEvent(input$wizardOpt_3, {updateTabItems(session, inputId = "sideBar", selected = "opt_results")})
-
-observeEvent(input$wizardOpt_4, {updateTabItems(session, inputId = "sideBar", selected = "opt_budget")})
-
 # Inverse sliders for parameter window #
 observeEvent(input$rho, {updateSliderInput(session,"invRho", value = 1/input$rho, min = 0, max = 100, step = 0.001)})
 
