@@ -4,10 +4,7 @@ LoadCountryMapData <- function() {
     relevantCountries
 }
 
-# Countries don't quite match in their description. Fix this.
 observeEvent(input$countryMap_shape_click, {
-    # Need to identify Cote D'Ivoire and push back all other
-    print(input$countryMap_shape_click[1])
     updateSelectInput(session, inputId = "selectCountry", selected = CountryList[which(LeafletCountryList == input$countryMap_shape_click[1])])
 })
 
