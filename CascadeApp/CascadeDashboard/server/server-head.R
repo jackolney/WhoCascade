@@ -1,5 +1,6 @@
 # devtools::install_github("jackolney/WhoCascade/cascade", ref = "dashboard")
-library(cascade)
+# library(cascade)
+devtools::load_all(pkg = "~/git/WhoCascade/cascade")
 library(deSolve)
 library(dplyr)
 library(DT)
