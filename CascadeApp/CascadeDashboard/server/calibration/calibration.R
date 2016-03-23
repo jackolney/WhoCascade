@@ -38,7 +38,7 @@ RunBaselineModel <- function(data) {
 RunCalibration <- function(data, iterations = 100) {
 
     # iterations = 100
-
+    print("function started")
     # Set important parameters
     time <- seq(0, 5, 1)
     p <- parameters(
@@ -113,7 +113,7 @@ RunCalibration <- function(data, iterations = 100) {
         min = apply(pOut, 2, min),
         max = apply(pOut, 2, max)
     )
-
+    print("Building Plots...")
     # Plots
     BuildCalibrationPlots(data = out, originalData = data)
 

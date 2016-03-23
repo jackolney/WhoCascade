@@ -123,5 +123,5 @@ BuildCalibrationPlots <- function(data, originalData) {
     p6 <- p6 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"), axis.title = element_blank())
 
     gridExtra::grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2, nrow = 3)
-
+    print("yo yo yo")
 }
