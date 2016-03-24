@@ -110,25 +110,25 @@ tabItem(tabName = "calibration",
         )
     ),
     column(width = 4,
-        box(width = NULL,
-            status = "warning",
-            solidHeader = TRUE,
-            collapsible = FALSE,
-            collapsed = FALSE,
-            title = "Calibration Progress",
-            uiOutput(outputId = "progressOne"),
-            uiOutput(outputId = "progressTwo"),
-            uiOutput(outputId = "progressThree"),
-            uiOutput(outputId = "progressFour")
-        ),
+        # box(width = NULL,
+        #     status = "warning",
+        #     solidHeader = TRUE,
+        #     collapsible = FALSE,
+        #     collapsed = FALSE,
+        #     title = "Calibration Progress",
+        #     uiOutput(outputId = "progressOne"),
+        #     uiOutput(outputId = "progressTwo"),
+        #     uiOutput(outputId = "progressThree"),
+        #     uiOutput(outputId = "progressFour")
+        # ),
         box(width = NULL,
             background = "yellow",
             solidHeader = TRUE,
-            title = "Confirm Calibration",
-            "Hit 'Accept' if you are content with the calibration figure and 'ghost-values' presented. If you are not happy with either, then please edit the ghost-values and hit 'Repeat'",
+            title = "Calibration Control",
+            "Hit 'Run Calibration' to stat the calibration, the progress bar will indicate the remaining run-time. Hit 'Accept' if you are content with the calibration figure and 'ghost-values' presented. If you are not happy with either, then please edit the ghost-values and hit 'Repeat'",
             p(""),
-            bsButton(inputId = "calib_accept", label = "Accept", style = "success", size = "large", block = TRUE, icon = icon("check",  class = "fa-lg fa-fw", lib = "font-awesome")),
-            bsButton(inputId = "calib_repeat", label = "Repeat", style = "danger",  size = "large", block = TRUE, icon = icon("repeat", class = "fa-lg fa-fw", lib = "font-awesome"))
+            bsButton(inputId = "calib_repeat", label = "Repeat",          style = "danger",   size = "large", block = TRUE, icon = icon("repeat",       class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "calib_accept", label = "Accept",          style = "success",  size = "large", block = TRUE, icon = icon("check",        class = "fa-lg fa-fw", lib = "font-awesome"))
         )
     )
 )

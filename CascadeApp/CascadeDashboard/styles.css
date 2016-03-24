@@ -32,12 +32,12 @@
     height: 30px;
     width: 490px;
     /*background-color: #EEF8FF;*/
-    background-color: #FF0000;
+    background-color: #D9534F;
     padding-top: 2px;
     padding-right: 3px;
     padding-bottom: 2px;
     padding-left: 3px;
-    opacity: 0.85;
+    opacity: 0.95;
     /*Rounding*/
     border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -46,6 +46,7 @@
 
 .progress-text {
     top: 15px !important;
+    color: #FFFFFF !important;
     text-align: center;
 }
 
@@ -65,5 +66,5 @@
     padding-right: 3px;
     padding-bottom: 3px;
     padding-left: 3px;
-    font-size: 15px;
+    font-size: 17px;
 }

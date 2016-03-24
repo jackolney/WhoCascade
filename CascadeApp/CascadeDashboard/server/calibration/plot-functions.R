@@ -81,7 +81,8 @@ BuildCalibrationPlots <- function(data, originalData) {
     p1 <- p1 + geom_point(aes(color = weight), size = 3)
     p1 <- p1 + mycol
     p1 <- p1 + ggtitle("PLHIV", subtitle = "Points are data, shading shows upper and lower model estimates")
-    p1 <- p1 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
+    p1 <- p1 + theme(legend.position = "none", text = element_text(family = "Avenir Next"))
+    # p1 <- p1 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
     p2 <- ggplot(data = out[out$indicator == "PLHIV Diagnosed",], aes(x = year, y = value, group = weight))
     p2 <- p2 + geom_ribbon(data = out2[out2$indicator == "PLHIV Diagnosed",], aes(x = year, ymin = min, ymax = max, group = weight), fill = "grey70")
@@ -89,7 +90,8 @@ BuildCalibrationPlots <- function(data, originalData) {
     p2 <- p2 + geom_point(aes(color = weight), size = 3)
     p2 <- p2 + mycol
     p2 <- p2 + ggtitle("PLHIV Diagnosed", subtitle = "Points are data, shading shows upper and lower model estimates")
-    p2 <- p2 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
+    p2 <- p2 + theme(legend.position = "none", text = element_text(family = "Avenir Next"))
+    # p2 <- p2 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
     p3 <- ggplot(data = out[out$indicator == "PLHIV in Care",], aes(x = year, y = value, group = weight))
     p3 <- p3 + geom_ribbon(data = out2[out2$indicator == "PLHIV in Care",], aes(x = year, ymin = min, ymax = max, group = weight), fill = "grey70")
@@ -97,7 +99,8 @@ BuildCalibrationPlots <- function(data, originalData) {
     p3 <- p3 + geom_point(aes(color = weight), size = 3)
     p3 <- p3 + mycol
     p3 <- p3 + ggtitle("PLHIV in Care", subtitle = "Points are data, shading shows upper and lower model estimates")
-    p3 <- p3 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
+    p3 <- p3 + theme(legend.position = "none", text = element_text(family = "Avenir Next"))
+    # p3 <- p3 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
     p4 <- ggplot(data = out[out$indicator == "PLHIV on ART",], aes(x = year, y = value, group = weight))
     p4 <- p4 + geom_ribbon(data = out2[out2$indicator == "PLHIV on ART",], aes(x = year, ymin = min, ymax = max, group = weight), fill = "grey70")
@@ -105,13 +108,15 @@ BuildCalibrationPlots <- function(data, originalData) {
     p4 <- p4 + geom_point(aes(color = weight), size = 3)
     p4 <- p4 + mycol
     p4 <- p4 + ggtitle("PLHIV on ART", subtitle = "Points are data, shading shows upper and lower model estimates")
-    p4 <- p4 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
+    p4 <- p4 + theme(legend.position = "none", text = element_text(family = "Avenir Next"))
+    # p4 <- p4 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"))
 
     p5 <- ggplot(out2[out2$year == 2010,][1:5,], aes(x = indicator, y = mean))
     p5 <- p5 + geom_bar(aes(fill = indicator), stat = "identity")
     p5 <- p5 + ggtitle("Cascade in 2010")
     p5 <- p5 + theme_classic()
-    p5 <- p5 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"), axis.title = element_blank())
+    p5 <- p5 + theme(legend.position = "none", text = element_text(family = "Avenir Next"), axis.title = element_blank())
+    # p5 <- p5 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"), axis.title = element_blank())
 
     p6 <- ggplot(out2[out2$year == 2015,][1:5,], aes(x = indicator, y = mean))
     p6 <- p6 + geom_bar(aes(fill = indicator), stat = "identity")
@@ -120,8 +125,9 @@ BuildCalibrationPlots <- function(data, originalData) {
     p6 <- p6 + mycol
     p6 <- p6 + ggtitle("Cascade in 2015", subtitle = "Error bars illustrate result ranges from best 10% of model fits, points are data")
     p6 <- p6 + theme_classic()
-    p6 <- p6 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"), axis.title = element_blank())
+    p6 <- p6 + theme(legend.position = "none", text = element_text(family = "Avenir Next"), axis.title = element_blank())
+    # p6 <- p6 + theme(legend.position = "none", text = element_text(family = "OpenSans-CondensedLight"), axis.title = element_blank())
 
     gridExtra::grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2, nrow = 3)
-    print("yo yo yo")
+
 }

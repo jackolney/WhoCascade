@@ -84,7 +84,7 @@ RunCalibration <- function(data, iterations = 100) {
 
             out <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
             error[k] <- sum(out[out$source == "error","value"])
-            setProgress(value = k/dim(lhs)[1], detail = paste("Run",k))
+            setProgress(value = k/dim(lhs)[1], detail = paste0((k/dim(lhs)[1])*100,"%"))
         }
 
         # Order sum of total error from lowest to highest and pick the lowest 10%
@@ -108,7 +108,7 @@ RunCalibration <- function(data, iterations = 100) {
 
             iOut <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
             CalibOut <<- rbind(out, iOut)
-            setProgress(value = l/(iterations * 0.1), detail = paste("Resample",l))
+            setProgress(value = l/(iterations * 0.1), detail = paste0("Resample ",(l/(iterations * 0.1))*100,"%"))
         }
 
         # Create data.frame to hold all parameter values used by top 10%
