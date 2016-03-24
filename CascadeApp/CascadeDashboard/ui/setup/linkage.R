@@ -10,7 +10,8 @@ tabItem(tabName = "linkage",
             div(img(src = "si-indicators/linkage.png", height = '30%', width = '30%'), style="text-align: center;"),
             br(),
             numericInput("uCARE", "Number of people in HIV care:", value = 0, min = 0, width = '100%'),
-            selectInput("uCARE_source", "Source of Data:", SourceList, selected = "Please select source...")
+            selectInput("uCARE_source", "Source of Data:", SourceList, selected = "Please select source..."),
+            selectInput("uCARE_year", "Year data represents:", YearList, selected = 2015)
         )
     ),
     column(width = 4,

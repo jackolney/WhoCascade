@@ -10,7 +10,8 @@ tabItem(tabName = "treatment",
             div(img(src = "si-indicators/art.png", height = '30%', width = '30%'), style="text-align: center;"),
             br(),
             numericInput("uART", "Number of people on ART:", value = 0, min = 0, width = '100%'),
-            selectInput("uART_source", "Source of Data:", SourceList, selected = "Please select source...")
+            selectInput("uART_source", "Source of Data:", SourceList, selected = "Please select source..."),
+            selectInput("uART_year", "Year data represents:", YearList, selected = 2015)
         )
     ),
     column(width = 4,

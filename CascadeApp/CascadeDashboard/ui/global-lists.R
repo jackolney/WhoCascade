@@ -71,6 +71,8 @@ SourceList <- c(
     "Estimate"
     )
 
+YearList <- seq(2010,2015,1)
+
 VariableNames <- c(
     "UnDx_500",
     "UnDx_350500",

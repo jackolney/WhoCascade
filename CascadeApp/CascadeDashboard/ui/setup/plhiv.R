@@ -10,7 +10,8 @@ tabItem(tabName = "plhiv",
             div(img(src = "si-indicators/plhiv.png", height = '30%', width = '30%'), style="text-align: center;"),
             br(),
             numericInput("uPLHIV", "Number of people living with HIV:", value = 0, min = 0, width = '100%'),
-            selectInput("uPLHIV_source", "Source of Data:", SourceList, selected = "Please select source...")
+            selectInput("uPLHIV_source", "Source of Data:", SourceList, selected = "Please select source..."),
+            selectInput("uPLHIV_year", "Year data represents:", YearList, selected = 2015)
         )
     ),
     column(width = 4,
