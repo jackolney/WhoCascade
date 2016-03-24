@@ -5,6 +5,7 @@ dashboardPage(
     source("ui/dashboardheader.R", local = TRUE)$value,
     source("ui/sidebar.R",         local = TRUE)$value,
     dashboardBody(
+        includeCSS("styles.css"),
         tabItems(
             source("ui/introduction.R", local = TRUE)$value,
 
