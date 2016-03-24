@@ -48,6 +48,7 @@ source("server/calibration/observe.R",          local = TRUE)
 source("server/calibration/plot-functions.R",   local = TRUE)
 source("server/calibration/plot.R",             local = TRUE)
 source("server/calibration/progress.R",         local = TRUE)
+source("server/calibration/result.R",           local = TRUE)
 
 # ------------ #
 # OPTIMISATION #

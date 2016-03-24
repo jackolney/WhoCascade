@@ -18,8 +18,8 @@ tabItem(tabName = "calibration",
                 collapsible = TRUE,
                 collapsed = TRUE,
                 "Rate at which undiagnosed individuals become diagnosed (py^-1).",
-                numericInput("test_DiagRate_U","Upper:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%'),
-                numericInput("test_DiagRate_L","Lower:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%')
+                uiOutput("calib_rho_max"),
+                uiOutput("calib_rho_min")
             ),
             box(width = 6,
                 solidheader = TRUE,
@@ -29,8 +29,8 @@ tabItem(tabName = "calibration",
                 collapsible = TRUE,
                 collapsed = TRUE,
                 "Proportion of diagnosed individuals that link to care immediately.",
-                numericInput("test_LinkRate_U","Upper:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%'),
-                numericInput("test_LinkRate_L","Lower:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%')
+                uiOutput("calib_q_max"),
+                uiOutput("calib_q_min")
             )
         ),
         # Row TWO
@@ -43,8 +43,8 @@ tabItem(tabName = "calibration",
                 collapsible = TRUE,
                 collapsed = TRUE,
                 "ART initiation rate for diagnosed individuals engaged in pre-ART care (py^-1).",
-                numericInput("test_DiagRate_U","Upper:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%'),
-                numericInput("test_DiagRate_L","Lower:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%')
+                uiOutput("calib_gamma_max"),
+                uiOutput("calib_gamma_min")
             ),
             box(width = 6,
                 solidheader = TRUE,
@@ -54,8 +54,8 @@ tabItem(tabName = "calibration",
                 collapsible = TRUE,
                 collapsed = TRUE,
                 "ART initiation rate individuals not currently engaged in pre-ART care. This is also a function of current CD4 count (py^-1).",
-                numericInput("test_LinkRate_U","Upper:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%'),
-                numericInput("test_LinkRate_L","Lower:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%')
+                uiOutput("calib_theta_max"),
+                uiOutput("calib_theta_min")
             )
         ),
         # Row THREE
@@ -68,8 +68,8 @@ tabItem(tabName = "calibration",
                 collapsible = TRUE,
                 collapsed = TRUE,
                 "Rate at which diagnosed individuals disengage from pre-ART care (py^-1).",
-                numericInput("test_DiagRate_U","Upper:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%'),
-                numericInput("test_DiagRate_L","Lower:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%')
+                uiOutput("calib_kappa_max"),
+                uiOutput("calib_kappa_min")
             ),
             box(width = 6,
                 solidheader = TRUE,
@@ -79,8 +79,8 @@ tabItem(tabName = "calibration",
                 collapsible = TRUE,
                 collapsed = TRUE,
                 "Rate at which individuals on treatment disengage from ART care (py^-1).",
-                numericInput("test_LinkRate_U","Upper:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%'),
-                numericInput("test_LinkRate_L","Lower:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%')
+                uiOutput("calib_omega_max"),
+                uiOutput("calib_omega_min")
             )
         ),
         # Row FOUR
@@ -93,8 +93,8 @@ tabItem(tabName = "calibration",
                 collapsible = TRUE,
                 collapsed = TRUE,
                 "Non-HIV mortality rate applied to all individuals (py^-1).",
-                numericInput("test_DiagRate_U","Upper:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%'),
-                numericInput("test_DiagRate_L","Lower:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%')
+                uiOutput("calib_mu_max"),
+                uiOutput("calib_mu_min")
             ),
             box(width = 6,
                 solidheader = TRUE,
@@ -104,8 +104,8 @@ tabItem(tabName = "calibration",
                 collapsible = TRUE,
                 collapsed = TRUE,
                 "Proportion of individuals initiating ART that adhere to treatment and become virally suppressed.",
-                numericInput("test_LinkRate_U","Upper:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%'),
-                numericInput("test_LinkRate_L","Lower:", value = 0, min = 0, max = 100, step = 1e-6, width = '100%')
+                uiOutput("calib_p_max"),
+                uiOutput("calib_p_min")
             )
         )
     ),

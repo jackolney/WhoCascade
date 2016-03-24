@@ -115,10 +115,30 @@ RunCalibration <- function(data, iterations = 100) {
         CalibParamOut <<- FillParValues(samples = lhs, positions = bestTenPercent, iterations = iterations)
 
         # Calculate min and max values used by parameter set
-        CalibParamMaxMin <<- data.frame(
+        ParamMaxMin <<- data.frame(
             min = apply(CalibParamOut, 2, min),
             max = apply(CalibParamOut, 2, max)
         )
+
+        # Copy over to reactiveValues
+        CalibParamMaxMin$rho_MAX     <- ParamMaxMin["rho"   , "max"]
+        CalibParamMaxMin$rho_MIN     <- ParamMaxMin["rho"   , "min"]
+        CalibParamMaxMin$q_MAX       <- ParamMaxMin["q"     , "max"]
+        CalibParamMaxMin$q_MIN       <- ParamMaxMin["q"     , "min"]
+        CalibParamMaxMin$gamma_MAX   <- ParamMaxMin["gamma" , "max"]
+        CalibParamMaxMin$gamma_MIN   <- ParamMaxMin["gamma" , "min"]
+        CalibParamMaxMin$theta_MAX   <- ParamMaxMin["theta" , "max"]
+        CalibParamMaxMin$theta_MIN   <- ParamMaxMin["theta" , "min"]
+        CalibParamMaxMin$kappa_MAX   <- ParamMaxMin["kappa" , "max"]
+        CalibParamMaxMin$kappa_MIN   <- ParamMaxMin["kappa" , "min"]
+        CalibParamMaxMin$omega_MAX   <- ParamMaxMin["omega" , "max"]
+        CalibParamMaxMin$omega_MIN   <- ParamMaxMin["omega" , "min"]
+        CalibParamMaxMin$mu_MAX      <- ParamMaxMin["mu"    , "max"]
+        CalibParamMaxMin$mu_MIN      <- ParamMaxMin["mu"    , "min"]
+        CalibParamMaxMin$p_MAX       <- ParamMaxMin["p"     , "max"]
+        CalibParamMaxMin$p_MIN       <- ParamMaxMin["p"     , "min"]
+
+
         # Plots
         # Then comment this out and call it elsewhere.
         setProgress(value = 1, detail = "Building figures.")
@@ -126,5 +146,5 @@ RunCalibration <- function(data, iterations = 100) {
     })
 
     # Return min and max values used for all parameters.
-    return(CalibParamMaxMin)
+    return(ParamMaxMin)
 }
