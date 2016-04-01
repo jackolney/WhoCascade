@@ -1,4 +1,5 @@
 # devtools::install_github("shinyTable", "trestletech")
+# devtools::load_all(pkg = "~/git/packages/shinydashboard")
 library(DT)
 library(ggplot2)
 library(leaflet)
