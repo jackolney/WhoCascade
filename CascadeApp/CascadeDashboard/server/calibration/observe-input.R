@@ -1,3 +1,20 @@
+## uPLHIV ##
+
+output$UI_uPLHIV <- renderUI({
+    numericInput("uPLHIV", "Number of people living with HIV:",
+        value = MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV", "value"],
+        min = 0,
+        width = '100%')
+})
+
+output$UI_uPLHIV_source <- renderUI({
+    selectInput("uPLHIV_source", "Source of Data:", SourceList, selected = "Please select source...")
+})
+
+output$UI_uPLHIV_year <- renderUI({
+    selectInput("uPLHIV_year", "Year data represents:", YearList, selected = 2015)
+})
+
 observeEvent(input$uPLHIV_source, {
     if(input$uPLHIV_source != "Please select source...") {
         if(input$uPLHIV_source %in% c("Mathematical Model", "Nationally Representative Study")) {
@@ -16,6 +33,23 @@ observeEvent(input$uPLHIV_source, {
     } else {
         output$uPLHIV_quality <- renderUI({})
     }
+})
+
+## uDIAG ##
+
+output$UI_uDIAG <- renderUI({
+    numericInput("uDIAG", "Number of people diagnosed with HIV:",
+        value = MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV Diagnosed", "value"],
+        min = 0,
+        width = '100%')
+})
+
+output$UI_uDIAG_source <- renderUI({
+    selectInput("uDIAG_source", "Source of Data:", SourceList, selected = "Please select source...")
+})
+
+output$UI_uDIAG_year <- renderUI({
+    selectInput("uDIAG_year", "Year data represents:", YearList, selected = 2015)
 })
 
 observeEvent(input$uDIAG_source, {
@@ -38,6 +72,23 @@ observeEvent(input$uDIAG_source, {
     }
 })
 
+## uCARE ##
+
+output$UI_uCARE <- renderUI({
+    numericInput("uCARE", "Number of people in HIV care:",
+        value = MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV in Care", "value"],
+        min = 0,
+        width = '100%')
+})
+
+output$UI_uCARE_source <- renderUI({
+    selectInput("uCARE_source", "Source of Data:", SourceList, selected = "Please select source...")
+})
+
+output$UI_uCARE_year <- renderUI({
+    selectInput("uCARE_year", "Year data represents:", YearList, selected = 2015)
+})
+
 observeEvent(input$uCARE_source, {
     if(input$uCARE_source != "Please select source...") {
         if(input$uCARE_source %in% c("Mathematical Model", "Nationally Representative Study")) {
@@ -56,6 +107,23 @@ observeEvent(input$uCARE_source, {
     } else {
         output$uCARE_quality <- renderUI({})
     }
+})
+
+## uART ##
+
+output$UI_uART <- renderUI({
+    numericInput("uART", "Number of people on ART:",
+        value = MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV on ART", "value"],
+        min = 0,
+        width = '100%')
+})
+
+output$UI_uART_source <- renderUI({
+    selectInput("uART_source", "Source of Data:", SourceList, selected = "Please select source...")
+})
+
+output$UI_uART_year <- renderUI({
+    selectInput("uART_year", "Year data represents:", YearList, selected = 2015)
 })
 
 observeEvent(input$uART_source, {
@@ -78,6 +146,23 @@ observeEvent(input$uART_source, {
     }
 })
 
+## uVIRAL ##
+
+output$UI_uVIRAL <- renderUI({
+    numericInput("uVIRAL", "Number of people on ART and Virally Suppressed:",
+        value = MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV Suppressed", "value"],
+        min = 0,
+        width = '100%')
+})
+
+output$UI_uVIRAL_source <- renderUI({
+    selectInput("uVIRAL_source", "Source of Data:", SourceList, selected = "Please select source...")
+})
+
+output$UI_uVIRAL_year <- renderUI({
+    selectInput("uVIRAL_year", "Year data represents:", YearList, selected = 2015)
+})
+
 observeEvent(input$uVIRAL_source, {
     if(input$uVIRAL_source != "Please select source...") {
         if(input$uVIRAL_source %in% c("Mathematical Model", "Nationally Representative Study")) {
@@ -96,83 +181,4 @@ observeEvent(input$uVIRAL_source, {
     } else {
         output$uVIRAL_quality <- renderUI({})
     }
-})
-
-# Diagnosis Rate = rho
-output$calib_rho_max <- renderUI({
-    numericInput("test_DiagRate_U","Upper:", value = round(CalibParamMaxMin$rho_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-output$calib_rho_min <- renderUI({
-    numericInput("test_DiagRate_L","Lower:", value = round(CalibParamMaxMin$rho_MIN, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-# Linkage Proportion = q
-output$calib_q_max <- renderUI({
-    numericInput("test_LinkProp_U","Upper:", value = round(CalibParamMaxMin$q_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-
-})
-
-output$calib_q_min <- renderUI({
-    numericInput("test_LinkProp_L","Lower:", value = round(CalibParamMaxMin$q_MIN, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-# ART Initiation Rate = gamma
-output$calib_gamma_max <- renderUI({
-    numericInput("test_ARTRate_U","Upper:", value = round(CalibParamMaxMin$gamma_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-
-})
-
-output$calib_gamma_min <- renderUI({
-    numericInput("test_ARTRate_L","Lower:", value = round(CalibParamMaxMin$gamma_MIN, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-# ART Initiation Rate (Side Door) = theta
-output$calib_theta_max <- renderUI({
-    numericInput("test_ARTsideRate_U","Upper:", value = round(CalibParamMaxMin$theta_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-
-})
-
-output$calib_theta_min <- renderUI({
-    numericInput("test_ARTsideRate_L","Lower:", value = round(CalibParamMaxMin$theta_MIN, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-# Pre-ART Dropout Rate = kappa
-output$calib_kappa_max <- renderUI({
-    numericInput("test_PreARTDropRate_U","Upper:", value = round(CalibParamMaxMin$kappa_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-
-})
-
-output$calib_kappa_min <- renderUI({
-    numericInput("test_PreARTDropRate_L","Lower:", value = round(CalibParamMaxMin$kappa_MIN, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-# ART Dropout Rate = omega
-output$calib_omega_max <- renderUI({
-    numericInput("test_ARTDropRate_U","Upper:", value = round(CalibParamMaxMin$omega_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-
-})
-
-output$calib_omega_min <- renderUI({
-    numericInput("test_ARTDropRate_L","Lower:", value = round(CalibParamMaxMin$omega_MIN, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-# Natural Mortality Rate = mu
-output$calib_mu_max <- renderUI({
-    numericInput("test_NatMortRate_U","Upper:", value = round(CalibParamMaxMin$mu_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-
-})
-
-output$calib_mu_min <- renderUI({
-    numericInput("test_NatMortRate_L","Lower:", value = round(CalibParamMaxMin$mu_MIN, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-# Adherence Proportion = p
-output$calib_p_max <- renderUI({
-    numericInput("test_AdhProp_U","Upper:", value = round(CalibParamMaxMin$p_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-
-})
-
-output$calib_p_min <- renderUI({
-    numericInput("test_AdhProp_L","Lower:", value = round(CalibParamMaxMin$p_MIN, 4), min = 0, max = 100, step = 1e-6, width = '100%')
 })
