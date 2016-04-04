@@ -24,9 +24,12 @@ source("server/calibration/model.R",   local = FALSE)
 source("server/calibration/error.R",   local = FALSE)
 
 # This contains simple function calls for the models in various permutations
-source("server/calibration/calibration.R",    local = FALSE)
-source("server/calibration/misc-functions.R", local = FALSE)
-source("server/calibration/plot-functions.R", local = FALSE)
+source("server/calibration/calibration.R",      local = FALSE)
+source("server/calibration/assumptions.R",      local = FALSE)
+source("server/calibration/calibration-data.R", local = FALSE)
+source("server/calibration/marrakech-data.R",   local = FALSE)
+source("server/calibration/misc-functions.R",   local = FALSE)
+source("server/calibration/plot-functions.R",   local = FALSE)
 
 # load 'cascade' package and ensure it is the latest build.
 devtools::load_all(pkg = "~/git/WhoCascade/cascade")
@@ -34,7 +37,7 @@ devtools::test(pkg = "~/git/WhoCascade/cascade")
 
 # Run baseline model (nothing fancy)
 KenyaData <- GetMasterDataSet("Kenya")
-RunBaselineModel(data = KenyaData)
+# RunBaselineModel(data = KenyaData)
 
 #####################
 # START OF FUNCTION #
