@@ -63,13 +63,22 @@ LeafletCountryList <- c(
     "C\364te d'Ivoire"
 )
 
-SourceList <- c(
-    "Please select source...",
-    "Mathematical Model",
-    "Nationally Representative Study",
-    "Peer-reviewed Study",
-    "Estimate"
+SourceList <- data.frame(
+    name = c(
+        "Please select source...",
+        "Mathematical Model",
+        "Nationally Representative Study",
+        "Peer-reviewed Study",
+        "Estimate"
+    ),
+    weight = c(
+        "NULL",
+        "green",
+        "green",
+        "amber",
+        "red"
     )
+)
 
 YearList <- seq(2010, as.numeric(format(Sys.time(), "%Y")), 1)
 
