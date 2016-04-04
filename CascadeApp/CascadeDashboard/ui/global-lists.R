@@ -71,7 +71,7 @@ SourceList <- c(
     "Estimate"
     )
 
-YearList <- seq(2010,2015,1)
+YearList <- seq(2010, as.numeric(format(Sys.time(), "%Y")), 1)
 
 VariableNames <- c(
     "UnDx_500",

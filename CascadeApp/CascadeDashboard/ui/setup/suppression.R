@@ -9,9 +9,9 @@ tabItem(tabName = "suppression",
             # background = "blue",
             div(img(src = "si-indicators/suppression.png", height = '30%', width = '30%'), style="text-align: center;"),
             br(),
-            numericInput("uVIRAL", "Number of people on ART and Virally Suppressed:", value = 0, min = 0, width = '100%'),
-            selectInput("uVIRAL_source", "Source of Data:", SourceList, selected = "Please select source..."),
-            selectInput("uVIRAL_year", "Year data represents:", YearList, selected = 2015)
+            uiOutput(outputId = "UI_uVIRAL"),
+            uiOutput(outputId = "UI_uVIRAL_source"),
+            uiOutput(outputId = "UI_uVIRAL_year")
         )
     ),
     column(width = 4,
