@@ -44,11 +44,13 @@ source("server/calibration/master.R",           local = TRUE)
 source("server/calibration/misc-functions.R",   local = TRUE)
 source("server/calibration/mission-control.R",  local = TRUE)
 source("server/calibration/model.R",            local = TRUE)
-source("server/calibration/observe.R",          local = TRUE)
+source("server/calibration/observe-input.R",    local = TRUE)
+source("server/calibration/observe-output.R",   local = TRUE)
 source("server/calibration/plot-functions.R",   local = TRUE)
 source("server/calibration/plot.R",             local = TRUE)
 source("server/calibration/progress.R",         local = TRUE)
 source("server/calibration/result.R",           local = TRUE)
+source("server/calibration/update-input.R",     local = TRUE)
 
 # ------------ #
 # OPTIMISATION #
