@@ -61,7 +61,11 @@ RunCalibration <- function(data, iterations = 100) {
 
         ## Parameter Sampling
         setProgress(value = 0/1, detail = "Defining parameter space.")
-        parRange <- DefineParmRange(param = p, min = 5, max = 0.1)
+        intParRange <- DefineParmRange(param = p, min = 5, max = 0.1)
+
+        # Need a function here that over-rides the ranges if a value has been entered by the user.
+        parRange <- UserOverRide(intParRange)
+        print(parRange)
 
         # Use Latin Hypercube Sampling to randomly sample from parRange n times
         setProgress(value = 0/1, detail = "LHS 1000 parameter sets.")
