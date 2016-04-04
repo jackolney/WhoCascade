@@ -121,6 +121,7 @@ BuildCalibrationPlots <- function(data, originalData) {
     p6 <- ggplot(out2[out2$year == 2015,][1:5,], aes(x = indicator, y = mean))
     p6 <- p6 + geom_bar(aes(fill = indicator), stat = "identity")
     p6 <- p6 + geom_errorbar(mapping = aes(x = indicator, ymin = min, ymax = max), width = 0.2, size = 0.5)
+    p6 <- p6 + geom_point(data = originalData[["calib"]][originalData[["calib"]]$year == 2015 & originalData[["calib"]]$indicator != "PLHIV Retained",], aes(x = indicator, y = value), size = 2.5)
     p6 <- p6 + geom_point(data = originalData[["calib"]][originalData[["calib"]]$year == 2015 & originalData[["calib"]]$indicator != "PLHIV Retained",], aes(x = indicator, y = value, color = weight), size = 2)
     p6 <- p6 + mycol
     p6 <- p6 + ggtitle("Cascade in 2015", subtitle = "Error bars illustrate result ranges from best 10% of model fits, points are data")
