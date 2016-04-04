@@ -70,7 +70,10 @@ SSE <- function(df) {
             iData  <- iYr[iYr$source == "data","value"]
             if(isEmpty(iData)) next
             if(any(is.na(iData))) next
-            if(length(iData) > 1) iData <- mean(iData)
+            if(length(iData) > 1) {
+                iData <- mean(iData)
+                warning("iData length > 1")
+            }
 
             iWeight <- iYr[iYr$source == "data","weight"]
             if(isEmpty(iWeight)) next
@@ -84,7 +87,8 @@ SSE <- function(df) {
 
             iModel <- iYr[iYr$source == "model","value"]
 
-            value <- sum((iData - iModel)^2) * w
+            # value <- (iData - iModel)^2 * w
+            value <- ((iData - iModel)^2 * w) / iData
 
             year <- uniqueYears[j]
 
