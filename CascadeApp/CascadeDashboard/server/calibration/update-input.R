@@ -151,8 +151,21 @@ observeEvent(input$uVIRAL_source, {
 ####################
 # RESET function calls
 
-observeEvent(input$resetPLHIV, {shinyjs::reset("plhiv_panel")})
-observeEvent(input$resetDIAG,  {shinyjs::reset("diag_panel")})
-observeEvent(input$resetCARE,  {shinyjs::reset("care_panel")})
-observeEvent(input$resetART,   {shinyjs::reset("art_panel")})
-observeEvent(input$resetVIRAL, {shinyjs::reset("viral_panel")})
+observeEvent(input$resetPLHIV, { shinyjs::reset("plhiv_panel") })
+observeEvent(input$resetDIAG,  { shinyjs::reset("diag_panel")  })
+observeEvent(input$resetCARE,  { shinyjs::reset("care_panel")  })
+observeEvent(input$resetART,   { shinyjs::reset("art_panel")   })
+observeEvent(input$resetVIRAL, { shinyjs::reset("viral_panel") })
+
+####################
+# Update parRange for calibration
+
+observeEvent(input$uCalib_rho,     { userParRange$rho     <<- input$uCalib_rho })
+observeEvent(input$uCalib_epsilon, { userParRange$epsilon <<- input$uCalib_epsilon })
+observeEvent(input$uCalib_kappa,   { userParRange$kappa   <<- input$uCalib_kappa })
+observeEvent(input$uCalib_gamma,   { userParRange$gamma   <<- input$uCalib_gamma })
+observeEvent(input$uCalib_theta,   { userParRange$theta   <<- input$uCalib_theta })
+observeEvent(input$uCalib_omega,   { userParRange$omega   <<- input$uCalib_omega })
+observeEvent(input$uCalib_mu,      { userParRange$mu      <<- input$uCalib_mu })
+observeEvent(input$uCalib_p,       { userParRange$p       <<- input$uCalib_p })
+observeEvent(input$uCalib_q,       { userParRange$q       <<- input$uCalib_q })

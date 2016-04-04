@@ -22,3 +22,15 @@ CalibParamMaxMin$omega_MIN   <- 0
 CalibParamMaxMin$mu_MIN      <- 0
 CalibParamMaxMin$p_MIN       <- 0
 CalibParamMaxMin$q_MIN       <- 0
+
+# userParRange
+userParRange         <- list()
+userParRange$rho     <- NA
+userParRange$epsilon <- NA
+userParRange$kappa   <- NA
+userParRange$gamma   <- NA
+userParRange$theta   <- NA
+userParRange$omega   <- NA
+userParRange$mu      <- NA
+userParRange$p       <- NA
+userParRange$q       <- NA
