@@ -20,23 +20,22 @@ MakeAssumptions <- function(uCountry, countryData) {
         # For now propogate assumptions over time.
 
         ## DIAGNOSES ##
-        # In Kenya, we have no indication of # diagnosed in 2015 or any year previous
-        # Luckily, we have data from neighbouring countries that we can use to generate a 'regional estimate'
-        # dplyr::filter(test, indicator == "PLHIV")$value
+        # In Kenya, we know that 46.9% of PLHIV were diagnosed in 2012.
+        # Spectrum tells us that there are 1327788 PLWHIV in 2012.
+        # 1327788 * 0.469 = 622733
+        # However, we do not know the values for other years so we make the assumption it holds over time.
 
-        # What is we made the assumption of #diagnosed as the average of neighbouring countries? (for a particular time point)
-        e.diag = 0.6436 # Ethiopia (2011)
-        t.diag = 0.5859 # Tanzania (2011)
-        u.diag = 0.6274 # Uganda (2011)
+        # So 46.9% aware of status in 2012
+        k.propDiag = 0.469 # KAIS2012
 
         # We assume that this carries over time
-        k.plhiv <- dplyr::filter(countryData, indicator == "PLHIV")$value # Kenya
+        k.plhiv <- countryData[countryData$indicator == "PLHIV" & countryData$year != 2012,"value"]
 
         # Expanding over timeframe
         country   <- "Kenya"
         indicator <- "PLHIV Diagnosed"
-        year      <- seq(2010, 2015, 1)
-        value     <- k.plhiv * mean(e.diag, t.diag, u.diag)
+        year      <- c(2010,2011,2013,2014,2015)
+        value     <- k.plhiv * k.propDiag
         weight    <- "red"
         new.diag  <- data.frame(country, indicator, year, value, weight)
 

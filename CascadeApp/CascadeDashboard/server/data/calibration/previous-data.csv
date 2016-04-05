@@ -1,4 +1,5 @@
 year,country,indicator,value,weight,source,details
+2012,Kenya,PLHIV Diagnosed,622733,green,http://www.nacc.or.ke/images/documents/KAIS-2012.pdf,See KAIS 2012
 2008,Brazil,PLHIV on ART,184000,green,Data from Department of DST,Extracted from Juans thesis
 2009,Brazil,PLHIV on ART,212587,green,Data from Department of DST,Extracted from Juans thesis
 2010,Brazil,PLHIV on ART,240949,green,Data from Department of DST,Extracted from Juans thesis
