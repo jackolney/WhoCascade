@@ -68,7 +68,14 @@ BuildCalibrationPlots <- function(data, originalData) {
 
     # Find Minimums & Maximums & Mean of data.
     out2 <- AppendMinMaxMean(data[data$source == "model",])
-
+    out2$indicator <- factor(out2$indicator, levels = c(
+        "PLHIV",
+        "PLHIV Diagnosed",
+        "PLHIV in Care",
+        "PLHIV on ART",
+        "PLHIV Suppressed"
+        )
+    )
     # Set Colors
     cols <- c(ggColorHue(10)[1],ggColorHue(10)[2],ggColorHue(10)[4])
     names(cols) <- c("red", "amber", "green")
