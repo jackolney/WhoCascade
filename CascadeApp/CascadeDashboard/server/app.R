@@ -1,15 +1,8 @@
 source("server/alert.R",          local = TRUE)
-source("server/data-table.R",     local = TRUE)
-source("server/extract-data.R",   local = TRUE)
 source("server/google-sheets.R",  local = TRUE)
 source("server/leaflet.R",        local = TRUE)
 source("server/links.R",          local = TRUE)
-source("server/observe-event.R",  local = TRUE)
-source("server/plot-functions.R", local = TRUE)
-source("server/plot.R",           local = TRUE)
-source("server/reactive.R",       local = TRUE)
 source("server/render.R",         local = TRUE)
-source("server/table.R",          local = TRUE)
 source("server/valuebox.R",       local = TRUE)
 source("ui/global-lists.R",       local = TRUE)
 
@@ -51,6 +44,18 @@ source("server/calibration/plot.R",             local = TRUE)
 source("server/calibration/progress.R",         local = TRUE)
 source("server/calibration/result.R",           local = TRUE)
 source("server/calibration/update-input.R",     local = TRUE)
+
+# ---------- #
+# PROJECTION #
+# ---------- #
+
+source("server/projection/data-table.R",     local = TRUE)
+source("server/projection/extract-data.R",   local = TRUE)
+source("server/projection/observe-event.R",  local = TRUE)
+source("server/projection/plot-functions.R", local = TRUE)
+source("server/projection/plot.R",           local = TRUE)
+source("server/projection/reactive.R",       local = TRUE)
+source("server/projection/table.R",          local = TRUE)
 
 # ------------ #
 # OPTIMISATION #

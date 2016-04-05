@@ -1,4 +1,5 @@
 # Main Model Call
+# This now needs to take input from the calibration data set and return a formatted data.frame ready for plotting.
 CallModel <- reactive({
     print("CallModel() called.")
     # Setup #
