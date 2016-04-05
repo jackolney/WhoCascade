@@ -111,7 +111,7 @@ RunCalibration <- function(data, iterations = 100) {
             p[["q"]]       <- lhs[,"q"][bestTenPercent[l]]
 
             iOut <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
-            CalibOut <<- rbind(out, iOut)
+            CalibOut <<- rbind(CalibOut, iOut)
             setProgress(value = l/(iterations * 0.1), detail = paste0("Resample ",(l/(iterations * 0.1))*100,"%"))
         }
 
