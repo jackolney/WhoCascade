@@ -13,7 +13,7 @@ observeEvent(input$NEXT_art,        {updateTabItems(session, inputId = "sideBar"
 
 observeEvent(input$NEXT_viral,      {updateTabItems(session, inputId = "sideBar", selected = "calibration")})
 
-observeEvent(input$wizardResults_1, {updateTabItems(session, inputId = "sideBar", selected = "your_cascade")})
+# observeEvent(input$wizardResults_1, {updateTabItems(session, inputId = "sideBar", selected = "your_cascade")})
 
 observeEvent(input$wizardResults_2, {updateTabItems(session, inputId = "sideBar", selected = "care_cascade")})
 
@@ -34,4 +34,4 @@ observeEvent(input$wizardOpt_4,     {updateTabItems(session, inputId = "sideBar"
 
 # observeEvent(input$wizardCalibration, {updateTabItems(session, inputId = "sideBar", selected = "calibration")})
 
-# observeEvent(input$calib_accept, {updateTabItems(session, inputId = "sideBar", selected = "parameters")})
+observeEvent(input$calib_accept, {updateTabItems(session, inputId = "sideBar", selected = "your_cascade")})
