@@ -1,5 +1,5 @@
 ConvertYear <- function(year) {
-    if(is.na(year)) return(10)
+    if(is.na(year)) return(20)
     if(!is.numeric(year)) stop("Non-numeric value passed to ConvertYear()")
     if((year - 2010) <= 0) {
         return(0)
@@ -24,6 +24,14 @@ GetCalibInitial <- function(p, data) {
     iCD4_100200 <- data[["cd4"]][1,"prop.Off.ART.100200"][[1]]
     iCD4_50100  <- data[["cd4"]][1,"prop.Off.ART.50100"][[1]]
     iCD4_50     <- data[["cd4"]][1,"prop.Off.ART.50"][[1]]
+
+    iCD4_ART_500    <- data[["cd4"]][1,"prop.On.ART.500"][[1]]
+    iCD4_ART_350500 <- data[["cd4"]][1,"prop.On.ART.350500"][[1]]
+    iCD4_ART_250350 <- data[["cd4"]][1,"prop.On.ART.250350"][[1]]
+    iCD4_ART_200250 <- data[["cd4"]][1,"prop.On.ART.200250"][[1]]
+    iCD4_ART_100200 <- data[["cd4"]][1,"prop.On.ART.100200"][[1]]
+    iCD4_ART_50100  <- data[["cd4"]][1,"prop.On.ART.50100"][[1]]
+    iCD4_ART_50     <- data[["cd4"]][1,"prop.On.ART.50"][[1]]
 
     default <- initial(
         p,
@@ -59,21 +67,21 @@ GetCalibInitial <- function(p, data) {
         PreLtfu_50100 =  0,
         PreLtfu_50 =     0,
 
-        Tx_Na_500 =      i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_500,
-        Tx_Na_350500 =   i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_350500,
-        Tx_Na_250350 =   i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_250350,
-        Tx_Na_200250 =   i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_200250,
-        Tx_Na_100200 =   i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_100200,
-        Tx_Na_50100 =    i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_50100,
-        Tx_Na_50 =       i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_50,
+        Tx_Na_500 =      i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_ART_500,
+        Tx_Na_350500 =   i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_ART_350500,
+        Tx_Na_250350 =   i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_ART_250350,
+        Tx_Na_200250 =   i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_ART_200250,
+        Tx_Na_100200 =   i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_ART_100200,
+        Tx_Na_50100 =    i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_ART_50100,
+        Tx_Na_50 =       i2010_PLHIV_ART * (1-p[["p"]]) * iCD4_ART_50,
 
-        Tx_A_500 =       i2010_PLHIV_ART * p[["p"]] * iCD4_500,
-        Tx_A_350500 =    i2010_PLHIV_ART * p[["p"]] * iCD4_350500,
-        Tx_A_250350 =    i2010_PLHIV_ART * p[["p"]] * iCD4_250350,
-        Tx_A_200250 =    i2010_PLHIV_ART * p[["p"]] * iCD4_200250,
-        Tx_A_100200 =    i2010_PLHIV_ART * p[["p"]] * iCD4_100200,
-        Tx_A_50100 =     i2010_PLHIV_ART * p[["p"]] * iCD4_50100,
-        Tx_A_50 =        i2010_PLHIV_ART * p[["p"]] * iCD4_50,
+        Tx_A_500 =       i2010_PLHIV_ART * p[["p"]] * iCD4_ART_500,
+        Tx_A_350500 =    i2010_PLHIV_ART * p[["p"]] * iCD4_ART_350500,
+        Tx_A_250350 =    i2010_PLHIV_ART * p[["p"]] * iCD4_ART_250350,
+        Tx_A_200250 =    i2010_PLHIV_ART * p[["p"]] * iCD4_ART_200250,
+        Tx_A_100200 =    i2010_PLHIV_ART * p[["p"]] * iCD4_ART_100200,
+        Tx_A_50100 =     i2010_PLHIV_ART * p[["p"]] * iCD4_ART_50100,
+        Tx_A_50 =        i2010_PLHIV_ART * p[["p"]] * iCD4_ART_50,
 
         Ltfu_500 =       0,
         Ltfu_350500 =    0,

@@ -1,3 +1,12 @@
+observeEvent(input$calib_accept, {
+
+    # Upon pressing the 'next' button, read in the 2015 CD4 disitribution and run the model
+    # Produce the relevant plots.
+
+    MasterCD4_2015 <<- GetCD4Distribution2015(input$userCountry)
+
+})
+
 observeEvent(input$demoInput, {
     updateSelectInput(session, "userCountry", selected = "Kenya")
 
