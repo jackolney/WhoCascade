@@ -4,11 +4,12 @@ CallModel <- reactive({
     print("CallModel() called.")
     # Setup #
     # This does ignore the cascade::parameter and cascade::initial
+    MasterOut <<- vector("list", dim(CalibParamOut)[1])
 
     # FOR EACH PARAMETER SET
-    # for(i in 1:dim(CalibParamOut)[1]) {
-    for(i in 1:1) {
-
+    for(i in 1:dim(CalibParamOut)[1]) {
+        print(i)
+        # for(i in 1:1) {
         time <- seq(0, 5, 0.02)
 
         p <- GetParameters(
@@ -19,7 +20,7 @@ CallModel <- reactive({
         # Now we need the initials.
         y <- GetInitial(
             p = p,
-            iterationResult = CalibOut[CalibOut$year == 2015 & CalibOut$source == "model",][1:5 + 5 * i,],
+            iterationResult = CalibOut[CalibOut$year == 2015 & CalibOut$source == "model",][1:5 + 5 * (i - 1),],
             masterCD4 = MasterCD4_2015
             )
 
@@ -124,6 +125,7 @@ CallModel <- reactive({
                 (rowSums(result[, c("Tx_A_500", "Tx_A_350500", "Tx_A_250350", "Tx_A_200250", "Tx_A_100200", "Tx_A_50100", "Tx_A_50")]) * 0.078) # on ART & VS
             )
         )
+    MasterOut[[i]] <- as.data.frame(result)
     }
-    return(as.data.frame(result))
+    return(MasterOut)
 })

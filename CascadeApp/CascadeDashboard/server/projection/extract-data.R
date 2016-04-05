@@ -1,5 +1,6 @@
 ExtractCascadeData <- function(year) {
     result <- CallModel()
+    # Now I just need to run across all results, compute averages and PLOT PLOT PLOT.
 
     DX <- sum(result$Dx[year], result$Care[year], result$PreLtfu[year], result$ART[year], result$Ltfu[year])
     CX <- sum(result$Care[year], result$ART[year])
