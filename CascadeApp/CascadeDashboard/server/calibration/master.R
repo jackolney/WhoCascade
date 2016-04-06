@@ -26,10 +26,21 @@ GetMasterDataSet <- function(userCountry) {
     marrakechData <- GetMarrakechData(userCountry)
 
     # Filter out year of Marrakech data, before binding.
-    intermediate <- dplyr::filter(rbind(countryData$calib, countryAssumptions), year != marrakechData$year[1])
+    int <- rbind(countryData$calib, countryAssumptions)
 
+    # For Kenya we only believe, the following three indicators
+    mData <- marrakechData[marrakechData$indicator %in% c("PLHIV in Care", "PLHIV on ART", "PLHIV Suppressed"),]
+
+    # Now they need combining with the baseDataSet, but they should replace, not be an addition.
+    # Extract everything that isn't 2015 data.
+    intOne <- int[int$year != 2015,]
+
+    # Now extract the relevant bits of 2015
+    intTwo <- int[int$year == 2015 & int$indicator %in% c("PLHIV", "PLHIV Diagnosed"),]
+
+    # Combine together
     # MASTER DATA SET (for calibration)
-    countryMasterDataSet <- rbind(intermediate, marrakechData)
+    countryMasterDataSet <- rbind(intOne, intTwo, mData)
 
     # ggplot(countryMasterDataSet, aes(x = year, y = value, group = indicator)) +
     #     geom_line(aes(color = indicator)) +

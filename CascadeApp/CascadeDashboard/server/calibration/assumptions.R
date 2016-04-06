@@ -26,7 +26,7 @@ MakeAssumptions <- function(uCountry, countryData) {
         # However, we do not know the values for other years so we make the assumption it holds over time.
 
         # So 46.9% aware of status in 2012
-        k.propDiag = 0.469 # KAIS2012
+        k.propDiag <- 0.469 # KAIS2012
 
         # We assume that this carries over time
         k.plhiv <- countryData[countryData$indicator == "PLHIV" & countryData$year != 2012,"value"]
@@ -34,7 +34,7 @@ MakeAssumptions <- function(uCountry, countryData) {
         # Expanding over timeframe
         country   <- "Kenya"
         indicator <- "PLHIV Diagnosed"
-        year      <- c(2010,2011,2013,2014,2015)
+        year      <- c(2010, 2011, 2013, 2014, 2015)
         value     <- k.plhiv * k.propDiag
         weight    <- "red"
         new.diag  <- data.frame(country, indicator, year, value, weight)
@@ -51,13 +51,15 @@ MakeAssumptions <- function(uCountry, countryData) {
 
         ## CARE ##
         # From Marrakech data we know that in 2015, 57% of PLHIV were in care.
-        # As we don't have any care data for prior to 2015, we take this value and attach is for each year over time.
+        # But this causes issues because, in 2012, only 47% of PLHIV are diagnosed...
+        # Therefore prior to 2015, fewer individuals must have been in care.
+        # But, perhaps we should leave the model as is, and allow THE MODEL to figure it all out.
 
         # Building data.frame
         country   <- "Kenya"
         indicator <- "PLHIV in Care"
         year      <- seq(2010, 2015, 1)
-        value     <- dplyr::filter(countryData, indicator == "PLHIV")$value * 0.57
+        value     <- countryData[countryData$indicator == "PLHIV","value"] * 0.57
         weight    <- "red"
         new.care  <- data.frame(country, indicator, year, value, weight)
 
