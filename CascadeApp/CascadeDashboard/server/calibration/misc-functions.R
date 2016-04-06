@@ -65,11 +65,11 @@ ggColorHue <- function(n) {
     hcl(h = hues, l = 65, c = 100)[1:n]
 }
 
-FillParValues <- function(samples, positions, iterations) {
+FillParValues <- function(samples, positions, limit) {
         out <- data.frame(rho = 0, epsilon = 0, kappa = 0, gamma = 0, theta = 0, omega = 0, mu = 0, p = 0, q = 0)
 
         # Loop through all iterations and fill out data.frame
-        for(l in 1:(iterations * 0.1)) {
+        for(l in 1:limit) {
             out[l,"rho"]     = samples[,"rho"][positions[l]]
             out[l,"epsilon"] = samples[,"epsilon"][positions[l]]
             out[l,"kappa"]   = samples[,"kappa"][positions[l]]
@@ -83,11 +83,11 @@ FillParValues <- function(samples, positions, iterations) {
         out
     }
 
-FillInitValues <- function(samples, positions, iterations) {
+FillInitValues <- function(samples, positions, limit) {
         out <- data.frame(plhiv = 0, plhiv_diag = 0, plhiv_care = 0, plhiv_art = 0)
 
         # Loop through all iterations and fill out data.frame
-        for(l in 1:(iterations * 0.1)) {
+        for(l in 1:limit) {
             out[l,"plhiv"]      = samples[,"plhiv"][positions[l]]
             out[l,"plhiv_diag"] = samples[,"plhiv_diag"][positions[l]]
             out[l,"plhiv_care"] = samples[,"plhiv_care"][positions[l]]

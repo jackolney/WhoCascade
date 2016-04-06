@@ -11,7 +11,7 @@ tabItem(tabName = "calibration",
         # Row ONE
         fluidRow(
             box(width = 6,
-                solidheader = TRUE,
+                solidHeader = TRUE,
                 status = "primary",
                 background = "light-blue",
                 title = "Diagnosis Rate",
@@ -23,7 +23,7 @@ tabItem(tabName = "calibration",
                 uiOutput("UI_calib_rho")
             ),
             box(width = 6,
-                solidheader = TRUE,
+                solidHeader = TRUE,
                 status = "primary",
                 background = "light-blue",
                 title = "Proportion Linking to Care",
@@ -38,7 +38,7 @@ tabItem(tabName = "calibration",
         # Row TWO
         fluidRow(
             box(width = 6,
-                solidheader = TRUE,
+                solidHeader = TRUE,
                 status = "primary",
                 background = "light-blue",
                 title = "ART Initiation Rate (In Care)",
@@ -50,7 +50,7 @@ tabItem(tabName = "calibration",
                 uiOutput("UI_calib_gamma")
             ),
             box(width = 6,
-                solidheader = TRUE,
+                solidHeader = TRUE,
                 status = "primary",
                 background = "light-blue",
                 title = "ART Initiation Rate (Not In Care)",
@@ -65,7 +65,7 @@ tabItem(tabName = "calibration",
         # Row THREE
         fluidRow(
             box(width = 6,
-                solidheader = TRUE,
+                solidHeader = TRUE,
                 status = "primary",
                 background = "light-blue",
                 title = "Pre-ART Dropout Rate",
@@ -77,7 +77,7 @@ tabItem(tabName = "calibration",
                 uiOutput("UI_calib_kappa")
             ),
             box(width = 6,
-                solidheader = TRUE,
+                solidHeader = TRUE,
                 status = "primary",
                 background = "light-blue",
                 title = "ART Disengagement Rate",
@@ -92,7 +92,7 @@ tabItem(tabName = "calibration",
         # Row FOUR
         fluidRow(
             box(width = 6,
-                solidheader = TRUE,
+                solidHeader = TRUE,
                 status = "primary",
                 background = "light-blue",
                 title = "Natural Mortality Rate",
@@ -104,7 +104,7 @@ tabItem(tabName = "calibration",
                 uiOutput("UI_calib_mu")
             ),
             box(width = 6,
-                solidheader = TRUE,
+                solidHeader = TRUE,
                 status = "primary",
                 background = "light-blue",
                 title = "Proportion Adhering to Treatment",
@@ -135,8 +135,18 @@ tabItem(tabName = "calibration",
             title = "Calibration Control",
             "Hit 'Run Calibration' to stat the calibration, the progress bar will indicate the remaining run-time. Hit 'Accept' if you are content with the calibration figure and 'ghost-values' presented. If you are not happy with either, then please edit the ghost-values and hit 'Repeat'",
             p(""),
-            bsButton(inputId = "calib_repeat", label = "Repeat",          style = "danger",   size = "large", block = TRUE, icon = icon("repeat",       class = "fa-lg fa-fw", lib = "font-awesome")),
-            bsButton(inputId = "calib_accept", label = "Accept",          style = "success",  size = "large", block = TRUE, icon = icon("check",        class = "fa-lg fa-fw", lib = "font-awesome"))
+            bsButton(inputId = "calib_repeat", label = "Repeat", style = "danger",  size = "large", block = TRUE, icon = icon("repeat", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "calib_accept", label = "Accept", style = "success", size = "large", block = TRUE, icon = icon("check",  class = "fa-lg fa-fw", lib = "font-awesome"))
+        ),
+        box(width = NULL,
+            solidHeader = TRUE,
+            status = "warning",
+            title = "Calibration Detail",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            helpText("In the current setup, 100 results are returned from roughly 2k simulations, no simulations are returned with an error of < 1e10."),
+            selectInput( inputId = "maxError",   label = "Maximum tolerated total error per simulation:", choices = ErrorList, selected = "1e11"),
+            numericInput(inputId = "minResults", label = "Number of simulations required under max error:", value = 100,  min = 0, step = 1,   width = '100%')
         )
     )
 )

@@ -35,9 +35,14 @@ RunBaselineModel <- function(data) {
     BuildBaselineErrorPlots(original)
 }
 
-RunCalibration <- function(data, iterations = 100) {
+RunCalibration <- function(data, maxIterations, maxError, limit) {
+    # limit = 100
+    # maxIterations = 1e4
+    # maxError = 1e11
 
-    # iterations = 100
+    # maxError entered as a string so must be converted
+    maxError <- as.numeric(maxError)
+
     withProgress(message = 'Running Calibration:', value = 0, {
 
         # Set important parameters
@@ -60,7 +65,7 @@ RunCalibration <- function(data, iterations = 100) {
         i <- incidence(as.double(data[["incidence"]]))
 
         ## Parameter Sampling
-        setProgress(value = 0/1, detail = "Defining parameter space.")
+        setProgress(value = 0 / 1, detail = "Defining parameter space.")
         intParRange <- DefineParmRange(param = p, min = 5, max = 0.1)
 
         # Need a function here that over-rides the ranges if a value has been entered by the user.
@@ -68,19 +73,22 @@ RunCalibration <- function(data, iterations = 100) {
         print(parRange)
 
         # Use Latin Hypercube Sampling to randomly sample from parRange n times
-        setProgress(value = 0/1, detail = "LHS 1000 parameter sets.")
-        lhs <- FME::Latinhyper(parRange, num = iterations)
+        setProgress(value = 0 / 1, detail = "LHS 1000 parameter sets.")
+        lhs <- FME::Latinhyper(parRange, num = maxIterations)
 
         # Sample initial states
         # Need a vector containing all the initial states too and their max / min ranges too.
+        # We COULD account for how reliable the 2010 data is in our estimates?
         initRange <- DefineInitRange(data = data, min = 0.9, max = 1.1)
 
         # LHS Sample
         # Scope to modify this to pick normally distributed values with a mean of 2010, sd = ??
-        lhsInitial <- FME::Latinhyper(initRange, num = iterations)
+        lhsInitial <- FME::Latinhyper(initRange, num = maxIterations)
 
         ## For each draw, update parameter vector (p), run model, calculate error and store it.
         # Haven't put into a function as probably too many arguements.
+        v = 0
+        selectedRuns <- c()
         error <- c()
         for(k in 1:dim(lhs)[1]) {
 
@@ -96,40 +104,48 @@ RunCalibration <- function(data, iterations = 100) {
 
             y <- GetCalibInitial(p, data, init2010 = lhsInitial[k,])
             out <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
-            error[k] <- sum(out[out$source == "error","value"])
-            setProgress(value = k/dim(lhs)[1], detail = paste0((k/dim(lhs)[1])*100,"%"))
+            error[k] <- sum(out[out$source == "error", "value"])
+
+            # If error <= maxError then store value of k
+            if(error[k] <= maxError) {
+                v <- v + 1
+                selectedRuns[v] <- k
+                setProgress(value = v / 100, detail = paste0(v, "%"))
+                if(v == limit) break;
+            }
+            # setProgress(value = k/dim(lhs)[1], detail = paste0((k/dim(lhs)[1])*100,"%"))
         }
 
         # Order sum of total error from lowest to highest and pick the lowest 10%
-        setProgress(value = 0/1, detail = "Sampling best runs.")
-        bestTenPercent <- order(error)[1:(iterations * 0.1)]
+        setProgress(value = 0 / 1, detail = "Sampling best runs.")
+        # bestTenPercent <- order(error)[1:(maxIterations * 0.1)]
 
         ## For the best 10%, update the parameter vector (p), re-run simulations and store results
         # Faster than storing ALL results in the first place (I think)
         CalibOut <<- c()
-        for(l in 1:(iterations * 0.1)) {
+        for(l in 1:limit) {
 
-            p[["Rho"]]     <- lhs[,"rho"][bestTenPercent[l]]
-            p[["Epsilon"]] <- lhs[,"epsilon"][bestTenPercent[l]]
-            p[["Kappa"]]   <- lhs[,"kappa"][bestTenPercent[l]]
-            p[["Gamma"]]   <- lhs[,"gamma"][bestTenPercent[l]]
-            p[["Theta"]]   <- lhs[,"theta"][bestTenPercent[l]]
-            p[["Omega"]]   <- lhs[,"omega"][bestTenPercent[l]]
-            p[["Mu"]]      <- lhs[,"mu"][bestTenPercent[l]]
-            p[["p"]]       <- lhs[,"p"][bestTenPercent[l]]
-            p[["q"]]       <- lhs[,"q"][bestTenPercent[l]]
+            p[["Rho"]]     <- lhs[,"rho"][selectedRuns[l]]
+            p[["Epsilon"]] <- lhs[,"epsilon"][selectedRuns[l]]
+            p[["Kappa"]]   <- lhs[,"kappa"][selectedRuns[l]]
+            p[["Gamma"]]   <- lhs[,"gamma"][selectedRuns[l]]
+            p[["Theta"]]   <- lhs[,"theta"][selectedRuns[l]]
+            p[["Omega"]]   <- lhs[,"omega"][selectedRuns[l]]
+            p[["Mu"]]      <- lhs[,"mu"][selectedRuns[l]]
+            p[["p"]]       <- lhs[,"p"][selectedRuns[l]]
+            p[["q"]]       <- lhs[,"q"][selectedRuns[l]]
 
-            y <- GetCalibInitial(p, data, init2010 = lhsInitial[bestTenPercent[l],])
+            y <- GetCalibInitial(p, data, init2010 = lhsInitial[selectedRuns[l],])
             iOut <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
             CalibOut <<- rbind(CalibOut, iOut)
-            setProgress(value = l/(iterations * 0.1), detail = paste0("Resample ",(l/(iterations * 0.1))*100,"%"))
+            setProgress(value = l / limit, detail = paste0("Resample ", l, "%"))
         }
 
         # Create data.frame to hold all parameter values used by top 10%
-        CalibParamOut <<- FillParValues(samples = lhs, positions = bestTenPercent, iterations = iterations)
+        CalibParamOut <<- FillParValues(samples = lhs, positions = selectedRuns, limit = limit)
 
         # Will need a CalibInitOut
-        CalibInitOut <<- FillInitValues(samples = lhsInitial, positions = bestTenPercent, iterations = iterations)
+        CalibInitOut <<- FillInitValues(samples = lhsInitial, positions = selectedRuns, limit = limit)
 
         # Calculate min and max values used by parameter set
         ParamMaxMin <<- data.frame(
