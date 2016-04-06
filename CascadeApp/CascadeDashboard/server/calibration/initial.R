@@ -11,11 +11,11 @@ ConvertYear <- function(year) {
 GetCalibInitial <- function(p, data) {
     if(!is.list(data)) stop("Not a list.")
 
-    i2010            <- (dplyr::filter(data[["calib"]], year == 2010))
-    i2010_PLHIV      <- (dplyr::filter(i2010, indicator == "PLHIV")           %>% dplyr::select(value))[[1]]
-    i2010_PLHIV_Diag <- (dplyr::filter(i2010, indicator == "PLHIV Diagnosed") %>% dplyr::select(value))[[1]]
-    i2010_PLHIV_Care <- (dplyr::filter(i2010, indicator == "PLHIV in Care")   %>% dplyr::select(value))[[1]]
-    i2010_PLHIV_ART  <- (dplyr::filter(i2010, indicator == "PLHIV on ART")    %>% dplyr::select(value))[[1]]
+    i2010            <- data[["calib"]][data[["calib"]]$year == 2010,]
+    i2010_PLHIV      <- i2010[i2010$indicator == "PLHIV", "value"]
+    i2010_PLHIV_Diag <- i2010[i2010$indicator == "PLHIV Diagnosed", "value"]
+    i2010_PLHIV_Care <- i2010[i2010$indicator == "PLHIV in Care", "value"]
+    i2010_PLHIV_ART  <- i2010[i2010$indicator == "PLHIV on ART", "value"]
 
     iCD4_500    <- data[["cd4"]][1,"prop.Off.ART.500"][[1]]
     iCD4_350500 <- data[["cd4"]][1,"prop.Off.ART.350500"][[1]]
