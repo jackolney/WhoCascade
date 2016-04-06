@@ -89,11 +89,11 @@ SSE <- function(df) {
             iWeight <- iYr[iYr$source == "data","weight"]
             if(isEmpty(iWeight)) next
             if(iWeight == "green") {
-                w <- 3/3
+                w <- 1
             } else if(iWeight == "amber") {
-                w <- 2/3
+                w <- 0.5
             } else if(iWeight == "red") {
-                w <- 1/3
+                w <- 0.1
             }
 
             iModel <- iYr[iYr$source == "model","value"]
