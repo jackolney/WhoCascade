@@ -109,51 +109,51 @@ observeEvent(input$showBudgetDALYs, ({Budget$Switch <- "DALYs"}))
 
 observeEvent(input$userCountry, {
     # Find GSheet
-    theTable <- locateSheet()
+    # theTable <- locateSheet()
     # Read new infections
-    NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable), Country == input$userCountry) %>% select(NewInfections2014)))
-    if(is.na(NewInfections)) {
-        output$warningText <- renderText({return(paste("Warning! NA value returned from", input$userCountry, "data. Using Kenya as default."))})
-        NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable), Country == "Kenya") %>% select(NewInfections2014)))
-    } else {
-        output$warningText <- renderText({return(paste(input$userCountry, "data loaded."))})
-    }
-    # Read CD4 distributions
-    theCD4 <- getCD4Data(theTable)
-    if(is.na(as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500)))) {
-        output$warningCD4Text <- renderText({return(paste("CD4 Warning! Using Kenya as default."))})
-        p_preArt500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.500))
-        p_preArt350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.350500))
-        p_preArt250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.250350))
-        p_preArt200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.200250))
-        p_preArt100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.100200))
-        p_preArt50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50100))
-        p_preArt50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50))
-        p_onArt500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.500))
-        p_onArt350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.350500))
-        p_onArt250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.250350))
-        p_onArt200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.200250))
-        p_onArt100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.100200))
-        p_onArt50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50100))
-        p_onArt50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50))
-    } else {
-        # output$warningCD4Text <- renderText({return(paste(input$userCountry,"CD4 data loaded."))})
-        p_preArt500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500))
-        p_preArt350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.350500))
-        p_preArt250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.250350))
-        p_preArt200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.200250))
-        p_preArt100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.100200))
-        p_preArt50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50100))
-        p_preArt50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50))
-        p_onArt500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.500))
-        p_onArt350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.350500))
-        p_onArt250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.250350))
-        p_onArt200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.200250))
-        p_onArt100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.100200))
-        p_onArt50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50100))
-        p_onArt50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50))
-    }
-    print(paste("Country data:",NewInfections))
+    # NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable), Country == input$userCountry) %>% select(NewInfections2014)))
+    # if(is.na(NewInfections)) {
+    #     output$warningText <- renderText({return(paste("Warning! NA value returned from", input$userCountry, "data. Using Kenya as default."))})
+    #     # NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable), Country == "Kenya") %>% select(NewInfections2014)))
+    # } else {
+    #     output$warningText <- renderText({return(paste(input$userCountry, "data loaded."))})
+    # }
+    # # Read CD4 distributions
+    # # theCD4 <- getCD4Data(theTable)
+    # if(is.na(as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500)))) {
+    #     output$warningCD4Text <- renderText({return(paste("CD4 Warning! Using Kenya as default."))})
+    #     p_preArt500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.500))
+    #     p_preArt350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.350500))
+    #     p_preArt250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.250350))
+    #     p_preArt200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.200250))
+    #     p_preArt100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.100200))
+    #     p_preArt50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50100))
+    #     p_preArt50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.50))
+    #     p_onArt500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.500))
+    #     p_onArt350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.350500))
+    #     p_onArt250350 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.250350))
+    #     p_onArt200250 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.200250))
+    #     p_onArt100200 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.100200))
+    #     p_onArt50100 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50100))
+    #     p_onArt50 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.On.ART.50))
+    # } else {
+    #     # output$warningCD4Text <- renderText({return(paste(input$userCountry,"CD4 data loaded."))})
+    #     p_preArt500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500))
+    #     p_preArt350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.350500))
+    #     p_preArt250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.250350))
+    #     p_preArt200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.200250))
+    #     p_preArt100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.100200))
+    #     p_preArt50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50100))
+    #     p_preArt50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.50))
+    #     p_onArt500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.500))
+    #     p_onArt350500 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.350500))
+    #     p_onArt250350 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.250350))
+    #     p_onArt200250 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.200250))
+    #     p_onArt100200 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.100200))
+    #     p_onArt50100 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50100))
+    #     p_onArt50 <<- as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.On.ART.50))
+    # }
+    # print(paste("Country data:",NewInfections))
 })
 
 observeEvent(input$saveInput, {
