@@ -7,7 +7,7 @@ DefineParmRange <- function(param, min, max) {
             gamma   = param[["Gamma"]]   * min,
             theta   = param[["Theta"]]   * min,
             omega   = param[["Omega"]]   * min,
-            mu      = param[["Mu"]]      * 1,
+            mu      = param[["Mu"]]      * 10,
             p       = if(param[["p"]] * min > 1) {1} else {param[["p"]] * min},
             q       = if(param[["q"]] * min > 1) {1} else {param[["q"]] * min}
         ),
@@ -24,6 +24,26 @@ DefineParmRange <- function(param, min, max) {
         )
     )
     parRange
+}
+
+DefineInitRange <- function(data, min, max) {
+    i2010 <- data[["calib"]][data[["calib"]]$year == 2010,]
+
+    initRange <- data.frame(
+        min = c(
+            plhiv =      i2010[i2010$indicator == "PLHIV",           "value"] * min,
+            plhiv_diag = i2010[i2010$indicator == "PLHIV Diagnosed", "value"] * min,
+            plhiv_care = i2010[i2010$indicator == "PLHIV in Care",   "value"] * min,
+            plhiv_art =  i2010[i2010$indicator == "PLHIV on ART",    "value"] * min
+            ),
+        max = c(
+            plhiv =      i2010[i2010$indicator == "PLHIV",           "value"] * max,
+            plhiv_diag = i2010[i2010$indicator == "PLHIV Diagnosed", "value"] * max,
+            plhiv_care = i2010[i2010$indicator == "PLHIV in Care",   "value"] * max,
+            plhiv_art =  i2010[i2010$indicator == "PLHIV on ART",    "value"] * max
+            )
+    )
+    initRange
 }
 
 AppendMinMaxMean <- function(data) {
@@ -59,6 +79,19 @@ FillParValues <- function(samples, positions, iterations) {
             out[l,"mu"]      = samples[,"mu"][positions[l]]
             out[l,"p"]       = samples[,"p"][positions[l]]
             out[l,"q"]       = samples[,"q"][positions[l]]
+        }
+        out
+    }
+
+FillInitValues <- function(samples, positions, iterations) {
+        out <- data.frame(plhiv = 0, plhiv_diag = 0, plhiv_care = 0, plhiv_art = 0)
+
+        # Loop through all iterations and fill out data.frame
+        for(l in 1:(iterations * 0.1)) {
+            out[l,"plhiv"]      = samples[,"plhiv"][positions[l]]
+            out[l,"plhiv_diag"] = samples[,"plhiv_diag"][positions[l]]
+            out[l,"plhiv_care"] = samples[,"plhiv_care"][positions[l]]
+            out[l,"plhiv_art"]  = samples[,"plhiv_art"][positions[l]]
         }
         out
     }

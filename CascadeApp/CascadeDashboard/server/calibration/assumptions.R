@@ -82,4 +82,3 @@ MakeAssumptions <- function(uCountry, countryData) {
 
 # Careful not to return the countryData too.
 # MakeAssumptions("Kenya", countryData)
-

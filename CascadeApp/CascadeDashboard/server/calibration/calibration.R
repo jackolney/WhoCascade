@@ -56,7 +56,7 @@ RunCalibration <- function(data, iterations = 100) {
             t_4 = ConvertYear(data[["treatment_guidelines"]][["less250"]]),
             t_5 = ConvertYear(data[["treatment_guidelines"]][["less200"]])
             )
-        y <- GetCalibInitial(p, data)
+        # y <- GetCalibInitial(p, data)
         i <- incidence(as.double(data[["incidence"]]))
 
         ## Parameter Sampling
@@ -70,6 +70,14 @@ RunCalibration <- function(data, iterations = 100) {
         # Use Latin Hypercube Sampling to randomly sample from parRange n times
         setProgress(value = 0/1, detail = "LHS 1000 parameter sets.")
         lhs <- FME::Latinhyper(parRange, num = iterations)
+
+        # Sample initial states
+        # Need a vector containing all the initial states too and their max / min ranges too.
+        initRange <- DefineInitRange(data = data, min = 0.9, max = 1.1)
+
+        # LHS Sample
+        # Scope to modify this to pick normally distributed values with a mean of 2010, sd = ??
+        lhsInitial <- FME::Latinhyper(initRange, num = iterations)
 
         ## For each draw, update parameter vector (p), run model, calculate error and store it.
         # Haven't put into a function as probably too many arguements.
@@ -86,6 +94,7 @@ RunCalibration <- function(data, iterations = 100) {
             p[["p"]]       <- lhs[,"p"][k]
             p[["q"]]       <- lhs[,"q"][k]
 
+            y <- GetCalibInitial(p, data, init2010 = lhsInitial[k,])
             out <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
             error[k] <- sum(out[out$source == "error","value"])
             setProgress(value = k/dim(lhs)[1], detail = paste0((k/dim(lhs)[1])*100,"%"))
@@ -110,6 +119,7 @@ RunCalibration <- function(data, iterations = 100) {
             p[["p"]]       <- lhs[,"p"][bestTenPercent[l]]
             p[["q"]]       <- lhs[,"q"][bestTenPercent[l]]
 
+            y <- GetCalibInitial(p, data, init2010 = lhsInitial[bestTenPercent[l],])
             iOut <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
             CalibOut <<- rbind(CalibOut, iOut)
             setProgress(value = l/(iterations * 0.1), detail = paste0("Resample ",(l/(iterations * 0.1))*100,"%"))
@@ -117,6 +127,9 @@ RunCalibration <- function(data, iterations = 100) {
 
         # Create data.frame to hold all parameter values used by top 10%
         CalibParamOut <<- FillParValues(samples = lhs, positions = bestTenPercent, iterations = iterations)
+
+        # Will need a CalibInitOut
+        CalibInitOut <<- FillInitValues(samples = lhsInitial, positions = bestTenPercent, iterations = iterations)
 
         # Calculate min and max values used by parameter set
         ParamMaxMin <<- data.frame(
