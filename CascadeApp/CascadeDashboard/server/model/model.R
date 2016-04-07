@@ -4,7 +4,7 @@ CallModel <- reactive({
     print("CallModel() called.")
     # Setup #
     # This does ignore the cascade::parameter and cascade::initial
-    MasterOut <<- vector("list", dim(CalibParamOut)[1])
+    MasterOut <- vector("list", dim(CalibParamOut)[1])
 
     # FOR EACH PARAMETER SET
     for(i in 1:dim(CalibParamOut)[1]) {
@@ -42,36 +42,36 @@ CallModel <- reactive({
             ART = rowSums(result[, c(
                 "Tx_Na_500", "Tx_Na_350500", "Tx_Na_250350", "Tx_Na_200250", "Tx_Na_100200", "Tx_Na_50100", "Tx_Na_50",
                 "Tx_A_500", "Tx_A_350500", "Tx_A_250350", "Tx_A_200250", "Tx_A_100200", "Tx_A_50100", "Tx_A_50"
-                )]) / result[, "N"],
+                )]),
 
             UnDx = rowSums(result[, c(
                 "UnDx_500", "UnDx_350500", "UnDx_250350", "UnDx_200250", "UnDx_100200", "UnDx_50100", "UnDx_50"
-                )]) / result[, "N"],
+                )]),
 
             Dx = rowSums(result[, c(
                 "Dx_500", "Dx_350500", "Dx_250350", "Dx_200250", "Dx_100200", "Dx_50100", "Dx_50"
-                )]) / result[, "N"],
+                )]),
 
             Care = rowSums(result[, c(
                     "Care_500", "Care_350500", "Care_250350", "Care_200250", "Care_100200", "Care_50100", "Care_50"
-                    )]) / result[, "N"],
+                    )]),
 
             PreLtfu = rowSums(result[, c(
                     "PreLtfu_500", "PreLtfu_350500", "PreLtfu_250350", "PreLtfu_200250", "PreLtfu_100200", "PreLtfu_50100", "PreLtfu_50"
-                    )]) / result[, "N"],
+                    )]),
 
             Tx = rowSums(result[, c(
                     "Tx_Na_500", "Tx_Na_350500", "Tx_Na_250350", "Tx_Na_200250", "Tx_Na_100200", "Tx_Na_50100", "Tx_Na_50",
                     "Tx_A_500", "Tx_A_350500", "Tx_A_250350", "Tx_A_200250", "Tx_A_100200", "Tx_A_50100", "Tx_A_50"
-                    )]) / result[, "N"],
+                    )]),
 
             Vs = rowSums(result[, c(
                     "Tx_A_500", "Tx_A_350500", "Tx_A_250350", "Tx_A_200250", "Tx_A_100200", "Tx_A_50100", "Tx_A_50"
-                    )]) / result[, "N"],
+                    )]),
 
             Ltfu = rowSums(result[, c(
                     "Ltfu_500", "Ltfu_350500", "Ltfu_250350", "Ltfu_200250", "Ltfu_100200", "Ltfu_50100", "Ltfu_50"
-                    )]) / result[, "N"],
+                    )]),
 
             NaturalMortalityProp = result[, "NaturalMortality"] / result[, "N"],
 
