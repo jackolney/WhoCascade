@@ -51,7 +51,9 @@ MakeAssumptions <- function(uCountry, countryData) {
 
         ## CARE ##
         # From Marrakech data we know that in 2015, 57% of PLHIV were in care.
-        # But this causes issues because, in 2012, only 47% of PLHIV are diagnosed...
+        # But that is from using the Kenyan estimate of '# PLHIV'
+        # If we use our Spectrum estimate for PLHIV, we find that 67% of PLHIV were in care in 2015.
+        # But, both of these values, cause issues, because in 2012, only 47% of PLHIV were diagnosed...
         # Therefore prior to 2015, fewer individuals must have been in care.
         # But, perhaps we should leave the model as is, and allow THE MODEL to figure it all out.
 
@@ -59,7 +61,8 @@ MakeAssumptions <- function(uCountry, countryData) {
         country   <- "Kenya"
         indicator <- "PLHIV in Care"
         year      <- seq(2010, 2015, 1)
-        value     <- countryData[countryData$indicator == "PLHIV","value"] * 0.57
+        # value     <- countryData[countryData$indicator == "PLHIV","value"] * 0.57
+        value     <- countryData[countryData$indicator == "PLHIV","value"] * 0.67
         weight    <- "red"
         new.care  <- data.frame(country, indicator, year, value, weight)
 
