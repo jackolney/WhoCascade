@@ -184,15 +184,27 @@ Gen909090Plot <- function() {
 }
 
 GenNewInfPlot <- function() {
-    ggplot(CallModel(), aes(x = time, y = NewInfProp)) +
-    geom_line(size = 2) +
-    theme_classic() +
-    theme(axis.text.x = element_text(size = 18)) +
-    theme(axis.text.y = element_text(size = 18)) +
-    theme(axis.title = element_text(size = 18)) +
-    xlab("Year") +
-    ylab("# new infections / total infected population") +
-    scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+    result <- CallModel()
+
+    out <- c()
+    for(j in 1:251) {
+        out[j] <- mean(unlist(lapply(result, function(x) sum(x$NewInf[j]))))
+    }
+
+    time <- seq(0, 5, 0.02)
+    NewInf <- out / time
+    df <- data.frame(time, NewInf)
+
+    ggOut <- ggplot(df, aes(x = time, y = NewInf))
+    ggOut <- ggOut + geom_line(size = 2)
+    ggOut <- ggOut + theme_classic()
+    ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
+    ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
+    ggOut <- ggOut + theme(axis.title =  element_text(size = 18))
+    ggOut <- ggOut + xlab("Year")
+    ggOut <- ggOut + ylab("Cumulative New Infections / Time")
+    ggOut <- ggOut + scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+    ggOut
 }
 
 GenAidsDeathsPlot <- function() {
@@ -201,7 +213,7 @@ GenAidsDeathsPlot <- function() {
     theme_classic() +
     theme(axis.text.x = element_text(size = 18)) +
     theme(axis.text.y = element_text(size = 18)) +
-    theme(axis.title = element_text(size = 18)) +
+    theme(axis.title =  element_text(size = 18)) +
     xlab("Year") +
     ylab("# AIDS deaths / total infected population") +
     scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
