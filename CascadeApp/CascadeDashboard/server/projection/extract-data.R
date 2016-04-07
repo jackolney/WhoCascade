@@ -62,7 +62,7 @@ ExtractPowersCascadeData <- function(year) {
 
     df <- data.frame(state, res, order)
     df$order <- factor(df$order, levels = c("All", "Diagnosed", "Care", "Treatment", "Suppressed"))
-    df$state <- factor(df$state, levels = c("# Suppressed", "# On Treatment (non-adherent)", "# In Care", "# Diagnosed", "# Undiagnosed"))
+    df$state <- factor(df$state, levels = c("# Suppressed", "# On Treatment (non-adherent)", "# In Care", "# Diagnosed", "# Undiagnosed", "# pre-ART LTFU", "# LTFU"))
     df
 }
 
