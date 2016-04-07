@@ -1,22 +1,24 @@
 GenYourCascadePlot <- function(h) {
     t0 <- ExtractCascadeData(1)
-
+    print(paste("h =", h))
+    print(t0)
     c.fill <- rev(brewer.pal(9, "Blues")[3:8])
     c.fill[h] <- "red"
 
-    ggplot(t0, aes(def, res)) +
-    geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
-    scale_fill_manual(values = c.fill) +
-    ggtitle("Care Cascade in 2015") +
-    theme_classic() +
-    theme(title = element_text(size = 15)) +
-    theme(axis.title = element_blank()) +
-    theme(axis.text.x = element_text(size = 11)) +
-    theme(axis.text.y = element_text(size = 15)) +
-    theme(legend.position = "none") +
-    theme(plot.background = element_blank()) +
-    theme(panel.background = element_blank())
+    ggOut <- ggplot(t0, aes(x = def, y = res))
+    ggOut <- ggOut + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
+    ggOut <- ggOut + geom_errorbar(mapping = aes(x = def, ymin = min, ymax = max), width = 0.2, size = 1)
+    ggOut <- ggOut + scale_fill_manual(values = c.fill)
+    ggOut <- ggOut + ggtitle("Care Cascade in 2015")
+    ggOut <- ggOut + theme_classic()
+    ggOut <- ggOut + theme(title = element_text(size = 15))
+    ggOut <- ggOut + theme(axis.title = element_blank())
+    ggOut <- ggOut + theme(axis.text.x = element_text(size = 11))
+    ggOut <- ggOut + theme(axis.text.y = element_text(size = 15))
+    ggOut <- ggOut + theme(legend.position = "none")
+    ggOut <- ggOut + theme(plot.background = element_blank())
+    ggOut <- ggOut + theme(panel.background = element_blank())
+    ggOut
 }
 
 GenLtfuPlot <- function() {

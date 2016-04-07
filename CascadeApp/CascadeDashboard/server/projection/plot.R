@@ -8,7 +8,7 @@ output$plotValidation_ART <-    renderPlot({ GenYourCascadePlot(4) },  height = 
 
 output$plotValidation_SUPP <-   renderPlot({ GenYourCascadePlot(5) },  height = 300, width = 'auto', bg = "transparent")
 
-output$plotValidation_LTFU <-   renderPlot({ GenLtfuPlot() },          height = 300, width = 'auto', bg = "transparent")
+# output$plotValidation_LTFU <-   renderPlot({ GenLtfuPlot() },          height = 300, width = 'auto', bg = "transparent")
 
 output$plotCascade <-           renderPlot({ GenCascadePlot() },       height = 400, width = 'auto')
 

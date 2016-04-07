@@ -1,8 +1,18 @@
 output$CountryName <- renderText({return(paste("The Cascade of Care in", input$userCountry))})
 
-output$outPLHIV <- renderPrint({ input$userPLHIV }, width = 300, quoted = FALSE)
-output$outPLHIV_perc <- renderPrint({ noquote(paste(round(((input$userPLHIV / input$userPLHIV) * 100), 2),
-    "%", sep = ''))}, width = 300, quoted = FALSE)
+output$outPLHIV <- renderPrint({ input$userPLHIV
+
+    df <- ExtractCascadeData(1)
+    df[df$def == "# PLHIV", "res"]
+
+}, width = 300, quoted = FALSE)
+
+output$outPLHIV_perc <- renderPrint({
+
+    df <- ExtractCascadeData(1)
+    paste(df[df$def == "# PLHIV", "min"], "-", df[df$def == "# PLHIV", "max"])
+
+}, width = 300, quoted = FALSE)
 
 output$outDIAG <- renderPrint({ input$userDx }, width = 300, quoted = FALSE)
 output$outDIAG_perc <- renderPrint({ noquote(paste(round(((input$userDx / input$userPLHIV) * 100), 2),

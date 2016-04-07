@@ -1,15 +1,33 @@
 ExtractCascadeData <- function(year) {
     result <- CallModel()
-    # Now I just need to run across all results, compute averages and PLOT PLOT PLOT.
 
-    DX <- sum(result$Dx[year], result$Care[year], result$PreLtfu[year], result$ART[year], result$Ltfu[year])
-    CX <- sum(result$Care[year], result$ART[year])
-    TX <- result$ART[year]
-    VS <- result$Vs[year]
-    res <- c(1, DX, CX, TX, VS)
-    def <- c("% PLHIV", "% Diagnosed", "% In Care", "% Treatment", "% Suppressed")
-    df <- data.frame(def, res)
-    df$def <- factor(df$def, levels = c("% PLHIV", "% Diagnosed", "% In Care", "% Treatment", "% Suppressed"))
+    # We iterate across _all_ results, and present the mean, and ranges.
+    # Also switched to absolute values, not proportions.
+    NX_data <- unlist(lapply(result, function(x) sum(x$N[year])))
+    DX_data <- unlist(lapply(result, function(x) sum(x$Dx[year], x$Care[year], x$PreLtfu[year], x$ART[year], x$Ltfu[year])))
+    CX_data <- unlist(lapply(result, function(x) sum(x$Care[year], x$ART[year])))
+    TX_data <- unlist(lapply(result, function(x) sum(x$ART[year])))
+    VS_data <- unlist(lapply(result, function(x) sum(x$Vs[year])))
+
+    NX <- mean(NX_data)
+    DX <- mean(DX_data)
+    CX <- mean(CX_data)
+    TX <- mean(TX_data)
+    VS <- mean(VS_data)
+
+    NX_range <- range(NX_data)
+    DX_range <- range(DX_data)
+    CX_range <- range(CX_data)
+    TX_range <- range(TX_data)
+    VS_range <- range(VS_data)
+
+    res <- c(NX, DX, CX, TX, VS)
+    min <- c(NX_range[1], DX_range[1], CX_range[1], TX_range[1], VS_range[1])
+    max <- c(NX_range[2], DX_range[2], CX_range[2], TX_range[2], VS_range[2])
+
+    def <- c("# PLHIV", "# Diagnosed", "# In Care", "# Treatment", "# Suppressed")
+    df <- data.frame(def, res, min, max)
+    df$def <- factor(df$def, levels = c("# PLHIV", "# Diagnosed", "# In Care", "# Treatment", "# Suppressed"))
     df
 }
 
