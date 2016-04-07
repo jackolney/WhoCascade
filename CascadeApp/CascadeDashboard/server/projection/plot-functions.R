@@ -5,19 +5,39 @@ GenYourCascadePlot <- function(h) {
     c.fill <- rev(brewer.pal(9, "Blues")[3:8])
     c.fill[h] <- "red"
 
+    output$outPLHIV <- renderPrint({ scales::comma(round(t0[t0$def == "# PLHIV", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outPLHIV_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# PLHIV", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# PLHIV", "max"], 0))) }, width = 300, quoted = FALSE)
+
+    output$outDIAG <- renderPrint({ scales::comma(round(t0[t0$def == "# Diagnosed", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outDIAG_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Diagnosed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Diagnosed", "max"], 0))) }, width = 300, quoted = FALSE)
+
+    output$outCARE <- renderPrint({ scales::comma(round(t0[t0$def == "# In Care", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outCARE_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# In Care", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# In Care", "max"], 0))) }, width = 300, quoted = FALSE)
+
+    output$outART <- renderPrint({ scales::comma(round(t0[t0$def == "# Treatment", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outART_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Treatment", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Treatment", "max"], 0))) }, width = 300, quoted = FALSE)
+
+    output$outSUPP <- renderPrint({ scales::comma(round(t0[t0$def == "# Suppressed", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outSUPP_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Suppressed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Suppressed", "max"], 0))) }, width = 300, quoted = FALSE)
+
     ggOut <- ggplot(t0, aes(x = def, y = res))
     ggOut <- ggOut + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
     ggOut <- ggOut + geom_errorbar(mapping = aes(x = def, ymin = min, ymax = max), width = 0.2, size = 1)
+    ggOut <- ggOut + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggOut <- ggOut + scale_fill_manual(values = c.fill)
     ggOut <- ggOut + ggtitle("Care Cascade in 2015")
     ggOut <- ggOut + theme_classic()
-    ggOut <- ggOut + theme(title = element_text(size = 15))
+    ggOut <- ggOut + theme(plot.title = element_text(hjust = 0.5))
+    ggOut <- ggOut + theme(title = element_text(size = 18))
     ggOut <- ggOut + theme(axis.title = element_blank())
-    ggOut <- ggOut + theme(axis.text.x = element_text(size = 11))
-    ggOut <- ggOut + theme(axis.text.y = element_text(size = 15))
+    ggOut <- ggOut + theme(axis.text.x = element_text(size = 17))
+    ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
+    ggOut <- ggOut + theme(axis.line.x = element_line(size = 1))
+    ggOut <- ggOut + theme(axis.line.y = element_line(size = 1))
     ggOut <- ggOut + theme(legend.position = "none")
     ggOut <- ggOut + theme(plot.background = element_blank())
     ggOut <- ggOut + theme(panel.background = element_blank())
+    ggOut <- ggOut + theme(text = element_text(family = "Avenir Next"))
     ggOut
 }
 
