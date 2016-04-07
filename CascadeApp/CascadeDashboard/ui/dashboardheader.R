@@ -1,4 +1,5 @@
-dashboardHeader(title = "Cascade App"
+dashboardHeader(title = "Cascade App",
+    shortTitle = icon("bar-chart", class = "fa-lg fa-fw", lib = "font-awesome")
     # Uneccessary Junk
     # Either keep it or dump it
     # dropdownMenu(type = "notifications",

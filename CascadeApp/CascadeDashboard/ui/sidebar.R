@@ -1,5 +1,5 @@
 dashboardSidebar(
-    # sideBarMini = TRUE,
+    sideBarMini = TRUE,
     sidebarMenu(
         id = "sideBar",
         menuItem("Introduction", tabName = "introduction", icon = icon("home", class = "fa-lg fa-fw", lib = "font-awesome")),
