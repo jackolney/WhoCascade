@@ -28,6 +28,5 @@ GetBeta <- function(y, p, data) {
     # print(paste("Denominator =",Denominator))
 
     beta <- Numerator / Denominator
-    print(paste("Beta:", beta))
     beta
 }
