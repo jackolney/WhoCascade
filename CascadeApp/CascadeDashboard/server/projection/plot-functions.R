@@ -5,20 +5,20 @@ GenYourCascadePlot <- function(h) {
     c.fill <- rev(brewer.pal(9, "Blues")[3:8])
     c.fill[h] <- "red"
 
-    output$outPLHIV <- renderPrint({ scales::comma(round(t0[t0$def == "# PLHIV", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outPLHIV      <- renderPrint({ scales::comma(round(t0[t0$def == "# PLHIV", "res"], 0)) }, width = 300, quoted = FALSE)
     output$outPLHIV_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# PLHIV", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# PLHIV", "max"], 0))) }, width = 300, quoted = FALSE)
 
-    output$outDIAG <- renderPrint({ scales::comma(round(t0[t0$def == "# Diagnosed", "res"], 0)) }, width = 300, quoted = FALSE)
-    output$outDIAG_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Diagnosed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Diagnosed", "max"], 0))) }, width = 300, quoted = FALSE)
+    output$outDIAG       <- renderPrint({ scales::comma(round(t0[t0$def == "# Diagnosed", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outDIAG_perc  <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Diagnosed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Diagnosed", "max"], 0))) }, width = 300, quoted = FALSE)
 
-    output$outCARE <- renderPrint({ scales::comma(round(t0[t0$def == "# In Care", "res"], 0)) }, width = 300, quoted = FALSE)
-    output$outCARE_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# In Care", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# In Care", "max"], 0))) }, width = 300, quoted = FALSE)
+    output$outCARE       <- renderPrint({ scales::comma(round(t0[t0$def == "# In Care", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outCARE_perc  <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# In Care", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# In Care", "max"], 0))) }, width = 300, quoted = FALSE)
 
-    output$outART <- renderPrint({ scales::comma(round(t0[t0$def == "# Treatment", "res"], 0)) }, width = 300, quoted = FALSE)
-    output$outART_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Treatment", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Treatment", "max"], 0))) }, width = 300, quoted = FALSE)
+    output$outART        <- renderPrint({ scales::comma(round(t0[t0$def == "# Treatment", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outART_perc   <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Treatment", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Treatment", "max"], 0))) }, width = 300, quoted = FALSE)
 
-    output$outSUPP <- renderPrint({ scales::comma(round(t0[t0$def == "# Suppressed", "res"], 0)) }, width = 300, quoted = FALSE)
-    output$outSUPP_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Suppressed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Suppressed", "max"], 0))) }, width = 300, quoted = FALSE)
+    output$outSUPP       <- renderPrint({ scales::comma(round(t0[t0$def == "# Suppressed", "res"], 0)) }, width = 300, quoted = FALSE)
+    output$outSUPP_perc  <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Suppressed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Suppressed", "max"], 0))) }, width = 300, quoted = FALSE)
 
     ggOut <- ggplot(t0, aes(x = def, y = res))
     ggOut <- ggOut + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
@@ -32,7 +32,6 @@ GenYourCascadePlot <- function(h) {
     ggOut <- ggOut + theme(axis.title = element_blank())
     ggOut <- ggOut + theme(axis.text.x = element_text(size = 17))
     ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
-    ggOut <- ggOut + theme(axis.line.y = element_line(size = 1))
     ggOut <- ggOut + theme(legend.position = "none")
     ggOut <- ggOut + theme(plot.background = element_blank())
     ggOut <- ggOut + theme(panel.background = element_blank())
@@ -41,7 +40,7 @@ GenYourCascadePlot <- function(h) {
 }
 
 GenCascadePlot <- function() {
-    t0 <- ExtractCascadeData(1) # t0 = 1
+    t0 <- ExtractCascadeData(1)   # t0 = 1
     t5 <- ExtractCascadeData(251) # t5 = (5 / 0.02) + 1 [t0]
 
     c.fill <- rev(brewer.pal(9,"Blues")[3:8])
@@ -58,7 +57,6 @@ GenCascadePlot <- function() {
     ggOne <- ggOne + theme(axis.title = element_blank())
     ggOne <- ggOne + theme(axis.text.x = element_text(size = 15))
     ggOne <- ggOne + theme(axis.text.y = element_text(size = 15))
-    ggOne <- ggOne + theme(axis.line.y = element_line(size = 1))
     ggOne <- ggOne + theme(legend.position = "none")
     ggOne <- ggOne + theme(plot.background = element_blank())
     ggOne <- ggOne + theme(panel.background = element_blank())
@@ -76,7 +74,6 @@ GenCascadePlot <- function() {
     ggTwo <- ggTwo + theme(axis.title = element_blank())
     ggTwo <- ggTwo + theme(axis.text.x = element_text(size = 15))
     ggTwo <- ggTwo + theme(axis.text.y = element_text(size = 15))
-    ggTwo <- ggTwo + theme(axis.line.y = element_line(size = 1))
     ggTwo <- ggTwo + theme(legend.position = "none")
     ggTwo <- ggTwo + theme(plot.background = element_blank())
     ggTwo <- ggTwo + theme(panel.background = element_blank())
@@ -114,7 +111,6 @@ GenPowersCascadePlot <- function() {
     ggOne <- ggOne + theme(legend.text = element_text(size = 15))
     ggOne <- ggOne + theme(legend.title = element_text(size = 15))
     ggOne <- ggOne + theme(legend.position = "right")
-    ggOne <- ggOne + theme(axis.line.y = element_line(size = 1))
     ggOne <- ggOne + theme(plot.background = element_blank())
     ggOne <- ggOne + theme(panel.background = element_blank())
     ggOne <- ggOne + theme(text = element_text(family = "Avenir Next"))
@@ -136,7 +132,6 @@ GenPowersCascadePlot <- function() {
     ggTwo <- ggTwo + theme(legend.text = element_text(size = 15))
     ggTwo <- ggTwo + theme(legend.title = element_text(size = 15))
     ggTwo <- ggTwo + theme(legend.position = "right")
-    ggTwo <- ggTwo + theme(axis.line.y = element_line(size = 1))
     ggTwo <- ggTwo + theme(plot.background = element_blank())
     ggTwo <- ggTwo + theme(panel.background = element_blank())
     ggTwo <- ggTwo + theme(text = element_text(family = "Avenir Next"))
@@ -157,22 +152,27 @@ GenPowersCascadePlot <- function() {
 Gen909090Plot <- function() {
     df <- Extract909090Data()
 
-    red <- rgb(red = 223, green = 74, blue = 50, max = 255)
-    yellow <- rgb(red = 245, green = 157, blue = 0, max = 255)
-    green <- rgb(red = 0, green = 167, blue = 87, max = 255)
-    c.fill <- c(red, yellow, green)
+    red    <- rgb(red = 223, green = 74,  blue = 50, max = 255)
+    yellow <- rgb(red = 245, green = 157, blue = 0,  max = 255)
+    green  <- rgb(red = 0,   green = 167, blue = 87, max = 255)
+    cfill  <- c(red, yellow, green)
 
-    ggplot(df, aes(def, res)) +
-    geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
-    scale_fill_manual(values = c.fill) +
-    geom_abline(intercept = 0.9, slope = 0) +
-    theme_classic() +
-    theme(title = element_text(size = 20)) +
-    theme(axis.title = element_blank()) +
-    theme(axis.text.x = element_text(size = 18)) +
-    theme(axis.text.y = element_text(size = 18)) +
-    theme(legend.position = "none")
+    ggOut <- ggplot(df, aes(x = def, y = res))
+    ggOut <- ggOut + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
+    ggOut <- ggOut + scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = scales::percent, expand = c(0, 0))
+    ggOut <- ggOut + scale_fill_manual(values = cfill)
+    ggOut <- ggOut + geom_abline(intercept = 0.9, slope = 0)
+    ggOut <- ggOut + theme_classic()
+    ggOut <- ggOut + theme(plot.title = element_text(hjust = 0.5))
+    ggOut <- ggOut + theme(title = element_text(size = 20))
+    ggOut <- ggOut + theme(axis.title = element_blank())
+    ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
+    ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
+    ggOut <- ggOut + theme(legend.position = "none")
+    ggOut <- ggOut + theme(plot.background = element_blank())
+    ggOut <- ggOut + theme(panel.background = element_blank())
+    ggOut <- ggOut + theme(text = element_text(family = "Avenir Next"))
+    ggOut
 }
 
 GenNewInfPlot <- function() {

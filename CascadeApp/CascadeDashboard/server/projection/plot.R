@@ -1,12 +1,12 @@
-output$plotValidation_PLHIV <-  renderPlot({ GenYourCascadePlot(1) },  height = 500, width = 'auto', bg = "transparent")
+output$plotValidation_PLHIV <-  renderPlot({ GenYourCascadePlot(1) },  height = 400, width = 'auto', bg = "transparent")
 
-output$plotValidation_DIAG <-   renderPlot({ GenYourCascadePlot(2) },  height = 500, width = 'auto', bg = "transparent")
+output$plotValidation_DIAG <-   renderPlot({ GenYourCascadePlot(2) },  height = 400, width = 'auto', bg = "transparent")
 
-output$plotValidation_CARE <-   renderPlot({ GenYourCascadePlot(3) },  height = 500, width = 'auto', bg = "transparent")
+output$plotValidation_CARE <-   renderPlot({ GenYourCascadePlot(3) },  height = 400, width = 'auto', bg = "transparent")
 
-output$plotValidation_ART <-    renderPlot({ GenYourCascadePlot(4) },  height = 500, width = 'auto', bg = "transparent")
+output$plotValidation_ART <-    renderPlot({ GenYourCascadePlot(4) },  height = 400, width = 'auto', bg = "transparent")
 
-output$plotValidation_SUPP <-   renderPlot({ GenYourCascadePlot(5) },  height = 500, width = 'auto', bg = "transparent")
+output$plotValidation_SUPP <-   renderPlot({ GenYourCascadePlot(5) },  height = 400, width = 'auto', bg = "transparent")
 
 output$plotCascade <-           renderPlot({ GenCascadePlot() },       height = 400, width = 'auto')
 
@@ -14,11 +14,11 @@ output$plotPowersCascade <-     renderPlot({ GenPowersCascadePlot() }, height = 
 
 output$plot909090 <-            renderPlot({ Gen909090Plot() },        height = 400, width = 'auto')
 
-output$plotNewInf <-            renderPlot({ GenNewInfPlot() },        height = 500, width = 'auto')
+output$plotNewInf <-            renderPlot({ GenNewInfPlot() },        height = 400, width = 'auto')
 
-output$plotAidsDeaths <-        renderPlot({ GenAidsDeathsPlot() },    height = 500, width = 'auto')
+output$plotAidsDeaths <-        renderPlot({ GenAidsDeathsPlot() },    height = 400, width = 'auto')
 
-output$plotSingle <-            renderPlot({ GenSinglePlot() },        height = 500, width = 'auto')
+output$plotSingle <-            renderPlot({ GenSinglePlot() },        height = 400, width = 'auto')
 
 output$plotAll <-               renderPlot({ GenAllPlot() },           height = 800, width = 'auto')
 

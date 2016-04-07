@@ -74,33 +74,41 @@ Extract909090Data <- function(...) {
         result <- CallModel()
     }
 
+    # Always aiming for 2020 here (5.02 / 0.02)
     year <- 251
-    PLHIV <- result$N[year]
 
-    DX <- sum(
-        result$Dx_500[year], result$Dx_350500[year], result$Dx_250350[year], result$Dx_200250[year], result$Dx_100200[year], result$Dx_50100[year], result$Dx_50[year],
-        result$Care_500[year], result$Care_350500[year], result$Care_250350[year], result$Care_200250[year], result$Care_100200[year], result$Care_50100[year], result$Care_50[year],
-        result$PreLtfu_500[year], result$PreLtfu_350500[year], result$PreLtfu_250350[year], result$PreLtfu_200250[year], result$PreLtfu_100200[year], result$PreLtfu_50100[year], result$PreLtfu_50[year],
-        result$Tx_Na_500[year], result$Tx_Na_350500[year], result$Tx_Na_250350[year], result$Tx_Na_200250[year], result$Tx_Na_100200[year], result$Tx_Na_50100[year], result$Tx_Na_50[year],
-        result$Tx_A_500[year], result$Tx_A_350500[year], result$Tx_A_250350[year], result$Tx_A_200250[year], result$Tx_A_100200[year], result$Tx_A_50100[year], result$Tx_A_50[year],
-        result$Ltfu_500[year], result$Ltfu_350500[year], result$Ltfu_250350[year], result$Ltfu_200250[year], result$Ltfu_100200[year], result$Ltfu_50100[year], result$Ltfu_50[year]
-        )
+    NX_data <- unlist(lapply(result, function(x) sum(x$N[year])))
+    DX_data <- unlist(lapply(result, function(x) sum(x$Dx[year], x$Care[year], x$PreLtfu[year], x$ART[year], x$Ltfu[year])))
+    TX_data <- unlist(lapply(result, function(x) sum(x$ART[year])))
+    VS_data <- unlist(lapply(result, function(x) sum(x$Vs[year])))
 
-    TX <- sum(
-        result$Tx_Na_500[year], result$Tx_Na_350500[year], result$Tx_Na_250350[year], result$Tx_Na_200250[year], result$Tx_Na_100200[year], result$Tx_Na_50100[year], result$Tx_Na_50[year],
-        result$Tx_A_500[year], result$Tx_A_350500[year], result$Tx_A_250350[year], result$Tx_A_200250[year], result$Tx_A_100200[year], result$Tx_A_50100[year], result$Tx_A_50[year]
-        )
+    NX <- mean(NX_data)
+    DX <- mean(DX_data)
+    TX <- mean(TX_data)
+    VS <- mean(VS_data)
 
-    VS <- sum(result$Tx_A_500[year], result$Tx_A_350500[year], result$Tx_A_250350[year], result$Tx_A_200250[year], result$Tx_A_100200[year], result$Tx_A_50100[year], result$Tx_A_50[year])
+    NX_range <- range(NX_data)
+    DX_range <- range(DX_data)
+    TX_range <- range(TX_data)
+    VS_range <- range(VS_data)
 
-    un_90 <- DX / PLHIV
-    un_9090 <- TX / DX
-    un_909090 <- VS / TX
+    UN_90 <- DX / NX
+    UN_9090 <- TX / DX
+    UN_909090 <- VS / TX
 
-    res <- c(un_90, un_9090, un_909090)
+    UN_90_min <- DX_range[1] / NX_range[1]
+    UN_9090_min <- TX_range[1] / DX_range[1]
+    UN_909090_min <- VS_range[1] / TX_range[1]
+
+    UN_90_max <- DX_range[2] / NX_range[2]
+    UN_9090_max <- TX_range[2] / DX_range[2]
+    UN_909090_max <- VS_range[2] / TX_range[2]
+
+    res <- c(UN_90, UN_9090, UN_909090)
+    min <- c(UN_90_min, UN_9090_min, UN_909090_min)
+    max <- c(UN_90_max, UN_9090_max, UN_909090_max)
     def <- c("% Diagnosed","% On Treatment","% Suppressed")
-    scenario <- c("Baseline")
-    df <- data.frame(def, res, scenario)
+    df <- data.frame(def, res, min, max)
     df$def <- factor(df$def, levels = c("% Diagnosed", "% On Treatment", "% Suppressed"))
     df
 }
