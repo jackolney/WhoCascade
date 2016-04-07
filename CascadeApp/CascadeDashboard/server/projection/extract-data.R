@@ -34,38 +34,35 @@ ExtractCascadeData <- function(year) {
 ExtractPowersCascadeData <- function(year) {
     result <- CallModel()
 
-    UNDX <- result$UnDx[year]
-    DX <- result$Dx[year]
-    CX <- result$Care[year]
-    PLX <- result$PreLtfu[year]
-    TXN <- result$Tx[year] - result$Vs[year]
-    VS <- result$Vs[year]
-    LX <- result$Ltfu[year]
+    UNDX <- mean(unlist(lapply(result, function(x) sum(x$UnDx[year]))))
+    DX   <- mean(unlist(lapply(result, function(x) sum(x$Dx[year]))))
+    CX   <- mean(unlist(lapply(result, function(x) sum(x$Care[year]))))
+    PLX  <- mean(unlist(lapply(result, function(x) sum(x$PreLtfu[year]))))
+    TXN  <- mean(unlist(lapply(result, function(x) sum(x$Tx[year] - x$Vs[year]))))
+    VS   <- mean(unlist(lapply(result, function(x) sum(x$Vs[year]))))
+    LX   <- mean(unlist(lapply(result, function(x) sum(x$Ltfu[year]))))
 
     res <- c(VS, TXN, CX, DX, UNDX, PLX, LX,
              VS, TXN, CX, DX, PLX, LX,
              VS, TXN, CX,
              VS, TXN,
-             VS,
-             PLX, LX)
+             VS)
 
-    state <- c("% Suppressed", "% On Treatment (non-adherent)", "% In Care", "% Diagnosed", "% Undiagnosed", "% pre-ART LTFU", "% LTFU",
-               "% Suppressed", "% On Treatment (non-adherent)", "% In Care", "% Diagnosed", "% pre-ART LTFU", "% LTFU",
-               "% Suppressed", "% On Treatment (non-adherent)", "% In Care",
-               "% Suppressed", "% On Treatment (non-adherent)",
-               "% Suppressed",
-               "% pre-ART LTFU", "% LTFU")
+    state <- c("# Suppressed", "# On Treatment (non-adherent)", "# In Care", "# Diagnosed", "# Undiagnosed", "# pre-ART LTFU", "# LTFU",
+               "# Suppressed", "# On Treatment (non-adherent)", "# In Care", "# Diagnosed", "# pre-ART LTFU", "# LTFU",
+               "# Suppressed", "# On Treatment (non-adherent)", "# In Care",
+               "# Suppressed", "# On Treatment (non-adherent)",
+               "# Suppressed")
 
-    order <- c(rep("All",7),
-               rep("Diagnosed",6),
-               rep("Care",3),
-               rep("Treatment",2),
-               rep("Suppressed",1),
-               rep("LTFU",2))
+    order <- c(rep("All"       ,7),
+               rep("Diagnosed" ,6),
+               rep("Care"      ,3),
+               rep("Treatment" ,2),
+               rep("Suppressed",1))
 
     df <- data.frame(state, res, order)
-    df$order <- factor(df$order, levels = c("All", "Diagnosed", "Care", "Treatment", "Suppressed", "LTFU"))
-    df$state <- factor(df$state, levels = c("% Suppressed", "% On Treatment (non-adherent)", "% In Care", "% Diagnosed", "% Undiagnosed", "% pre-ART LTFU", "% LTFU"))
+    df$order <- factor(df$order, levels = c("All", "Diagnosed", "Care", "Treatment", "Suppressed"))
+    df$state <- factor(df$state, levels = c("# Suppressed", "# On Treatment (non-adherent)", "# In Care", "# Diagnosed", "# Undiagnosed"))
     df
 }
 

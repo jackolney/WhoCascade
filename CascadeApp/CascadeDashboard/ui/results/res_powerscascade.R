@@ -22,5 +22,5 @@ tabItem(tabName = "powers_cascade",
             )
         )
     ),
-    bsButton(inputId = "wizardResults_4", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+    bsButton(inputId = "NEXT_powersCascade", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
 )

@@ -32,7 +32,6 @@ GenYourCascadePlot <- function(h) {
     ggOut <- ggOut + theme(axis.title = element_blank())
     ggOut <- ggOut + theme(axis.text.x = element_text(size = 17))
     ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
-    ggOut <- ggOut + theme(axis.line.x = element_line(size = 1))
     ggOut <- ggOut + theme(axis.line.y = element_line(size = 1))
     ggOut <- ggOut + theme(legend.position = "none")
     ggOut <- ggOut + theme(plot.background = element_blank())
@@ -41,59 +40,49 @@ GenYourCascadePlot <- function(h) {
     ggOut
 }
 
-GenLtfuPlot <- function() {
-    result <- CallModel()
-    res <- result$Ltfu[1]
-    def <- c("% LTFU")
-    df <- data.frame(def, res)
-    df$def <- factor(df$def, levels = "% LTFU")
-
-    ggplot(df, aes(def, res)) +
-    geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
-    scale_fill_manual(values = "red") +
-    ggtitle("Care Cascade in 2015") +
-    theme_classic() +
-    theme(title = element_text(size = 15)) +
-    theme(axis.title = element_blank()) +
-    theme(axis.text.x = element_text(size = 11)) +
-    theme(axis.text.y = element_text(size = 15)) +
-    theme(legend.position = "none") +
-    theme(plot.background = element_blank()) +
-    theme(panel.background = element_blank())
-}
-
 GenCascadePlot <- function() {
     t0 <- ExtractCascadeData(1) # t0 = 1
     t5 <- ExtractCascadeData(251) # t5 = (5 / 0.02) + 1 [t0]
 
     c.fill <- rev(brewer.pal(9,"Blues")[3:8])
 
-    plot.one <- ggplot(t0, aes(def, res)) +
-    geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
-    scale_fill_manual(values=c.fill) +
-    ggtitle("Care Cascade in 2015") +
-    theme_classic() +
-    theme(title = element_text(size = 18)) +
-    theme(axis.title = element_blank()) +
-    theme(axis.text.x = element_text(size = 15)) +
-    theme(axis.text.y = element_text(size = 18)) +
-    theme(legend.position = "none")
+    ggOne <- ggplot(t0, aes(x = def, y = res))
+    ggOne <- ggOne + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
+    ggOne <- ggOne + geom_errorbar(mapping = aes(x = def, ymin = min, ymax = max), width = 0.2, size = 1)
+    ggOne <- ggOne + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
+    ggOne <- ggOne + scale_fill_manual(values = c.fill)
+    ggOne <- ggOne + ggtitle("Care Cascade in 2015")
+    ggOne <- ggOne + theme_classic()
+    ggOne <- ggOne + theme(plot.title = element_text(hjust = 0.5))
+    ggOne <- ggOne + theme(title = element_text(size = 18))
+    ggOne <- ggOne + theme(axis.title = element_blank())
+    ggOne <- ggOne + theme(axis.text.x = element_text(size = 15))
+    ggOne <- ggOne + theme(axis.text.y = element_text(size = 18))
+    ggOne <- ggOne + theme(axis.line.y = element_line(size = 1))
+    ggOne <- ggOne + theme(legend.position = "none")
+    ggOne <- ggOne + theme(plot.background = element_blank())
+    ggOne <- ggOne + theme(panel.background = element_blank())
+    ggOne <- ggOne + theme(text = element_text(family = "Avenir Next"))
 
-    plot.two <- ggplot(t5, aes(def, res)) +
-    geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
-    scale_fill_manual(values=c.fill) +
-    ggtitle("Care Cascade in 2020") +
-    theme_classic() +
-    theme(title = element_text(size = 18)) +
-    theme(axis.title = element_blank()) +
-    theme(axis.text.x = element_text(size = 15)) +
-    theme(axis.text.y = element_text(size = 18)) +
-    theme(legend.position = "none")
+    ggTwo <- ggplot(t5, aes(x = def, y = res))
+    ggTwo <- ggTwo + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
+    ggTwo <- ggTwo + geom_errorbar(mapping = aes(x = def, ymin = min, ymax = max), width = 0.2, size = 1)
+    ggTwo <- ggTwo + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
+    ggTwo <- ggTwo + scale_fill_manual(values = ggColorHue(5))
+    ggTwo <- ggTwo + ggtitle("Care Cascade in 2020")
+    ggTwo <- ggTwo + theme_classic()
+    ggTwo <- ggTwo + theme(plot.title = element_text(hjust = 0.5))
+    ggTwo <- ggTwo + theme(title = element_text(size = 18))
+    ggTwo <- ggTwo + theme(axis.title = element_blank())
+    ggTwo <- ggTwo + theme(axis.text.x = element_text(size = 15))
+    ggTwo <- ggTwo + theme(axis.text.y = element_text(size = 18))
+    ggTwo <- ggTwo + theme(axis.line.y = element_line(size = 1))
+    ggTwo <- ggTwo + theme(legend.position = "none")
+    ggTwo <- ggTwo + theme(plot.background = element_blank())
+    ggTwo <- ggTwo + theme(panel.background = element_blank())
+    ggTwo <- ggTwo + theme(text = element_text(family = "Avenir Next"))
 
-    grid.arrange(plot.one, plot.two, nrow = 1, ncol = 2)
+    grid.arrange(ggOne, ggTwo, nrow = 1, ncol = 2)
 }
 
 GrabLegend <- function(a.ggplot) {
@@ -109,43 +98,56 @@ GenPowersCascadePlot <- function() {
     t5 <- ExtractPowersCascadeData(251) # t5 = (5 / 0.02) + 1 [t0]
 
     cols <- brewer.pal(9,"Set1")
-    p.col <- c(cols[3],cols[2],cols[4],cols[5],cols[1],cols[9],cols[8])
+    p.col <- c(cols[3], cols[2], cols[4], cols[5], cols[1], cols[9], cols[8])
 
-    o <- ggplot(t0, aes(x = order, y = res, fill = state)) +
-    geom_bar(stat = 'identity') +
-    scale_y_continuous(breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
-    scale_fill_manual(values = p.col) +
-    ggtitle("Care Cascade in 2015") +
-    theme_classic() +
-    theme(title = element_text(size = 18)) +
-    theme(axis.title = element_blank()) +
-    theme(axis.text.x = element_text(size = 13)) +
-    theme(axis.text.y = element_text(size = 15)) +
-    theme(legend.text = element_text(size = 15)) +
-    theme(legend.title = element_text(size = 15)) +
-    theme(legend.position = "right")
+    ggOne <- ggplot(t0, aes(x = order, y = res, fill = state))
+    ggOne <- ggOne + geom_bar(stat = 'identity')
+    ggOne <- ggOne + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
+    ggOne <- ggOne + scale_fill_manual(values = p.col)
+    ggOne <- ggOne + ggtitle("Care Cascade in 2015")
+    ggOne <- ggOne + theme_classic()
+    ggOne <- ggOne + theme(plot.title = element_text(hjust = 0.5))
+    ggOne <- ggOne + theme(title = element_text(size = 18))
+    ggOne <- ggOne + theme(axis.title = element_blank())
+    ggOne <- ggOne + theme(axis.text.x = element_text(size = 13))
+    ggOne <- ggOne + theme(axis.text.y = element_text(size = 15))
+    ggOne <- ggOne + theme(legend.text = element_text(size = 15))
+    ggOne <- ggOne + theme(legend.title = element_text(size = 15))
+    ggOne <- ggOne + theme(legend.position = "right")
+    ggOne <- ggOne + theme(axis.line.y = element_line(size = 1))
+    ggOne <- ggOne + theme(plot.background = element_blank())
+    ggOne <- ggOne + theme(panel.background = element_blank())
+    ggOne <- ggOne + theme(text = element_text(family = "Avenir Next"))
 
-    p <- ggplot(t5, aes(x = order, y = res, fill = state)) +
-    geom_bar(stat = 'identity') +
-    scale_y_continuous(breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
-    scale_fill_manual(values = p.col) +
-    ggtitle("Care Cascade in 2020") +
-    theme_classic() +
-    theme(title = element_text(size = 18)) +
-    theme(axis.title = element_blank()) +
-    theme(axis.text.x = element_text(size = 13)) +
-    theme(axis.text.y = element_text(size = 15)) +
-    theme(legend.text = element_text(size = 15)) +
-    theme(legend.title = element_text(size = 15)) +
-    theme(legend.position = "right")
+    cols <- brewer.pal(9,"Set1")
+    p.col <- c(cols[3], cols[2], cols[4], cols[5], cols[1], cols[9], cols[8])
 
-    my.legend <- GrabLegend(o)
+    ggTwo <- ggplot(t5, aes(x = order, y = res, fill = state))
+    ggTwo <- ggTwo + geom_bar(stat = 'identity')
+    ggTwo <- ggTwo + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
+    ggTwo <- ggTwo + scale_fill_manual(values = p.col)
+    ggTwo <- ggTwo + ggtitle("Care Cascade in 2015")
+    ggTwo <- ggTwo + theme_classic()
+    ggTwo <- ggTwo + theme(plot.title = element_text(hjust = 0.5))
+    ggTwo <- ggTwo + theme(title = element_text(size = 18))
+    ggTwo <- ggTwo + theme(axis.title = element_blank())
+    ggTwo <- ggTwo + theme(axis.text.x = element_text(size = 13))
+    ggTwo <- ggTwo + theme(axis.text.y = element_text(size = 15))
+    ggTwo <- ggTwo + theme(legend.text = element_text(size = 15))
+    ggTwo <- ggTwo + theme(legend.title = element_text(size = 15))
+    ggTwo <- ggTwo + theme(legend.position = "right")
+    ggTwo <- ggTwo + theme(axis.line.y = element_line(size = 1))
+    ggTwo <- ggTwo + theme(plot.background = element_blank())
+    ggTwo <- ggTwo + theme(panel.background = element_blank())
+    ggTwo <- ggTwo + theme(text = element_text(family = "Avenir Next"))
+
+    my.legend <- GrabLegend(ggOne)
     l.width <- sum(my.legend$width)
 
     grid.arrange(
         arrangeGrob(
-            o + theme(legend.position = "none"),
-            p + theme(legend.position = "none"),
+            ggOne + theme(legend.position = "none"),
+            ggTwo + theme(legend.position = "none"),
             ncol = 2),
         my.legend,
         widths = grid::unit.c(unit(1, "npc") - l.width, l.width),

@@ -82,6 +82,6 @@ tabItem(tabName = "your_cascade",
             title = "Help Panel",
             "The breakdown of the cascade in 2015 is shown on on this page. Click 'Next' to advance to the next page."
         ),
-        bsButton(inputId = "wizardResults_2", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "NEXT_yourCascade", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

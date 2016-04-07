@@ -8,7 +8,7 @@ tabItem(tabName = "_909090",
                 90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any
                 inefficiencies in care, then click on the 'Optimisation' tab.")
         ),
-        bsButton(inputId = "wizardResults_5", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "NEXT_909090", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     ),
     column(width = 8,
         box(width = NULL,
