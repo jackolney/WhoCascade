@@ -15,7 +15,7 @@ CallModel <- reactive({
         p <- GetParameters(
             masterCD4 = MasterCD4_2015,
             data = MasterData,
-            iterationParam = CalibParamOut[1,])
+            iterationParam = CalibParamOut[i,])
 
         # Now we need the initials.
         y <- GetInitial(
