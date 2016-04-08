@@ -1,4 +1,4 @@
-tabItem(tabName = "opt_parameter",
+tabItem(tabName = "opt-parameter",
     column(width = 4,
         box(width = NULL,
             status = "primary",

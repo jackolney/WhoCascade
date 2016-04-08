@@ -1,6 +1,6 @@
 InterventionList <- c("Rho","Epsilon","Kappa","Gamma","Sigma","Omega")
 
-tabItem(tabName = "opt_results",
+tabItem(tabName = "opt-results",
     column(width = 4,
         box(width = NULL,
             status = "primary",

@@ -30,18 +30,17 @@ dashboardPage(
             source("ui/results/res_incidencemortality.R", local = TRUE)$value,
 
             # Optimisation
-            source("ui/optimisation/opt_cost.R",      local = TRUE)$value,
-            source("ui/optimisation/opt_parameter.R", local = TRUE)$value,
-            source("ui/optimisation/opt_results.R",   local = TRUE)$value,
-            source("ui/optimisation/opt_budget.R",    local = TRUE)$value,
+            source("ui/optimisation/opt-intro.R",     local = TRUE)$value,
+            source("ui/optimisation/opt-wizard.R",    local = TRUE)$value,
+            source("ui/optimisation/opt-cost.R",      local = TRUE)$value,
+            source("ui/optimisation/opt-parameter.R", local = TRUE)$value,
+            source("ui/optimisation/opt-results.R",   local = TRUE)$value,
+            source("ui/optimisation/opt-budget.R",    local = TRUE)$value,
 
             # More
             source("ui/more/more_modeldocument.R", local = TRUE)$value,
             source("ui/more/more_singleplot.R",    local = TRUE)$value,
-            source("ui/more/more_allplot.R",       local = TRUE)$value,
-
-            # Wizard Test
-            source("ui/wizard.R", local = TRUE)$value
+            source("ui/more/more_allplot.R",       local = TRUE)$value
         )
     )
 )

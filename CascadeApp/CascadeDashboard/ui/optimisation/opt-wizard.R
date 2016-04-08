@@ -1,4 +1,4 @@
-tabItem(tabName = "wizard",
+tabItem(tabName = "opt-wizard",
     column(width = 8,
         fluidRow(
             box(width = NULL,

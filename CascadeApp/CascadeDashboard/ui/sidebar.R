@@ -22,16 +22,17 @@ dashboardSidebar(
             menuSubItem("Incidence / Mortality", tabName = "incidence_mortality")
             ),
         menuItem("Optimisation", icon = icon("pie-chart", class = "fa-lg fa-fw", lib = "font-awesome"),
-            menuSubItem("Cost",                tabName = "opt_cost"),
-            menuSubItem("Parameter Selection", tabName = "opt_parameter"),
-            menuSubItem("Results",             tabName = "opt_results"),
-            menuSubItem("Budget",              tabName = "opt_budget")
+            menuSubItem("Introduction",        tabName = "opt-intro"),
+            menuSubItem("Wizard",              tabName = "opt-wizard"),
+            menuSubItem("Cost",                tabName = "opt-cost"),
+            menuSubItem("Parameter Selection", tabName = "opt-parameter"),
+            menuSubItem("Results",             tabName = "opt-results"),
+            menuSubItem("Budget",              tabName = "opt-budget")
             ),
         menuItem("More", icon = icon("question", class = "fa-lg fa-fw", lib = "font-awesome"),
             menuSubItem("Model Document", tabName = "model_document"),
             menuSubItem("Single Plot",    tabName = "single_plot"),
             menuSubItem("All Plots",      tabName = "all_plots")
-            ),
-        menuItem("Wizard", tabName = "wizard", icon = icon("magic", class = "fa-lg fa-fw", lib = "font-awesome"))
+            )
     )
 )

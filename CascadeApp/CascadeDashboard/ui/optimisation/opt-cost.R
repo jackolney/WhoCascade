@@ -1,4 +1,4 @@
-tabItem(tabName = "opt_cost",
+tabItem(tabName = "opt-cost",
     column(width = 4,
         box(width = NULL,
             status = "primary",

@@ -1,4 +1,4 @@
-tabItem(tabName = "opt_budget",
+tabItem(tabName = "opt-budget",
     column(width = 4,
         box(width = NULL,
             status = "primary",
