@@ -56,9 +56,7 @@ tabItem(tabName = "introduction",
                 tags$li("Identify strategies to achieve 90-90-90 targets at minimal cost."),
                 tags$li("Illustrate the change in distribution of care between 2015 and 2020."),
                 tags$li("Predict changes in new infections and AIDS deaths between 2015 and 2020.")
-                ),
-            br(),
-            em(h4("Click 'Setup' to get started!"))
+                )
         )
     ),
     column(width = 4,
