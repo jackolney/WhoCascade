@@ -96,5 +96,22 @@ Extract909090Data <- function(...) {
     def <- c("% Diagnosed","% On Treatment","% Suppressed")
     df <- data.frame(def, res, min, max)
     df$def <- factor(df$def, levels = c("% Diagnosed", "% On Treatment", "% Suppressed"))
-    df
+
+    UN_90_data <- DX_data / NX_data
+    UN_9090_data <- TX_data / DX_data
+    UN_909090_data <- VS_data / TX_data
+
+    defData <- c(
+        rep("% Diagnosed", length(UN_90_data)),
+        rep("% On Treatment", length(UN_9090_data)),
+        rep("% Suppressed", length(UN_909090_data))
+    )
+
+    value <- c(UN_90_data, UN_9090_data, UN_909090_data)
+    dfData <- data.frame(defData, value)
+
+    out <- list()
+    out[[1]] <- df
+    out[[2]] <- dfData
+    out
 }
