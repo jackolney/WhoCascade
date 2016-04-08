@@ -195,7 +195,7 @@ GenNewInfPlot <- function() {
     result <- CallModel()
 
     out <- c()
-    for(j in 1:251) {
+    for (j in 1:251) {
         out[j] <- mean(unlist(lapply(result, function(x) sum(x$NewInf[j]))))
     }
 
@@ -214,7 +214,7 @@ GenNewInfPlot <- function() {
     ggOut <- ggOut + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
     ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
-    ggOut <- ggOut + theme(axis.title =  element_text(size = 18))
+    ggOut <- ggOut + theme(axis.title = element_text(size = 18))
     ggOut <- ggOut + theme(axis.line.x = element_line())
     ggOut <- ggOut + theme(axis.line.y = element_line())
     ggOut <- ggOut + xlab("Year")
@@ -231,10 +231,6 @@ GenAidsDeathsPlot <- function() {
         out[j] <- mean(unlist(lapply(result, function(x) sum(x$HivMortality[j]))))
     }
 
-    time <- seq(0, 5, 0.02)
-    HivMortality <- out / time
-    df <- data.frame(time, HivMortality)
-
     timeOne <- seq(0, 5, 0.02)
     HivMortalityOne <- out / timeOne
     time <- c(2, seq(51, 251, 1 * (1/0.02)))
@@ -250,7 +246,7 @@ GenAidsDeathsPlot <- function() {
     ggOut <- ggOut + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
     ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
-    ggOut <- ggOut + theme(axis.title =  element_text(size = 18))
+    ggOut <- ggOut + theme(axis.title = element_text(size = 18))
     ggOut <- ggOut + theme(axis.line.x = element_line())
     ggOut <- ggOut + theme(axis.line.y = element_line())
     ggOut <- ggOut + xlab("Year")
@@ -260,56 +256,130 @@ GenAidsDeathsPlot <- function() {
 }
 
 GenSinglePlot <- function() {
-    ggplot(CallModel(), aes_string(x = "time", y = input$y)) +
-    geom_line(size = 2) +
-    theme_classic() +
+    result <- CallModel()
+
+    out <- c()
+    min <- c()
+    max <- c()
+    for (j in 1:251) {
+        out[j] <- mean(unlist(lapply(result, function(x) sum(x[j,input$y]))))
+        min[j] <- range(unlist(lapply(result, function(x) sum(x[j,input$y]))))[1]
+        max[j] <- range(unlist(lapply(result, function(x) sum(x[j,input$y]))))[2]
+    }
+
+    time <- seq(0, 5, 0.02)
+    df <- data.frame(time, out, min, max)
+
+    ggOut <- ggplot(df, aes(x = time, y = out))
+    ggOut <- ggOut + geom_ribbon(aes(ymin = min, ymax = max), alpha = 0.2, fill = ggColorHue(3)[3])
+    ggOut <- ggOut + geom_line(size = 1.5, color = ggColorHue(1))
+    ggOut <- ggOut + theme_classic()
     ggOut <- ggOut + scale_y_continuous(labels = scales::comma)
-    theme(axis.text.x = element_text(size = 18)) +
-    theme(axis.text.y = element_text(size = 18)) +
-    theme(axis.title = element_text(size = 18)) +
-    xlab("Year") +
-    scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+    ggOut <- ggOut + scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+    ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
+    ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
+    ggOut <- ggOut + theme(axis.title = element_text(size = 18))
+    ggOut <- ggOut + theme(axis.line.x = element_line())
+    ggOut <- ggOut + theme(axis.line.y = element_line())
+    ggOut <- ggOut + theme(axis.title.y = element_blank())
+    ggOut <- ggOut + xlab("Year")
+    ggOut
 }
 
 GenAllPlot <- function() {
     result <- CallModel()
-    grid.arrange(
 
-        ggplot(result, aes(x = time, y = UnDx)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+    UnDx                 <- c()
+    Dx                   <- c()
+    Care                 <- c()
+    PreLtfu              <- c()
+    Tx                   <- c()
+    Vs                   <- c()
+    Ltfu                 <- c()
+    N                    <- c()
+    NewInf               <- c()
+    TotalCost            <- c()
+    HivMortalityProp     <- c()
+    NaturalMortalityProp <- c()
 
-        ggplot(result, aes(x = time, y = Dx)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+    for (j in 1:251) {
+        UnDx[j]                 <- mean(unlist(lapply(result, function(x) sum(x$UnDx[j]))))
+        Dx[j]                   <- mean(unlist(lapply(result, function(x) sum(x$Dx[j]))))
+        Care[j]                 <- mean(unlist(lapply(result, function(x) sum(x$Care[j]))))
+        PreLtfu[j]              <- mean(unlist(lapply(result, function(x) sum(x$PreLtfu[j]))))
+        Tx[j]                   <- mean(unlist(lapply(result, function(x) sum(x$Tx[j]))))
+        Vs[j]                   <- mean(unlist(lapply(result, function(x) sum(x$Vs[j]))))
+        Ltfu[j]                 <- mean(unlist(lapply(result, function(x) sum(x$Ltfu[j]))))
+        N[j]                    <- mean(unlist(lapply(result, function(x) sum(x$N[j]))))
+        NewInf[j]               <- mean(unlist(lapply(result, function(x) sum(x$NewInf[j]))))
+        TotalCost[j]            <- mean(unlist(lapply(result, function(x) sum(x$TotalCost[j]))))
+        HivMortalityProp[j]     <- mean(unlist(lapply(result, function(x) sum(x$HivMortalityProp[j]))))
+        NaturalMortalityProp[j] <- mean(unlist(lapply(result, function(x) sum(x$NaturalMortalityProp[j]))))
+    }
 
-        ggplot(result, aes(x = time, y = Care)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+    time <- seq(0, 5, 0.02)
 
-        ggplot(result, aes(x = time, y = PreLtfu)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+    gridExtra::grid.arrange(
 
-        ggplot(result, aes(x = time, y = Tx)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+        ggplot(data.frame(time, UnDx), aes(x = time, y = UnDx)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
 
-        ggplot(result, aes(x = time, y = Vs)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+        ggplot(data.frame(time, Dx), aes(x = time, y = Dx)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
 
-        ggplot(result, aes(x = time, y = Ltfu)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+        ggplot(data.frame(time, Care), aes(x = time, y = Care)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
 
-        ggplot(result, aes(x = time, y = N)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+        ggplot(data.frame(time, PreLtfu), aes(x = time, y = PreLtfu)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
 
-        ggplot(result, aes(x = time, y = NewInf)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+        ggplot(data.frame(time, Tx), aes(x = time, y = Tx)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
 
-        ggplot(result, aes(x = time, y = TotalCost)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+        ggplot(data.frame(time, Vs), aes(x = time, y = Vs)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
 
-        ggplot(result, aes(x = time, y = HivMortalityProp)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+        ggplot(data.frame(time, Ltfu), aes(x = time, y = Ltfu)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
 
-        ggplot(result, aes(x = time, y = NaturalMortalityProp)) + geom_line() +
-        theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) + theme(axis.title = element_text(size = 18)) + xlab("Year") + theme_classic(),
+        ggplot(data.frame(time, N), aes(x = time, y = N)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
+
+        ggplot(data.frame(time, NewInf), aes(x = time, y = NewInf)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
+
+        ggplot(data.frame(time, TotalCost), aes(x = time, y = TotalCost)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
+
+        ggplot(data.frame(time, HivMortalityProp), aes(x = time, y = HivMortalityProp)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
+
+        ggplot(data.frame(time, NaturalMortalityProp), aes(x = time, y = NaturalMortalityProp)) + geom_line(color = ggColorHue(1)) +
+        theme_classic() + theme(axis.text.x = element_text(size = 18)) + theme(axis.text.y = element_text(size = 18)) +
+        theme(axis.title = element_text(size = 18)) + xlab("Year") + theme(axis.line.x = element_line()) +
+        theme(axis.line.y = element_line()),
 
         nrow = 4,
         ncol = 3

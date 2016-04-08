@@ -18,7 +18,7 @@ output$plotNewInf <-            renderPlot({ GenNewInfPlot() },        height = 
 
 output$plotAidsDeaths <-        renderPlot({ GenAidsDeathsPlot() },    height = 500, width = 'auto')
 
-output$plotSingle <-            renderPlot({ GenSinglePlot() },        height = 400, width = 'auto')
+output$plotSingle <-            renderPlot({ GenSinglePlot() },        height = 500, width = 'auto')
 
 output$plotAll <-               renderPlot({ GenAllPlot() },           height = 800, width = 'auto')
 
