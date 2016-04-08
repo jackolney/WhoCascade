@@ -1,14 +1,12 @@
 tabItem(tabName = "opt-wizard",
     column(width = 8,
-        fluidRow(
-            box(width = NULL,
-                status = "primary",
-                # background = "yellow",
-                solidHeader = TRUE,
-                title = "Results",
-                height = "500px",
-                plotOutput('plotCascade_wizard')
-            )
+        box(width = NULL,
+            status = "primary",
+            # background = "yellow",
+            solidHeader = TRUE,
+            title = "Results",
+            height = "500px",
+            plotOutput('plotCascade_wizard')
         ),
         fluidRow(
             box(
@@ -58,6 +56,6 @@ tabItem(tabName = "opt-wizard",
             sliderInput('omega', 'ART dropout rate (ART dropout/py) (omega):', min = 0, max = 5, value = 0.033, step = 0.001, width = 1000)
             ),
         bsButton(inputId = "testStart", label = "Start", style = "success", size = "large", block = TRUE, icon = icon("play", class = "fa-lg fa-fw", lib = "font-awesome")),
-        bsButton(inputId = "testStop", label = "Stop", style = "danger", size = "large", block = TRUE, icon = icon("stop", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "testStop",  label = "Stop",  style = "danger",  size = "large", block = TRUE, icon = icon("stop", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

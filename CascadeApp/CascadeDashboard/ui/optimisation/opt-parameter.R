@@ -1,24 +1,4 @@
 tabItem(tabName = "opt-parameter",
-    column(width = 4,
-        box(width = NULL,
-            status = "primary",
-            solidHeader = TRUE,
-            title = "Parameter Selection",
-            p("The optimisation algorithm takes six model parameters representing six hypothetical interventions and simulates the cost and impact of all permutations."),
-            helpText("For each intervention, select the number of parameter values to simulate and set the range of rates to sample from (rates are uniformally distributed within this range).
-                The parameter values for each intervention are then displayed in the corresponding tables."),
-            bsButton("resetSliders", label = "RESET SLIDERS", block = TRUE, style = "danger"),
-            p(" "),
-            helpText("Below is the number of iterations the model will simulate along with the estimated time to completion. Hit the 'OPTIMISE' button to begin the simulation. Note the progress bar
-                at the top of the screen, and the run number and elapsed time on the top right. Please wait until the optimisation algorithm has completed the below bar has turned green before proceeding to the results tab."),
-            bsButton("optimiseInput", label = "OPTIMISE", block = TRUE, size = "large", style = "primary"),
-            bsTooltip(id = "optimiseInput", title = "Wait for progress bar to complete before proceeding.", placement = "right", trigger = "hover"),
-            p(" "),
-            tableOutput("optIterationTable"),
-            bsButton("optFinished", label = "OPTIMISATION NOT RUN", style = "danger", block = TRUE, icon = icon("ban", class = "fa-lg fa-fw", lib = "font-awesome"), disabled = TRUE)
-        ),
-        bsButton(inputId = "wizardOpt_3", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
-    ),
     column(width = 8,
         shinyjs::useShinyjs(),
         id = "optimisation-panel",
@@ -82,5 +62,25 @@ tabItem(tabName = "opt-parameter",
             sliderInput('userOptOmega_Range','Range of values (ART dropout/py):', min = 0, max = 0.1, value = c(-0.1, 0.033), step = 0.001),
             tableOutput("optParTable_Omega")
         )
+    ),
+    column(width = 4,
+        box(width = NULL,
+            status = "primary",
+            solidHeader = TRUE,
+            title = "Parameter Selection",
+            p("The optimisation algorithm takes six model parameters representing six hypothetical interventions and simulates the cost and impact of all permutations."),
+            helpText("For each intervention, select the number of parameter values to simulate and set the range of rates to sample from (rates are uniformally distributed within this range).
+                The parameter values for each intervention are then displayed in the corresponding tables."),
+            bsButton("resetSliders", label = "RESET SLIDERS", block = TRUE, style = "danger"),
+            p(" "),
+            helpText("Below is the number of iterations the model will simulate along with the estimated time to completion. Hit the 'OPTIMISE' button to begin the simulation. Note the progress bar
+                at the top of the screen, and the run number and elapsed time on the top right. Please wait until the optimisation algorithm has completed the below bar has turned green before proceeding to the results tab."),
+            bsButton("optimiseInput", label = "OPTIMISE", block = TRUE, size = "large", style = "primary"),
+            bsTooltip(id = "optimiseInput", title = "Wait for progress bar to complete before proceeding.", placement = "right", trigger = "hover"),
+            p(" "),
+            tableOutput("optIterationTable"),
+            bsButton("optFinished", label = "OPTIMISATION NOT RUN", style = "danger", block = TRUE, icon = icon("ban", class = "fa-lg fa-fw", lib = "font-awesome"), disabled = TRUE)
+        ),
+        bsButton(inputId = "wizardOpt_3", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )
