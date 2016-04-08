@@ -5,10 +5,10 @@ tabItem(tabName = "incidence_mortality",
             height = "600px",
             title = "Results",
             tabPanel("Incidence",
-                plotOutput('plotNewInf')
+                plotOutput('plotNewInf', height = "500px")
             ),
             tabPanel("AIDS Deaths",
-                plotOutput('plotAidsDeaths')
+                plotOutput('plotAidsDeaths', height = "500px")
             )
         )
     ),

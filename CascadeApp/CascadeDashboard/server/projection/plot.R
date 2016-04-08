@@ -14,9 +14,9 @@ output$plotPowersCascade <-     renderPlot({ GenPowersCascadePlot() }, height = 
 
 output$plot909090 <-            renderPlot({ Gen909090Plot() },        height = 500, width = 'auto')
 
-output$plotNewInf <-            renderPlot({ GenNewInfPlot() },        height = 400, width = 'auto')
+output$plotNewInf <-            renderPlot({ GenNewInfPlot() },        height = 500, width = 'auto')
 
-output$plotAidsDeaths <-        renderPlot({ GenAidsDeathsPlot() },    height = 400, width = 'auto')
+output$plotAidsDeaths <-        renderPlot({ GenAidsDeathsPlot() },    height = 500, width = 'auto')
 
 output$plotSingle <-            renderPlot({ GenSinglePlot() },        height = 400, width = 'auto')
 
