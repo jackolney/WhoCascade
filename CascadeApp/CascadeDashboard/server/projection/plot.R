@@ -12,7 +12,7 @@ output$plotCascade <-           renderPlot({ GenCascadePlot() },       height = 
 
 output$plotPowersCascade <-     renderPlot({ GenPowersCascadePlot() }, height = 400, width = 'auto')
 
-output$plot909090 <-            renderPlot({ Gen909090Plot() },        height = 400, width = 'auto')
+output$plot909090 <-            renderPlot({ Gen909090Plot() },        height = 500, width = 'auto')
 
 output$plotNewInf <-            renderPlot({ GenNewInfPlot() },        height = 400, width = 'auto')
 

@@ -2,6 +2,8 @@ tabItem(tabName = "powers_cascade",
     column(width = 8,
         box(width = NULL,
             status = "primary",
+            solidHeader = TRUE,
+            title = "Power's Cascade",
             plotOutput('plotPowersCascade')
         )
     ),

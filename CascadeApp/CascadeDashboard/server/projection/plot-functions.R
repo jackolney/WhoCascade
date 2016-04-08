@@ -1,7 +1,6 @@
 GenYourCascadePlot <- function(h) {
     t0 <- ExtractCascadeData(1)
-    print(paste("h =", h))
-    print(t0)
+
     c.fill <- rev(brewer.pal(9, "Blues")[3:8])
     c.fill[h] <- "red"
 
@@ -50,13 +49,13 @@ GenCascadePlot <- function() {
     ggOne <- ggOne + geom_errorbar(mapping = aes(x = def, ymin = min, ymax = max), width = 0.2, size = 1)
     ggOne <- ggOne + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggOne <- ggOne + scale_fill_manual(values = c.fill)
-    ggOne <- ggOne + ggtitle("Care Cascade in 2015")
+    ggOne <- ggOne + ggtitle("2015")
     ggOne <- ggOne + theme_classic()
     ggOne <- ggOne + theme(plot.title = element_text(hjust = 0.5))
     ggOne <- ggOne + theme(title = element_text(size = 18))
     ggOne <- ggOne + theme(axis.title = element_blank())
-    ggOne <- ggOne + theme(axis.text.x = element_text(size = 15))
-    ggOne <- ggOne + theme(axis.text.y = element_text(size = 15))
+    ggOne <- ggOne + theme(axis.text.x = element_text(size = 14))
+    ggOne <- ggOne + theme(axis.text.y = element_text(size = 14))
     ggOne <- ggOne + theme(legend.position = "none")
     ggOne <- ggOne + theme(plot.background = element_blank())
     ggOne <- ggOne + theme(panel.background = element_blank())
@@ -67,13 +66,13 @@ GenCascadePlot <- function() {
     ggTwo <- ggTwo + geom_errorbar(mapping = aes(x = def, ymin = min, ymax = max), width = 0.2, size = 1)
     ggTwo <- ggTwo + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggTwo <- ggTwo + scale_fill_manual(values = c.fill)
-    ggTwo <- ggTwo + ggtitle("Care Cascade in 2020")
+    ggTwo <- ggTwo + ggtitle("2020")
     ggTwo <- ggTwo + theme_classic()
     ggTwo <- ggTwo + theme(plot.title = element_text(hjust = 0.5))
     ggTwo <- ggTwo + theme(title = element_text(size = 18))
     ggTwo <- ggTwo + theme(axis.title = element_blank())
-    ggTwo <- ggTwo + theme(axis.text.x = element_text(size = 15))
-    ggTwo <- ggTwo + theme(axis.text.y = element_text(size = 15))
+    ggTwo <- ggTwo + theme(axis.text.x = element_text(size = 14))
+    ggTwo <- ggTwo + theme(axis.text.y = element_text(size = 14))
     ggTwo <- ggTwo + theme(legend.position = "none")
     ggTwo <- ggTwo + theme(plot.background = element_blank())
     ggTwo <- ggTwo + theme(panel.background = element_blank())
@@ -89,7 +88,6 @@ GrabLegend <- function(a.ggplot) {
     return(legend)
 }
 
-
 GenPowersCascadePlot <- function() {
     t0 <- ExtractPowersCascadeData(1)
     t5 <- ExtractPowersCascadeData(251) # t5 = (5 / 0.02) + 1 [t0]
@@ -101,14 +99,14 @@ GenPowersCascadePlot <- function() {
     ggOne <- ggOne + geom_bar(stat = 'identity')
     ggOne <- ggOne + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggOne <- ggOne + scale_fill_manual(values = p.col)
-    ggOne <- ggOne + ggtitle("Care Cascade in 2015")
+    ggOne <- ggOne + ggtitle("2015")
     ggOne <- ggOne + theme_classic()
     ggOne <- ggOne + theme(plot.title = element_text(hjust = 0.5))
     ggOne <- ggOne + theme(title = element_text(size = 18))
     ggOne <- ggOne + theme(axis.title = element_blank())
     ggOne <- ggOne + theme(axis.text.x = element_text(size = 13))
     ggOne <- ggOne + theme(axis.text.y = element_text(size = 15))
-    ggOne <- ggOne + theme(legend.text = element_text(size = 15))
+    ggOne <- ggOne + theme(legend.text = element_text(size = 13))
     ggOne <- ggOne + theme(legend.title = element_text(size = 15))
     ggOne <- ggOne + theme(legend.position = "right")
     ggOne <- ggOne + theme(plot.background = element_blank())
@@ -122,14 +120,14 @@ GenPowersCascadePlot <- function() {
     ggTwo <- ggTwo + geom_bar(stat = 'identity')
     ggTwo <- ggTwo + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggTwo <- ggTwo + scale_fill_manual(values = p.col)
-    ggTwo <- ggTwo + ggtitle("Care Cascade in 2020")
+    ggTwo <- ggTwo + ggtitle("2020")
     ggTwo <- ggTwo + theme_classic()
     ggTwo <- ggTwo + theme(plot.title = element_text(hjust = 0.5))
     ggTwo <- ggTwo + theme(title = element_text(size = 18))
     ggTwo <- ggTwo + theme(axis.title = element_blank())
     ggTwo <- ggTwo + theme(axis.text.x = element_text(size = 13))
     ggTwo <- ggTwo + theme(axis.text.y = element_text(size = 15))
-    ggTwo <- ggTwo + theme(legend.text = element_text(size = 15))
+    ggTwo <- ggTwo + theme(legend.text = element_text(size = 13))
     ggTwo <- ggTwo + theme(legend.title = element_text(size = 15))
     ggTwo <- ggTwo + theme(legend.position = "right")
     ggTwo <- ggTwo + theme(plot.background = element_blank())
@@ -167,6 +165,7 @@ Gen909090Plot <- function() {
 
     ggOut <- ggplot(df, aes(x = def, y = res))
     ggOut <- ggOut + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
+    ggOut <- ggOut + geom_errorbar(mapping = aes(x = def, ymin = min, ymax = max), width = 0.2, size = 1)
     ggOut <- ggOut + scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = scales::percent, expand = c(0, 0))
     ggOut <- ggOut + scale_fill_manual(values = cfill)
     ggOut <- ggOut + geom_abline(intercept = 0.9, slope = 0)
@@ -198,9 +197,12 @@ GenNewInfPlot <- function() {
     ggOut <- ggplot(df, aes(x = time, y = NewInf))
     ggOut <- ggOut + geom_line(size = 2)
     ggOut <- ggOut + theme_classic()
+    ggOut <- ggOut + scale_y_continuous(labels = scales::comma)
     ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
     ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
     ggOut <- ggOut + theme(axis.title =  element_text(size = 18))
+    ggOut <- ggOut + theme(axis.line.x = element_line())
+    ggOut <- ggOut + theme(axis.line.y = element_line())
     ggOut <- ggOut + xlab("Year")
     ggOut <- ggOut + ylab("Cumulative New Infections / Time")
     ggOut <- ggOut + scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
@@ -208,21 +210,37 @@ GenNewInfPlot <- function() {
 }
 
 GenAidsDeathsPlot <- function() {
-    ggplot(CallModel(), aes(x = time, y = HivMortalityProp)) +
-    geom_line(size = 2) +
-    theme_classic() +
-    theme(axis.text.x = element_text(size = 18)) +
-    theme(axis.text.y = element_text(size = 18)) +
-    theme(axis.title =  element_text(size = 18)) +
-    xlab("Year") +
-    ylab("# AIDS deaths / total infected population") +
-    scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+    result <- CallModel()
+
+    out <- c()
+    for (j in 1:251) {
+        out[j] <- mean(unlist(lapply(result, function(x) sum(x$HivMortality[j]))))
+    }
+
+    time <- seq(0, 5, 0.02)
+    HivMortality <- out / time
+    df <- data.frame(time, HivMortality)
+
+    ggOut <- ggplot(df, aes(x = time, y = HivMortality))
+    ggOut <- ggOut + geom_line(size = 2)
+    ggOut <- ggOut + theme_classic()
+    ggOut <- ggOut + scale_y_continuous(labels = scales::comma)
+    ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
+    ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
+    ggOut <- ggOut + theme(axis.title =  element_text(size = 18))
+    ggOut <- ggOut + theme(axis.line.x = element_line())
+    ggOut <- ggOut + theme(axis.line.y = element_line())
+    ggOut <- ggOut + xlab("Year")
+    ggOut <- ggOut + ylab("Cumulative AIDS Deaths / Time")
+    ggOut <- ggOut + scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+    ggOut
 }
 
 GenSinglePlot <- function() {
     ggplot(CallModel(), aes_string(x = "time", y = input$y)) +
     geom_line(size = 2) +
     theme_classic() +
+    ggOut <- ggOut + scale_y_continuous(labels = scales::comma)
     theme(axis.text.x = element_text(size = 18)) +
     theme(axis.text.y = element_text(size = 18)) +
     theme(axis.title = element_text(size = 18)) +

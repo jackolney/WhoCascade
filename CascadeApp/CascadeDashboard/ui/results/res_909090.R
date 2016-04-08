@@ -2,11 +2,13 @@ tabItem(tabName = "_909090",
     column(width = 8,
         box(width = NULL,
             status = "primary",
-            plotOutput('plot909090')
+            solidHeader = TRUE,
+            title = "UNAIDS 90-90-90 by 2020",
+            plotOutput('plot909090', height = "500px")
         ),
-        valueBoxOutput("vb_90"),
-        valueBoxOutput("vb_9090"),
-        valueBoxOutput("vb_909090")
+        valueBoxOutput("vb_90",     width = 4),
+        valueBoxOutput("vb_9090",   width = 4),
+        valueBoxOutput("vb_909090", width = 4)
     ),
     column(width = 4,
         box(width = NULL,

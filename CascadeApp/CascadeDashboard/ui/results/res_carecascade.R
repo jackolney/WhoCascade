@@ -2,6 +2,8 @@ tabItem(tabName = "care_cascade",
     column(width = 8,
         box(width = NULL,
             status = "primary",
+            solidHeader = TRUE,
+            title = "Care Cascade",
             plotOutput('plotCascade')
         )
     ),

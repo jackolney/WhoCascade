@@ -82,31 +82,17 @@ Extract909090Data <- function(...) {
     TX_data <- unlist(lapply(result, function(x) sum(x$ART[year])))
     VS_data <- unlist(lapply(result, function(x) sum(x$Vs[year])))
 
-    NX <- mean(NX_data)
-    DX <- mean(DX_data)
-    TX <- mean(TX_data)
-    VS <- mean(VS_data)
+    UN_90 <- mean(DX_data / NX_data)
+    UN_9090 <- mean(TX_data / DX_data)
+    UN_909090 <- mean(VS_data / TX_data)
 
-    NX_range <- range(NX_data)
-    DX_range <- range(DX_data)
-    TX_range <- range(TX_data)
-    VS_range <- range(VS_data)
-
-    UN_90 <- DX / NX
-    UN_9090 <- TX / DX
-    UN_909090 <- VS / TX
-
-    UN_90_min <- DX_range[1] / NX_range[1]
-    UN_9090_min <- TX_range[1] / DX_range[1]
-    UN_909090_min <- VS_range[1] / TX_range[1]
-
-    UN_90_max <- DX_range[2] / NX_range[2]
-    UN_9090_max <- TX_range[2] / DX_range[2]
-    UN_909090_max <- VS_range[2] / TX_range[2]
+    UN_90_range <- range(DX_data / NX_data)
+    UN_9090_range <- range(TX_data / DX_data)
+    UN_909090_range <- range(VS_data / TX_data)
 
     res <- c(UN_90, UN_9090, UN_909090)
-    min <- c(UN_90_min, UN_9090_min, UN_909090_min)
-    max <- c(UN_90_max, UN_9090_max, UN_909090_max)
+    min <- c(UN_90_range[1], UN_9090_range[1], UN_909090_range[1])
+    max <- c(UN_90_range[2], UN_9090_range[2], UN_909090_range[2])
     def <- c("% Diagnosed","% On Treatment","% Suppressed")
     df <- data.frame(def, res, min, max)
     df$def <- factor(df$def, levels = c("% Diagnosed", "% On Treatment", "% Suppressed"))
