@@ -31,6 +31,9 @@ tabItem(tabName = "opt-wizard",
         valueBoxOutput("vb_909090_wizard")
     ),
     column(width = 4,
+        bsButton(inputId = "testStart", label = "Start", style = "success", size = "large", block = TRUE, icon = icon("play", class = "fa-lg fa-fw", lib = "font-awesome")),
+        bsButton(inputId = "testStop",  label = "Stop",  style = "danger",  size = "large", block = TRUE, icon = icon("stop", class = "fa-lg fa-fw", lib = "font-awesome")),
+        br(),
         box(width = NULL,
             status = "warning",
             solidHeader = TRUE,
@@ -55,7 +58,6 @@ tabItem(tabName = "opt-wizard",
             title = "Retention",
             sliderInput('omega', 'ART dropout rate (ART dropout/py) (omega):', min = 0, max = 5, value = 0.033, step = 0.001, width = 1000)
             ),
-        bsButton(inputId = "testStart", label = "Start", style = "success", size = "large", block = TRUE, icon = icon("play", class = "fa-lg fa-fw", lib = "font-awesome")),
-        bsButton(inputId = "testStop",  label = "Stop",  style = "danger",  size = "large", block = TRUE, icon = icon("stop", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "NEXT_optWizard", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

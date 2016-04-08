@@ -23,10 +23,14 @@ observeEvent(input$NEXT_powersCascade, {updateTabItems(session, inputId = "sideB
 
 observeEvent(input$NEXT_909090,        {updateTabItems(session, inputId = "sideBar", selected = "incidence_mortality")})
 
-observeEvent(input$NEXT_incMort,       {updateTabItems(session, inputId = "sideBar", selected = "opt_cost")})
+observeEvent(input$NEXT_incMort,       {updateTabItems(session, inputId = "sideBar", selected = "opt-intro")})
 
-observeEvent(input$wizardOpt_2,        {updateTabItems(session, inputId = "sideBar", selected = "opt_parameter")})
+observeEvent(input$NEXT_optIntro,      {updateTabItems(session, inputId = "sideBar", selected = "opt-wizard")})
 
-observeEvent(input$wizardOpt_3,        {updateTabItems(session, inputId = "sideBar", selected = "opt_results")})
+observeEvent(input$NEXT_optWizard,     {updateTabItems(session, inputId = "sideBar", selected = "opt-results")})
 
-observeEvent(input$wizardOpt_4,        {updateTabItems(session, inputId = "sideBar", selected = "opt_budget")})
+observeEvent(input$wizardOpt_2,        {updateTabItems(session, inputId = "sideBar", selected = "opt-parameter")})
+
+observeEvent(input$wizardOpt_3,        {updateTabItems(session, inputId = "sideBar", selected = "opt-2results")})
+
+observeEvent(input$wizardOpt_4,        {updateTabItems(session, inputId = "sideBar", selected = "opt-budget")})

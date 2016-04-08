@@ -29,6 +29,6 @@ tabItem(tabName = "opt-intro",
             title = "Help Panel",
             "This page details the working of the optimsation section of the site. Please hit 'Next' to proceed to optimisation. Further page options are available from the sidebar."
         ),
-        bsButton(inputId = "wizardOpt_2", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "NEXT_optIntro", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

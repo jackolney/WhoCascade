@@ -1,4 +1,10 @@
 tabItem(tabName = "opt-budget",
+    column(width = 8,
+        box(width = NULL,
+            status = "primary",
+            DT::dataTableOutput('optBudgetTable', width = "100%")
+        )
+    ),
     column(width = 4,
         box(width = NULL,
             status = "primary",
@@ -11,12 +17,6 @@ tabItem(tabName = "opt-budget",
             bsButton("showBudget909090", label = "90-90-90", style = "success", block = TRUE, size = "large"),
             p(" "),
             bsButton("showBudgetDALYs", label = "DALYs", style = "danger", block = TRUE, size = "large")
-        )
-    ),
-    column(width = 8,
-        box(width = NULL,
-            status = "primary",
-            DT::dataTableOutput('optBudgetTable', width = "100%")
         )
     )
 )
