@@ -199,14 +199,19 @@ GenNewInfPlot <- function() {
         out[j] <- mean(unlist(lapply(result, function(x) sum(x$NewInf[j]))))
     }
 
-    time <- seq(0, 5, 0.02)
-    NewInf <- out / time
-    df <- data.frame(time, NewInf)
+    timeOne <- seq(0, 5, 0.02)
+    NewInfOne <- out / timeOne
+    time <- c(2, seq(51, 251, 1 * (1/0.02)))
+    NewInf <- NewInfOne[time]
+    timeOut <- seq(2015, 2020, 1)
+    df <- data.frame(timeOut, NewInf)
 
-    ggOut <- ggplot(df, aes(x = time, y = NewInf))
-    ggOut <- ggOut + geom_line(size = 2)
+    c.fill <- rev(brewer.pal(9,"Blues")[3:8])
+
+    ggOut <- ggplot(df, aes(x = timeOut, NewInf))
+    ggOut <- ggOut + geom_bar(stat = "identity", size = 2, fill = c.fill)
     ggOut <- ggOut + theme_classic()
-    ggOut <- ggOut + scale_y_continuous(labels = scales::comma)
+    ggOut <- ggOut + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
     ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
     ggOut <- ggOut + theme(axis.title =  element_text(size = 18))
@@ -214,7 +219,7 @@ GenNewInfPlot <- function() {
     ggOut <- ggOut + theme(axis.line.y = element_line())
     ggOut <- ggOut + xlab("Year")
     ggOut <- ggOut + ylab("Cumulative New Infections / Time")
-    ggOut <- ggOut + scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+    ggOut <- ggOut + scale_x_continuous(breaks = seq(2015, 2020, 1), labels = seq(2015, 2020, 1))
     ggOut
 }
 
@@ -230,18 +235,27 @@ GenAidsDeathsPlot <- function() {
     HivMortality <- out / time
     df <- data.frame(time, HivMortality)
 
-    ggOut <- ggplot(df, aes(x = time, y = HivMortality))
-    ggOut <- ggOut + geom_line(size = 2)
+    timeOne <- seq(0, 5, 0.02)
+    HivMortalityOne <- out / timeOne
+    time <- c(2, seq(51, 251, 1 * (1/0.02)))
+    HivMortality <- HivMortalityOne[time]
+    timeOut <- seq(2015, 2020, 1)
+    df <- data.frame(timeOut, HivMortality)
+
+    c.fill <- rev(brewer.pal(9,"Blues")[3:8])
+
+    ggOut <- ggplot(df, aes(x = timeOut, HivMortality))
+    ggOut <- ggOut + geom_bar(stat = "identity", size = 2, fill = c.fill)
     ggOut <- ggOut + theme_classic()
-    ggOut <- ggOut + scale_y_continuous(labels = scales::comma)
+    ggOut <- ggOut + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
     ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
     ggOut <- ggOut + theme(axis.title =  element_text(size = 18))
     ggOut <- ggOut + theme(axis.line.x = element_line())
     ggOut <- ggOut + theme(axis.line.y = element_line())
     ggOut <- ggOut + xlab("Year")
-    ggOut <- ggOut + ylab("Cumulative AIDS Deaths / Time")
-    ggOut <- ggOut + scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = seq(2015, 2020, 1))
+    ggOut <- ggOut + ylab("Cumulative New Infections / Time")
+    ggOut <- ggOut + scale_x_continuous(breaks = seq(2015, 2020, 1), labels = seq(2015, 2020, 1))
     ggOut
 }
 
