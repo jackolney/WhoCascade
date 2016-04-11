@@ -1,3 +1,5 @@
+## Wizard Page Sliders ##
+## Currently dummies ##
 output$UI_optW_rho <- renderUI({
     sliderInput(inputId = 'optW_rho', label = 'Diagnosis rate (diagnoses/py) (rho):',
         min = round(ParamMaxMin["rho", "min"],        digits = 3),
@@ -50,4 +52,113 @@ output$UI_optW_omega <- renderUI({
         value = round(mean(CalibParamOut[["omega"]]), digits = 3),
         step = 0.001,
         width = 1000)
+})
+
+
+## Parameter Page Sliders ##
+
+output$UI_optP_rhoLength <- renderUI({
+    sliderInput(inputId = 'userOptRho_LengthOf', label = 'Length of parameter range:',
+        min   = 0,
+        max   = 10,
+        value = 4,
+        step  = 1)
+})
+
+output$UI_optP_rhoRange <- renderUI({
+    sliderInput(inputId = 'userOptRho_Range', label = 'Range of values (diagnoses/py):',
+        min = 0,
+        max = 50,
+        value = c(
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 3),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 3) * 5),
+        step = 0.001)
+})
+
+output$UI_optP_qLength <- renderUI({
+    sliderInput(inputId = 'userOptq_LengthOf', label = 'Length of parameter range:',
+        min   = 0,
+        max   = 10,
+        value = 4,
+        step  = 1)
+})
+
+output$UI_optP_qRange <- renderUI({
+    sliderInput(inputId = 'userOptq_Range', label = 'Range of values (proportion):',
+        min = 0,
+        max = 1,
+        value = c(
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["q"]], digits = 3),
+            1),
+        step = 0.001)
+})
+
+output$UI_optP_kappaLength <- renderUI({
+    sliderInput(inputId = 'userOptKappa_LengthOf', label = 'Length of parameter range:',
+        min   = 0,
+        max   = 10,
+        value = 4,
+        step  = 1)
+})
+
+output$UI_optP_kappaRange <- renderUI({
+    sliderInput(inputId = 'userOptKappa_Range', label = 'Range of values (person lost from pre-ART care/py):',
+        min = 0,
+        max = 50,
+        value = c(
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 3),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 3) * 5),
+        step = 0.001)
+})
+
+output$UI_optP_gammaLength <- renderUI({
+    sliderInput(inputId = 'userOptGamma_LengthOf', label = 'Length of parameter range:',
+        min   = 0,
+        max   = 10,
+        value = 4,
+        step  = 1)
+})
+
+output$UI_optP_gammaRange <- renderUI({
+    sliderInput(inputId = 'userOptGamma_Range', label = 'Range of values (ART initiations/py):',
+        min = 0,
+        max = 50,
+        value = c(
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 3),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 3) * 5),
+        step = 0.001)
+})
+
+output$UI_optP_sigmaLength <- renderUI({
+    sliderInput(inputId = 'userOptSigma_LengthOf', label = 'Length of parameter range:',
+        min   = 0,
+        max   = 10,
+        value = 4,
+        step  = 1)
+})
+
+output$UI_optP_sigmaRange <- renderUI({
+    sliderInput(inputId = 'userOptSigma_Range', label = 'Range of values (persons transitioning from non-adherent to adherent/py):',
+        min = 0,
+        max = 5,
+        value = c(0, 5),
+        step = 0.001)
+})
+
+output$UI_optP_omegaLength <- renderUI({
+    sliderInput(inputId = 'userOptOmega_LengthOf', label = 'Length of parameter range:',
+        min   = 0,
+        max   = 10,
+        value = 4,
+        step  = 1)
+})
+
+output$UI_optP_omegaRange <- renderUI({
+    sliderInput(inputId = 'userOptOmega_Range', label = 'Range of values (ART dropout/py):',
+        min = 0,
+        max = 0.1,
+        value = c(
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 3),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 3) * 5),
+        step = 0.001)
 })

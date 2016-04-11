@@ -1,11 +1,11 @@
 GetParaMatrix <- function() {
     ParRange <- expand.grid(
-        Rho =       seq(from = input$userOptRho_Range[1],       to = input$userOptRho_Range[2],     length.out = input$userOptRho_LengthOf),
-        Epsilon =   seq(from = input$userOptEpsilon_Range[1],   to = input$userOptEpsilon_Range[2], length.out = input$userOptEpsilon_LengthOf),
-        Kappa =     seq(from = input$userOptKappa_Range[2],     to = input$userOptKappa_Range[1],   length.out = input$userOptKappa_LengthOf),
-        Gamma =     seq(from = input$userOptGamma_Range[1],     to = input$userOptGamma_Range[2],   length.out = input$userOptGamma_LengthOf),
-        Sigma =     seq(from = input$userOptSigma_Range[1],     to = input$userOptSigma_Range[2],   length.out = input$userOptSigma_LengthOf),
-        Omega =     seq(from = input$userOptOmega_Range[2],     to = input$userOptOmega_Range[1],   length.out = input$userOptOmega_LengthOf)
+        rho =       seq(from = input$userOptRho_Range[1],       to = input$userOptRho_Range[2],     length.out = input$userOptRho_LengthOf),
+        q =         seq(from = input$userOptq_Range[1],         to = input$userOptq_Range[2],       length.out = input$userOptq_LengthOf),
+        kappa =     seq(from = input$userOptKappa_Range[2],     to = input$userOptKappa_Range[1],   length.out = input$userOptKappa_LengthOf),
+        gamma =     seq(from = input$userOptGamma_Range[1],     to = input$userOptGamma_Range[2],   length.out = input$userOptGamma_LengthOf),
+        sigma =     seq(from = input$userOptSigma_Range[1],     to = input$userOptSigma_Range[2],   length.out = input$userOptSigma_LengthOf),
+        omega =     seq(from = input$userOptOmega_Range[2],     to = input$userOptOmega_Range[1],   length.out = input$userOptOmega_LengthOf)
     )
     ParRange
 }
@@ -41,7 +41,6 @@ Calc_909090_Result <- function(out) {
 Calc_VS <- function(out) {
     out$Vs[251]
 }
-
 
 Calc_909090 <- function(out) {
     Extract909090Data(out)
@@ -85,4 +84,19 @@ FindPar_909090 <- function(result, par) {
         }
     }
     return(res_list)
+}
+
+GetAverageCalibOut <- function(calibOut) {
+    # subset only model output for 2015
+    out <- calibOut[calibOut$year == 2015 & calibOut$source == "model",]
+    # find only unique values
+    indicator <- unique(out$indicator)
+    # pick out values
+    value <- c()
+    for (j in 1:length(indicator)) {
+        value[j] <- mean(calibOut[calibOut$indicator == indicator[j], "value"])
+    }
+    # build data.frame and return
+    df <- data.frame(indicator, value)
+    df
 }

@@ -1,71 +1,30 @@
-GetOptPar <- function(...) {
-    default <- c(
-        Nu_1 = 0.193634,
-        Nu_2 = 0.321304,
-        Nu_3 = 0.328285,
-        Nu_4 = 0.497247,
-        Nu_5 = 0.559090,
-        Nu_6 = 0.846406,
-        Rho = input$rho,
-        Epsilon = input$epsilon,
-        Kappa = 1.079,
-        Gamma = input$gamma,
-        Theta = 1.511,
-        Omega = input$omega,
-        p = 0.95,
-        s_1 = 0.1,
-        s_2 = 0.4,
-        s_3 = 0.7,
-        s_4 = 1,
-        s_5 = 1.3,
-        s_6 = 1.6,
-        s_7 = 1.9,
-        Sigma = 0,
-        Delta_1 = 0.5178,
-        Delta_2 = 0.8862,
-        Delta_3 = 0.8832,
-        Delta_4 = 1.1581,
-        Delta_5 = 2.5663,
-        Alpha_1 = 0.004110,
-        Alpha_2 = 0.011670,
-        Alpha_3 = 0.009385,
-        Alpha_4 = 0.016394,
-        Alpha_5 = 0.027656,
-        Alpha_6 = 0.047877,
-        Alpha_7 = 1.081964,
-        Tau_1 = 0.003905,
-        Tau_2 = 0.011087,
-        Tau_3 = 0.008916,
-        Tau_4 = 0.015574,
-        Tau_5 = 0.026273,
-        Tau_6 = 0.045482,
-        Tau_7 = 1.02785,
-        Mu = 0.0374,
-        ART_All = input$userART_All,
-        ART_500 = input$userART_500,
-        ART_350 = input$userART_350,
-        ART_200 = input$userART_200,
-        Dx_unitCost = input$userDxUnitCost,
-        Linkage_unitCost = input$userLinkageUnitCost,
-        Annual_Care_unitCost = input$userAnnualCareUnit,
-        Annual_ART_unitCost = input$userAnnualARTUnitCost,
-        Iota_1 = 0.5251,
-        Iota_2 = 0.2315,
-        Iota_3 = 0.1787,
-        Iota_4 = 0.0615,
-        Iota_5 = 0.0011,
-        Iota_6 = 0.0008,
-        Iota_7 = 0.0014,
-        w1 = 1.35,
-        w2 = 1,
-        w3 = 1.64,
-        w4 = 5.17,
-        w5 = 0.1,
-        beta = 0.0275837)
-    replace <- c(...)
-    if(length(replace) > 0L) {
-        stopifnot(all(names(replace) %in% names(default)))
-        default[names(replace)] <- replace
-    }
-    default
+GetOptPar <- function(masterCD4, data, iterationParam, calibParamOut) {
+    p <- parameters(
+        prop_preART_500    = masterCD4[1,"prop.Off.ART.500"][[1]],
+        prop_preART_350500 = masterCD4[1,"prop.Off.ART.350500"][[1]],
+        prop_preART_250350 = masterCD4[1,"prop.Off.ART.250350"][[1]],
+        prop_preART_200250 = masterCD4[1,"prop.Off.ART.200250"][[1]],
+        prop_preART_100200 = masterCD4[1,"prop.Off.ART.100200"][[1]],
+        prop_preART_50100  = masterCD4[1,"prop.Off.ART.50100"][[1]],
+        prop_preART_50     = masterCD4[1,"prop.Off.ART.50"][[1]],
+        t_1 = ConvertYear2015(data[["treatment_guidelines"]][["more500"]]),
+        t_2 = ConvertYear2015(data[["treatment_guidelines"]][["less500"]]),
+        t_3 = ConvertYear2015(data[["treatment_guidelines"]][["less350"]]),
+        t_4 = ConvertYear2015(data[["treatment_guidelines"]][["less250"]]),
+        t_5 = ConvertYear2015(data[["treatment_guidelines"]][["less200"]]),
+
+        # These guys still need to be set by the model.
+        Theta = lapply(CalibParamOut, function(x) {return(mean(x))})[["theta"]],
+        Mu    = lapply(CalibParamOut, function(x) {return(mean(x))})[["mu"]],
+        p     = lapply(CalibParamOut, function(x) {return(mean(x))})[["p"]],
+
+        # MODIFYING #
+        Rho   = iterationParam[["rho"]],
+        Kappa = iterationParam[["kappa"]],
+        Gamma = iterationParam[["gamma"]],
+        Sigma = iterationParam[["sigma"]],
+        Omega = iterationParam[["omega"]],
+        q     = iterationParam[["q"]]
+    )
+    p
 }

@@ -29,6 +29,10 @@ observeEvent(input$optimiseInput, {
 
         theList <- list()
 
+        # Extract the mean initial values from calibration
+        meanCalibInitial <- GetAverageCalibOut(CalibOut)
+
+        ## THE BIG LOOP ##
         for(i in 1:dim(par)[1]) {
 
             setProgress(
@@ -36,9 +40,25 @@ observeEvent(input$optimiseInput, {
                 message = paste(paste('Run ', i, ".", sep = ''), "Time =", round(proc.time()[[1]] - time, 0), "sec"),
                 detail = "")
 
-            theList[[rownames(par)[i]]] <- RunSim(par[i,])
+            p <- GetOptPar(
+                masterCD4 = MasterCD4_2015,
+                data = MasterData,
+                iterationParam = par[i,],
+                calibParamOut = CalibParamOut)
+
+            # Now we need the initials.
+            y <- GetInitial(
+                p = p,
+                iterationResult = meanCalibInitial,
+                masterCD4 = MasterCD4_2015
+                )
+
+            p[["beta"]] <- GetBeta(y = y, p = p, data = MasterData)
+
+            theList[[rownames(par)[i]]] <- RunSim(y = y, p = p)
 
         }
+        ## END OF LOOP ##
 
         setProgress(value = 0, message = 'Compiling results', detail = '')
 
