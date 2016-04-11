@@ -1,11 +1,13 @@
 GetInitial <- function(p, iterationResult, masterCD4) {
     if(!is.list(iterationResult)) stop("Not a list.")
 
-    i2015_PLHIV       <- iterationResult[iterationResult$indicator == "PLHIV","value"]
-    i2015_PLHIV_Diag  <- iterationResult[iterationResult$indicator == "PLHIV Diagnosed","value"]
-    i2015_PLHIV_Care  <- iterationResult[iterationResult$indicator == "PLHIV in Care","value"]
-    i2015_PLHIV_ART   <- iterationResult[iterationResult$indicator == "PLHIV on ART","value"]
-    i2015_PLHIV_Viral <- iterationResult[iterationResult$indicator == "PLHIV Suppressed","value"]
+    i2015_PLHIV         <- iterationResult[iterationResult$indicator == "PLHIV",              "value"]
+    i2015_PLHIV_Diag    <- iterationResult[iterationResult$indicator == "PLHIV Diagnosed",    "value"]
+    i2015_PLHIV_Care    <- iterationResult[iterationResult$indicator == "PLHIV in Care",      "value"]
+    i2015_PLHIV_ART     <- iterationResult[iterationResult$indicator == "PLHIV on ART",       "value"]
+    i2015_PLHIV_Viral   <- iterationResult[iterationResult$indicator == "PLHIV Suppressed",   "value"]
+    i2015_PLHIV_preLtfu <- iterationResult[iterationResult$indicator == "PLHIV Pre-ART LTFU", "value"]
+    i2015_PLHIV_Ltfu    <- iterationResult[iterationResult$indicator == "PLHIV ART LTFU",     "value"]
 
     iCD4_500    <- masterCD4[1,"prop.Off.ART.500"][[1]]
     iCD4_350500 <- masterCD4[1,"prop.Off.ART.350500"][[1]]
@@ -49,13 +51,13 @@ GetInitial <- function(p, iterationResult, masterCD4) {
         Care_50100 =     (i2015_PLHIV_Care - i2015_PLHIV_ART) * iCD4_50100,
         Care_50 =        (i2015_PLHIV_Care - i2015_PLHIV_ART) * iCD4_50,
 
-        PreLtfu_500 =    0,
-        PreLtfu_350500 = 0,
-        PreLtfu_250350 = 0,
-        PreLtfu_200250 = 0,
-        PreLtfu_100200 = 0,
-        PreLtfu_50100 =  0,
-        PreLtfu_50 =     0,
+        PreLtfu_500 =    i2015_PLHIV_preLtfu * iCD4_500,
+        PreLtfu_350500 = i2015_PLHIV_preLtfu * iCD4_350500,
+        PreLtfu_250350 = i2015_PLHIV_preLtfu * iCD4_250350,
+        PreLtfu_200250 = i2015_PLHIV_preLtfu * iCD4_200250,
+        PreLtfu_100200 = i2015_PLHIV_preLtfu * iCD4_100200,
+        PreLtfu_50100 =  i2015_PLHIV_preLtfu * iCD4_50100,
+        PreLtfu_50 =     i2015_PLHIV_preLtfu * iCD4_50,
 
         Tx_Na_500 =      (i2015_PLHIV_ART - i2015_PLHIV_Viral) * iCD4_ART_500,
         Tx_Na_350500 =   (i2015_PLHIV_ART - i2015_PLHIV_Viral) * iCD4_ART_350500,
@@ -73,13 +75,13 @@ GetInitial <- function(p, iterationResult, masterCD4) {
         Tx_A_50100 =     i2015_PLHIV_Viral * iCD4_ART_50100,
         Tx_A_50 =        i2015_PLHIV_Viral * iCD4_ART_50,
 
-        Ltfu_500 =       0,
-        Ltfu_350500 =    0,
-        Ltfu_250350 =    0,
-        Ltfu_200250 =    0,
-        Ltfu_100200 =    0,
-        Ltfu_50100 =     0,
-        Ltfu_50 =        0
+        Ltfu_500 =       i2015_PLHIV_Ltfu * iCD4_500,
+        Ltfu_350500 =    i2015_PLHIV_Ltfu * iCD4_350500,
+        Ltfu_250350 =    i2015_PLHIV_Ltfu * iCD4_250350,
+        Ltfu_200250 =    i2015_PLHIV_Ltfu * iCD4_200250,
+        Ltfu_100200 =    i2015_PLHIV_Ltfu * iCD4_100200,
+        Ltfu_50100 =     i2015_PLHIV_Ltfu * iCD4_50100,
+        Ltfu_50 =        i2015_PLHIV_Ltfu * iCD4_50
     )
     default
 }

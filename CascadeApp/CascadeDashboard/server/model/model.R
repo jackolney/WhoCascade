@@ -20,7 +20,7 @@ CallModel <- reactive({
         # Now we need the initials.
         y <- GetInitial(
             p = p,
-            iterationResult = CalibOut[CalibOut$year == 2015 & CalibOut$source == "model",][1:5 + 5 * (i - 1),],
+            iterationResult = CalibOut[CalibOut$year == 2015 & CalibOut$source == "model",][1:7 + 7 * (i - 1),],
             masterCD4 = MasterCD4_2015
             )
 

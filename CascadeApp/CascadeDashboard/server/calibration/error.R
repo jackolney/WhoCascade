@@ -6,7 +6,7 @@ AssembleComparisonDataFrame <- function(country, model, data) {
 
     # Create Model data.frame
     modelOutput <- data.frame()
-    for (i in 1:5) {
+    for (i in 1:7) {
         year <- model$time + 2010
         source <- "model"
         if (i == 1) {
@@ -24,6 +24,12 @@ AssembleComparisonDataFrame <- function(country, model, data) {
         } else if (i == 5) {
             value <- model$Vs
             indicator <- "PLHIV Suppressed"
+        } else if (i == 6) {
+            value <- model$PreLtfu
+            indicator <- "PLHIV Pre-ART LTFU"
+        } else if (i == 7) {
+            value <- model$Ltfu
+            indicator <- "PLHIV ART LTFU"
         }
 
         iOutput <- data.frame(country, indicator, source, year, value, weight = NA)
