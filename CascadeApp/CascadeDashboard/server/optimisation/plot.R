@@ -117,23 +117,23 @@ output$plotOptDALYs909090 <- renderPlot({
 # WIZARD FUN #
 ##############
 
-output$plotCascade_wizard <- renderPlot({
-    t5 <- ExtractCascadeData(251) # t5 = (5 / 0.02) + 1 [t0]
+# output$plotCascade_wizard <- renderPlot({
+#     t5 <- ExtractCascadeData(251) # t5 = (5 / 0.02) + 1 [t0]
 
-    p.col <- rev(brewer.pal(9,"Blues")[3:8])
+#     p.col <- rev(brewer.pal(9,"Blues")[3:8])
 
-    ggplot(t5, aes(def, res)) +
-    geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
-    scale_fill_manual(values = p.col) +
-    ggtitle("Care Cascade in 2020") +
-    theme_classic() +
-    theme(title = element_text(size = 18)) +
-    theme(axis.title = element_blank()) +
-    theme(axis.text.x = element_text(size = 15)) +
-    theme(axis.text.y = element_text(size = 18)) +
-    theme(legend.position = "none")
-    },
-    height = 'auto',
-    width = 'auto'
-)
+#     ggplot(t5, aes(def, res)) +
+#     geom_bar(aes(fill = def), position = 'dodge', stat = 'identity') +
+#     scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = percent, expand = c(0, 0)) +
+#     scale_fill_manual(values = p.col) +
+#     ggtitle("Care Cascade in 2020") +
+#     theme_classic() +
+#     theme(title = element_text(size = 18)) +
+#     theme(axis.title = element_blank()) +
+#     theme(axis.text.x = element_text(size = 15)) +
+#     theme(axis.text.y = element_text(size = 18)) +
+#     theme(legend.position = "none")
+#     },
+#     height = 'auto',
+#     width = 'auto'
+# )

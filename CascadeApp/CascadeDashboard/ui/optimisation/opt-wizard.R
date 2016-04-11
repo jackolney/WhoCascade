@@ -57,7 +57,7 @@ tabItem(tabName = "opt-wizard",
             collapsible = TRUE,
             collapsed = FALSE,
             title = "HIV Testing",
-            sliderInput('rho', 'Diagnosis rate (diagnoses/py) (rho):', min = 0, max = 5, value = 0.205, step = 0.001, width = 1000)
+            uiOutput("UI_optW_rho")
         ),
         box(width = NULL,
             status = "warning",
@@ -65,7 +65,7 @@ tabItem(tabName = "opt-wizard",
             collapsible = TRUE,
             collapsed = FALSE,
             title = "Linkage",
-            sliderInput('epsilon', 'Care seeking rate (persons seeking care/py) (epsilon):', min = 0, max = 20, value = 16.949, step = 0.001, width = 1000)
+            uiOutput("UI_optW_p")
         ),
         box(width = NULL,
             status = "warning",
@@ -73,7 +73,7 @@ tabItem(tabName = "opt-wizard",
             collapsible = TRUE,
             collapsed = FALSE,
             title = "Pre-ART Retention",
-            sliderInput('gamma', 'ART initiation rate (ART initiations/py) (gamma):', min = 0, max = 5, value = 2.556, step = 0.001, width = 1000)
+            uiOutput("UI_optW_kappa")
         ),
         box(width = NULL,
             status = "warning",
@@ -81,7 +81,7 @@ tabItem(tabName = "opt-wizard",
             collapsible = TRUE,
             collapsed = FALSE,
             title = "ART Initiation",
-            sliderInput('gamma', 'ART initiation rate (ART initiations/py) (gamma):', min = 0, max = 5, value = 2.556, step = 0.001, width = 1000)
+            uiOutput("UI_optW_gamma")
         ),
         box(width = NULL,
             status = "warning",
@@ -89,7 +89,7 @@ tabItem(tabName = "opt-wizard",
             collapsible = TRUE,
             collapsed = FALSE,
             title = "ART Adherence",
-            sliderInput('gamma', 'ART initiation rate (ART initiations/py) (gamma):', min = 0, max = 5, value = 2.556, step = 0.001, width = 1000)
+            uiOutput("UI_optW_sigma")
         ),
         box(width = NULL,
             status = "warning",
@@ -97,7 +97,7 @@ tabItem(tabName = "opt-wizard",
             collapsible = TRUE,
             collapsed = FALSE,
             title = "ART Retention",
-            sliderInput('omega', 'ART dropout rate (ART dropout/py) (omega):', min = 0, max = 5, value = 0.033, step = 0.001, width = 1000)
+            uiOutput("UI_optW_omega")
         ),
         bsButton(inputId = "NEXT_optWizard", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )

@@ -25,3 +25,5 @@ output$plotAll <-               renderPlot({ GenAllPlot() },           height = 
 output$plotNewInf_wizard <-     renderPlot({ GenNewInfPlot() },        height = 240, width = 'auto')
 
 output$plotAidsDeaths_wizard <- renderPlot({ GenAidsDeathsPlot() },    height = 240, width = 'auto')
+
+output$plotCascade_wizard <-    renderPlot({ GenCascadePlot() },       height = 400, width = 'auto')

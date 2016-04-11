@@ -1,0 +1,53 @@
+output$UI_optW_rho <- renderUI({
+    sliderInput(inputId = 'optW_rho', label = 'Diagnosis rate (diagnoses/py) (rho):',
+        min = round(ParamMaxMin["rho", "min"],        digits = 3),
+        max = round(ParamMaxMin["rho", "max"],        digits = 3),
+        value = round(mean(CalibParamOut[["rho"]]),   digits = 3),
+        step = 0.001,
+        width = 1000)
+})
+
+output$UI_optW_p <- renderUI({
+    sliderInput(inputId = 'optW_p', label = 'Proportion of diagnosed individuals linking to care (p):',
+        min = round(ParamMaxMin["p", "min"],          digits = 3),
+        max = round(ParamMaxMin["p", "max"],          digits = 3),
+        value = round(mean(CalibParamOut[["p"]]),     digits = 3),
+        step = 0.001,
+        width = 1000)
+})
+
+output$UI_optW_kappa <- renderUI({
+    sliderInput(inputId = 'optW_kappa', label = 'ART initiation rate (ART initiations/py) (gamma):',
+        min = round(ParamMaxMin["kappa", "min"],      digits = 3),
+        max = round(ParamMaxMin["kappa", "max"],      digits = 3),
+        value = round(mean(CalibParamOut[["kappa"]]), digits = 3),
+        step = 0.001,
+        width = 1000)
+})
+
+output$UI_optW_gamma <- renderUI({
+    sliderInput(inputId = 'optW_gamma', label = 'ART initiation rate (ART initiations/py) (gamma):',
+        min = round(ParamMaxMin["gamma", "min"],      digits = 3),
+        max = round(ParamMaxMin["gamma", "max"],      digits = 3),
+        value = round(mean(CalibParamOut[["gamma"]]), digits = 3),
+        step = 0.001,
+        width = 1000)
+})
+
+output$UI_optW_sigma <- renderUI({
+    sliderInput(inputId = 'optW_sigma', label = 'ART initiation rate (ART initiations/py) (gamma):',
+        min = 0,
+        max = 1,
+        value = 0,
+        step = 0.001,
+        width = 1000)
+})
+
+output$UI_optW_omega <- renderUI({
+    sliderInput(inputId = 'optW_omega', label = 'ART dropout rate (ART dropout/py) (omega):',
+        min = round(ParamMaxMin["omega", "min"],      digits = 3),
+        max = round(ParamMaxMin["omega", "max"],      digits = 3),
+        value = round(mean(CalibParamOut[["omega"]]), digits = 3),
+        step = 0.001,
+        width = 1000)
+})

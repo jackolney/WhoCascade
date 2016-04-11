@@ -63,6 +63,7 @@ source("server/projection/table.R",            local = TRUE)
 # ------------ #
 
 source("server/optimisation/functions.R",      local = TRUE)
+source("server/optimisation/observe-input.R",  local = TRUE)
 source("server/optimisation/observe.R",        local = TRUE)
 source("server/optimisation/optimise.R",       local = TRUE)
 source("server/optimisation/parameters.R",     local = TRUE)
