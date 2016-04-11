@@ -2,7 +2,7 @@
 # OPTIMISATION OBSERVE #
 # -------------------- #
 
-observeEvent(input$optimiseInput, {
+observeEvent(input$optimStart, {
 
     withProgress(min = 0, max = 1, {
 
