@@ -1,16 +1,3 @@
-output$unitCostTable <- renderTable({
-    theP <- GetParameters()
-    Dx_unitCost <- dollar(as.double(theP["Dx_unitCost"]))
-    Linkage_unitCost <- dollar(as.double(theP["Linkage_unitCost"]))
-    Annual_Care_unitCost <- dollar(as.double(theP["Annual_Care_unitCost"]))
-    Annual_ART_unitCost <- dollar(as.double(theP["Annual_ART_unitCost"]))
-    Cost <- c(Dx_unitCost,Linkage_unitCost,Annual_Care_unitCost,Annual_ART_unitCost)
-    Unit <- c("HIV-testing","Linkage","Annual Care","Annual Treatment")
-    UnitCostTable <- data.frame(Unit,Cost)
-    UnitCostTable$Unit <- factor(UnitCostTable$Unit, levels = c("HIV-testing","Linkage","Annual Care","Annual Treatment"))
-    return(UnitCostTable)
-})
-
 output$optParTable_Rho <- renderTable({
     theData <- seq(from = input$userOptRho_Range[1], to = input$userOptRho_Range[2], length.out = input$userOptRho_LengthOf)
     tbl <- matrix(theData, nrow = 1, ncol = input$userOptRho_LengthOf)

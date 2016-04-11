@@ -4,39 +4,25 @@ tabItem(tabName = "opt-cost",
         id = "cost-panel",
         box(width = NULL,
             height = '100%',
-            status = "warning",
+            status = "primary",
             solidHeader = TRUE,
-            sliderInput('userDxUnitCost','Unit cost of diagnosing a patient (USD):', min = 0, max = 100, value = 10, step = 1)
-        ),
-        box(width = NULL,
-            height = '100%',
-            status = "warning",
-            solidHeader = TRUE,
-            sliderInput('userLinkageUnitCost','Unit cost of linking a patient to care (USD):', min = 0, max = 100, value = 40, step = 1)
-        ),
-        box(width = NULL,
-            height = '100%',
-            status = "warning",
-            solidHeader = TRUE,
-            sliderInput('userAnnualCareUnit','Annual cost of keeping a patient in pre-ART care (USD):', min = 0, max = 100, value = 40, step = 1)
-        ),
-        box(width = NULL,
-            height = '100%',
-            status = "warning",
-            solidHeader = TRUE,
-            sliderInput('userAnnualARTUnitCost','Annual cost of ART (USD):', min = 0, max = 500, value = 367, step = 1)
+            title = "Cost",
+            collapsible = TRUE,
+            collapsed = FALSE,
+            sliderInput(inputId = 'userDxUnitCost',        label = 'Unit cost of diagnosing a patient (USD):',                min = 0, max = 100, value = 10,  step = 1),
+            sliderInput(inputId = 'userLinkageUnitCost',   label = 'Unit cost of linking a patient to care (USD):',           min = 0, max = 100, value = 40,  step = 1),
+            sliderInput(inputId = 'userAnnualCareUnit',    label = 'Annual cost of keeping a patient in pre-ART care (USD):', min = 0, max = 100, value = 40,  step = 1),
+            sliderInput(inputId = 'userAnnualARTUnitCost', label = 'Annual cost of ART (USD):',                               min = 0, max = 500, value = 367, step = 1)
         )
     ),
     column(width = 4,
         box(width = NULL,
-            status = "primary",
+            status = "warning",
             solidHeader = TRUE,
-            title = "Cost",
-            p("Review or edit the unit costs in each box."),
-            helpText("Click the 'optimisation' drop down menu and select 'results' to begin running the optimisation algorithm."),
-            bsButton("resetCost", label = "RESET COST", block = TRUE, style = "danger"),
-            p(" "),
-            tableOutput("unitCostTable")
+            title = "Help Panel",
+            "Review or edit the unit costs using the sliders on the left.",
+            helpText("These costs will be applied to all runs within the optimisation section of this site. Click 'Return' and then run the optimisation to continue."),
+            bsButton("resetCost", label = "RESET COST", block = TRUE, style = "danger")
         ),
         bsButton(inputId = "goToWizard1", label = "Return", style = "primary", size = "large", block = TRUE, icon = icon("backward", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
