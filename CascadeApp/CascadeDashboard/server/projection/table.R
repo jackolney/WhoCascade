@@ -47,12 +47,6 @@ output$optParTable_Omega <- renderTable({
 }, digits = 3)
 
 output$optIterationTable <- renderTable({
-    print(paste("userOptRho_LengthOf =",input$userOptRho_LengthOf))
-    print(paste("userOptq_LengthOf =",input$userOptq_LengthOf))
-    print(paste("userOptKappa_LengthOf =",input$userOptKappa_LengthOf))
-    print(paste("userOptGamma_LengthOf =",input$userOptGamma_LengthOf))
-    print(paste("userOptSigma_LengthOf =",input$userOptSigma_LengthOf))
-    print(paste("userOptOmega_LengthO =",input$userOptOmega_LengthO))
     ParInput <- expand.grid(
         Rho   = seq(from = input$userOptRho_Range[1],   to = input$userOptRho_Range[2],   length.out = input$userOptRho_LengthOf),
         Q     = seq(from = input$userOptq_Range[1],     to = input$userOptq_Range[2],     length.out = input$userOptq_LengthOf),

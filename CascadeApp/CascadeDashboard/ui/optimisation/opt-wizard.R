@@ -32,9 +32,11 @@ tabItem(tabName = "opt-wizard",
                 plotOutput('plotAidsDeaths_wizard')
             )
         ),
-        valueBoxOutput("vb_90_wizard"),
-        valueBoxOutput("vb_9090_wizard"),
-        valueBoxOutput("vb_909090_wizard"),
+        fluidRow(
+            valueBoxOutput("vb_90_wizard"),
+            valueBoxOutput("vb_9090_wizard"),
+            valueBoxOutput("vb_909090_wizard")
+        ),
         box(width = NULL,
             status = "warning",
             solidHeader = TRUE,
