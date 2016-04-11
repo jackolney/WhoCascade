@@ -81,6 +81,6 @@ tabItem(tabName = "opt-parameter",
             tableOutput("optIterationTable"),
             bsButton("optFinished", label = "OPTIMISATION NOT RUN", style = "danger", block = TRUE, icon = icon("ban", class = "fa-lg fa-fw", lib = "font-awesome"), disabled = TRUE)
         ),
-        bsButton(inputId = "wizardOpt_3", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "goToWizard2", label = "Return", style = "primary", size = "large", block = TRUE, icon = icon("backward", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

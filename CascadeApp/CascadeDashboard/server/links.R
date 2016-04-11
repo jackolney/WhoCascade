@@ -35,3 +35,10 @@ observeEvent(input$wizardOpt_2,        {updateTabItems(session, inputId = "sideB
 observeEvent(input$wizardOpt_3,        {updateTabItems(session, inputId = "sideBar", selected = "opt-2results")})
 
 observeEvent(input$wizardOpt_4,        {updateTabItems(session, inputId = "sideBar", selected = "opt-budget")})
+
+observeEvent(input$goToInts,           {updateTabItems(session, inputId = "sideBar", selected = "opt-parameter")})
+
+observeEvent(input$goToCost,           {updateTabItems(session, inputId = "sideBar", selected = "opt-cost")})
+
+observeEvent(input$goToWizard1,        {updateTabItems(session, inputId = "sideBar", selected = "opt-wizard")})
+observeEvent(input$goToWizard2,        {updateTabItems(session, inputId = "sideBar", selected = "opt-wizard")})

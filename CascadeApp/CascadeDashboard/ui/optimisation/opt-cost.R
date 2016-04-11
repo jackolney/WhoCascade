@@ -38,6 +38,6 @@ tabItem(tabName = "opt-cost",
             p(" "),
             tableOutput("unitCostTable")
         ),
-        bsButton(inputId = "wizardOpt_2", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "goToWizard1", label = "Return", style = "primary", size = "large", block = TRUE, icon = icon("backward", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )
