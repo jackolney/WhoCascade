@@ -17,7 +17,8 @@ observeEvent(input$calib_accept,       {updateTabItems(session, inputId = "sideB
 
 observeEvent(input$NEXT_yourCascade,   {updateTabItems(session, inputId = "sideBar", selected = "care_cascade")})
 
-observeEvent(input$NEXT_careCascade,   {updateTabItems(session, inputId = "sideBar", selected = "powers_cascade")})
+# observeEvent(input$NEXT_careCascade,   {updateTabItems(session, inputId = "sideBar", selected = "powers_cascade")})
+observeEvent(input$NEXT_careCascade,   {updateTabItems(session, inputId = "sideBar", selected = "_909090")})
 
 observeEvent(input$NEXT_powersCascade, {updateTabItems(session, inputId = "sideBar", selected = "_909090")})
 
