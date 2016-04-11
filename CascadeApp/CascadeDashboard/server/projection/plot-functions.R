@@ -195,21 +195,32 @@ GenNewInfPlot <- function() {
     result <- CallModel()
 
     out <- c()
+    min <- c()
+    max <- c()
     for (j in 1:251) {
-        out[j] <- mean(unlist(lapply(result, function(x) sum(x$NewInf[j]))))
+        out[j] <-  mean(unlist(lapply(result, function(x) sum(x$NewInf[j]))))
+        min[j] <- range(unlist(lapply(result, function(x) sum(x$NewInf[j]))))[1]
+        max[j] <- range(unlist(lapply(result, function(x) sum(x$NewInf[j]))))[2]
     }
 
     timeOne <- seq(0, 5, 0.02)
     NewInfOne <- out / timeOne
+    minOne <- min / timeOne
+    maxOne <- max / timeOne
+
     time <- c(2, seq(51, 251, 1 * (1/0.02)))
     NewInf <- NewInfOne[time]
+    min <- minOne[time]
+    max <- maxOne[time]
+
     timeOut <- seq(2015, 2020, 1)
-    df <- data.frame(timeOut, NewInf)
+    df <- data.frame(timeOut, NewInf, min, max)
 
     c.fill <- rev(brewer.pal(9,"Blues")[3:8])
 
     ggOut <- ggplot(df, aes(x = timeOut, NewInf))
     ggOut <- ggOut + geom_bar(stat = "identity", size = 2, fill = c.fill)
+    ggOut <- ggOut + geom_errorbar(mapping = aes(x = timeOut, ymin = min, ymax = max), width = 0.2, size = 1)
     ggOut <- ggOut + theme_classic()
     ggOut <- ggOut + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
@@ -227,21 +238,32 @@ GenAidsDeathsPlot <- function() {
     result <- CallModel()
 
     out <- c()
+    min <- c()
+    max <- c()
     for (j in 1:251) {
-        out[j] <- mean(unlist(lapply(result, function(x) sum(x$HivMortality[j]))))
+        out[j] <-  mean(unlist(lapply(result, function(x) sum(x$HivMortality[j]))))
+        min[j] <- range(unlist(lapply(result, function(x) sum(x$HivMortality[j]))))[1]
+        max[j] <- range(unlist(lapply(result, function(x) sum(x$HivMortality[j]))))[2]
     }
 
     timeOne <- seq(0, 5, 0.02)
     HivMortalityOne <- out / timeOne
+    minOne <- min / timeOne
+    maxOne <- max / timeOne
+
     time <- c(2, seq(51, 251, 1 * (1/0.02)))
     HivMortality <- HivMortalityOne[time]
+    min <- minOne[time]
+    max <- maxOne[time]
+
     timeOut <- seq(2015, 2020, 1)
-    df <- data.frame(timeOut, HivMortality)
+    df <- data.frame(timeOut, HivMortality, min, max)
 
     c.fill <- rev(brewer.pal(9,"Blues")[3:8])
 
     ggOut <- ggplot(df, aes(x = timeOut, HivMortality))
     ggOut <- ggOut + geom_bar(stat = "identity", size = 2, fill = c.fill)
+    ggOut <- ggOut + geom_errorbar(mapping = aes(x = timeOut, ymin = min, ymax = max), width = 0.2, size = 1)
     ggOut <- ggOut + theme_classic()
     ggOut <- ggOut + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
     ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
@@ -262,7 +284,7 @@ GenSinglePlot <- function() {
     min <- c()
     max <- c()
     for (j in 1:251) {
-        out[j] <- mean(unlist(lapply(result, function(x) sum(x[j,input$y]))))
+        out[j] <-  mean(unlist(lapply(result, function(x) sum(x[j,input$y]))))
         min[j] <- range(unlist(lapply(result, function(x) sum(x[j,input$y]))))[1]
         max[j] <- range(unlist(lapply(result, function(x) sum(x[j,input$y]))))[2]
     }
