@@ -58,7 +58,7 @@ output$UI_optW_omega <- renderUI({
 ## Parameter Page Sliders ##
 
 output$UI_optP_rhoRange <- renderUI({
-    sliderInput(inputId = 'userOptRho_Range', label = 'Range of values (diagnoses/py):',
+    sliderInput(inputId = 'userOptRho_Range', label = 'Diagnoses per person-year:',
         min = 0,
         max = 50,
         value = c(
@@ -68,7 +68,7 @@ output$UI_optP_rhoRange <- renderUI({
 })
 
 output$UI_optP_qRange <- renderUI({
-    sliderInput(inputId = 'userOptq_Range', label = 'Range of values (proportion):',
+    sliderInput(inputId = 'userOptq_Range', label = 'Proportion diagnosed that link to care:',
         min = 0,
         max = 1,
         value = c(
@@ -78,7 +78,7 @@ output$UI_optP_qRange <- renderUI({
 })
 
 output$UI_optP_kappaRange <- renderUI({
-    sliderInput(inputId = 'userOptKappa_Range', label = 'Range of values (person lost from pre-ART care/py):',
+    sliderInput(inputId = 'userOptKappa_Range', label = 'Loss from pre-ART care, per person-year:',
         min = 0,
         max = 50,
         value = c(
@@ -88,7 +88,7 @@ output$UI_optP_kappaRange <- renderUI({
 })
 
 output$UI_optP_gammaRange <- renderUI({
-    sliderInput(inputId = 'userOptGamma_Range', label = 'Range of values (ART initiations/py):',
+    sliderInput(inputId = 'userOptGamma_Range', label = 'ART initiations per person-year:',
         min = 0,
         max = 50,
         value = c(
@@ -98,7 +98,7 @@ output$UI_optP_gammaRange <- renderUI({
 })
 
 output$UI_optP_sigmaRange <- renderUI({
-    sliderInput(inputId = 'userOptSigma_Range', label = 'Range of values (persons transitioning from non-adherent to adherent/py):',
+    sliderInput(inputId = 'userOptSigma_Range', label = 'Rate at which non-adherent persons begin adhering to treatment, per person-year:',
         min = 0,
         max = 5,
         value = c(0, 5),
@@ -106,7 +106,7 @@ output$UI_optP_sigmaRange <- renderUI({
 })
 
 output$UI_optP_omegaRange <- renderUI({
-    sliderInput(inputId = 'userOptOmega_Range', label = 'Range of values (ART dropout/py):',
+    sliderInput(inputId = 'userOptOmega_Range', label = 'ART dropout per person-year:',
         min = 0,
         max = 0.1,
         value = c(

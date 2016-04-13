@@ -57,11 +57,12 @@ observeEvent(input$optimStart, {
         setProgress(value = 0, message = 'Compiling results', detail = '')
 
         # Dealing with the results #
+        BaseModel <- BaselineModel()
+        BaseDALY <- Calc_DALY(BaseModel)
+        BaseCost <- Calc_Cost(BaseModel)
 
-        base_DALY <- Calc_BaselineDALY()
-        base_COST <- Calc_BaselineCost()
-        print(paste("base_DALY =", base_DALY))
-        print(paste("base_COST =", base_COST))
+        print(paste("BaseDALY =", BaseDALY))
+        print(paste("BaseCost =", BaseCost))
 
         Result90 <- c()
         Result9090 <- c()
@@ -70,35 +71,35 @@ observeEvent(input$optimStart, {
         ResultImpact <- c()
         ResultCost <- c()
         ResultPar_Rho <- c()
-        ResultPar_Epsilon <- c()
+        ResultPar_Q <- c()
         ResultPar_Kappa <- c()
         ResultPar_Gamma <- c()
         ResultPar_Sigma <- c()
         ResultPar_Omega <- c()
         for(i in 1:length(theList)) {
             print(i)
-            setProgress(value = i / length(theList), message = paste0(i / length(theList), "%"), detail = 'compiling results')
+            setProgress(value = i / length(theList), message = paste0(round((i / length(theList) * 100), digits = 0), "%"), detail = 'compiling results')
             Result90[i] <- Calc_909090_Result(theList[[i]])[1]
             Result9090[i] <- Calc_909090_Result(theList[[i]])[2]
             Result909090[i] <- Calc_909090_Result(theList[[i]])[3]
             ResultVS[i] <- Calc_VS(theList[[i]])
-            ResultImpact[i] <- Calc_DALYsAverted(theList[[i]], base_DALY)
-            ResultCost[i] <- Calc_AdditionalCost(theList[[i]], base_COST)
-            ResultPar_Rho[i] <- par[i,]$Rho
-            ResultPar_Epsilon[i] <- par[i,]$Epsilon
-            ResultPar_Kappa[i] <- par[i,]$Kappa
-            ResultPar_Gamma[i] <- par[i,]$Gamma
-            ResultPar_Sigma[i] <- par[i,]$Sigma
-            ResultPar_Omega[i] <- par[i,]$Omega
+            ResultImpact[i] <- Calc_DALYsAverted(theList[[i]], BaseDALY)
+            ResultCost[i] <- Calc_AdditionalCost(theList[[i]], BaseCost)
+            ResultPar_Rho[i] <- par[i,"rho"]
+            ResultPar_Q[i] <- par[i,"q"]
+            ResultPar_Kappa[i] <- par[i,"kappa"]
+            ResultPar_Gamma[i] <- par[i,"gamma"]
+            ResultPar_Sigma[i] <- par[i,"sigma"]
+            ResultPar_Omega[i] <- par[i,"omega"]
         }
 
         # Result data.frame for plot(vs,cost)
-        Result_909090 <<- data.frame(Result90, Result9090, Result909090, ResultVS, ResultCost, ResultPar_Rho, ResultPar_Epsilon, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
-        colnames(Result_909090) <<- c("90", "90-90", "90-90-90", "VS", "Cost", "Rho", "Epsilon", "Kappa", "Gamma", "Sigma", "Omega")
+        Result_909090 <<- data.frame(Result90, Result9090, Result909090, ResultVS, ResultCost, ResultPar_Rho, ResultPar_Q, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
+        colnames(Result_909090) <<- c("90", "90-90", "90-90-90", "VS", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
 
         # Result data.frame for plot(DALYs,cost)
-        Result_DALYs <<- data.frame(ResultImpact, ResultCost, ResultPar_Rho, ResultPar_Epsilon, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
-        colnames(Result_DALYs) <<- c("DALYs", "Cost", "Rho", "Epsilon", "Kappa", "Gamma", "Sigma", "Omega")
+        Result_DALYs <<- data.frame(ResultImpact, ResultCost, ResultPar_Rho, ResultPar_Q, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
+        colnames(Result_DALYs) <<- c("DALYs", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
 
         # ----------------------------------------- #
         # Subsetting those achieving 90-90-90 Stuff #
@@ -111,7 +112,7 @@ observeEvent(input$optimStart, {
         Result909090Impact <- c()
         Result909090Cost <- c()
         Result909090Par_Rho <- c()
-        Result909090Par_Epsilon <- c()
+        Result909090Par_Q <- c()
         Result909090Par_Kappa <- c()
         Result909090Par_Gamma <- c()
         Result909090Par_Sigma <- c()
@@ -120,21 +121,21 @@ observeEvent(input$optimStart, {
             for(i in 1:length(theList_909090)) {
                 print(i)
                 setProgress(value = i / length(theList_909090), message = paste0(i / length(theList_909090), "%"), detail = 'compiling results (90-90-90)')
-                Result909090Impact[i] <- Calc_DALYsAverted(theList_909090[[i]], base_DALY)
-                Result909090Cost[i] <- Calc_AdditionalCost(theList_909090[[i]], base_COST)
-                Result909090Par_Rho[i] <- par[i,]$Rho
-                Result909090Par_Epsilon[i] <- par[i,]$Epsilon
-                Result909090Par_Kappa[i] <- par[i,]$Kappa
-                Result909090Par_Gamma[i] <- par[i,]$Gamma
-                Result909090Par_Sigma[i] <- par[i,]$Sigma
-                Result909090Par_Omega[i] <- par[i,]$Omega
+                Result909090Impact[i] <- Calc_DALYsAverted(theList_909090[[i]], BaseDALY)
+                Result909090Cost[i] <- Calc_AdditionalCost(theList_909090[[i]], BaseCost)
+                Result909090Par_Rho[i] <- par[i,"rho"]
+                Result909090Par_Q[i] <- par[i,"q"]
+                Result909090Par_Kappa[i] <- par[i,"kappa"]
+                Result909090Par_Gamma[i] <- par[i,"gamma"]
+                Result909090Par_Sigma[i] <- par[i,"sigma"]
+                Result909090Par_Omega[i] <- par[i,"omega"]
             }
 
-            Result_DALYs_909090 <<- data.frame(Result909090Impact, Result909090Cost, Result909090Par_Rho, Result909090Par_Epsilon, Result909090Par_Kappa, Result909090Par_Gamma, Result909090Par_Sigma, Result909090Par_Omega)
-            colnames(Result_DALYs_909090) <<- c("DALYs", "Cost", "Rho", "Epsilon", "Kappa", "Gamma", "Sigma", "Omega")
+            Result_DALYs_909090 <<- data.frame(Result909090Impact, Result909090Cost, Result909090Par_Rho, Result909090Par_Q, Result909090Par_Kappa, Result909090Par_Gamma, Result909090Par_Sigma, Result909090Par_Omega)
+            colnames(Result_DALYs_909090) <<- c("DALYs", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
         } else {
             Result_DALYs_909090 <<- data.frame(0, 0, 0, 0, 0, 0, 0, 0)
-            colnames(Result_DALYs_909090) <<- c("DALYs", "Cost", "Rho", "Epsilon", "Kappa", "Gamma", "Sigma", "Omega")
+            colnames(Result_DALYs_909090) <<- c("DALYs", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
         }
 
         print("Result_909090 =")

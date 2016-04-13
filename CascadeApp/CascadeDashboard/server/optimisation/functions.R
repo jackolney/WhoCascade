@@ -18,12 +18,12 @@ Calc_DALY <- function(out) {
     sum(out$DALY)
 }
 
-Calc_BaselineDALY <- function() {
-    Calc_DALY(CallModel())
-}
-
-Calc_BaselineCost <- function() {
-    Calc_Cost(CallModel())
+BaselineModel <- function() {
+    out <- CallModel()
+    tmp <- array(unlist(out), c(dim(out[[1]]),length(out)), dimnames = c(dimnames(out[[1]]), NULL))
+    res <- rowMeans(tmp, dims = 2)
+    res <- as.data.frame(res) # Remove this at some point and just pass round a matrix (faster)
+    res
 }
 
 Calc_DALYsAverted <- function(out, base_DALY) {
@@ -35,7 +35,7 @@ Calc_AdditionalCost <- function(out, base_COST) {
 }
 
 Calc_909090_Result <- function(out) {
-    Extract909090Data(out)$res
+    Extract909090DataSingle(out)$res
 }
 
 Calc_VS <- function(out) {
@@ -43,7 +43,7 @@ Calc_VS <- function(out) {
 }
 
 Calc_909090 <- function(out) {
-    Extract909090Data(out)
+    Extract909090DataSingle(out)
 }
 
 FindResults_909090 <- function(result) {
@@ -98,5 +98,37 @@ GetAverageCalibOut <- function(calibOut) {
     }
     # build data.frame and return
     df <- data.frame(indicator, value)
+    df
+}
+
+Extract909090DataSingle <- function(data) {
+    year <- 251
+    PLHIV <- data$N[year]
+
+    DX <- sum(
+        data$Dx_500[year],      data$Dx_350500[year],       data$Dx_250350[year],       data$Dx_200250[year],       data$Dx_100200[year],       data$Dx_50100[year],        data$Dx_50[year],
+        data$Care_500[year],    data$Care_350500[year],     data$Care_250350[year],     data$Care_200250[year],     data$Care_100200[year],     data$Care_50100[year],      data$Care_50[year],
+        data$PreLtfu_500[year], data$PreLtfu_350500[year],  data$PreLtfu_250350[year],  data$PreLtfu_200250[year],  data$PreLtfu_100200[year],  data$PreLtfu_50100[year],   data$PreLtfu_50[year],
+        data$Tx_Na_500[year],   data$Tx_Na_350500[year],    data$Tx_Na_250350[year],    data$Tx_Na_200250[year],    data$Tx_Na_100200[year],    data$Tx_Na_50100[year],     data$Tx_Na_50[year],
+        data$Tx_A_500[year],    data$Tx_A_350500[year],     data$Tx_A_250350[year],     data$Tx_A_200250[year],     data$Tx_A_100200[year],     data$Tx_A_50100[year],      data$Tx_A_50[year],
+        data$Ltfu_500[year],    data$Ltfu_350500[year],     data$Ltfu_250350[year],     data$Ltfu_200250[year],     data$Ltfu_100200[year],     data$Ltfu_50100[year],      data$Ltfu_50[year]
+        )
+
+    TX <- sum(
+        data$Tx_Na_500[year], data$Tx_Na_350500[year], data$Tx_Na_250350[year], data$Tx_Na_200250[year], data$Tx_Na_100200[year], data$Tx_Na_50100[year], data$Tx_Na_50[year],
+        data$Tx_A_500[year],  data$Tx_A_350500[year],  data$Tx_A_250350[year],  data$Tx_A_200250[year],  data$Tx_A_100200[year],  data$Tx_A_50100[year],  data$Tx_A_50[year]
+        )
+
+    VS <- sum(data$Tx_A_500[year], data$Tx_A_350500[year], data$Tx_A_250350[year], data$Tx_A_200250[year], data$Tx_A_100200[year], data$Tx_A_50100[year], data$Tx_A_50[year])
+
+    un_90     <- DX / PLHIV
+    un_9090   <- TX / DX
+    un_909090 <- VS / TX
+
+    res <- c(un_90, un_9090, un_909090)
+    def <- c("% Diagnosed","% On Treatment","% Suppressed")
+    scenario <- c("Baseline")
+    df <- data.frame(def, res, scenario)
+    df$def <- factor(df$def, levels = c("% Diagnosed", "% On Treatment", "% Suppressed"))
     df
 }
