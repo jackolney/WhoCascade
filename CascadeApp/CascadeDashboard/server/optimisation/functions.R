@@ -94,7 +94,7 @@ GetAverageCalibOut <- function(calibOut) {
     # pick out values
     value <- c()
     for (j in 1:length(indicator)) {
-        value[j] <- mean(calibOut[calibOut$indicator == indicator[j], "value"])
+        value[j] <- mean(out[out$indicator == indicator[j], "value"])
     }
     # build data.frame and return
     df <- data.frame(indicator, value)
@@ -132,3 +132,19 @@ Extract909090DataSingle <- function(data) {
     df$def <- factor(df$def, levels = c("% Diagnosed", "% On Treatment", "% Suppressed"))
     df
 }
+
+# BaselineModelMean <- function() {
+#     warning("This version of the model currently compares all optimisation output to the MEAN, initial and parameter values from calibration")
+
+#         p <- GetMeanPar(
+#             masterCD4 = MasterCD4_2015,
+#             data = MasterData,
+#             calibParamOut = CalibParamOut)
+
+#         y <- GetInitial(
+#             p = p,
+#             iterationResult = meanCalibInitial,
+#             masterCD4 = MasterCD4_2015)
+
+#         p[["beta"]] <- GetBeta(y = y, p = p, data = MasterData)
+# }
