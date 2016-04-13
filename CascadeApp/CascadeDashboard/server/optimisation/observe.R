@@ -24,7 +24,7 @@ observeEvent(input$optimStart, {
         theList <- list()
 
         # Extract the mean initial values from calibration
-        meanCalibInitial <- GetAverageCalibOut(CalibOut)
+        meanCalibInitial <<- GetAverageCalibOut(CalibOut)
 
         ## THE BIG LOOP ##
         for(i in 1:dim(par)[1]) {
@@ -61,7 +61,8 @@ observeEvent(input$optimStart, {
         # I think we need to pass the average values to BaselineModel() not let it pick from the other crap.
         # Although, may need to reverse on this strategy tomorrow.
         # Need a sensible answer first.
-        BaseModel <- BaselineModel()
+        # BaseModel <- BaselineModel()
+        BaseModel <- BaselineModelMean()
         BaseDALY  <- Calc_DALY(BaseModel)
         BaseCost  <- Calc_Cost(BaseModel)
 
@@ -141,15 +142,6 @@ observeEvent(input$optimStart, {
             Result_DALYs_909090 <<- data.frame(0, 0, 0, 0, 0, 0, 0, 0)
             colnames(Result_DALYs_909090) <<- c("DALYs", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
         }
-
-        print("Result_909090 =")
-        print(Result_909090)
-
-        print("Result_DALYs =")
-        print(Result_DALYs)
-
-        print("Result_DALYs_909090 =")
-        print(Result_DALYs_909090)
 
         setProgress(value = 1, message = "Finished.", detail = paste(round(proc.time()[[1]] - time, 0), "seconds"))
 

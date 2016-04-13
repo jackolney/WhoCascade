@@ -133,18 +133,8 @@ Extract909090DataSingle <- function(data) {
     df
 }
 
-# BaselineModelMean <- function() {
-#     warning("This version of the model currently compares all optimisation output to the MEAN, initial and parameter values from calibration")
-
-#         p <- GetMeanPar(
-#             masterCD4 = MasterCD4_2015,
-#             data = MasterData,
-#             calibParamOut = CalibParamOut)
-
-#         y <- GetInitial(
-#             p = p,
-#             iterationResult = meanCalibInitial,
-#             masterCD4 = MasterCD4_2015)
-
-#         p[["beta"]] <- GetBeta(y = y, p = p, data = MasterData)
-# }
+BaselineModelMean <- function() {
+    warning("This version of the model currently compares all optimisation output to the MEAN, initial and parameter values from calibration.")
+    out <- CallMeanModel()
+    out
+}

@@ -19,6 +19,7 @@ source("ui/global-lists.R",       local = TRUE)
 
 source("server/model/beta.R",       local = TRUE)
 source("server/model/initial.R",    local = TRUE)
+source("server/model/mean-model.R", local = TRUE)
 source("server/model/model.R",      local = TRUE)
 source("server/model/parameters.R", local = TRUE)
 
