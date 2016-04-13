@@ -22,7 +22,7 @@ output$opt909090Table <- DT::renderDataTable({
         formatRound("90-90-90",3) %>%
         formatRound("VS",3) %>%
         formatRound("Rho",3) %>%
-        formatRound("Epsilon",3) %>%
+        formatRound("Q",3) %>%
         formatRound("Kappa",3) %>%
         formatRound("Gamma",3) %>%
         formatRound("Sigma",3) %>%
@@ -41,7 +41,7 @@ output$opt909090TableBrushed <- DT::renderDataTable({
         formatRound("90-90-90",3) %>%
         formatRound("VS",3) %>%
         formatRound("Rho",3) %>%
-        formatRound("Epsilon",3) %>%
+        formatRound("Q",3) %>%
         formatRound("Kappa",3) %>%
         formatRound("Gamma",3) %>%
         formatRound("Sigma",3) %>%
@@ -55,7 +55,7 @@ output$opt909090TableBrushed <- DT::renderDataTable({
 output$optDALYsTable <- DT::renderDataTable({
     return(datatable(Result_DALYs, options = list(pageLength = 25, autoWidth = TRUE)) %>%
         formatRound("Rho",3) %>%
-        formatRound("Epsilon",3) %>%
+        formatRound("Q",3) %>%
         formatRound("Kappa",3) %>%
         formatRound("Gamma",3) %>%
         formatRound("Sigma",3) %>%
@@ -71,7 +71,7 @@ output$optDALYsTableBrushed <- DT::renderDataTable({
     theBrushed <- brushedPoints(df = Result_DALYs,brush = input$plotOptDALYs_brush)
     return(datatable(theBrushed, options = list(pageLength = 25, autoWidth = TRUE)) %>%
         formatRound("Rho",3) %>%
-        formatRound("Epsilon",3) %>%
+        formatRound("Q",3) %>%
         formatRound("Kappa",3) %>%
         formatRound("Gamma",3) %>%
         formatRound("Sigma",3) %>%
@@ -86,7 +86,7 @@ output$optDALYsTableBrushed <- DT::renderDataTable({
 output$optDALYs909090Table <- DT::renderDataTable({
     return(datatable(Result_DALYs_909090, options = list(pageLength = 25, autoWidth = TRUE)) %>%
         formatRound("Rho",3) %>%
-        formatRound("Epsilon",3) %>%
+        formatRound("Q",3) %>%
         formatRound("Kappa",3) %>%
         formatRound("Gamma",3) %>%
         formatRound("Sigma",3) %>%
@@ -102,7 +102,7 @@ output$optDALYs909090TableBrushed <- DT::renderDataTable({
     theBrushed <- brushedPoints(df = Result_DALYs_909090,brush = input$plotOptDALYs909090_brush)
     return(datatable(theBrushed, options = list(pageLength = 25, autoWidth = TRUE)) %>%
         formatRound("Rho",3) %>%
-        formatRound("Epsilon",3) %>%
+        formatRound("Q",3) %>%
         formatRound("Kappa",3) %>%
         formatRound("Gamma",3) %>%
         formatRound("Sigma",3) %>%
@@ -132,7 +132,7 @@ output$optBudgetTable <- DT::renderDataTable({
             formatRound("90-90-90",3) %>%
             formatRound("VS",3) %>%
             formatRound("Rho",3) %>%
-            formatRound("Epsilon",3) %>%
+            formatRound("Q",3) %>%
             formatRound("Kappa",3) %>%
             formatRound("Gamma",3) %>%
             formatRound("Sigma",3) %>%
@@ -150,7 +150,7 @@ output$optBudgetTable <- DT::renderDataTable({
             tableTools = list(sSwfPath = copySWF('www')),
             order = list(list(1, 'desc')), autoWidth = TRUE, pageLength = 100)) %>%
             formatRound("Rho",3) %>%
-            formatRound("Epsilon",3) %>%
+            formatRound("Q",3) %>%
             formatRound("Kappa",3) %>%
             formatRound("Gamma",3) %>%
             formatRound("Sigma",3) %>%

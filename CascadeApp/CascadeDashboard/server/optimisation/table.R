@@ -57,7 +57,7 @@ output$optIterationTable <- renderTable({
     )
     tbl <- matrix(0, nrow = 2, ncol = 1)
     tbl[1,] <- dim(ParInput)[1]
-    tbl[2,] <- dim(ParInput)[1] * 0.001
+    tbl[2,] <- dim(ParInput)[1] * 0.01
     colnames(tbl) <- "Value"
     rownames(tbl) <- c("Number of iterations:","Estimated time (seconds):")
     return(tbl)
