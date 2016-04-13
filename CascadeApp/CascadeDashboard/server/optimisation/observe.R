@@ -51,6 +51,8 @@ observeEvent(input$optimStart, {
 
             theList[[rownames(par)[i]]] <- RunSim(y = y, p = p)
 
+            if (input$optimStop) break
+
         }
         ## END OF LOOP ##
 
@@ -78,6 +80,7 @@ observeEvent(input$optimStart, {
         ResultPar_Omega <- c()
         for(i in 1:length(theList)) {
             print(i)
+            if (input$optimStop) break
             setProgress(value = i / length(theList), message = paste0(round((i / length(theList) * 100), digits = 0), "%"), detail = 'compiling results')
             Result90[i] <- Calc_909090_Result(theList[[i]])[1]
             Result9090[i] <- Calc_909090_Result(theList[[i]])[2]
@@ -120,6 +123,7 @@ observeEvent(input$optimStart, {
         if(length(theList_909090) > 0) {
             for(i in 1:length(theList_909090)) {
                 print(i)
+                if (input$optimStop) break
                 setProgress(value = i / length(theList_909090), message = paste0(i / length(theList_909090), "%"), detail = 'compiling results (90-90-90)')
                 Result909090Impact[i] <- Calc_DALYsAverted(theList_909090[[i]], BaseDALY)
                 Result909090Cost[i] <- Calc_AdditionalCost(theList_909090[[i]], BaseCost)
