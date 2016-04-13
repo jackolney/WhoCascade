@@ -79,7 +79,6 @@ observeEvent(input$optimStart, {
         ResultPar_Sigma <- c()
         ResultPar_Omega <- c()
         for(i in 1:length(theList)) {
-            print(i)
             if (input$optimStop) break
             setProgress(value = i / length(theList), message = paste0(round((i / length(theList) * 100), digits = 0), "%"), detail = 'compiling results')
             Result90[i]        <- Calc_909090_Result(theList[[i]])[1]
@@ -122,7 +121,6 @@ observeEvent(input$optimStart, {
         Result909090Par_Omega <- c()
         if(length(theList_909090) > 0) {
             for(i in 1:length(theList_909090)) {
-                print(i)
                 if (input$optimStop) break
                 setProgress(value = i / length(theList_909090), message = paste0(i / length(theList_909090), "%"), detail = 'compiling results (90-90-90)')
                 Result909090Impact[i]    <- Calc_DALYsAverted(theList_909090[[i]], BaseDALY)
