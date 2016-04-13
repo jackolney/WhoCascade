@@ -60,20 +60,20 @@ observeEvent(input$optimStart, {
 
         # Dealing with the results #
         BaseModel <- BaselineModel()
-        BaseDALY <- Calc_DALY(BaseModel)
-        BaseCost <- Calc_Cost(BaseModel)
+        BaseDALY  <- Calc_DALY(BaseModel)
+        BaseCost  <- Calc_Cost(BaseModel)
 
         print(paste("BaseDALY =", BaseDALY))
         print(paste("BaseCost =", BaseCost))
 
-        Result90 <- c()
-        Result9090 <- c()
-        Result909090 <- c()
-        ResultVS <- c()
-        ResultImpact <- c()
-        ResultCost <- c()
-        ResultPar_Rho <- c()
-        ResultPar_Q <- c()
+        Result90        <- c()
+        Result9090      <- c()
+        Result909090    <- c()
+        ResultVS        <- c()
+        ResultImpact    <- c()
+        ResultCost      <- c()
+        ResultPar_Rho   <- c()
+        ResultPar_Q     <- c()
         ResultPar_Kappa <- c()
         ResultPar_Gamma <- c()
         ResultPar_Sigma <- c()
@@ -82,14 +82,14 @@ observeEvent(input$optimStart, {
             print(i)
             if (input$optimStop) break
             setProgress(value = i / length(theList), message = paste0(round((i / length(theList) * 100), digits = 0), "%"), detail = 'compiling results')
-            Result90[i] <- Calc_909090_Result(theList[[i]])[1]
-            Result9090[i] <- Calc_909090_Result(theList[[i]])[2]
-            Result909090[i] <- Calc_909090_Result(theList[[i]])[3]
-            ResultVS[i] <- Calc_VS(theList[[i]])
-            ResultImpact[i] <- Calc_DALYsAverted(theList[[i]], BaseDALY)
-            ResultCost[i] <- Calc_AdditionalCost(theList[[i]], BaseCost)
-            ResultPar_Rho[i] <- par[i,"rho"]
-            ResultPar_Q[i] <- par[i,"q"]
+            Result90[i]        <- Calc_909090_Result(theList[[i]])[1]
+            Result9090[i]      <- Calc_909090_Result(theList[[i]])[2]
+            Result909090[i]    <- Calc_909090_Result(theList[[i]])[3]
+            ResultVS[i]        <- Calc_VS(theList[[i]])
+            ResultImpact[i]    <- Calc_DALYsAverted(theList[[i]], BaseDALY)
+            ResultCost[i]      <- Calc_AdditionalCost(theList[[i]], BaseCost)
+            ResultPar_Rho[i]   <- par[i,"rho"]
+            ResultPar_Q[i]     <- par[i,"q"]
             ResultPar_Kappa[i] <- par[i,"kappa"]
             ResultPar_Gamma[i] <- par[i,"gamma"]
             ResultPar_Sigma[i] <- par[i,"sigma"]
@@ -112,10 +112,10 @@ observeEvent(input$optimStart, {
 
         ResultPar_909090 <- FindPar_909090(theList, par)
 
-        Result909090Impact <- c()
-        Result909090Cost <- c()
-        Result909090Par_Rho <- c()
-        Result909090Par_Q <- c()
+        Result909090Impact    <- c()
+        Result909090Cost      <- c()
+        Result909090Par_Rho   <- c()
+        Result909090Par_Q     <- c()
         Result909090Par_Kappa <- c()
         Result909090Par_Gamma <- c()
         Result909090Par_Sigma <- c()
@@ -125,10 +125,10 @@ observeEvent(input$optimStart, {
                 print(i)
                 if (input$optimStop) break
                 setProgress(value = i / length(theList_909090), message = paste0(i / length(theList_909090), "%"), detail = 'compiling results (90-90-90)')
-                Result909090Impact[i] <- Calc_DALYsAverted(theList_909090[[i]], BaseDALY)
-                Result909090Cost[i] <- Calc_AdditionalCost(theList_909090[[i]], BaseCost)
-                Result909090Par_Rho[i] <- par[i,"rho"]
-                Result909090Par_Q[i] <- par[i,"q"]
+                Result909090Impact[i]    <- Calc_DALYsAverted(theList_909090[[i]], BaseDALY)
+                Result909090Cost[i]      <- Calc_AdditionalCost(theList_909090[[i]], BaseCost)
+                Result909090Par_Rho[i]   <- par[i,"rho"]
+                Result909090Par_Q[i]     <- par[i,"q"]
                 Result909090Par_Kappa[i] <- par[i,"kappa"]
                 Result909090Par_Gamma[i] <- par[i,"gamma"]
                 Result909090Par_Sigma[i] <- par[i,"sigma"]
