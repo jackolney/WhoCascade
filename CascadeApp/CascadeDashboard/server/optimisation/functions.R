@@ -1,11 +1,11 @@
 GetParaMatrix <- function() {
     ParRange <- expand.grid(
-        rho =       seq(from = input$userOptRho_Range[1],       to = input$userOptRho_Range[2],     length.out = input$userOptRho_LengthOf),
-        q =         seq(from = input$userOptq_Range[1],         to = input$userOptq_Range[2],       length.out = input$userOptq_LengthOf),
-        kappa =     seq(from = input$userOptKappa_Range[2],     to = input$userOptKappa_Range[1],   length.out = input$userOptKappa_LengthOf),
-        gamma =     seq(from = input$userOptGamma_Range[1],     to = input$userOptGamma_Range[2],   length.out = input$userOptGamma_LengthOf),
-        sigma =     seq(from = input$userOptSigma_Range[1],     to = input$userOptSigma_Range[2],   length.out = input$userOptSigma_LengthOf),
-        omega =     seq(from = input$userOptOmega_Range[2],     to = input$userOptOmega_Range[1],   length.out = input$userOptOmega_LengthOf)
+        rho =       seq(from = input$userOptRho_Range[1],       to = input$userOptRho_Range[2],     length.out = input$optimParamLength),
+        q =         seq(from = input$userOptq_Range[1],         to = input$userOptq_Range[2],       length.out = input$optimParamLength),
+        kappa =     seq(from = input$userOptKappa_Range[2],     to = input$userOptKappa_Range[1],   length.out = input$optimParamLength),
+        gamma =     seq(from = input$userOptGamma_Range[1],     to = input$userOptGamma_Range[2],   length.out = input$optimParamLength),
+        sigma =     seq(from = input$userOptSigma_Range[1],     to = input$userOptSigma_Range[2],   length.out = input$optimParamLength),
+        omega =     seq(from = input$userOptOmega_Range[2],     to = input$userOptOmega_Range[1],   length.out = input$optimParamLength)
     )
     ParRange
 }

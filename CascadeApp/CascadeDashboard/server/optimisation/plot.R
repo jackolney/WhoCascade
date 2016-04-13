@@ -4,8 +4,8 @@
 
 # Plot 1
 output$plotOpt909090 <- renderPlot({
-    # dependency on optimiseInput
-    input$optimiseInput
+    # dependency on optimStart
+    input$optimStart
 
     Legend.Labels <- c()
     for(i in 1:length(levels(as.factor(Result_909090[[input$userStratPoint]])))) {
@@ -51,8 +51,8 @@ output$plotOpt909090 <- renderPlot({
 
 # Plot 2
 output$plotOptDALYs <- renderPlot({
-    # dependency on optimiseInput
-    input$optimiseInput
+    # dependency on optimStart
+    input$optimStart
 
     Legend.Labels <- c()
     for(i in 1:length(levels(as.factor(Result_DALYs[[input$userStratPoint]])))) {
@@ -83,8 +83,8 @@ output$plotOptDALYs <- renderPlot({
 
 # Plot 3
 output$plotOptDALYs909090 <- renderPlot({
-    # dependency on optimiseInput
-    input$optimiseInput
+    # dependency on optimStart
+    input$optimStart
 
     Legend.Labels <- c()
     for(i in 1:length(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]])))) {

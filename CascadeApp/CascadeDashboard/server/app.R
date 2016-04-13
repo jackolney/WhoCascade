@@ -56,7 +56,6 @@ source("server/projection/observe-event.R",    local = TRUE)
 source("server/projection/plot-functions.R",   local = TRUE)
 source("server/projection/plot.R",             local = TRUE)
 source("server/projection/reactive.R",         local = TRUE)
-source("server/projection/table.R",            local = TRUE)
 
 # ------------ #
 # OPTIMISATION #
@@ -70,3 +69,4 @@ source("server/optimisation/parameters.R",     local = TRUE)
 source("server/optimisation/plot-functions.R", local = TRUE)
 source("server/optimisation/plot.R",           local = TRUE)
 source("server/optimisation/sim.R",            local = TRUE)
+source("server/optimisation/table.R",          local = TRUE)

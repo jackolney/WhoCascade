@@ -57,14 +57,6 @@ output$UI_optW_omega <- renderUI({
 
 ## Parameter Page Sliders ##
 
-output$UI_optP_rhoLength <- renderUI({
-    sliderInput(inputId = 'userOptRho_LengthOf', label = 'Length of parameter range:',
-        min   = 0,
-        max   = 10,
-        value = 4,
-        step  = 1)
-})
-
 output$UI_optP_rhoRange <- renderUI({
     sliderInput(inputId = 'userOptRho_Range', label = 'Range of values (diagnoses/py):',
         min = 0,
@@ -73,14 +65,6 @@ output$UI_optP_rhoRange <- renderUI({
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 3),
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 3) * 5),
         step = 0.001)
-})
-
-output$UI_optP_qLength <- renderUI({
-    sliderInput(inputId = 'userOptq_LengthOf', label = 'Length of parameter range:',
-        min   = 0,
-        max   = 10,
-        value = 4,
-        step  = 1)
 })
 
 output$UI_optP_qRange <- renderUI({
@@ -93,14 +77,6 @@ output$UI_optP_qRange <- renderUI({
         step = 0.001)
 })
 
-output$UI_optP_kappaLength <- renderUI({
-    sliderInput(inputId = 'userOptKappa_LengthOf', label = 'Length of parameter range:',
-        min   = 0,
-        max   = 10,
-        value = 4,
-        step  = 1)
-})
-
 output$UI_optP_kappaRange <- renderUI({
     sliderInput(inputId = 'userOptKappa_Range', label = 'Range of values (person lost from pre-ART care/py):',
         min = 0,
@@ -109,14 +85,6 @@ output$UI_optP_kappaRange <- renderUI({
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 3),
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 3) * 5),
         step = 0.001)
-})
-
-output$UI_optP_gammaLength <- renderUI({
-    sliderInput(inputId = 'userOptGamma_LengthOf', label = 'Length of parameter range:',
-        min   = 0,
-        max   = 10,
-        value = 4,
-        step  = 1)
 })
 
 output$UI_optP_gammaRange <- renderUI({
@@ -129,28 +97,12 @@ output$UI_optP_gammaRange <- renderUI({
         step = 0.001)
 })
 
-output$UI_optP_sigmaLength <- renderUI({
-    sliderInput(inputId = 'userOptSigma_LengthOf', label = 'Length of parameter range:',
-        min   = 0,
-        max   = 10,
-        value = 4,
-        step  = 1)
-})
-
 output$UI_optP_sigmaRange <- renderUI({
     sliderInput(inputId = 'userOptSigma_Range', label = 'Range of values (persons transitioning from non-adherent to adherent/py):',
         min = 0,
         max = 5,
         value = c(0, 5),
         step = 0.001)
-})
-
-output$UI_optP_omegaLength <- renderUI({
-    sliderInput(inputId = 'userOptOmega_LengthOf', label = 'Length of parameter range:',
-        min   = 0,
-        max   = 10,
-        value = 4,
-        step  = 1)
 })
 
 output$UI_optP_omegaRange <- renderUI({

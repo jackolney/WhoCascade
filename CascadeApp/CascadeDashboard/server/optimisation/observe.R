@@ -10,14 +10,8 @@ observeEvent(input$optimStart, {
 
         par <- GetParaMatrix()
 
-        updateButton(session,"optFinished",
-            label = " OPTIMISATION RUNNING",
-            style = "warning",
-            block = TRUE,
-            size = "large",
-            icon = icon("refresh", class = "fa-lg fa-spin", lib = "font-awesome"))
-
-        updateButton(session,"optimiseInput",
+        updateButton(session,
+            inputId = "optimStart",
             label = "",
             style = "primary",
             block = TRUE,
@@ -37,8 +31,8 @@ observeEvent(input$optimStart, {
 
             setProgress(
                 value = i/dim(par)[1],
-                message = paste(paste('Run ', i, ".", sep = ''), "Time =", round(proc.time()[[1]] - time, 0), "sec"),
-                detail = "")
+                message = paste('Run', i),
+                detail = paste(round(proc.time()[[1]] - time, 0), "seconds"))
 
             p <- GetOptPar(
                 masterCD4 = MasterCD4_2015,
@@ -83,7 +77,7 @@ observeEvent(input$optimStart, {
         ResultPar_Omega <- c()
         for(i in 1:length(theList)) {
             print(i)
-            setProgress(value = i/length(theList), message = 'Compiling results', detail = '')
+            setProgress(value = i / length(theList), message = paste0(i / length(theList), "%"), detail = 'compiling results')
             Result90[i] <- Calc_909090_Result(theList[[i]])[1]
             Result9090[i] <- Calc_909090_Result(theList[[i]])[2]
             Result909090[i] <- Calc_909090_Result(theList[[i]])[3]
@@ -125,7 +119,7 @@ observeEvent(input$optimStart, {
         if(length(theList_909090) > 0) {
             for(i in 1:length(theList_909090)) {
                 print(i)
-                setProgress(value = i/length(theList_909090), message = 'Compiling results (90-90-90)', detail = '')
+                setProgress(value = i / length(theList_909090), message = paste0(i / length(theList_909090), "%"), detail = 'compiling results (90-90-90)')
                 Result909090Impact[i] <- Calc_DALYsAverted(theList_909090[[i]], base_DALY)
                 Result909090Cost[i] <- Calc_AdditionalCost(theList_909090[[i]], base_COST)
                 Result909090Par_Rho[i] <- par[i,]$Rho
@@ -152,8 +146,14 @@ observeEvent(input$optimStart, {
         print("Result_DALYs_909090 =")
         print(Result_DALYs_909090)
 
-        setProgress(value = 1, message = paste("Finished. Time =", round(proc.time()[[1]] - time, 0), "sec"))
-        updateButton(session, "optFinished", label = "OPTIMISATION COMPLETE", style = "success", size = "large", block = TRUE, icon = icon("check", class = "fa-lg fa-fw", lib = "font-awesome"))
-        updateButton(session, "optimiseInput", label = "", style = "primary", block = TRUE, size = "large", icon = icon("check", class = "fa-lg fa-fw", lib = "font-awesome"))
+        setProgress(value = 1, message = "Finished.", detail = paste(round(proc.time()[[1]] - time, 0), "seconds"))
+
+        updateButton(session,
+            inputId = "optimStart",
+            label = "Start",
+            style = "success",
+            block = TRUE,
+            size = "large",
+            icon = icon("play", class = "fa-lg fa-fw", lib = "font-awesome"))
     })
 })
