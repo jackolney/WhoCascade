@@ -44,8 +44,7 @@ observeEvent(input$optimStart, {
             y <- GetInitial(
                 p = p,
                 iterationResult = meanCalibInitial,
-                masterCD4 = MasterCD4_2015
-                )
+                masterCD4 = MasterCD4_2015)
 
             p[["beta"]] <- GetBeta(y = y, p = p, data = MasterData)
 
@@ -59,6 +58,9 @@ observeEvent(input$optimStart, {
         setProgress(value = 0, message = 'Compiling results', detail = '')
 
         # Dealing with the results #
+        # I think we need to pass the average values to BaselineModel() not let it pick from the other crap.
+        # Although, may need to reverse on this strategy tomorrow.
+        # Need a sensible answer first.
         BaseModel <- BaselineModel()
         BaseDALY  <- Calc_DALY(BaseModel)
         BaseCost  <- Calc_Cost(BaseModel)
