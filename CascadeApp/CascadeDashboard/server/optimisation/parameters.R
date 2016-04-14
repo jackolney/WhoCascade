@@ -14,9 +14,9 @@ GetOptPar <- function(masterCD4, data, iterationParam, calibParamOut) {
         t_5 = ConvertYear2015(data[["treatment_guidelines"]][["less200"]]),
 
         # These guys still need to be set by the model.
-        Theta = lapply(CalibParamOut, function(x) {return(mean(x))})[["theta"]],
-        Mu    = lapply(CalibParamOut, function(x) {return(mean(x))})[["mu"]],
-        p     = lapply(CalibParamOut, function(x) {return(mean(x))})[["p"]],
+        Theta = lapply(calibParamOut, function(x) {return(mean(x))})[["theta"]],
+        Mu    = lapply(calibParamOut, function(x) {return(mean(x))})[["mu"]],
+        p     = lapply(calibParamOut, function(x) {return(mean(x))})[["p"]],
 
         # MODIFYING #
         Rho   = iterationParam[["rho"]],
@@ -45,15 +45,15 @@ GetMeanPar <- function(masterCD4, data, calibParamOut) {
         t_5 = ConvertYear2015(data[["treatment_guidelines"]][["less200"]]),
 
         # Just using mean parameter values for the momen #
-        Theta = lapply(CalibParamOut, function(x) {return(mean(x))})[["theta"]],
-        Mu    = lapply(CalibParamOut, function(x) {return(mean(x))})[["mu"]],
-        p     = lapply(CalibParamOut, function(x) {return(mean(x))})[["p"]],
-        Rho   = lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]],
-        Kappa = lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]],
-        Gamma = lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]],
-        Sigma = lapply(CalibParamOut, function(x) {return(mean(x))})[["sigma"]],
-        Omega = lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]],
-        q     = lapply(CalibParamOut, function(x) {return(mean(x))})[["q"]]
+        Theta = lapply(calibParamOut, function(x) {return(mean(x))})[["theta"]],
+        Mu    = lapply(calibParamOut, function(x) {return(mean(x))})[["mu"]],
+        p     = lapply(calibParamOut, function(x) {return(mean(x))})[["p"]],
+        Rho   = lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]],
+        Kappa = lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]],
+        Gamma = lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]],
+        Sigma = lapply(calibParamOut, function(x) {return(mean(x))})[["sigma"]],
+        Omega = lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]],
+        q     = lapply(calibParamOut, function(x) {return(mean(x))})[["q"]]
     )
     p
 }
