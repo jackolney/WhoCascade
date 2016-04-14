@@ -8,7 +8,7 @@ observeEvent(input$optimStart, {
 
         setProgress(value = 0, message = 'Starting optimisation', detail = 'creating parameter matrix')
 
-        par <- GetParaMatrix()
+        par <- GetParaMatrix(calibParamOut = CalibParamOut)
 
         updateButton(session,
             inputId = "optimStart",
@@ -29,10 +29,10 @@ observeEvent(input$optimStart, {
         ## THE BIG LOOP ##
         for(i in 1:dim(par)[1]) {
 
-            setProgress(
-                value = i/dim(par)[1],
-                message = paste('Run', i),
-                detail = paste(round(proc.time()[[1]] - time, 0), "seconds"))
+            # setProgress(
+            #     value = i/dim(par)[1],
+            #     message = paste('Run', i),
+            #     detail = paste(round(proc.time()[[1]] - time, 0), "seconds"))
 
             p <- GetOptPar(
                 masterCD4 = MasterCD4_2015,
@@ -50,7 +50,7 @@ observeEvent(input$optimStart, {
 
             theList[[rownames(par)[i]]] <- RunSim(y = y, p = p)
 
-            if (input$optimStop) break
+            # if (input$optimStop) break
 
         }
         ## END OF LOOP ##

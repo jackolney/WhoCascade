@@ -19,12 +19,12 @@ GetOptPar <- function(masterCD4, data, iterationParam, calibParamOut) {
         p     = lapply(calibParamOut, function(x) {return(mean(x))})[["p"]],
 
         # MODIFYING #
-        Rho   = iterationParam[["rho"]],
-        Kappa = iterationParam[["kappa"]],
-        Gamma = iterationParam[["gamma"]],
-        Sigma = iterationParam[["sigma"]],
-        Omega = iterationParam[["omega"]],
-        q     = iterationParam[["q"]]
+        Rho   = iterationParam[["Rho"]],
+        Kappa = iterationParam[["Kappa"]],
+        Gamma = iterationParam[["Gamma"]],
+        Sigma = iterationParam[["Sigma"]],
+        Omega = iterationParam[["Omega"]],
+        q     = iterationParam[["Q"]]
     )
     p
 }
@@ -51,7 +51,6 @@ GetMeanPar <- function(masterCD4, data, calibParamOut) {
         Rho   = lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]],
         Kappa = lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]],
         Gamma = lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]],
-        Sigma = lapply(calibParamOut, function(x) {return(mean(x))})[["sigma"]],
         Omega = lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]],
         q     = lapply(calibParamOut, function(x) {return(mean(x))})[["q"]]
     )

@@ -1,7 +1,7 @@
 # Main Model Call
 # This now needs to take input from the calibration data set and return a formatted data.frame ready for plotting.
-CallMeanModel <- reactive({
-    print("CallMeanModel() called.")
+CallMeanModel <- function() {
+    message("CallMeanModel() called.")
 
     # Setup #
     time <- seq(0, 5, 0.02)
@@ -118,4 +118,4 @@ CallMeanModel <- reactive({
         )
     )
     return(as.data.frame(result))
-})
+}

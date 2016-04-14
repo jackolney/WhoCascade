@@ -1,14 +1,69 @@
 # The below parameters need to be fixed to the mean (from too, should be mean), length should be constant though!
-GetParaMatrix <- function() {
+GetParaMatrix <- function(calibParamOut) {
     ParRange <- expand.grid(
-        rho =       seq(from = input$userOptRho_Range[1],       to = input$userOptRho_Range[2],     length.out = input$optimParamLength),
-        q =         seq(from = input$userOptq_Range[1],         to = input$userOptq_Range[2],       length.out = input$optimParamLength),
-        kappa =     seq(from = input$userOptKappa_Range[2],     to = input$userOptKappa_Range[1],   length.out = input$optimParamLength),
-        gamma =     seq(from = input$userOptGamma_Range[1],     to = input$userOptGamma_Range[2],   length.out = input$optimParamLength),
-        sigma =     seq(from = input$userOptSigma_Range[1],     to = input$userOptSigma_Range[2],   length.out = input$optimParamLength),
-        omega =     seq(from = input$userOptOmega_Range[2],     to = input$userOptOmega_Range[1],   length.out = input$optimParamLength)
+        Rho   = seq(from = if (input$TestingCheck) {
+                input$userOptRho_Range[1]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]]
+            }, to = if (input$TestingCheck) {
+                input$userOptRho_Range[2]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]]
+            }, length.out = input$optimParamLength
+        ),
+        Q     = seq(from = if (input$LinkageCheck) {
+                input$userOptq_Range[1]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["q"]]
+            }, to = if (input$LinkageCheck) {
+                input$userOptq_Range[2]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["q"]]
+            }, length.out = input$optimParamLength
+        ),
+        Kappa = seq(from = if (input$PreRetentionCheck) {
+                input$userOptKappa_Range[1]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]]
+            }, to = if (input$PreRetentionCheck) {
+                input$userOptKappa_Range[2]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]]
+            }, length.out = input$optimParamLength
+        ),
+        Gamma = seq(from = if (input$InitiationCheck) {
+                input$userOptGamma_Range[1]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]]
+            }, to = if (input$InitiationCheck) {
+                input$userOptGamma_Range[2]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]]
+            }, length.out = input$optimParamLength
+        ),
+        Sigma = seq(from = if (input$AdherenceCheck) {
+                input$userOptSigma_Range[1]
+            } else {
+                0
+            }, to = if (input$AdherenceCheck) {
+                input$userOptSigma_Range[2]
+            } else {
+                0
+            }, length.out = input$optimParamLength
+        ),
+        Omega = seq(from = if (input$RetentionCheck) {
+                input$userOptOmega_Range[1]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]]
+            }, to = if (input$RetentionCheck) {
+                input$userOptOmega_Range[2]
+            } else {
+                lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]]
+            }, length.out = input$optimParamLength
+        )
     )
-    ParRange
+    out <- unique(ParRange)
+    out
 }
 
 Calc_Cost <- function(out) {
@@ -21,7 +76,7 @@ Calc_DALY <- function(out) {
 
 BaselineModel <- function() {
     out <- CallModel()
-    tmp <- array(unlist(out), c(dim(out[[1]]),length(out)), dimnames = c(dimnames(out[[1]]), NULL))
+    tmp <- array(unlist(out), c(dim(out[[1]]), length(out)), dimnames = c(dimnames(out[[1]]), NULL))
     res <- rowMeans(tmp, dims = 2)
     res <- as.data.frame(res) # Remove this at some point and just pass round a matrix (faster)
     res
