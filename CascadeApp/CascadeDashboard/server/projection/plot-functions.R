@@ -194,7 +194,7 @@ Gen909090Plot <- function() {
     ggOut
 }
 
-GenNewInfPlot <- function() {
+GenNewInfPlot <- function(wizard) {
     result <- CallModel()
 
     out <- c()
@@ -226,18 +226,24 @@ GenNewInfPlot <- function() {
     ggOut <- ggOut + geom_errorbar(mapping = aes(x = timeOut, ymin = min, ymax = max), width = 0.2, size = 1)
     ggOut <- ggOut + theme_classic()
     ggOut <- ggOut + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
-    ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
-    ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
-    ggOut <- ggOut + theme(axis.title = element_text(size = 18))
     ggOut <- ggOut + theme(axis.line.x = element_line())
     ggOut <- ggOut + theme(axis.line.y = element_line())
     ggOut <- ggOut + xlab("Year")
     ggOut <- ggOut + ylab("Cumulative New Infections / Time")
     ggOut <- ggOut + scale_x_continuous(breaks = seq(2015, 2020, 1), labels = seq(2015, 2020, 1))
+    if (wizard) {
+        ggOut <- ggOut + theme(axis.text.x = element_text(size = 12))
+        ggOut <- ggOut + theme(axis.text.y = element_text(size = 12))
+        ggOut <- ggOut + theme(axis.title = element_text(size  = 12))
+    } else {
+        ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
+        ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
+        ggOut <- ggOut + theme(axis.title = element_text(size  = 18))
+    }
     ggOut
 }
 
-GenAidsDeathsPlot <- function() {
+GenAidsDeathsPlot <- function(wizard) {
     result <- CallModel()
 
     out <- c()
@@ -269,14 +275,20 @@ GenAidsDeathsPlot <- function() {
     ggOut <- ggOut + geom_errorbar(mapping = aes(x = timeOut, ymin = min, ymax = max), width = 0.2, size = 1)
     ggOut <- ggOut + theme_classic()
     ggOut <- ggOut + scale_y_continuous(labels = scales::comma, expand = c(0, 0))
-    ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
-    ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
-    ggOut <- ggOut + theme(axis.title = element_text(size = 18))
     ggOut <- ggOut + theme(axis.line.x = element_line())
     ggOut <- ggOut + theme(axis.line.y = element_line())
     ggOut <- ggOut + xlab("Year")
     ggOut <- ggOut + ylab("Cumulative New Infections / Time")
     ggOut <- ggOut + scale_x_continuous(breaks = seq(2015, 2020, 1), labels = seq(2015, 2020, 1))
+    if (wizard) {
+        ggOut <- ggOut + theme(axis.text.x = element_text(size = 12))
+        ggOut <- ggOut + theme(axis.text.y = element_text(size = 12))
+        ggOut <- ggOut + theme(axis.title = element_text(size  = 12))
+    } else {
+        ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
+        ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
+        ggOut <- ggOut + theme(axis.title = element_text(size  = 18))
+    }
     ggOut
 }
 
