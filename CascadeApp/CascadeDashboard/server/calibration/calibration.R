@@ -73,7 +73,6 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         print(parRange)
 
         # Use Latin Hypercube Sampling to randomly sample from parRange n times
-        setProgress(value = 0 / 1, detail = "LHS 1000 parameter sets.")
         lhs <- FME::Latinhyper(parRange, num = maxIterations)
 
         # Sample initial states

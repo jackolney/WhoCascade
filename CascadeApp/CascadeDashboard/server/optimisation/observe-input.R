@@ -6,7 +6,7 @@ output$UI_optW_rho <- renderUI({
         max = round(ParamMaxMin["rho", "max"],        digits = 4),
         value = round(mean(CalibParamOut[["rho"]]),   digits = 4),
         step = 0.0001,
-        width = 1000)
+        width = "100%")
 })
 
 output$UI_optW_p <- renderUI({
@@ -15,7 +15,7 @@ output$UI_optW_p <- renderUI({
         max = round(ParamMaxMin["p", "max"],          digits = 4),
         value = round(mean(CalibParamOut[["p"]]),     digits = 4),
         step = 0.0001,
-        width = 1000)
+        width = "100%")
 })
 
 output$UI_optW_kappa <- renderUI({
@@ -24,7 +24,7 @@ output$UI_optW_kappa <- renderUI({
         max = round(ParamMaxMin["kappa", "max"],      digits = 4),
         value = round(mean(CalibParamOut[["kappa"]]), digits = 4),
         step = 0.0001,
-        width = 1000)
+        width = "100%")
 })
 
 output$UI_optW_gamma <- renderUI({
@@ -33,7 +33,7 @@ output$UI_optW_gamma <- renderUI({
         max = round(ParamMaxMin["gamma", "max"],      digits = 4),
         value = round(mean(CalibParamOut[["gamma"]]), digits = 4),
         step = 0.0001,
-        width = 1000)
+        width = "100%")
 })
 
 output$UI_optW_sigma <- renderUI({
@@ -42,7 +42,7 @@ output$UI_optW_sigma <- renderUI({
         max = 1,
         value = 0,
         step = 0.0001,
-        width = 1000)
+        width = "100%")
 })
 
 output$UI_optW_omega <- renderUI({
@@ -51,7 +51,7 @@ output$UI_optW_omega <- renderUI({
         max = round(ParamMaxMin["omega", "max"],      digits = 4),
         value = round(mean(CalibParamOut[["omega"]]), digits = 4),
         step = 0.0001,
-        width = 1000)
+        width = "100%")
 })
 
 
