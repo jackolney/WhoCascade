@@ -1,3 +1,4 @@
+# The below parameters need to be fixed to the mean (from too, should be mean), length should be constant though!
 GetParaMatrix <- function() {
     ParRange <- expand.grid(
         rho =       seq(from = input$userOptRho_Range[1],       to = input$userOptRho_Range[2],     length.out = input$optimParamLength),
