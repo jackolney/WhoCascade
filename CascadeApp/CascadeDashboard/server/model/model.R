@@ -8,7 +8,7 @@ CallModel <- reactive({
 
     # FOR EACH PARAMETER SET
     for(i in 1:dim(CalibParamOut)[1]) {
-        print(i)
+
         # for(i in 1:1) {
         time <- seq(0, 5, 0.02)
 
