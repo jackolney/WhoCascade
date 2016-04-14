@@ -9,14 +9,14 @@ observeEvent(input$optimStart, {
         setProgress(value = 0, message = 'Starting optimisation', detail = 'creating parameter matrix')
 
         par <- GetParaMatrix(calibParamOut = CalibParamOut)
-
-        updateButton(session,
-            inputId = "optimStart",
-            label = "",
-            style = "primary",
-            block = TRUE,
-            size = "large",
-            icon = icon("refresh", class = "fa-lg fa-spin", lib = "font-awesome"))
+        par
+        # updateButton(session,
+        #     inputId = "optimStart",
+        #     label = "",
+        #     style = "primary",
+        #     block = TRUE,
+        #     size = "large",
+        #     icon = icon("refresh", class = "fa-lg fa-spin", lib = "font-awesome"))
 
         # Simulation Loop
         time <- proc.time()[[1]]
@@ -28,7 +28,7 @@ observeEvent(input$optimStart, {
 
         ## THE BIG LOOP ##
         for(i in 1:dim(par)[1]) {
-
+            print(i)
             # setProgress(
             #     value = i/dim(par)[1],
             #     message = paste('Run', i),
@@ -99,12 +99,21 @@ observeEvent(input$optimStart, {
         }
 
         # Result data.frame for plot(vs,cost)
-        Result_909090 <<- data.frame(Result90, Result9090, Result909090, ResultVS, ResultCost, ResultPar_Rho, ResultPar_Q, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
-        colnames(Result_909090) <<- c("90", "90-90", "90-90-90", "VS", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
+        # Result_909090 <<- data.frame(Result90, Result9090, Result909090, ResultVS, ResultCost, ResultPar_Rho, ResultPar_Q, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
+        # colnames(Result_909090) <<- c("90", "90-90", "90-90-90", "VS", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
+
+        # # Result data.frame for plot(DALYs,cost)
+        # Result_DALYs <<- data.frame(ResultImpact, ResultCost, ResultPar_Rho, ResultPar_Q, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
+        # colnames(Result_DALYs) <<- c("DALYs", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
+
+        # Result data.frame for plot(vs,cost)
+        Result_909090 <- data.frame(Result90, Result9090, Result909090, ResultVS, ResultCost, ResultPar_Rho, ResultPar_Q, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
+        colnames(Result_909090) <- c("90", "90-90", "90-90-90", "VS", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
 
         # Result data.frame for plot(DALYs,cost)
-        Result_DALYs <<- data.frame(ResultImpact, ResultCost, ResultPar_Rho, ResultPar_Q, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
-        colnames(Result_DALYs) <<- c("DALYs", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
+        Result_DALYs <- data.frame(ResultImpact, ResultCost, ResultPar_Rho, ResultPar_Q, ResultPar_Kappa, ResultPar_Gamma, ResultPar_Sigma, ResultPar_Omega)
+        colnames(Result_DALYs) <- c("DALYs", "Cost", "Rho", "Q", "Kappa", "Gamma", "Sigma", "Omega")
+
 
         # ----------------------------------------- #
         # Subsetting those achieving 90-90-90 Stuff #

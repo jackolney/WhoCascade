@@ -13,17 +13,17 @@ source("server/projection/CD4-distribution.R", local = FALSE)
 # reactive input setup
 input <- c()
 input$TestingCheck      <- TRUE
-input$LinkageCheck      <- FALSE
-input$PreRetentionCheck <- FALSE
-input$InitiationCheck   <- FALSE
-input$AdherenceCheck    <- FALSE
-input$RetentionCheck    <- FALSE
+input$LinkageCheck      <- TRUE
+input$PreRetentionCheck <- TRUE
+input$InitiationCheck   <- TRUE
+input$AdherenceCheck    <- TRUE
+input$RetentionCheck    <- TRUE
 input$optimParamLength  <- 4
 
 
 input$userOptRho_Range <- c(
     round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4),
-    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4) * 5
+    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4) * 10
 )
 
 input$userOptq_Range <- c(
@@ -33,19 +33,19 @@ input$userOptq_Range <- c(
 
 input$userOptKappa_Range <- c(
     round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4),
-    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) * 5
+    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) / 10
 )
 
 input$userOptGamma_Range <- c(
     round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4),
-    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4) * 5
+    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4) * 10
 )
 
 input$userOptSigma_Range <- c(0, 5)
 
 input$userOptOmega_Range <- c(
     round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4),
-    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) * 5
+    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) / 10
 )
 
 
@@ -137,12 +137,12 @@ dim(theList[[1]])
 
 names(theList[[1]])
 
+## TEST THREE ##
+
+# Testing the output - of observeEvent(input$optimStart, {DO SOME SHIT})
+
 some <- CallMeanModel()
-
 same <- theList[[1]]
-
-dim(some)
-dim(same)
 
 testthat::expect_equal(some, same, tolerance = 1)
 
@@ -162,3 +162,4 @@ sum(some$DALY) / sum(same$DALY)
 # ENSURE PLOT IS CORRECT
 # ADD TWO INTERVENTIONS
 sum(some$DALY)
+

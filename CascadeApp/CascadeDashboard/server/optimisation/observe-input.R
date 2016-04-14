@@ -63,7 +63,7 @@ output$UI_optP_rhoRange <- renderUI({
         max = 50,
         value = c(
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4) * 5),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4) * 10),
         step = 0.0001)
 })
 
@@ -83,7 +83,7 @@ output$UI_optP_kappaRange <- renderUI({
         max = 50,
         value = c(
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) * 5),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) / 10),
         step = 0.0001)
 })
 
@@ -93,7 +93,7 @@ output$UI_optP_gammaRange <- renderUI({
         max = 50,
         value = c(
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4) * 5),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4) * 10),
         step = 0.0001)
 })
 
@@ -111,6 +111,6 @@ output$UI_optP_omegaRange <- renderUI({
         max = 0.1,
         value = c(
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) * 5),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) / 10),
         step = 0.0001)
 })
