@@ -4,13 +4,16 @@
 source("server/model/beta.R",                  local = FALSE)
 source("server/model/initial.R",               local = FALSE)
 source("server/model/mean-model.R",            local = FALSE)
-source("server/model/model.R",                 local = FALSE)
 source("server/model/parameters.R",            local = FALSE)
 source("server/optimisation/functions.R",      local = FALSE)
+source("server/optimisation/parameters.R",     local = FALSE)
 source("server/optimisation/sim.R",            local = FALSE)
 source("server/projection/CD4-distribution.R", local = FALSE)
 
 # reactive input setup
+MasterCD4_2015 <- GetCD4Distribution2015("Kenya")
+MasterData <- GetCountryData("Kenya")
+
 input <- c()
 input$TestingCheck      <- TRUE
 input$LinkageCheck      <- TRUE
@@ -32,8 +35,8 @@ input$userOptq_Range <- c(
 )
 
 input$userOptKappa_Range <- c(
-    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4),
-    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) / 10
+    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) / 10,
+    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4)
 )
 
 input$userOptGamma_Range <- c(
@@ -44,8 +47,8 @@ input$userOptGamma_Range <- c(
 input$userOptSigma_Range <- c(0, 5)
 
 input$userOptOmega_Range <- c(
-    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4),
-    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) / 10
+    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) / 10,
+    round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4)
 )
 
 
@@ -63,12 +66,12 @@ input$userOptOmega_Range <- c(
 theTest <- GetParaMatrix(calibParamOut = CalibParamOut)[1,]
 
 theComp <- data.frame(
-    Rho =   round(lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]],   digits = 4),
-    Q =     round(lapply(calibParamOut, function(x) {return(mean(x))})[["q"]],     digits = 4),
-    Kappa = round(lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4),
-    Gamma = round(lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4),
+    Rho =   round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]],   digits = 4),
+    Q =     round(lapply(CalibParamOut, function(x) {return(mean(x))})[["q"]],     digits = 4),
+    Kappa = round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4),
+    Gamma = round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4),
     Sigma = 0,
-    Omega = round(lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4)
+    Omega = round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4)
     )
 
 theTest
@@ -101,7 +104,6 @@ theMean <- GetMeanPar(
 # We should get equal
 testthat::expect_equal(theOpt, theMean)
 
-
 theOpt[7]
 theMean[7]
 theMean["Sigma"]
@@ -128,10 +130,8 @@ round(lapply(calibParamOut, function(x) {return(mean(x))})[["mu"]], digit = 4)
 CalibParamOut
 ParamMaxMin
 
-
 round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 3)
 round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 3) * 5
-
 
 dim(theList[[1]])
 
@@ -162,4 +162,3 @@ sum(some$DALY) / sum(same$DALY)
 # ENSURE PLOT IS CORRECT
 # ADD TWO INTERVENTIONS
 sum(some$DALY)
-

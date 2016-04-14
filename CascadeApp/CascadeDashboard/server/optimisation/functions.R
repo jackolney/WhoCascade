@@ -22,11 +22,11 @@ GetParaMatrix <- function(calibParamOut) {
             }, length.out = input$optimParamLength
         ),
         Kappa = seq(from = if (input$PreRetentionCheck) {
-                input$userOptKappa_Range[1]
+                input$userOptKappa_Range[2]
             } else {
                 round(lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4)
             }, to = if (input$PreRetentionCheck) {
-                input$userOptKappa_Range[2]
+                input$userOptKappa_Range[1]
             } else {
                 round(lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4)
             }, length.out = input$optimParamLength
@@ -52,11 +52,11 @@ GetParaMatrix <- function(calibParamOut) {
             }, length.out = input$optimParamLength
         ),
         Omega = seq(from = if (input$RetentionCheck) {
-                input$userOptOmega_Range[1]
+                input$userOptOmega_Range[2]
             } else {
                 round(lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4)
             }, to = if (input$RetentionCheck) {
-                input$userOptOmega_Range[2]
+                input$userOptOmega_Range[1]
             } else {
                 round(lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4)
             }, length.out = input$optimParamLength

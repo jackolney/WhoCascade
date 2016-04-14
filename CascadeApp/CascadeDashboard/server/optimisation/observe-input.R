@@ -82,8 +82,8 @@ output$UI_optP_kappaRange <- renderUI({
         min = 0,
         max = 50,
         value = c(
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) / 10),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) / 10,
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4)),
         step = 0.0001)
 })
 
@@ -110,7 +110,7 @@ output$UI_optP_omegaRange <- renderUI({
         min = 0,
         max = 0.1,
         value = c(
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) / 10),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) / 10,
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4)),
         step = 0.0001)
 })
