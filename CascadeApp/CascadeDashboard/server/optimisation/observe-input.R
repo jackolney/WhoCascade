@@ -2,37 +2,37 @@
 ## Currently dummies ##
 output$UI_optW_rho <- renderUI({
     sliderInput(inputId = 'optW_rho', label = 'Diagnosis rate (diagnoses/py) (rho):',
-        min = round(ParamMaxMin["rho", "min"],        digits = 3),
-        max = round(ParamMaxMin["rho", "max"],        digits = 3),
-        value = round(mean(CalibParamOut[["rho"]]),   digits = 3),
-        step = 0.001,
+        min = round(ParamMaxMin["rho", "min"],        digits = 4),
+        max = round(ParamMaxMin["rho", "max"],        digits = 4),
+        value = round(mean(CalibParamOut[["rho"]]),   digits = 4),
+        step = 0.0001,
         width = 1000)
 })
 
 output$UI_optW_p <- renderUI({
     sliderInput(inputId = 'optW_p', label = 'Proportion of diagnosed individuals linking to care (p):',
-        min = round(ParamMaxMin["p", "min"],          digits = 3),
-        max = round(ParamMaxMin["p", "max"],          digits = 3),
-        value = round(mean(CalibParamOut[["p"]]),     digits = 3),
-        step = 0.001,
+        min = round(ParamMaxMin["p", "min"],          digits = 4),
+        max = round(ParamMaxMin["p", "max"],          digits = 4),
+        value = round(mean(CalibParamOut[["p"]]),     digits = 4),
+        step = 0.0001,
         width = 1000)
 })
 
 output$UI_optW_kappa <- renderUI({
     sliderInput(inputId = 'optW_kappa', label = 'ART initiation rate (ART initiations/py) (gamma):',
-        min = round(ParamMaxMin["kappa", "min"],      digits = 3),
-        max = round(ParamMaxMin["kappa", "max"],      digits = 3),
-        value = round(mean(CalibParamOut[["kappa"]]), digits = 3),
-        step = 0.001,
+        min = round(ParamMaxMin["kappa", "min"],      digits = 4),
+        max = round(ParamMaxMin["kappa", "max"],      digits = 4),
+        value = round(mean(CalibParamOut[["kappa"]]), digits = 4),
+        step = 0.0001,
         width = 1000)
 })
 
 output$UI_optW_gamma <- renderUI({
     sliderInput(inputId = 'optW_gamma', label = 'ART initiation rate (ART initiations/py) (gamma):',
-        min = round(ParamMaxMin["gamma", "min"],      digits = 3),
-        max = round(ParamMaxMin["gamma", "max"],      digits = 3),
-        value = round(mean(CalibParamOut[["gamma"]]), digits = 3),
-        step = 0.001,
+        min = round(ParamMaxMin["gamma", "min"],      digits = 4),
+        max = round(ParamMaxMin["gamma", "max"],      digits = 4),
+        value = round(mean(CalibParamOut[["gamma"]]), digits = 4),
+        step = 0.0001,
         width = 1000)
 })
 
@@ -41,16 +41,16 @@ output$UI_optW_sigma <- renderUI({
         min = 0,
         max = 1,
         value = 0,
-        step = 0.001,
+        step = 0.0001,
         width = 1000)
 })
 
 output$UI_optW_omega <- renderUI({
     sliderInput(inputId = 'optW_omega', label = 'ART dropout rate (ART dropout/py) (omega):',
-        min = round(ParamMaxMin["omega", "min"],      digits = 3),
-        max = round(ParamMaxMin["omega", "max"],      digits = 3),
-        value = round(mean(CalibParamOut[["omega"]]), digits = 3),
-        step = 0.001,
+        min = round(ParamMaxMin["omega", "min"],      digits = 4),
+        max = round(ParamMaxMin["omega", "max"],      digits = 4),
+        value = round(mean(CalibParamOut[["omega"]]), digits = 4),
+        step = 0.0001,
         width = 1000)
 })
 
@@ -62,9 +62,9 @@ output$UI_optP_rhoRange <- renderUI({
         min = 0,
         max = 50,
         value = c(
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 3),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 3) * 5),
-        step = 0.001)
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4) * 5),
+        step = 0.0001)
 })
 
 output$UI_optP_qRange <- renderUI({
@@ -72,9 +72,9 @@ output$UI_optP_qRange <- renderUI({
         min = 0,
         max = 1,
         value = c(
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["q"]], digits = 3),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["q"]], digits = 4),
             1),
-        step = 0.001)
+        step = 0.0001)
 })
 
 output$UI_optP_kappaRange <- renderUI({
@@ -82,9 +82,9 @@ output$UI_optP_kappaRange <- renderUI({
         min = 0,
         max = 50,
         value = c(
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 3),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 3) * 5),
-        step = 0.001)
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) * 5),
+        step = 0.0001)
 })
 
 output$UI_optP_gammaRange <- renderUI({
@@ -92,9 +92,9 @@ output$UI_optP_gammaRange <- renderUI({
         min = 0,
         max = 50,
         value = c(
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 3),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 3) * 5),
-        step = 0.001)
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4) * 5),
+        step = 0.0001)
 })
 
 output$UI_optP_sigmaRange <- renderUI({
@@ -102,7 +102,7 @@ output$UI_optP_sigmaRange <- renderUI({
         min = 0,
         max = 5,
         value = c(0, 5),
-        step = 0.001)
+        step = 0.0001)
 })
 
 output$UI_optP_omegaRange <- renderUI({
@@ -110,7 +110,7 @@ output$UI_optP_omegaRange <- renderUI({
         min = 0,
         max = 0.1,
         value = c(
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 3),
-            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 3) * 5),
-        step = 0.001)
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4),
+            round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) * 5),
+        step = 0.0001)
 })

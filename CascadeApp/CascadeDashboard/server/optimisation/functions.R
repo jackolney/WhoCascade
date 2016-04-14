@@ -4,41 +4,41 @@ GetParaMatrix <- function(calibParamOut) {
         Rho   = seq(from = if (input$TestingCheck) {
                 input$userOptRho_Range[1]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4)
             }, to = if (input$TestingCheck) {
                 input$userOptRho_Range[2]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4)
             }, length.out = input$optimParamLength
         ),
         Q     = seq(from = if (input$LinkageCheck) {
                 input$userOptq_Range[1]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["q"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["q"]], digits = 4)
             }, to = if (input$LinkageCheck) {
                 input$userOptq_Range[2]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["q"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["q"]], digits = 4)
             }, length.out = input$optimParamLength
         ),
         Kappa = seq(from = if (input$PreRetentionCheck) {
                 input$userOptKappa_Range[1]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4)
             }, to = if (input$PreRetentionCheck) {
                 input$userOptKappa_Range[2]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4)
             }, length.out = input$optimParamLength
         ),
         Gamma = seq(from = if (input$InitiationCheck) {
                 input$userOptGamma_Range[1]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4)
             }, to = if (input$InitiationCheck) {
                 input$userOptGamma_Range[2]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4)
             }, length.out = input$optimParamLength
         ),
         Sigma = seq(from = if (input$AdherenceCheck) {
@@ -54,11 +54,11 @@ GetParaMatrix <- function(calibParamOut) {
         Omega = seq(from = if (input$RetentionCheck) {
                 input$userOptOmega_Range[1]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4)
             }, to = if (input$RetentionCheck) {
                 input$userOptOmega_Range[2]
             } else {
-                lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]]
+                round(lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4)
             }, length.out = input$optimParamLength
         )
     )

@@ -14,9 +14,9 @@ GetOptPar <- function(masterCD4, data, iterationParam, calibParamOut) {
         t_5 = ConvertYear2015(data[["treatment_guidelines"]][["less200"]]),
 
         # These guys still need to be set by the model.
-        Theta = lapply(calibParamOut, function(x) {return(mean(x))})[["theta"]],
-        Mu    = lapply(calibParamOut, function(x) {return(mean(x))})[["mu"]],
-        p     = lapply(calibParamOut, function(x) {return(mean(x))})[["p"]],
+        Theta = round(lapply(calibParamOut, function(x) {return(mean(x))})[["theta"]], digits = 4),
+        Mu    = round(lapply(calibParamOut, function(x) {return(mean(x))})[["mu"]],    digits = 4),
+        p     = round(lapply(calibParamOut, function(x) {return(mean(x))})[["p"]],     digits = 4),
 
         # MODIFYING #
         Rho   = iterationParam[["Rho"]],
@@ -45,14 +45,14 @@ GetMeanPar <- function(masterCD4, data, calibParamOut) {
         t_5 = ConvertYear2015(data[["treatment_guidelines"]][["less200"]]),
 
         # Just using mean parameter values for the momen #
-        Theta = lapply(calibParamOut, function(x) {return(mean(x))})[["theta"]],
-        Mu    = lapply(calibParamOut, function(x) {return(mean(x))})[["mu"]],
-        p     = lapply(calibParamOut, function(x) {return(mean(x))})[["p"]],
-        Rho   = lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]],
-        Kappa = lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]],
-        Gamma = lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]],
-        Omega = lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]],
-        q     = lapply(calibParamOut, function(x) {return(mean(x))})[["q"]]
+        Theta = round(lapply(calibParamOut, function(x) {return(mean(x))})[["theta"]], digits = 4),
+        Mu    = round(lapply(calibParamOut, function(x) {return(mean(x))})[["mu"]],    digits = 4),
+        p     = round(lapply(calibParamOut, function(x) {return(mean(x))})[["p"]],     digits = 4),
+        Rho   = round(lapply(calibParamOut, function(x) {return(mean(x))})[["rho"]],   digits = 4),
+        Kappa = round(lapply(calibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4),
+        Gamma = round(lapply(calibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4),
+        Omega = round(lapply(calibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4),
+        q     = round(lapply(calibParamOut, function(x) {return(mean(x))})[["q"]],     digits = 4)
     )
     p
 }

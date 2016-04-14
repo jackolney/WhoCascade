@@ -82,20 +82,20 @@ observeEvent(input$optimStart, {
         ResultPar_Sigma <- c()
         ResultPar_Omega <- c()
         for(i in 1:length(theList)) {
-            if (input$optimStop) break
-            setProgress(value = i / length(theList), message = paste0(round((i / length(theList) * 100), digits = 0), "%"), detail = 'compiling results')
+            # if (input$optimStop) break
+            # setProgress(value = i / length(theList), message = paste0(round((i / length(theList) * 100), digits = 0), "%"), detail = 'compiling results')
             Result90[i]        <- Calc_909090_Result(theList[[i]])[1]
             Result9090[i]      <- Calc_909090_Result(theList[[i]])[2]
             Result909090[i]    <- Calc_909090_Result(theList[[i]])[3]
             ResultVS[i]        <- Calc_VS(theList[[i]])
             ResultImpact[i]    <- Calc_DALYsAverted(theList[[i]], BaseDALY)
             ResultCost[i]      <- Calc_AdditionalCost(theList[[i]], BaseCost)
-            ResultPar_Rho[i]   <- par[i,"rho"]
-            ResultPar_Q[i]     <- par[i,"q"]
-            ResultPar_Kappa[i] <- par[i,"kappa"]
-            ResultPar_Gamma[i] <- par[i,"gamma"]
-            ResultPar_Sigma[i] <- par[i,"sigma"]
-            ResultPar_Omega[i] <- par[i,"omega"]
+            ResultPar_Rho[i]   <- par[i,"Rho"]
+            ResultPar_Q[i]     <- par[i,"Q"]
+            ResultPar_Kappa[i] <- par[i,"Kappa"]
+            ResultPar_Gamma[i] <- par[i,"Gamma"]
+            ResultPar_Sigma[i] <- par[i,"Sigma"]
+            ResultPar_Omega[i] <- par[i,"Omega"]
         }
 
         # Result data.frame for plot(vs,cost)
