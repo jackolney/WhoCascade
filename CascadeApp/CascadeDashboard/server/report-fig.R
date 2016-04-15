@@ -83,7 +83,7 @@ BuildCalibrationPlots_Report <- function(data, originalData) {
     p6 <- p6 + geom_point(data = originalData[["calib"]][originalData[["calib"]]$year == 2015 & originalData[["calib"]]$indicator != "PLHIV Retained",], aes(x = indicator, y = value), size = 2.5)
     p6 <- p6 + geom_point(data = originalData[["calib"]][originalData[["calib"]]$year == 2015 & originalData[["calib"]]$indicator != "PLHIV Retained",], aes(x = indicator, y = value, color = weight), size = 2)
     p6 <- p6 + mycol
-    p6 <- p6 + ggtitle("Cascade in 2015", subtitle = "Error bars illustrate result ranges from best 10% of model fits, points are data")
+    p6 <- p6 + ggtitle("Cascade in 2015", subtitle = "Error bars illustrate result ranges, points are data")
     p6 <- p6 + theme_classic()
     p6 <- p6 + theme(legend.position = "none", axis.title = element_blank())
     p6 <- p6 + theme(axis.text.y = element_text(size = 8))
