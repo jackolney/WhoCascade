@@ -1,4 +1,4 @@
-GenYourCascadePlot <- function(h) {
+GenYourCascadePlot <- function(h, font) {
     t0 <- ExtractCascadeData(1)
 
     c.fill <- rev(brewer.pal(9, "Blues")[3:8])
@@ -34,11 +34,13 @@ GenYourCascadePlot <- function(h) {
     ggOut <- ggOut + theme(legend.position = "none")
     ggOut <- ggOut + theme(plot.background = element_blank())
     ggOut <- ggOut + theme(panel.background = element_blank())
-    ggOut <- ggOut + theme(text = element_text(family = "Avenir Next"))
+    if (font == "Avenir Next") {
+        ggOut <- ggOut + theme(text = element_text(family = "Avenir Next"))
+    }
     ggOut
 }
 
-GenCascadePlot <- function() {
+GenCascadePlot <- function(font) {
     t0 <- ExtractCascadeData(1)   # t0 = 1
     t5 <- ExtractCascadeData(251) # t5 = (5 / 0.02) + 1 [t0]
 
@@ -59,7 +61,9 @@ GenCascadePlot <- function() {
     ggOne <- ggOne + theme(legend.position = "none")
     ggOne <- ggOne + theme(plot.background = element_blank())
     ggOne <- ggOne + theme(panel.background = element_blank())
-    ggOne <- ggOne + theme(text = element_text(family = "Avenir Next"))
+    if (font == "Avenir Next") {
+        ggOne <- ggOne + theme(text = element_text(family = "Avenir Next"))
+    }
 
     ggTwo <- ggplot(t5, aes(x = def, y = res))
     ggTwo <- ggTwo + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
@@ -76,7 +80,9 @@ GenCascadePlot <- function() {
     ggTwo <- ggTwo + theme(legend.position = "none")
     ggTwo <- ggTwo + theme(plot.background = element_blank())
     ggTwo <- ggTwo + theme(panel.background = element_blank())
-    ggTwo <- ggTwo + theme(text = element_text(family = "Avenir Next"))
+    if (font == "Avenir Next") {
+        ggTwo <- ggTwo + theme(text = element_text(family = "Avenir Next"))
+    }
 
     grid.arrange(ggOne, ggTwo, nrow = 1, ncol = 2)
 }
@@ -88,7 +94,7 @@ GrabLegend <- function(a.ggplot) {
     return(legend)
 }
 
-GenPowersCascadePlot <- function() {
+GenPowersCascadePlot <- function(font) {
     t0 <- ExtractPowersCascadeData(1)
     t5 <- ExtractPowersCascadeData(251) # t5 = (5 / 0.02) + 1 [t0]
 
@@ -111,7 +117,9 @@ GenPowersCascadePlot <- function() {
     ggOne <- ggOne + theme(legend.position = "right")
     ggOne <- ggOne + theme(plot.background = element_blank())
     ggOne <- ggOne + theme(panel.background = element_blank())
-    ggOne <- ggOne + theme(text = element_text(family = "Avenir Next"))
+    if (font == "Avenir Next") {
+        ggOne <- ggOne + theme(text = element_text(family = "Avenir Next"))
+    }
 
     cols <- brewer.pal(9,"Set1")
     p.col <- c(cols[3], cols[2], cols[4], cols[5], cols[1], cols[9], cols[8])
@@ -132,7 +140,9 @@ GenPowersCascadePlot <- function() {
     ggTwo <- ggTwo + theme(legend.position = "right")
     ggTwo <- ggTwo + theme(plot.background = element_blank())
     ggTwo <- ggTwo + theme(panel.background = element_blank())
-    ggTwo <- ggTwo + theme(text = element_text(family = "Avenir Next"))
+    if (font == "Avenir Next") {
+        ggTwo <- ggTwo + theme(text = element_text(family = "Avenir Next"))
+    }
 
     my.legend <- GrabLegend(ggOne)
     l.width <- sum(my.legend$width)
@@ -147,7 +157,7 @@ GenPowersCascadePlot <- function() {
         nrow = 1)
 }
 
-Gen909090Plot <- function() {
+Gen909090Plot <- function(font) {
     out    <- Extract909090Data()
     df     <- out[[1]]
     dfData <- out[[2]]
@@ -190,7 +200,9 @@ Gen909090Plot <- function() {
     ggOut <- ggOut + theme(legend.position = "none")
     ggOut <- ggOut + theme(plot.background = element_blank())
     ggOut <- ggOut + theme(panel.background = element_blank())
-    ggOut <- ggOut + theme(text = element_text(family = "Avenir Next"))
+    if (font == "Avenir Next") {
+        ggOut <- ggOut + theme(text = element_text(family = "Avenir Next"))
+    }
     ggOut
 }
 

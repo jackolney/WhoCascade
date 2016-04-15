@@ -1,45 +1,45 @@
 output$plotValidation_PLHIV <- renderPlot({
-    GenYourCascadePlot(1)
+    GenYourCascadePlot(1, font = "Avenir Next")
 }, height = 400,
    width = 'auto',
    bg = "transparent")
 
 output$plotValidation_DIAG <- renderPlot({
-    GenYourCascadePlot(2)
+    GenYourCascadePlot(2, font = "Avenir Next")
 }, height = 400,
    width = 'auto',
    bg = "transparent")
 
 output$plotValidation_CARE <- renderPlot({
-    GenYourCascadePlot(3)
+    GenYourCascadePlot(3, font = "Avenir Next")
 }, height = 400,
    width = 'auto',
    bg = "transparent")
 
 output$plotValidation_ART <- renderPlot({
-    GenYourCascadePlot(4)
+    GenYourCascadePlot(4, font = "Avenir Next")
 }, height = 400,
    width = 'auto',
    bg = "transparent")
 
 output$plotValidation_SUPP <- renderPlot({
-    GenYourCascadePlot(5)
+    GenYourCascadePlot(5, font = "Avenir Next")
 }, height = 400,
    width = 'auto',
    bg = "transparent")
 
 output$plotCascade <- renderPlot({
-    GenCascadePlot()
+    GenCascadePlot(font = "Avenir Next")
 }, height = 400,
    width = 'auto')
 
 output$plotPowersCascade <- renderPlot({
-    GenPowersCascadePlot()
+    GenPowersCascadePlot(font = "Avenir Next")
 }, height = 400,
    width = 'auto')
 
 output$plot909090 <- renderPlot({
-    Gen909090Plot()
+    Gen909090Plot(font = "Avenir Next")
 }, height = 500,
    width = 'auto')
 
@@ -74,6 +74,6 @@ output$plotAidsDeaths_wizard <- renderPlot({
    width = 'auto')
 
 output$plotCascade_wizard <- renderPlot({
-    GenCascadePlot()
+    GenCascadePlot(font = "Avenir Next")
 }, height = 400,
    width = 'auto')
