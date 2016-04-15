@@ -1,0 +1,20 @@
+---
+title: "Test Report"
+author: Jack Olney
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+---
+
+# Hello, Jack!
+
+This is a markdown document that we can use to report back all the fun stuff we do in [shiny](http://shiny.rstudio.com/)
+
+
+```{r}
+    summary(cars$dist)
+    summary(cars$speed)
+```
+
+_How cool is this?_
+
+Check this out for more information. http://rmarkdown.rstudio.com/authoring_basics.html
