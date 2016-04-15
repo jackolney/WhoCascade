@@ -5,7 +5,7 @@ tabItem(tabName = "report",
             solidHeader = TRUE,
             title = "Report Generation",
             "A report can be generated automatically that details all data entered into the site, all simulations run, and all results generated.
-            The report is a pdf compiled using LaTeX, and contains all important information regarding the model. Please contact me with any bugs or issues at jack.olney11@imperial.ac.uk",
+            The report is a pdf compiled using LaTeX, and contains all important information regarding the model. Please contact me with any bugs or issues at jack.olney11@imperial.ac.uk"
         )
     ),
     column(width = 4,
