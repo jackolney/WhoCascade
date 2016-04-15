@@ -1,4 +1,3 @@
-# devtools::install_github("shinyTable", "trestletech")
 # devtools::install_github("jackolney/shinydashboard", ref = "master")
 # devtools::load_all(pkg = "~/git/packages/shinydashboard")
 library(DT)
