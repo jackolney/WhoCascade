@@ -3,9 +3,10 @@ source("server/google-sheets.R",  local = TRUE)
 source("server/leaflet.R",        local = TRUE)
 source("server/links.R",          local = TRUE)
 source("server/render.R",         local = TRUE)
+source("server/report-fig.R",     local = TRUE)
+source("server/report.R",         local = TRUE)
 source("server/valuebox.R",       local = TRUE)
 source("ui/global-lists.R",       local = TRUE)
-source("server/report.R",         local = TRUE)
 
 ## It appears as though no server code exists here.
 ## The reality is that it is all farmed out to other places.
