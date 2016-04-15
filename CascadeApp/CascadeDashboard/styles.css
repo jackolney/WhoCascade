@@ -68,3 +68,8 @@
     padding-left: 3px;
     font-size: 17px;
 }
+
+/* Overload download button font color */
+.btn-success {
+    color: #fff !important;
+}

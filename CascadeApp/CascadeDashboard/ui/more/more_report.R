@@ -14,6 +14,6 @@ tabItem(tabName = "report",
             title = "Help Panel",
             "The report will be generated with RMarkdown and knitR."
         ),
-        bsButton(inputId = "createReport", label = "CREATE REPORT", style = "success", size = "large", block = TRUE, icon = icon("file-pdf-o", class = "fa-lg fa-fw", lib = "font-awesome"))
+        downloadButton(outputId = 'downloadReport', label = "CREATE REPORT", class = "btn btn-success btn-lg btn-block")
     )
 )
