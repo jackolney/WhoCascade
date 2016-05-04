@@ -1,0 +1,16 @@
+# devtools::install_github("jackolney/shinydashboard", ref = "master")
+# devtools::load_all(pkg = "~/git/packages/shinydashboard")
+library(DT)
+library(ggplot2)
+library(leaflet)
+library(rgdal)
+library(shiny)
+library(shinyBS)
+library(shinydashboard)
+library(shinyjs)
+library(shinyTable)
+library(shinythemes)
+library(V8)
+
+# source global-lists
+source("ui/global-lists.R", local = TRUE)
