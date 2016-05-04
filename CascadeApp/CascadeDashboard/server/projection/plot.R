@@ -55,7 +55,7 @@ output$plotAidsDeaths <- renderPlot({
 
 output$plotSingle <- renderPlot({
     GenSinglePlot()
-}, height = 500,
+}, height = 400,
    width = 'auto')
 
 output$plotAll <- renderPlot({
