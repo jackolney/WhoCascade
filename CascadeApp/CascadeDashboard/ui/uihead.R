@@ -7,17 +7,19 @@ if (version$os == "darwin13.4.0") {
     loc <- "/home/DIDE/jjo11/R/x86_64-pc-linux-gnu-library/3.2/"
 }
 
-library(DT,             lib.loc = loc)
-library(ggplot2,        lib.loc = loc)
-library(leaflet,        lib.loc = loc)
-library(rgdal,          lib.loc = loc)
-library(shiny,          lib.loc = loc)
-library(shinyBS,        lib.loc = loc)
-library(shinydashboard, lib.loc = loc)
-library(shinyjs,        lib.loc = loc)
-library(shinyTable,     lib.loc = loc)
-library(shinythemes,    lib.loc = loc)
-library(V8,             lib.loc = loc)
+.libPaths(c(.libPaths(), loc))
+
+library(DT)
+library(ggplot2)
+library(leaflet)
+library(rgdal)
+library(shiny)
+library(shinyBS)
+library(shinydashboard)
+library(shinyjs)
+library(shinyTable)
+library(shinythemes)
+library(V8)
 
 # source global-lists
 source("ui/global-lists.R", local = TRUE)
