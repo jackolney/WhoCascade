@@ -76,11 +76,9 @@ MakeAssumptions <- function(uCountry, countryData) {
         assumptions.return <- rbind(new.diag, new.care)
 
     } else {
-        warning("No code written for generating assumptions on other countries aside from Kenya.")
-        assumptions.return <- c()
+        stop("No code written for generating assumptions on other countries aside from Kenya.")
     }
     # Return the assumptions data.frame taking the standard form as before.
-
     assumptions.return
 }
 
