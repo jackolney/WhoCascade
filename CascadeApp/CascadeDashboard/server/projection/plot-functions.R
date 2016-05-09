@@ -54,8 +54,8 @@ GenCascadePlot <- function() {
     ggOne <- ggOne + theme(plot.title = element_text(hjust = 0.5))
     ggOne <- ggOne + theme(title = element_text(size = 18))
     ggOne <- ggOne + theme(axis.title = element_blank())
-    ggOne <- ggOne + theme(axis.text.x = element_text(size = 14))
-    ggOne <- ggOne + theme(axis.text.y = element_text(size = 14))
+    ggOne <- ggOne + theme(axis.text.x = element_text(size = 12))
+    ggOne <- ggOne + theme(axis.text.y = element_text(size = 12))
     ggOne <- ggOne + theme(legend.position = "none")
     ggOne <- ggOne + theme(plot.background = element_blank())
     ggOne <- ggOne + theme(panel.background = element_blank())
@@ -71,8 +71,8 @@ GenCascadePlot <- function() {
     ggTwo <- ggTwo + theme(plot.title = element_text(hjust = 0.5))
     ggTwo <- ggTwo + theme(title = element_text(size = 18))
     ggTwo <- ggTwo + theme(axis.title = element_blank())
-    ggTwo <- ggTwo + theme(axis.text.x = element_text(size = 14))
-    ggTwo <- ggTwo + theme(axis.text.y = element_text(size = 14))
+    ggTwo <- ggTwo + theme(axis.text.x = element_text(size = 12))
+    ggTwo <- ggTwo + theme(axis.text.y = element_text(size = 12))
     ggTwo <- ggTwo + theme(legend.position = "none")
     ggTwo <- ggTwo + theme(plot.background = element_blank())
     ggTwo <- ggTwo + theme(panel.background = element_blank())
@@ -234,11 +234,11 @@ GenNewInfPlot <- function(wizard) {
     if (wizard) {
         ggOut <- ggOut + theme(axis.text.x = element_text(size = 12))
         ggOut <- ggOut + theme(axis.text.y = element_text(size = 12))
-        ggOut <- ggOut + theme(axis.title = element_text(size  = 12))
+        ggOut <- ggOut + theme(axis.title =  element_text(size = 12))
     } else {
         ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
         ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
-        ggOut <- ggOut + theme(axis.title = element_text(size  = 18))
+        ggOut <- ggOut + theme(axis.title =  element_text(size = 18))
     }
     ggOut
 }
@@ -283,11 +283,11 @@ GenAidsDeathsPlot <- function(wizard) {
     if (wizard) {
         ggOut <- ggOut + theme(axis.text.x = element_text(size = 12))
         ggOut <- ggOut + theme(axis.text.y = element_text(size = 12))
-        ggOut <- ggOut + theme(axis.title = element_text(size  = 12))
+        ggOut <- ggOut + theme(axis.title =  element_text(size = 12))
     } else {
         ggOut <- ggOut + theme(axis.text.x = element_text(size = 18))
         ggOut <- ggOut + theme(axis.text.y = element_text(size = 18))
-        ggOut <- ggOut + theme(axis.title = element_text(size  = 18))
+        ggOut <- ggOut + theme(axis.title =  element_text(size = 18))
     }
     ggOut
 }
