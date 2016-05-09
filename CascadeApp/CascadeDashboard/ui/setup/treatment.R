@@ -13,7 +13,8 @@ tabItem(tabName = "treatment",
             id = 'art_panel',
             uiOutput(outputId = "UI_uART"),
             uiOutput(outputId = "UI_uART_source"),
-            uiOutput(outputId = "UI_uART_year")
+            uiOutput(outputId = "UI_uART_year"),
+            uiOutput(outputId = "uART_quality")
         )
     ),
     column(width = 4,
@@ -25,9 +26,7 @@ tabItem(tabName = "treatment",
             helpText("Please fill in the boxes with details regarding each of the strategic information indicators,
                 then select the source of the data from the drop-down menu below.
                 Once entered hit 'Next' to proceed. For further details please see:"),
-            a(href = "http://who.int/hiv/pub/guidelines/strategic-information-guidelines/en/", "WHO - Consolidated Strategic Information Guidelines for HIV in the Health Sector.", target = "_blank"),
-            br(),
-            uiOutput(outputId = "uART_quality")
+            a(href = "http://who.int/hiv/pub/guidelines/strategic-information-guidelines/en/", "WHO - Consolidated Strategic Information Guidelines for HIV in the Health Sector.", target = "_blank")
         ),
         bsButton(inputId = "NEXT_art", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )

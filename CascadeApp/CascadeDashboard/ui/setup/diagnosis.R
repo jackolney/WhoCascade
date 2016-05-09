@@ -13,7 +13,8 @@ tabItem(tabName = "diagnosis",
             id = 'diag_panel',
             uiOutput(outputId = "UI_uDIAG"),
             uiOutput(outputId = "UI_uDIAG_source"),
-            uiOutput(outputId = "UI_uDIAG_year")
+            uiOutput(outputId = "UI_uDIAG_year"),
+            uiOutput(outputId = "uDIAG_quality")
         )
     ),
     column(width = 4,
@@ -25,9 +26,7 @@ tabItem(tabName = "diagnosis",
             helpText("Please fill in the boxes with details regarding each of the strategic information indicators,
                 then select the source of the data from the drop-down menu below.
                 Once entered hit 'Next' to proceed. For further details please see:"),
-            a(href = "http://who.int/hiv/pub/guidelines/strategic-information-guidelines/en/", "WHO - Consolidated Strategic Information Guidelines for HIV in the Health Sector.", target = "_blank"),
-            br(),
-            uiOutput(outputId = "uDIAG_quality")
+            a(href = "http://who.int/hiv/pub/guidelines/strategic-information-guidelines/en/", "WHO - Consolidated Strategic Information Guidelines for HIV in the Health Sector.", target = "_blank")
         ),
         bsButton(inputId = "NEXT_diag", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
