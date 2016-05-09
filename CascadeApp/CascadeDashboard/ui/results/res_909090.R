@@ -5,10 +5,7 @@ tabItem(tabName = "_909090",
             solidHeader = TRUE,
             title = "UNAIDS 90-90-90 by 2020",
             plotOutput('plot909090', height = "500px")
-        ),
-        valueBoxOutput("vb_90",     width = 4),
-        valueBoxOutput("vb_9090",   width = 4),
-        valueBoxOutput("vb_909090", width = 4)
+        )
     ),
     column(width = 4,
         box(width = NULL,
@@ -19,6 +16,9 @@ tabItem(tabName = "_909090",
                 90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any
                 inefficiencies in care, then click on the 'Optimisation' tab."
         ),
+        valueBoxOutput("vb_90",     width = NULL),
+        valueBoxOutput("vb_9090",   width = NULL),
+        valueBoxOutput("vb_909090", width = NULL),
         bsButton(inputId = "NEXT_909090", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )
