@@ -4,20 +4,20 @@ GenYourCascadePlot <- function(h) {
     c.fill <- rev(brewer.pal(9, "Blues")[3:8])
     c.fill[h] <- "red"
 
-    output$outPLHIV      <- renderPrint({ scales::comma(round(t0[t0$def == "# PLHIV", "res"], 0)) }, width = 300, quoted = FALSE)
-    output$outPLHIV_perc <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# PLHIV", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# PLHIV", "max"], 0))) }, width = 300, quoted = FALSE)
+    output$outPLHIV      <- renderUI({ tags$code(scales::comma(round(t0[t0$def == "# PLHIV", "res"], 0))) })
+    output$outPLHIV_perc <- renderUI({ tags$code(paste(scales::comma(round(t0[t0$def == "# PLHIV", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# PLHIV", "max"], 0)))) })
 
-    output$outDIAG       <- renderPrint({ scales::comma(round(t0[t0$def == "# Diagnosed", "res"], 0)) }, width = 300, quoted = FALSE)
-    output$outDIAG_perc  <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Diagnosed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Diagnosed", "max"], 0))) }, width = 300, quoted = FALSE)
+    output$outDIAG       <- renderUI({ tags$code(scales::comma(round(t0[t0$def == "# Diagnosed", "res"], 0))) })
+    output$outDIAG_perc  <- renderUI({ tags$code(paste(scales::comma(round(t0[t0$def == "# Diagnosed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Diagnosed", "max"], 0)))) })
 
-    output$outCARE       <- renderPrint({ scales::comma(round(t0[t0$def == "# In Care", "res"], 0)) }, width = 300, quoted = FALSE)
-    output$outCARE_perc  <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# In Care", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# In Care", "max"], 0))) }, width = 300, quoted = FALSE)
+    output$outCARE       <- renderUI({ tags$code(scales::comma(round(t0[t0$def == "# In Care", "res"], 0))) })
+    output$outCARE_perc  <- renderUI({ tags$code(paste(scales::comma(round(t0[t0$def == "# In Care", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# In Care", "max"], 0)))) })
 
-    output$outART        <- renderPrint({ scales::comma(round(t0[t0$def == "# Treatment", "res"], 0)) }, width = 300, quoted = FALSE)
-    output$outART_perc   <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Treatment", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Treatment", "max"], 0))) }, width = 300, quoted = FALSE)
+    output$outART        <- renderUI({ tags$code(scales::comma(round(t0[t0$def == "# Treatment", "res"], 0))) })
+    output$outART_perc   <- renderUI({ tags$code(paste(scales::comma(round(t0[t0$def == "# Treatment", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Treatment", "max"], 0)))) })
 
-    output$outSUPP       <- renderPrint({ scales::comma(round(t0[t0$def == "# Suppressed", "res"], 0)) }, width = 300, quoted = FALSE)
-    output$outSUPP_perc  <- renderPrint({ paste(scales::comma(round(t0[t0$def == "# Suppressed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Suppressed", "max"], 0))) }, width = 300, quoted = FALSE)
+    output$outSUPP       <- renderUI({ tags$code(scales::comma(round(t0[t0$def == "# Suppressed", "res"], 0))) })
+    output$outSUPP_perc  <- renderUI({ tags$code(paste(scales::comma(round(t0[t0$def == "# Suppressed", "min"], 0)), "-", scales::comma(round(t0[t0$def == "# Suppressed", "max"], 0)))) })
 
     ggOut <- ggplot(t0, aes(x = def, y = res))
     ggOut <- ggOut + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
