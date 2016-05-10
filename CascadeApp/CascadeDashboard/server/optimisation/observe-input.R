@@ -6,6 +6,7 @@ output$UI_optW_rho <- renderUI({
         max = round(ParamMaxMin["rho", "max"],        digits = 4),
         value = round(mean(CalibParamOut[["rho"]]),   digits = 4),
         step = 0.0001,
+        sep = "",
         width = "100%")
 })
 
@@ -15,15 +16,17 @@ output$UI_optW_p <- renderUI({
         max = round(ParamMaxMin["p", "max"],          digits = 4),
         value = round(mean(CalibParamOut[["p"]]),     digits = 4),
         step = 0.0001,
+        sep = "",
         width = "100%")
 })
 
 output$UI_optW_kappa <- renderUI({
-    sliderInput(inputId = 'optW_kappa', label = 'ART initiation rate (ART initiations/py) (gamma):',
+    sliderInput(inputId = 'optW_kappa', label = 'Pre-ART Dropout Rate (Pre-ART dropout/py) (kappa):',
         min = round(ParamMaxMin["kappa", "min"],      digits = 4),
         max = round(ParamMaxMin["kappa", "max"],      digits = 4),
         value = round(mean(CalibParamOut[["kappa"]]), digits = 4),
         step = 0.0001,
+        sep = "",
         width = "100%")
 })
 
@@ -33,15 +36,17 @@ output$UI_optW_gamma <- renderUI({
         max = round(ParamMaxMin["gamma", "max"],      digits = 4),
         value = round(mean(CalibParamOut[["gamma"]]), digits = 4),
         step = 0.0001,
+        sep = "",
         width = "100%")
 })
 
 output$UI_optW_sigma <- renderUI({
-    sliderInput(inputId = 'optW_sigma', label = 'ART initiation rate (ART initiations/py) (gamma):',
+    sliderInput(inputId = 'optW_sigma', label = 'Adherence Rate (Adherence/py) (sigma):',
         min = 0,
         max = 1,
         value = 0,
         step = 0.0001,
+        sep = "",
         width = "100%")
 })
 
@@ -51,6 +56,7 @@ output$UI_optW_omega <- renderUI({
         max = round(ParamMaxMin["omega", "max"],      digits = 4),
         value = round(mean(CalibParamOut[["omega"]]), digits = 4),
         step = 0.0001,
+        sep = "",
         width = "100%")
 })
 
@@ -64,7 +70,8 @@ output$UI_optP_rhoRange <- renderUI({
         value = c(
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4),
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["rho"]], digits = 4) * 10),
-        step = 0.0001)
+        step = 0.0001,
+        sep = "")
 })
 
 output$UI_optP_qRange <- renderUI({
@@ -74,7 +81,8 @@ output$UI_optP_qRange <- renderUI({
         value = c(
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["q"]], digits = 4),
             1),
-        step = 0.0001)
+        step = 0.0001,
+        sep = "")
 })
 
 output$UI_optP_kappaRange <- renderUI({
@@ -84,7 +92,8 @@ output$UI_optP_kappaRange <- renderUI({
         value = c(
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4) / 10,
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["kappa"]], digits = 4)),
-        step = 0.0001)
+        step = 0.0001,
+        sep = "")
 })
 
 output$UI_optP_gammaRange <- renderUI({
@@ -94,7 +103,8 @@ output$UI_optP_gammaRange <- renderUI({
         value = c(
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4),
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["gamma"]], digits = 4) * 10),
-        step = 0.0001)
+        step = 0.0001,
+        sep = "")
 })
 
 output$UI_optP_sigmaRange <- renderUI({
@@ -102,7 +112,8 @@ output$UI_optP_sigmaRange <- renderUI({
         min = 0,
         max = 5,
         value = c(0, 5),
-        step = 0.0001)
+        step = 0.0001,
+        sep = "")
 })
 
 output$UI_optP_omegaRange <- renderUI({
@@ -112,5 +123,6 @@ output$UI_optP_omegaRange <- renderUI({
         value = c(
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4) / 10,
             round(lapply(CalibParamOut, function(x) {return(mean(x))})[["omega"]], digits = 4)),
-        step = 0.0001)
+        step = 0.0001,
+        sep = "")
 })
