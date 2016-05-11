@@ -28,9 +28,9 @@
 
 .shiny-progress .progress-text {
     position: absolute;
-    right: 30px;
+    right: 31px;
     height: 30px;
-    width: 490px;
+    width: 549px;
     /*background-color: #EEF8FF;*/
     background-color: #D9534F;
     padding-top: 2px;
