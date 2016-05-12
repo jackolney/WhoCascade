@@ -176,8 +176,8 @@ Gen909090Plot <- function() {
     ggOut <- ggplot(df, aes(x = def, y = res))
     ggOut <- ggOut + geom_bar(aes(fill = def), position = 'dodge', stat = 'identity')
     ggOut <- ggOut + geom_errorbar(mapping = aes(x = def, ymin = min, ymax = max), width = 0.2, size = 1)
-    ggOut <- ggOut + geom_violin(data = dfData, mapping = aes(x = defData, y = value), stat = "ydensity",
-        position = "dodge", trim = TRUE, alpha = 1 / 2, fill = "black", size = 0, scale = "area")
+    # ggOut <- ggOut + geom_violin(data = dfData, mapping = aes(x = defData, y = value), stat = "ydensity",
+    #     position = "dodge", trim = TRUE, alpha = 1 / 2, fill = "black", size = 0, scale = "area")
     ggOut <- ggOut + scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1), labels = scales::percent, expand = c(0, 0))
     ggOut <- ggOut + scale_fill_manual(values = cfill)
     ggOut <- ggOut + geom_abline(intercept = 0.9, slope = 0)
