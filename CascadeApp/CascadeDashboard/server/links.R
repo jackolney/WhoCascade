@@ -4,14 +4,19 @@ observeEvent(input$NEXT_intro,         {updateTabItems(session, inputId = "sideB
 observeEvent(input$NEXT_country,       {updateTabItems(session, inputId = "sideBar", selected = "plhiv")})
 
 observeEvent(input$NEXT_plhiv,         {updateTabItems(session, inputId = "sideBar", selected = "diagnosis")})
+observeEvent(input$PREV_plhiv,         {updateTabItems(session, inputId = "sideBar", selected = "country")})
 
 observeEvent(input$NEXT_diag,          {updateTabItems(session, inputId = "sideBar", selected = "linkage")})
+observeEvent(input$PREV_diag,          {updateTabItems(session, inputId = "sideBar", selected = "plhiv")})
 
 observeEvent(input$NEXT_care,          {updateTabItems(session, inputId = "sideBar", selected = "treatment")})
+observeEvent(input$PREV_care,          {updateTabItems(session, inputId = "sideBar", selected = "diagnosis")})
 
 observeEvent(input$NEXT_art,           {updateTabItems(session, inputId = "sideBar", selected = "suppression")})
+observeEvent(input$PREV_art,           {updateTabItems(session, inputId = "sideBar", selected = "linkage")})
 
 observeEvent(input$NEXT_viral,         {updateTabItems(session, inputId = "sideBar", selected = "calibration")})
+observeEvent(input$PREV_viral,         {updateTabItems(session, inputId = "sideBar", selected = "treatment")})
 
 observeEvent(input$calib_accept,       {updateTabItems(session, inputId = "sideBar", selected = "your_cascade")})
 
