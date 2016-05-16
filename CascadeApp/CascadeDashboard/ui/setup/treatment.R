@@ -30,6 +30,13 @@ tabItem(tabName = "treatment",
             bsButton(inputId = "resetART", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
         bsAlert("uART_ALERT"),
-        bsButton(inputId = "NEXT_art", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        fluidRow(
+            column(width = 6,
+                bsButton(inputId = "PREV_art", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))
+            ),
+            column(width = 6,
+                HTML('<button id="NEXT_art" type="button" class="btn action-button btn-success btn-lg btn-block"> Next <i class="fa fa-arrow-right fa-lg fa-fw"></i> </button>')
+            )
+        )
     )
 )

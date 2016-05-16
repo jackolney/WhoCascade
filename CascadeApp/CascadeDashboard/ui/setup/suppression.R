@@ -30,6 +30,13 @@ tabItem(tabName = "suppression",
             bsButton(inputId = "resetVIRAL", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
         bsAlert("uVIRAL_ALERT"),
-        bsButton(inputId = "NEXT_viral", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        fluidRow(
+            column(width = 6,
+                bsButton(inputId = "PREV_viral", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))
+            ),
+            column(width = 6,
+                HTML('<button id="NEXT_viral" type="button" class="btn action-button btn-success btn-lg btn-block"> Next <i class="fa fa-arrow-right fa-lg fa-fw"></i> </button>')
+            )
+        )
     )
 )

@@ -30,6 +30,13 @@ tabItem(tabName = "linkage",
             bsButton(inputId = "resetCARE", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
         bsAlert("uCARE_ALERT"),
-        bsButton(inputId = "NEXT_care", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        fluidRow(
+            column(width = 6,
+                bsButton(inputId = "PREV_care", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))
+            ),
+            column(width = 6,
+                HTML('<button id="NEXT_care" type="button" class="btn action-button btn-success btn-lg btn-block"> Next <i class="fa fa-arrow-right fa-lg fa-fw"></i> </button>')
+            )
+        )
     )
 )
