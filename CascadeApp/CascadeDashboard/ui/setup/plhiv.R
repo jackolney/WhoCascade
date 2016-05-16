@@ -29,6 +29,13 @@ tabItem(tabName = "plhiv",
             p(""),
             bsButton(inputId = "resetPLHIV", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
-        bsButton(inputId = "NEXT_plhiv", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        fluidRow(
+            column(width = 6,
+                bsButton(inputId = "PREV_plhiv", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))
+            ),
+            column(width = 6,
+                HTML('<button id="NEXT_plhiv" type="button" class="btn action-button btn-success btn-lg btn-block"> Next <i class="fa fa-arrow-right fa-lg fa-fw"></i> </button>')
+            )
+        )
     )
 )
