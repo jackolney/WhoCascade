@@ -29,6 +29,7 @@ tabItem(tabName = "diagnosis",
             p(""),
             bsButton(inputId = "resetDIAG", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
+        bsAlert("uDIAG_ALERT"),
         bsButton(inputId = "NEXT_diag", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

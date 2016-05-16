@@ -29,6 +29,7 @@ tabItem(tabName = "linkage",
             p(""),
             bsButton(inputId = "resetCARE", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
+        bsAlert("uCARE_ALERT"),
         bsButton(inputId = "NEXT_care", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

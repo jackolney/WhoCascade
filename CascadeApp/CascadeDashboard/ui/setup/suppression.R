@@ -29,6 +29,7 @@ tabItem(tabName = "suppression",
             p(""),
             bsButton(inputId = "resetVIRAL", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
+        bsAlert("uVIRAL_ALERT"),
         bsButton(inputId = "NEXT_viral", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

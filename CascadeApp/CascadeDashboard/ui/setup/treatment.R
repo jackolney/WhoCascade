@@ -29,6 +29,7 @@ tabItem(tabName = "treatment",
             p(""),
             bsButton(inputId = "resetART", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
+        bsAlert("uART_ALERT"),
         bsButton(inputId = "NEXT_art", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )
