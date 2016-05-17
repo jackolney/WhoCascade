@@ -21,26 +21,27 @@ MakeAssumptions <- function(uCountry, countryData) {
 
         ## DIAGNOSES ##
         # In Kenya, we know that 46.9% of PLHIV were diagnosed in 2012.
-        # Spectrum tells us that there are 1327788 PLWHIV in 2012.
-        # 1327788 * 0.469 = 622733
-        # However, we do not know the values for other years so we make the assumption it holds over time.
+        # Spectrum tells us that there are 1,327,788 PLHIV in 2012.
+        # 1,327,788 * 0.469 = 622,733
+        # However, we do not know the values for other years.
+        # We will assume that it holds for years prior to 2012, but not after.
 
         # So 46.9% aware of status in 2012
         k.propDiag <- 0.469 # KAIS2012
 
         # We assume that this carries over time
-        k.plhiv <- countryData[countryData$indicator == "PLHIV" & countryData$year != 2012,"value"]
+        k.plhiv <- countryData[countryData$indicator == "PLHIV" & countryData$year %in% c(2010, 2011), "value"]
 
         # Expanding over timeframe
         country   <- "Kenya"
         indicator <- "PLHIV Diagnosed"
-        year      <- c(2010, 2011, 2013, 2014, 2015)
+        year      <- c(2010, 2011)
         value     <- k.plhiv * k.propDiag
         weight    <- "red"
         new.diag  <- data.frame(country, indicator, year, value, weight)
 
         # test3 <- rbind(countryData, new.diag)
-        # ggplot(test3, aes(x = year, y = value)) + geom_point(aes(color = indicator))
+        # ggplot(test3, aes(x = year, y = value)) + geom_bar(aes(fill = indicator), stat = "identity", position = "dodge")
 
         # TEST TEST TEST
         # dplyr::filter(test3, indicator == "PLHIV")$value
@@ -55,7 +56,6 @@ MakeAssumptions <- function(uCountry, countryData) {
         # If we use our Spectrum estimate for PLHIV, we find that 67% of PLHIV were in care in 2015.
         # But, both of these values, cause issues, because in 2012, only 47% of PLHIV were diagnosed...
         # Therefore prior to 2015, fewer individuals must have been in care.
-        # But, perhaps we should leave the model as is, and allow THE MODEL to figure it all out.
 
         # Building data.frame
         country   <- "Kenya"

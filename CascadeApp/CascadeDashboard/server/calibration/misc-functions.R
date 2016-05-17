@@ -29,6 +29,11 @@ DefineParmRange <- function(param, min, max) {
 DefineInitRange <- function(data, min, max) {
     i2010 <- data[["calib"]][data[["calib"]]$year == 2010,]
 
+    # Check if all values are present?
+
+    # Fill in the gaps if there are 'gaps'?
+
+    # Return data.frame that we can LHS from.
     initRange <- data.frame(
         min = c(
             plhiv =      i2010[i2010$indicator == "PLHIV",           "value"] * min,

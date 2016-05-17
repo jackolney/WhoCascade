@@ -78,6 +78,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         # Sample initial states
         # Need a vector containing all the initial states too and their max / min ranges too.
         # We COULD account for how reliable the 2010 data is in our estimates?
+        # This function, needs to be clever enough to calculate and fill in any gaps in the data.
         initRange <- DefineInitRange(data = data, min = 0.9, max = 1.1)
 
         # LHS Sample

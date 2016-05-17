@@ -22,17 +22,19 @@
 GetMasterDataSet <- function(userCountry) {
     # Get all the data (all your base)
     countryData <- GetCountryData(userCountry)
-    countryAssumptions <- MakeAssumptions(userCountry, countryData)
+    # countryAssumptions <- MakeAssumptions(userCountry, countryData)
     marrakechData <- GetMarrakechData(userCountry)
 
     # Filter out year of Marrakech data, before binding.
-    int <- rbind(countryData$calib, countryAssumptions)
+    # int <- rbind(countryData$calib, countryAssumptions)
 
-    # For Kenya we only believe, the following three indicators
+    # For Kenya we only believe, the following three indicators supplied by the Marrakech Team
     mData <- marrakechData[marrakechData$indicator %in% c("PLHIV in Care", "PLHIV on ART", "PLHIV Suppressed"),]
 
+    # This is all a bit Kenya-specific... we should really change that.
     # Now they need combining with the baseDataSet, but they should replace, not be an addition.
     # Extract everything that isn't 2015 data.
+    int <- countryData$calib
     intOne <- int[int$year != 2015,]
 
     # Now extract the relevant bits of 2015
@@ -48,10 +50,14 @@ GetMasterDataSet <- function(userCountry) {
     #     theme_classic()
 
     # Overwrite calib on countryData
-    countryData$calib <- countryMasterDataSet
+    countryData$calib <- countryMasterDataSet[countryMasterDataSet$indicator != "PLHIV not on ART",]
 
     # Return final list
     countryData
 }
 
 # GetMasterDataSet("Kenya")[["calib"]]
+
+# Output testing
+# test <- countryMasterDataSet[countryMasterDataSet$indicator != "PLHIV not on ART",]
+# ggplot(test, aes(x = year, y = value)) + geom_bar(aes(fill = indicator), stat = "identity", position = "dodge")
