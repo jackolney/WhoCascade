@@ -27,25 +27,99 @@ DefineParmRange <- function(param, min, max) {
 }
 
 DefineInitRange <- function(data, min, max) {
+    # Take 2010 subset of data.
     i2010 <- data[["calib"]][data[["calib"]]$year == 2010,]
 
+    # List all possible indicators
+    allIndicators <- c("PLHIV", "PLHIV Diagnosed", "PLHIV in Care", "PLHIV on ART")
+
     # Check if all values are present?
+    indicatorPresence <- match(x = i2010$indicator, table = allIndicators)
 
-    # Fill in the gaps if there are 'gaps'?
+    # Create missingIndicators data.frame
+    missingIndicators <- data.frame()
 
-    # Return data.frame that we can LHS from.
+    # Walk through allIndicators, identify missing indicators and search for the next closest value
+    # Function walks up and down the cascade to identify the next closest value, even if it is not adjacent.
+    for (x in 1:length(allIndicators)) {
+        if (!any(indicatorPresence == x)) {
+            name <- allIndicators[x]
+
+            # Go back until you find a value.
+            for (z in seq(x - 1, 1)) {
+                if (any(indicatorPresence == z)) {
+                    theMax <- i2010[i2010$indicator == allIndicators[z], "value"]
+                    break
+                }
+            }
+
+            # Go forward until you find a value.
+            for (z in seq(x + 1, length(allIndicators))) {
+                if (any(indicatorPresence == z)) {
+                    theMin <- i2010[i2010$indicator == allIndicators[z], "value"]
+                    break
+                }
+            }
+            # Append missingIndicators data.frame
+            missingIndicators <- rbind(missingIndicators, data.frame(name, theMax, theMin))
+        }
+    }
+
+    # Fill out initRange, taking into account of whether i2010 holds the correct data.
+    # If not, then use values from missingIndicators.
+    # This should hold steady for ALL countries.
     initRange <- data.frame(
         min = c(
-            plhiv =      i2010[i2010$indicator == "PLHIV",           "value"] * min,
-            plhiv_diag = i2010[i2010$indicator == "PLHIV Diagnosed", "value"] * min,
-            plhiv_care = i2010[i2010$indicator == "PLHIV in Care",   "value"] * min,
-            plhiv_art =  i2010[i2010$indicator == "PLHIV on ART",    "value"] * min
+            plhiv =
+                if (isEmpty(i2010[i2010$indicator == "PLHIV", "value"])) {
+                    missingIndicators[missingIndicators$name == "PLHIV", "theMin"] * min
+                } else {
+                    i2010[i2010$indicator == "PLHIV", "value"] * min
+                },
+            plhiv_diag =
+                if (isEmpty(i2010[i2010$indicator == "PLHIV Diagnosed", "value"])) {
+                    missingIndicators[missingIndicators$name == "PLHIV Diagnosed", "theMin"] * min
+                } else {
+                    i2010[i2010$indicator == "PLHIV Diagnosed", "value"] * min
+                },
+            plhiv_care =
+                if (isEmpty(i2010[i2010$indicator == "PLHIV in Care", "value"])) {
+                    missingIndicators[missingIndicators$name == "PLHIV in Care", "theMin"] * min
+                } else {
+                    i2010[i2010$indicator == "PLHIV in Care", "value"] * min
+                },
+            plhiv_art =
+                if (isEmpty(i2010[i2010$indicator == "PLHIV on ART", "value"])) {
+                    missingIndicators[missingIndicators$name == "PLHIV on ART", "theMin"] * min
+                } else {
+                    i2010[i2010$indicator == "PLHIV on ART", "value"] * min
+                }
             ),
         max = c(
-            plhiv =      i2010[i2010$indicator == "PLHIV",           "value"] * max,
-            plhiv_diag = i2010[i2010$indicator == "PLHIV Diagnosed", "value"] * max,
-            plhiv_care = i2010[i2010$indicator == "PLHIV in Care",   "value"] * max,
-            plhiv_art =  i2010[i2010$indicator == "PLHIV on ART",    "value"] * max
+            plhiv =
+                if (isEmpty(i2010[i2010$indicator == "PLHIV", "value"])) {
+                    missingIndicators[missingIndicators$name == "PLHIV", "theMax"] * max
+                } else {
+                    i2010[i2010$indicator == "PLHIV", "value"] * max
+                },
+            plhiv_diag =
+                if (isEmpty(i2010[i2010$indicator == "PLHIV Diagnosed", "value"])) {
+                    missingIndicators[missingIndicators$name == "PLHIV Diagnosed", "theMax"] * max
+                } else {
+                    i2010[i2010$indicator == "PLHIV Diagnosed", "value"] * max
+                },
+            plhiv_care =
+                if (isEmpty(i2010[i2010$indicator == "PLHIV in Care", "value"])) {
+                    missingIndicators[missingIndicators$name == "PLHIV in Care", "theMax"] * max
+                } else {
+                    i2010[i2010$indicator == "PLHIV in Care", "value"] * max
+                },
+            plhiv_art =
+                if (isEmpty(i2010[i2010$indicator == "PLHIV on ART", "value"])) {
+                    missingIndicators[missingIndicators$name == "PLHIV on ART", "theMax"] * max
+                } else {
+                    i2010[i2010$indicator == "PLHIV on ART", "value"] * max
+                }
             )
     )
     initRange

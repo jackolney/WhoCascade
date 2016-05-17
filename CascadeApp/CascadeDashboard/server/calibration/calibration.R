@@ -85,6 +85,23 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         # Scope to modify this to pick normally distributed values with a mean of 2010, sd = ??
         lhsInitial <- FME::Latinhyper(initRange, num = maxIterations)
 
+## HERE (TUESDAY EVENING)
+# We now need to take check that ALL samples make sense.
+# Throw away any that do not, resample.
+# ONLY SIMULATE samples that are SENSICAL (n = 1e4) of those
+
+        head(lhsInitial)
+
+# Create a function like the below.
+        # FindSense(samples = lhsInitial)
+# Should return all sensical results.
+
+        lhsInitial[1,]
+
+        lhsInitial[[1,1]] - lhsInitial[[1,2]]
+        lhsInitial[[1,2]] - lhsInitial[[1,3]]
+        lhsInitial[[1,3]] - lhsInitial[[1,4]]
+
         ## For each draw, update parameter vector (p), run model, calculate error and store it.
         # Haven't put into a function as probably too many arguements.
         v = 0
