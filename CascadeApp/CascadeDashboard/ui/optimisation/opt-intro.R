@@ -49,6 +49,13 @@ tabItem(tabName = "opt-intro",
             title = "Help Panel",
             "This page details the working of the optimsation section of the site. Please hit 'Next' to proceed to optimisation. Further page options are available from the sidebar."
         ),
-        bsButton(inputId = "NEXT_optIntro", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        fluidRow(
+            column(width = 6,
+                bsButton(inputId = "PREV_optIntro", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))
+            ),
+            column(width = 6,
+                HTML('<button id="NEXT_optIntro" type="button" class="btn action-button btn-success btn-lg btn-block"> Next <i class="fa fa-arrow-right fa-lg fa-fw"></i> </button>')
+            )
+        )
     )
 )

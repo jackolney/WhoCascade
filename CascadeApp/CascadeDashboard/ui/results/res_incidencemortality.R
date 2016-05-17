@@ -23,6 +23,13 @@ tabItem(tabName = "incidence_mortality",
             h4("AIDS Deaths"),
             "Predictions of AIDS deaths between 2015 and 2020, illustrated as a proportion of the total HIV-positive population."
         ),
-        bsButton(inputId = "NEXT_incMort", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        fluidRow(
+            column(width = 6,
+                bsButton(inputId = "PREV_incMort", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))
+            ),
+            column(width = 6,
+                HTML('<button id="NEXT_incMort" type="button" class="btn action-button btn-success btn-lg btn-block"> Next <i class="fa fa-arrow-right fa-lg fa-fw"></i> </button>')
+            )
+        )
     )
 )
