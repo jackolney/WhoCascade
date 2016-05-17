@@ -22,16 +22,16 @@ function(input, output, session) {
     # shinyjs::addClass(selector = "body", class = "sidebar-collapse")
 
     # StartUp Alert
-    createAlert(session, anchorId = "startAlert", 
-        alertId = NULL, 
-        title = "WARNING", 
-        content = "This interactive web-based model is still under development. 
-        Any data entered into the model is done so at the users own risk. 
-        Clicking 'save' in any tab saves the current inputs to a centrally accessible spreadsheet hosted by Google. 
+    createAlert(session, anchorId = "startAlert",
+        alertId = NULL,
+        title = "WARNING",
+        content = "This interactive web-based model is still under development.
+        Any data entered into the model is done so at the users own risk.
+        Clicking 'save' in any tab saves the current inputs to a centrally accessible spreadsheet hosted by Google.
         Results produced by this model are not finalised.
-        Use with caution!", 
-        style = "danger", 
-        dismiss = TRUE, 
+        Use with caution!",
+        style = "danger",
+        dismiss = TRUE,
         append = TRUE)
 
     Parameters <- reactive({c(
@@ -173,7 +173,7 @@ function(input, output, session) {
     observeEvent(input$demoInput, {
         updateSelectInput(session,"userCountry",selected="Kenya")
 
-        if(input$userPLHIV == 0 || is.na(input$userPLHIV)) {
+        if (input$userPLHIV == 0 || is.na(input$userPLHIV)) {
             newPLHIV <- round(1.4e+6,0) # Estimate from Kenya (Marrakech)
             newDx <- round(newPLHIV * 0.79262,0) # Estimate from AMPATH
             newCare <- round(848018,0) # Estimate from Kenya (Marrakech)
@@ -205,7 +205,7 @@ function(input, output, session) {
     })
 
     observeEvent(input$userRetArt12mths, {
-        if(input$userRetArt12mths != 0 || is.na(input$userRetArt12mths)) {
+        if (input$userRetArt12mths != 0 || is.na(input$userRetArt12mths)) {
             newValue <- -log(input$userRetArt12mths)
             updateSliderInput(session,"omega",value=newValue,min=0,max=5,step=0.01)
         }
@@ -216,7 +216,7 @@ function(input, output, session) {
         Time <- seq(0,5,0.02)
 
         # Ability to turn off HIV incidence in the model.
-        if(input$incidenceInput == TRUE) {
+        if (input$incidenceInput == TRUE) {
             theInitial <- Initial()
             Numerator <- NewInfections
             Denominator <- as.double(((theInitial[["UnDx_500"]] + theInitial[["Dx_500"]] + theInitial[["Care_500"]] + theInitial[["PreLtfu_500"]] + theInitial[["Tx_Na_500"]] + theInitial[["Ltfu_500"]]) * 1.35) + ((theInitial[["UnDx_350500"]] + theInitial[["Dx_350500"]] + theInitial[["Care_350500"]] + theInitial[["PreLtfu_350500"]] + theInitial[["Tx_Na_350500"]] + theInitial[["Ltfu_350500"]]) * 1) + ((theInitial[["UnDx_250350"]] + theInitial[["Dx_250350"]] + theInitial[["Care_250350"]] + theInitial[["PreLtfu_250350"]] + theInitial[["Tx_Na_250350"]] + theInitial[["Ltfu_250350"]] + theInitial[["UnDx_200250"]] + theInitial[["Dx_200250"]] + theInitial[["Care_200250"]] + theInitial[["PreLtfu_200250"]] + theInitial[["Tx_Na_200250"]] + theInitial[["Ltfu_200250"]]) * 1.64) + ((theInitial[["UnDx_100200"]] + theInitial[["Dx_100200"]] + theInitial[["Care_100200"]] + theInitial[["PreLtfu_100200"]] + theInitial[["Tx_Na_100200"]] + theInitial[["Ltfu_100200"]] + theInitial[["UnDx_50100"]] + theInitial[["Dx_50100"]] + theInitial[["Care_50100"]] + theInitial[["PreLtfu_50100"]] + theInitial[["Tx_Na_50100"]] + theInitial[["Ltfu_50100"]] + theInitial[["UnDx_50"]] + theInitial[["Dx_50"]] + theInitial[["Care_50"]] + theInitial[["PreLtfu_50"]] + theInitial[["Tx_Na_50"]] + theInitial[["Ltfu_50"]]) * 5.17) + ((theInitial[["Tx_A_500"]] + theInitial[["Tx_A_350500"]] + theInitial[["Tx_A_250350"]] + theInitial[["Tx_A_200250"]] + theInitial[["Tx_A_100200"]] + theInitial[["Tx_A_50100"]] + theInitial[["Tx_A_50"]]) * 0.1))
@@ -670,7 +670,7 @@ function(input, output, session) {
 
         thePlot <- grid.arrange(
             arrangeGrob(
-                o + theme(legend.position="none"), 
+                o + theme(legend.position="none"),
                 p + theme(legend.position="none"),
                 ncol=2),
             mylegend,widths=grid::unit.c(unit(1, "npc") - lwidth, lwidth),nrow=1)
@@ -884,7 +884,7 @@ function(input, output, session) {
             Omega = seq(from = input$userOptOmega_Range[2],to = input$userOptOmega_Range[1],length.out = input$userOptOmega_LengthOf)
         )
 
-        if(input$incidenceInput == TRUE) {
+        if (input$incidenceInput == TRUE) {
             theInitial <- Initial()
             Numerator <- NewInfections
             Denominator <- as.double(((theInitial[["UnDx_500"]] + theInitial[["Dx_500"]] + theInitial[["Care_500"]] + theInitial[["PreLtfu_500"]] + theInitial[["Tx_Na_500"]] + theInitial[["Ltfu_500"]]) * 1.35) + ((theInitial[["UnDx_350500"]] + theInitial[["Dx_350500"]] + theInitial[["Care_350500"]] + theInitial[["PreLtfu_350500"]] + theInitial[["Tx_Na_350500"]] + theInitial[["Ltfu_350500"]]) * 1) + ((theInitial[["UnDx_250350"]] + theInitial[["Dx_250350"]] + theInitial[["Care_250350"]] + theInitial[["PreLtfu_250350"]] + theInitial[["Tx_Na_250350"]] + theInitial[["Ltfu_250350"]] + theInitial[["UnDx_200250"]] + theInitial[["Dx_200250"]] + theInitial[["Care_200250"]] + theInitial[["PreLtfu_200250"]] + theInitial[["Tx_Na_200250"]] + theInitial[["Ltfu_200250"]]) * 1.64) + ((theInitial[["UnDx_100200"]] + theInitial[["Dx_100200"]] + theInitial[["Care_100200"]] + theInitial[["PreLtfu_100200"]] + theInitial[["Tx_Na_100200"]] + theInitial[["Ltfu_100200"]] + theInitial[["UnDx_50100"]] + theInitial[["Dx_50100"]] + theInitial[["Care_50100"]] + theInitial[["PreLtfu_50100"]] + theInitial[["Tx_Na_50100"]] + theInitial[["Ltfu_50100"]] + theInitial[["UnDx_50"]] + theInitial[["Dx_50"]] + theInitial[["Care_50"]] + theInitial[["PreLtfu_50"]] + theInitial[["Tx_Na_50"]] + theInitial[["Ltfu_50"]]) * 5.17) + ((theInitial[["Tx_A_500"]] + theInitial[["Tx_A_350500"]] + theInitial[["Tx_A_250350"]] + theInitial[["Tx_A_200250"]] + theInitial[["Tx_A_100200"]] + theInitial[["Tx_A_50100"]] + theInitial[["Tx_A_50"]]) * 0.1))
@@ -1136,13 +1136,13 @@ function(input, output, session) {
                     the909090 <- Calc_909090(ResultList[[i]])
                     Test <- c(0,0,0)
                     for(j in 1:length(the909090$results)) {
-                        if(the909090$results[j] > 0.9) {
+                        if (the909090$results[j] > 0.9) {
                             Test[j] <- 1
                         } else {
                             Test[j] <- 0
                         }
                     }
-                    if(sum(Test) == 3) {
+                    if (sum(Test) == 3) {
                         theResultList[[length(theResultList) + 1]] <- theList[[i]]
                     }
                 }
@@ -1156,13 +1156,13 @@ function(input, output, session) {
                     the909090 <- Calc_909090(ResultList[[i]])
                     Test <- c(0,0,0)
                     for(j in 1:length(the909090$results)) {
-                        if(the909090$results[j] > 0.9) {
+                        if (the909090$results[j] > 0.9) {
                             Test[j] <- 1
                         } else {
                             Test[j] <- 0
                         }
                     }
-                    if(sum(Test) == 3) {
+                    if (sum(Test) == 3) {
                         theResultParList[[length(theResultParList) + 1]] <- ParInput[i,]
                     }
                 }
@@ -1180,7 +1180,7 @@ function(input, output, session) {
             Result909090Par_Gamma <- c()
             Result909090Par_Sigma <- c()
             Result909090Par_Omega <- c()
-            if(length(theList909090) > 0) {
+            if (length(theList909090) > 0) {
                 for(i in 1:length(theList909090)) {
                     print(i)
                     Result909090Impact[i] <- Calc_DALYsAverted(theList909090[[i]],theBaselineDALY)
@@ -1233,9 +1233,9 @@ function(input, output, session) {
         theResult <- mutate(Result_909090, the909090 = 0)
 
         for(i in 1:dim(theResult)[1]) {
-            if(theResult[i,1] >= 0.9) {
-                if(theResult[i,2] >= 0.9) {
-                    if(theResult[i,3] >= 0.9) {
+            if (theResult[i,1] >= 0.9) {
+                if (theResult[i,2] >= 0.9) {
+                    if (theResult[i,3] >= 0.9) {
                         theResult$the909090[i] <- 1
                     }
                 }
@@ -1243,7 +1243,7 @@ function(input, output, session) {
         }
         theStratPoint <<- input$userStratPoint
         ggplot(theResult,aes(x=VS,y=Cost)) +
-        geom_point(aes(color=as.factor(get(theStratPoint)),size=as.factor(the909090))) + 
+        geom_point(aes(color=as.factor(get(theStratPoint)),size=as.factor(the909090))) +
         theme_classic() +
         scale_color_discrete(name=input$userStratPoint,labels = Legend.Labels) +
         scale_size_discrete(name="Achieves 90-90-90",range = c(3,6),labels = c("no","yes")) +
@@ -1253,7 +1253,7 @@ function(input, output, session) {
         theme(axis.text.x=element_text(size=18)) +
         theme(axis.text.y=element_text(size=18)) +
         theme(axis.title=element_text(size=18)) +
-        geom_vline(xintercept = 0.9^3) + 
+        geom_vline(xintercept = 0.9^3) +
         xlab("Proportion achieving viral suppression by 2020") +
         ylab("Additional cost of care (2013 USD)") +
         scale_y_continuous(labels = comma) +
@@ -1491,7 +1491,7 @@ function(input, output, session) {
         input$showBudget909090
         input$showBudgetDALYs
 
-        if(Budget$Switch == "the909090") {
+        if (Budget$Switch == "the909090") {
             theTable <- filter(Result_909090,Cost <= input$userBudget)
             return(datatable(theTable,
                 extensions = 'TableTools',
@@ -1513,7 +1513,7 @@ function(input, output, session) {
                 )
             }
 
-        if(Budget$Switch == "DALYs") {
+        if (Budget$Switch == "DALYs") {
             theTable <- filter(Result_DALYs,Cost <= input$userBudget)
             return(datatable(theTable,
                 extensions = 'TableTools',
@@ -1543,11 +1543,11 @@ function(input, output, session) {
     }))
 
     # PopOver
-    addPopover(session, id = "plotOpt909090", 
-        title = "Info", 
-        content = "Vertical line represents 73% viral suppression (end goal of 90-90-90 targets, 0.9^3 = 0.729).", 
-        placement = "bottom", 
-        trigger = "hover", 
+    addPopover(session, id = "plotOpt909090",
+        title = "Info",
+        content = "Vertical line represents 73% viral suppression (end goal of 90-90-90 targets, 0.9^3 = 0.729).",
+        placement = "bottom",
+        trigger = "hover",
         options = NULL)
 
     # Saving input values from setup tab.
@@ -1577,7 +1577,7 @@ function(input, output, session) {
         theTable <- locateSheet()
         # Read new infections
         NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable),Country==input$userCountry) %>% select(NewInfections2014)))
-        if(is.na(NewInfections)) {
+        if (is.na(NewInfections)) {
             output$warningText <- renderText({return(paste("Warning! NA value returned from",input$userCountry,"data. Using Kenya as default."))})
             NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable),Country=="Kenya") %>% select(NewInfections2014)))
         } else {
@@ -1585,7 +1585,7 @@ function(input, output, session) {
         }
         # Read CD4 distributions
         theCD4 <- getCD4Data(theTable)
-        if(is.na(as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500)))) {
+        if (is.na(as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500)))) {
             output$warningCD4Text <- renderText({return(paste("CD4 Warning! Using Kenya as default."))})
             prop_preART_500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.500))
             prop_preART_350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.350500))
@@ -1664,7 +1664,7 @@ function(input, output, session) {
 
     # ART Initiation Checkbox Rules #
     observeEvent(input$userART_All, {
-        if(input$userART_All == TRUE) {
+        if (input$userART_All == TRUE) {
             updateCheckboxInput(session,"userART_500",value=TRUE)
             updateCheckboxInput(session,"userART_350",value=TRUE)
             updateCheckboxInput(session,"userART_200",value=TRUE)
@@ -1672,7 +1672,7 @@ function(input, output, session) {
     })
 
     observeEvent(input$userART_500, {
-        if(input$userART_500 == TRUE) {
+        if (input$userART_500 == TRUE) {
             updateCheckboxInput(session,"userART_350",value=TRUE)
             updateCheckboxInput(session,"userART_200",value=TRUE)
         } else {
@@ -1681,7 +1681,7 @@ function(input, output, session) {
     })
 
     observeEvent(input$userART_350, {
-        if(input$userART_350 == TRUE) {
+        if (input$userART_350 == TRUE) {
             updateCheckboxInput(session,"userART_200",value=TRUE)
         } else {
             updateCheckboxInput(session,"userART_All",value=FALSE)
@@ -1690,7 +1690,7 @@ function(input, output, session) {
     })
 
     observeEvent(input$userART_200, {
-        if(input$userART_200 == FALSE) {
+        if (input$userART_200 == FALSE) {
             updateCheckboxInput(session,"userART_All",value=FALSE)
             updateCheckboxInput(session,"userART_500",value=FALSE)
             updateCheckboxInput(session,"userART_350",value=FALSE)

@@ -90,7 +90,7 @@ GetInitial <- function(
         Annual_ART_Cost = 0
     )
     replace <- c(...)
-    if(length(replace) > 0L) {
+    if (length(replace) > 0L) {
         stopifnot(all(names(replace) %in% names(default)))
         default[names(replace)] <- replace
     }

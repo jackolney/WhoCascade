@@ -106,11 +106,11 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
             error[k] <- sum(out[out$source == "error", "value"])
 
             # If error <= maxError then store value of k
-            if(error[k] <= maxError) {
+            if (error[k] <= maxError) {
                 v <- v + 1
                 selectedRuns[v] <- k
                 setProgress(value = v / 100, detail = paste0(v, "%"))
-                if(v == limit) break;
+                if (v == limit) break;
             }
             # setProgress(value = k/dim(lhs)[1], detail = paste0((k/dim(lhs)[1])*100,"%"))
         }

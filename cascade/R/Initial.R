@@ -86,7 +86,7 @@ initial <- function(p, ...) {
     )
 
     replace <- c(...)
-    if(length(replace) > 0L) {
+    if (length(replace) > 0L) {
         stopifnot(is.numeric(replace))
         stopifnot(all(names(replace) %in% names(default)))
         default[names(replace)] <- replace

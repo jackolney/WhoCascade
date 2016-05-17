@@ -64,7 +64,7 @@ GetParameters <- function(...) {
             beta = 0.0275837
     )
     replace <- c(...)
-    if(length(replace) > 0L) {
+    if (length(replace) > 0L) {
         stopifnot(all(names(replace) %in% names(default)))
         default[names(replace)] <- replace
     }

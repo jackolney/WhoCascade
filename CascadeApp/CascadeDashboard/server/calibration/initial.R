@@ -1,7 +1,7 @@
 ConvertYear <- function(year) {
-    if(is.na(year)) return(20)
-    if(!is.numeric(year)) stop("Non-numeric value passed to ConvertYear()")
-    if((year - 2010) <= 0) {
+    if (is.na(year)) return(20)
+    if (!is.numeric(year)) stop("Non-numeric value passed to ConvertYear()")
+    if ((year - 2010) <= 0) {
         return(0)
     } else {
         return(year - 2010)
@@ -9,7 +9,7 @@ ConvertYear <- function(year) {
 }
 
 GetCalibInitial <- function(p, data, init2010) {
-    if(!is.list(data)) stop("Not a list.")
+    if (!is.list(data)) stop("Not a list.")
 
     i2010_PLHIV      <- init2010[["plhiv"]]
     i2010_PLHIV_Diag <- init2010[["plhiv_diag"]]

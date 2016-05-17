@@ -84,7 +84,7 @@
 # build.master.df <- function(temp.names, calib.df) {
 #     out <- c()
 #     for(i in 1:length(temp.names)) {
-#         if(exists(temp.names[i])) {
+#         if (exists(temp.names[i])) {
 #             out <- rbind(out, get(temp.names[i]))
 #         }
 #     }
@@ -109,8 +109,8 @@
 # }
 
 is.not.empty <- function(ListElement) {
-    if(!is.list(ListElement)) stop("not a list")
-    if(dim(ListElement)[1] == 0) {
+    if (!is.list(ListElement)) stop("not a list")
+    if (dim(ListElement)[1] == 0) {
         return(FALSE)
     } else {
         return(TRUE)
@@ -171,14 +171,14 @@ GetCountryData <- function(uCountry) {
         )
 
     for(i in 1:length(temp.names)) {
-        if(exists(temp.names[i])) {
+        if (exists(temp.names[i])) {
             rm(list = temp.names[i])
         }
     }
 
     # Reshape data
     # calib.art
-    if(is.not.empty(calib.df$art)) {
+    if (is.not.empty(calib.df$art)) {
         temp.art <- reshape2::melt(calib.df$art[c("country","indicator","2010","2011","2012","2013","2014","2015")],
             id.vars = c("country", "indicator"),
             variable.name = "year",
@@ -187,7 +187,7 @@ GetCountryData <- function(uCountry) {
     }
 
     # calib.not_on_art
-    if(is.not.empty(calib.df$not_on_art)) {
+    if (is.not.empty(calib.df$not_on_art)) {
         temp.not_on_art <- reshape2::melt(calib.df$not_on_art[c("country","indicator","2010","2011","2012","2013","2014","2015")],
             id.vars = c("country", "indicator"),
             variable.name = "year",
@@ -196,7 +196,7 @@ GetCountryData <- function(uCountry) {
     }
 
     # calib.plhiv
-    if(is.not.empty(calib.df$plhiv)) {
+    if (is.not.empty(calib.df$plhiv)) {
         temp.plhiv <- reshape2::melt(calib.df$plhiv[c("country","indicator","2010","2011","2012","2013","2014","2015")],
             id.vars = c("country","indicator"),
             variable.name = "year",
@@ -206,11 +206,11 @@ GetCountryData <- function(uCountry) {
 
     # calib.hiv_awareness_unaids (remember this is a proportion of PLHIV)
     # Needs to be matched to PLHIV from the SAME YEAR.
-    if(is.not.empty(calib.df$hiv_awareness_unaids)) {
+    if (is.not.empty(calib.df$hiv_awareness_unaids)) {
         temp.hiv_awareness_unaids <- calib.df$hiv_awareness_unaids[c("country","indicator","year","value")]
 
         # Need to match PLHIV, if it doesn't exist for a particular year then we delete the value
-        if(exists("temp.plhiv") & exists("temp.hiv_awareness_unaids")) {
+        if (exists("temp.plhiv") & exists("temp.hiv_awareness_unaids")) {
             for(i in 1:dim(temp.hiv_awareness_unaids)[1]) {
                 t.plhiv <- dplyr::filter(temp.plhiv, year == temp.hiv_awareness_unaids$year[i])$value
                 temp.hiv_awareness_unaids[[i,"value"]] <- temp.hiv_awareness_unaids[[i,"value"]] * t.plhiv
@@ -222,7 +222,7 @@ GetCountryData <- function(uCountry) {
     }
 
     # calib.previous_data
-    if(is.not.empty(calib.df$previous_data)) {
+    if (is.not.empty(calib.df$previous_data)) {
         temp.previous_data <- dplyr::filter(calib.df$previous_data[c("country","indicator","year","value","weight")], year >= 2010)
     }
 
@@ -230,7 +230,7 @@ GetCountryData <- function(uCountry) {
     # master.df <- build.master.df(temp.names, calib.df)
     out <- c()
     for(i in 1:length(temp.names)) {
-        if(exists(temp.names[i])) {
+        if (exists(temp.names[i])) {
             out <- rbind(out, get(temp.names[i]))
         }
     }

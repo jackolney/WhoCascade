@@ -2,7 +2,7 @@ README.txt
 
 01/02/16
 
-This alteration to the C model include an if() for altering the value of a variable half way through the calculation.
+This alteration to the C model include an if () for altering the value of a variable half way through the calculation.
 
 In this case, we alter beta when *t > 2.
 

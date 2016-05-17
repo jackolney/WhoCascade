@@ -1,5 +1,5 @@
 GetInitial <- function(p, iterationResult, masterCD4) {
-    if(!is.list(iterationResult)) stop("Not a list.")
+    if (!is.list(iterationResult)) stop("Not a list.")
 
     i2015_PLHIV         <- iterationResult[iterationResult$indicator == "PLHIV",              "value"]
     i2015_PLHIV_Diag    <- iterationResult[iterationResult$indicator == "PLHIV Diagnosed",    "value"]

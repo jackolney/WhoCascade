@@ -27,7 +27,7 @@ shinyServer(function(input, output, session){
     CheckCSV_Incidence <- function() {
         # data <- readr::read_csv("incident-infections.csv", col_names = TRUE, skip = 1)
         data <- read.csv("incident-infections.csv",  skip = 1)
-        if(is.null(data)) {
+        if (is.null(data)) {
             return(FALSE)
         } else {
             return(TRUE)
@@ -35,7 +35,7 @@ shinyServer(function(input, output, session){
     }
 
     observeEvent(input$check_csv, {
-        if(CheckCSV_Incidence()) {
+        if (CheckCSV_Incidence()) {
             updateButton(session, inputId = "read_csv",  style = "success", icon = icon("check", class = "fa-lg fa-fw", lib = "font-awesome"))
         } else {
             updateButton(session, inputId = "read_csv",  style = "danger",  icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome"))

@@ -129,7 +129,7 @@ static struct myparms parms;
 #define Annual_ART_Cost 55
 
 SEXP r_initmod(SEXP rp) {
-    if(LENGTH(rp) != 62) {
+    if (LENGTH(rp) != 62) {
         Rf_error("Invalid Parameters.");
     }
 
@@ -216,7 +216,7 @@ SEXP r_derivs(SEXP y) {
 void initmod(void(* odeparms) (int *, double *)) {
 
     DL_FUNC get_deSolve_gparms = R_GetCCallable("deSolve", "get_deSolve_gparms");
-    
+
     SEXP rp = get_deSolve_gparms();
 
     r_initmod(rp);

@@ -1,4 +1,4 @@
-observeEvent(input$calib_accept, {
+observeEvent(input$NEXT_calib, {
 
     # Upon pressing the 'next' button, read in the 2015 CD4 disitribution and run the model
     # Produce the relevant plots.
@@ -10,7 +10,7 @@ observeEvent(input$calib_accept, {
 observeEvent(input$demoInput, {
     updateSelectInput(session, "userCountry", selected = "Kenya")
 
-    if(input$userPLHIV == 0 || is.na(input$userPLHIV)) {
+    if (input$userPLHIV == 0 || is.na(input$userPLHIV)) {
         newPLHIV <- round(1.4e+6,0) # Estimate from Kenya (Marrakech)
         newDx <- round(newPLHIV * 0.79262,0) # Estimate from AMPATH
         newCare <- round(848018,0) # Estimate from Kenya (Marrakech)
@@ -42,7 +42,7 @@ observeEvent(input$demoInput, {
 })
 
 observeEvent(input$userRetArt12mths, {
-    if(input$userRetArt12mths != 0 || is.na(input$userRetArt12mths)) {
+    if (input$userRetArt12mths != 0 || is.na(input$userRetArt12mths)) {
         newValue <- -log(input$userRetArt12mths)
         updateSliderInput(session, "omega", value = newValue, min = 0, max = 5, step = 0.01)
     }
@@ -112,7 +112,7 @@ observeEvent(input$userCountry, {
     # theTable <- locateSheet()
     # Read new infections
     # NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable), Country == input$userCountry) %>% select(NewInfections2014)))
-    # if(is.na(NewInfections)) {
+    # if (is.na(NewInfections)) {
     #     output$warningText <- renderText({return(paste("Warning! NA value returned from", input$userCountry, "data. Using Kenya as default."))})
     #     # NewInfections <<- as.double(as.double(filter(getIncidenceData(theTable), Country == "Kenya") %>% select(NewInfections2014)))
     # } else {
@@ -120,7 +120,7 @@ observeEvent(input$userCountry, {
     # }
     # # Read CD4 distributions
     # # theCD4 <- getCD4Data(theTable)
-    # if(is.na(as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500)))) {
+    # if (is.na(as.double(filter(theCD4,Country == input$userCountry) %>% select(prop.Off.ART.500)))) {
     #     output$warningCD4Text <- renderText({return(paste("CD4 Warning! Using Kenya as default."))})
     #     p_preArt500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.500))
     #     p_preArt350500 <<- as.double(filter(theCD4,Country == "Kenya") %>% select(prop.Off.ART.350500))
@@ -191,7 +191,7 @@ observeEvent(input$resetSliders, {shinyjs::reset("optimisation-panel")})
 
 # ART Initiation Checkbox Rules #
 observeEvent(input$userART_All, {
-    if(input$userART_All == TRUE) {
+    if (input$userART_All == TRUE) {
         updateCheckboxInput(session, "userART_500", value = TRUE)
         updateCheckboxInput(session, "userART_350", value = TRUE)
         updateCheckboxInput(session, "userART_200", value = TRUE)
@@ -199,7 +199,7 @@ observeEvent(input$userART_All, {
 })
 
 observeEvent(input$userART_500, {
-    if(input$userART_500 == TRUE) {
+    if (input$userART_500 == TRUE) {
         updateCheckboxInput(session, "userART_350", value = TRUE)
         updateCheckboxInput(session, "userART_200", value = TRUE)
     } else {
@@ -208,7 +208,7 @@ observeEvent(input$userART_500, {
 })
 
 observeEvent(input$userART_350, {
-    if(input$userART_350 == TRUE) {
+    if (input$userART_350 == TRUE) {
         updateCheckboxInput(session, "userART_200", value = TRUE)
     } else {
         updateCheckboxInput(session, "userART_All", value = FALSE)
@@ -217,7 +217,7 @@ observeEvent(input$userART_350, {
 })
 
 observeEvent(input$userART_200, {
-    if(input$userART_200 == FALSE) {
+    if (input$userART_200 == FALSE) {
         updateCheckboxInput(session, "userART_All", value = FALSE)
         updateCheckboxInput(session, "userART_500", value = FALSE)
         updateCheckboxInput(session, "userART_350", value = FALSE)

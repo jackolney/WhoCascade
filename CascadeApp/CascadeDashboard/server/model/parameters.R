@@ -1,7 +1,7 @@
 ConvertYear2015 <- function(year) {
-    if(is.na(year)) return(20)
-    if(!is.numeric(year)) stop("Non-numeric value passed to ConvertYear()")
-    if((year - 2015) <= 0) {
+    if (is.na(year)) return(20)
+    if (!is.numeric(year)) stop("Non-numeric value passed to ConvertYear()")
+    if ((year - 2015) <= 0) {
         return(0)
     } else {
         return(year - 2015)

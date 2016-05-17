@@ -109,13 +109,13 @@ FindResults_909090 <- function(result) {
         t_909090 <- Calc_909090(result[[i]])
         test <- c(0,0,0)
         for(j in 1:length(t_909090$res)) {
-            if(t_909090$res[j] > 0.9) {
+            if (t_909090$res[j] > 0.9) {
                 test[j] <- 1
             } else {
                 test[j] <- 0
             }
         }
-        if(sum(test) == 3) {
+        if (sum(test) == 3) {
             res_list[[length(res_list) + 1]] <- result[[i]]
         }
     }
@@ -129,13 +129,13 @@ FindPar_909090 <- function(result, par) {
         t_909090 <- Calc_909090(result[[i]])
         Test <- c(0,0,0)
         for(j in 1:length(t_909090$res)) {
-            if(t_909090$res[j] > 0.9) {
+            if (t_909090$res[j] > 0.9) {
                 Test[j] <- 1
             } else {
                 Test[j] <- 0
             }
         }
-        if(sum(Test) == 3) {
+        if (sum(Test) == 3) {
             res_list[[length(res_list) + 1]] <- par[i,]
         }
     }

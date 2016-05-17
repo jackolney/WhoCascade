@@ -68,7 +68,7 @@ ExtractPowersCascadeData <- function(year) {
 
 Extract909090Data <- function(...) {
     data <- c(...)
-    if(length(data) > 0L) {
+    if (length(data) > 0L) {
         result <- data
     } else {
         result <- CallModel()

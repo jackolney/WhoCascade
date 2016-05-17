@@ -24,7 +24,7 @@ shinyBS::addPopover(session, id = "plotOpt909090",
 # Designed to catch users trying to enter non-sensical data
 
 observeEvent(input$uDIAG, {
-    if(input$uDIAG > input$uPLHIV) {
+    if (input$uDIAG > input$uPLHIV) {
         # shinyBS alert
         shinyBS::createAlert(session,
             anchorId = "uDIAG_ALERT",
@@ -44,7 +44,7 @@ observeEvent(input$uDIAG, {
 })
 
 observeEvent(input$uCARE, {
-    if(input$uCARE > input$uDIAG) {
+    if (input$uCARE > input$uDIAG) {
         # shinyBS alert
         shinyBS::createAlert(session,
             anchorId = "uCARE_ALERT",
@@ -64,7 +64,7 @@ observeEvent(input$uCARE, {
 })
 
 observeEvent(input$uART, {
-    if(input$uART > input$uCARE) {
+    if (input$uART > input$uCARE) {
         # shinyBS alert
         shinyBS::createAlert(session,
             anchorId = "uART_ALERT",
@@ -84,7 +84,7 @@ observeEvent(input$uART, {
 })
 
 observeEvent(input$uVIRAL, {
-    if(input$uVIRAL > input$uART) {
+    if (input$uVIRAL > input$uART) {
         # shinyBS alert
         shinyBS::createAlert(session,
             anchorId = "uVIRAL_ALERT",

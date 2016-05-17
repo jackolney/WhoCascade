@@ -8,8 +8,8 @@ DefineParmRange <- function(param, min, max) {
             theta   = param[["Theta"]]   * min,
             omega   = param[["Omega"]]   * min,
             mu      = param[["Mu"]]      * 10,
-            p       = if(param[["p"]] * min > 1) {1} else {param[["p"]] * min},
-            q       = if(param[["q"]] * min > 1) {1} else {param[["q"]] * min}
+            p       = if (param[["p"]] * min > 1) {1} else {param[["p"]] * min},
+            q       = if (param[["q"]] * min > 1) {1} else {param[["q"]] * min}
         ),
         max = c(
             rho     = param[["Rho"]]     * max,
@@ -19,8 +19,8 @@ DefineParmRange <- function(param, min, max) {
             theta   = param[["Theta"]]   * max,
             omega   = param[["Omega"]]   * max,
             mu      = param[["Mu"]]      * 0,
-            p       = if(param[["p"]] * max > 1) {1} else {param[["p"]] * max},
-            q       = if(param[["q"]] * max > 1) {1} else {param[["q"]] * max}
+            p       = if (param[["p"]] * max > 1) {1} else {param[["p"]] * max},
+            q       = if (param[["q"]] * max > 1) {1} else {param[["q"]] * max}
         )
     )
     parRange
@@ -97,39 +97,39 @@ FillInitValues <- function(samples, positions, limit) {
     }
 
 UserOverRide <- function(param) {
-    if(!is.na(userParRange$rho) & userParRange$rho >= 0) {
+    if (!is.na(userParRange$rho) & userParRange$rho >= 0) {
         param[which(row.names(param) == "rho"),"min"]     <- userParRange$rho
         param[which(row.names(param) == "rho"),"max"]     <- userParRange$rho
     }
-    if(!is.na(userParRange$epsilon) & userParRange$epsilon >= 0) {
+    if (!is.na(userParRange$epsilon) & userParRange$epsilon >= 0) {
         param[which(row.names(param) == "epsilon"),"min"] <- userParRange$epsilon
         param[which(row.names(param) == "epsilon"),"max"] <- userParRange$epsilon
     }
-    if(!is.na(userParRange$kappa) & userParRange$kappa >= 0) {
+    if (!is.na(userParRange$kappa) & userParRange$kappa >= 0) {
         param[which(row.names(param) == "kappa"),"min"]   <- userParRange$kappa
         param[which(row.names(param) == "kappa"),"max"]   <- userParRange$kappa
     }
-    if(!is.na(userParRange$gamma) & userParRange$gamma >= 0) {
+    if (!is.na(userParRange$gamma) & userParRange$gamma >= 0) {
         param[which(row.names(param) == "gamma"),"min"]   <- userParRange$gamma
         param[which(row.names(param) == "gamma"),"max"]   <- userParRange$gamma
     }
-    if(!is.na(userParRange$theta) & userParRange$theta >= 0) {
+    if (!is.na(userParRange$theta) & userParRange$theta >= 0) {
         param[which(row.names(param) == "theta"),"min"]   <- userParRange$theta
         param[which(row.names(param) == "theta"),"max"]   <- userParRange$theta
     }
-    if(!is.na(userParRange$omega) & userParRange$omega >= 0) {
+    if (!is.na(userParRange$omega) & userParRange$omega >= 0) {
         param[which(row.names(param) == "omega"),"min"]   <- userParRange$omega
         param[which(row.names(param) == "omega"),"max"]   <- userParRange$omega
     }
-    if(!is.na(userParRange$mu) & userParRange$mu >= 0) {
+    if (!is.na(userParRange$mu) & userParRange$mu >= 0) {
         param[which(row.names(param) == "mu"),"min"]      <- userParRange$mu
         param[which(row.names(param) == "mu"),"max"]      <- userParRange$mu
     }
-    if(!is.na(userParRange$p) & userParRange$p >= 0) {
+    if (!is.na(userParRange$p) & userParRange$p >= 0) {
         param[which(row.names(param) == "p"),"min"]       <- userParRange$p
         param[which(row.names(param) == "p"),"max"]       <- userParRange$p
     }
-    if(!is.na(userParRange$q) & userParRange$q >= 0) {
+    if (!is.na(userParRange$q) & userParRange$q >= 0) {
         param[which(row.names(param) == "q"),"min"]       <- userParRange$q
         param[which(row.names(param) == "q"),"max"]       <- userParRange$q
     }

@@ -135,7 +135,7 @@ static struct myparms parms;
 #define Annual_ART_Cost 55
 
 SEXP r_initmod(SEXP rp) {
-    if(LENGTH(rp) != 68) {
+    if (LENGTH(rp) != 68) {
         Rf_error("Invalid Parameters.");
     }
 

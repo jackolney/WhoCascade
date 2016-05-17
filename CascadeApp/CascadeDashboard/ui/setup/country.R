@@ -46,6 +46,13 @@ tabItem(tabName = "country",
             bsButton(inputId = "_Rates_FLAG_",      label = "Rates",                       style = "danger", size = "small", block = TRUE, disabled = TRUE, icon = icon("times", class = "fa-lg fa-fw", lib = "font-awesome")),
             bsButton(inputId = "_PROCEED_",         label = "DO NOT PROCEED",              style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"))
             ),
-        bsButton(inputId = "NEXT_country", label = "Next", style = "success", size = "large", block = TRUE, icon = icon("arrow-right", class = "fa-lg fa-fw", lib = "font-awesome"))
+        fluidRow(
+            column(width = 6,
+                bsButton(inputId = "PREV_country", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))
+            ),
+            column(width = 6,
+                HTML('<button id="NEXT_country" type="button" class="btn action-button btn-success btn-lg btn-block"> Next <i class="fa fa-arrow-right fa-lg fa-fw"></i> </button>')
+            )
+        )
     )
 )

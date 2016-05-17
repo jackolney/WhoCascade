@@ -15,7 +15,7 @@ incidence <- function(...) {
         69780,
         69780)
     replace <- c(...)
-    if(length(replace) == length(default)) {
+    if (length(replace) == length(default)) {
         default <- replace
     }
     default

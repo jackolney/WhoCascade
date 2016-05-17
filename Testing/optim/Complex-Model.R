@@ -289,13 +289,13 @@ FindResults_909090 <- function(ResultList) {
         the909090 <- Calc_909090(ResultList[[i]])
         Test <- c(0,0,0)
         for(j in 1:length(the909090$results)) {
-            if(the909090$results[j] > 0.9) {
+            if (the909090$results[j] > 0.9) {
                 Test[j] <- 1
             } else {
                 Test[j] <- 0
             }
         }
-        if(sum(Test) == 3) {
+        if (sum(Test) == 3) {
             theResultParList[[length(theResultList) + 1]] <- ParInput[i,]
             theResultList[[length(theResultList) + 1]] <- theList[[i]]
         }
@@ -310,13 +310,13 @@ FindPar_909090 <- function(ResultList) {
         the909090 <- Calc_909090(ResultList[[i]])
         Test <- c(0,0,0)
         for(j in 1:length(the909090$results)) {
-            if(the909090$results[j] > 0.9) {
+            if (the909090$results[j] > 0.9) {
                 Test[j] <- 1
             } else {
                 Test[j] <- 0
             }
         }
-        if(sum(Test) == 3) {
+        if (sum(Test) == 3) {
             theResultParList[[length(theResultParList) + 1]] <- ParInput[i,]
         }
     }
@@ -363,7 +363,7 @@ theme_classic()
 # AddDALY <- function(List) {
 #     for(i in 1:length(List)) {
 #         print(i)
-#         List[[i]] <- mutate(List[[i]],DALY = 
+#         List[[i]] <- mutate(List[[i]],DALY =
 #             (
 #                 ((UnDx_500 + Dx_500 + Care_500 + PreLtfu_500 + Tx_Na_500 + Ltfu_500 + UnDx_350500 + Dx_350500 + Care_350500 + PreLtfu_350500 + Tx_Na_350500 + Ltfu_350500) * 0.053) +  # >350, no ART
 #                 ((UnDx_250350 + Dx_250350 + Care_250350 + PreLtfu_250350 + Tx_Na_250350 + Ltfu_250350 + UnDx_200250 + Dx_200250 + Care_200250 + PreLtfu_200250 + Tx_Na_200250 + Ltfu_200250) * 0.221) +  # 200-350, no ART

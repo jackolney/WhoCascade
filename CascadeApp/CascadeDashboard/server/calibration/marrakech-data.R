@@ -43,7 +43,7 @@ GetMarrakechData <- function(uCountry) {
         "suppression_score")
 
     # Check if country exists and
-    if(sum(m.data$country == uCountry) > 0) {
+    if (sum(m.data$country == uCountry) > 0) {
         country.data <- dplyr::filter(m.data, country == uCountry)
     } else {
         stop("Country not found in dataset.")

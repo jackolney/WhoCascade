@@ -76,7 +76,7 @@ parameters <- function(...) {
         t_4 = 0,
         t_5 = 0)
     replace <- c(...)
-    if(length(replace) > 0L) {
+    if (length(replace) > 0L) {
         stopifnot(is.numeric(replace))
         stopifnot(all(names(replace) %in% names(default)))
         default[names(replace)] <- replace

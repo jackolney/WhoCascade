@@ -119,7 +119,7 @@ output$optBudgetTable <- DT::renderDataTable({
     input$showBudget909090
     input$showBudgetDALYs
 
-    if(Budget$Switch == "the909090") {
+    if (Budget$Switch == "the909090") {
         theTable <- filter(Result_909090,Cost <= input$userBudget)
         return(datatable(theTable,
             extensions = 'TableTools',
@@ -141,7 +141,7 @@ output$optBudgetTable <- DT::renderDataTable({
             )
         }
 
-    if(Budget$Switch == "DALYs") {
+    if (Budget$Switch == "DALYs") {
         theTable <- filter(Result_DALYs,Cost <= input$userBudget)
         return(datatable(theTable,
             extensions = 'TableTools',

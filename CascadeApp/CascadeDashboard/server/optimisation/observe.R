@@ -124,7 +124,7 @@ observeEvent(input$optimStart, {
         Result909090Par_Gamma <- c()
         Result909090Par_Sigma <- c()
         Result909090Par_Omega <- c()
-        if(length(theList_909090) > 0) {
+        if (length(theList_909090) > 0) {
             for(i in 1:length(theList_909090)) {
                 if (input$optimStop) break
                 setProgress(value = i / length(theList_909090), message = paste0(i / length(theList_909090), "%"), detail = 'compiling results (90-90-90)')

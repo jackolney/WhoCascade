@@ -16,9 +16,9 @@ output$plotOpt909090 <- renderPlot({
     theResult <- mutate(Result_909090, the909090 = 0)
 
     for(i in 1:dim(theResult)[1]) {
-        if(theResult[i,1] >= 0.9) {
-            if(theResult[i,2] >= 0.9) {
-                if(theResult[i,3] >= 0.9) {
+        if (theResult[i,1] >= 0.9) {
+            if (theResult[i,2] >= 0.9) {
+                if (theResult[i,3] >= 0.9) {
                     theResult$the909090[i] <- 1
                 }
             }

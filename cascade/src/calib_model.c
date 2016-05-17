@@ -68,7 +68,7 @@ SEXP getListElement(SEXP list, const char *str)
 {
     SEXP elmt = R_NilValue, names = getAttrib(list, R_NamesSymbol);
     for (int i = 0; i < length(list); i++)
-    if(strcmp(CHAR(STRING_ELT(names, i)), str) == 0) {
+    if (strcmp(CHAR(STRING_ELT(names, i)), str) == 0) {
        elmt = VECTOR_ELT(list, i);
        break;
     }
@@ -76,11 +76,11 @@ SEXP getListElement(SEXP list, const char *str)
 }
 
 SEXP r_calib_initmod(SEXP rp) {
-    if(LENGTH(getListElement(rp, "r_par")) != 68) {
+    if (LENGTH(getListElement(rp, "r_par")) != 68) {
         Rf_error("Invalid Parameters.");
     }
 
-    if(LENGTH(getListElement(rp, "r_inc")) != 7) {
+    if (LENGTH(getListElement(rp, "r_inc")) != 7) {
         Rf_error("Invalid Incidence.");
     }
 

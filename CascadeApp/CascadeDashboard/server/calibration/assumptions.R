@@ -13,7 +13,7 @@
 # So after GetCountryData() we need a MakeAssumptions() [to fill in the gaps]
 MakeAssumptions <- function(uCountry, countryData) {
 
-    if(uCountry == "Kenya") {
+    if (uCountry == "Kenya") {
         # Do assumptiony stuff then.
         countryData <- countryData$calib
 

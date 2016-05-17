@@ -193,7 +193,7 @@ RunSimulation <- function(par,target) {
     # out <- mutate(out,UNAIDS_90 = (Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50) / N)
     # out <- mutate(out,UNAIDS_9090 = (Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50) / (Dx_500 + Dx_350500 + Dx_250350 + Dx_200250 + Dx_100200 + Dx_50100 + Dx_50 + Care_500 + Care_350500 + Care_250350 + Care_200250 + Care_100200 + Care_50100 + Care_50 + PreLtfu_500 + PreLtfu_350500 + PreLtfu_250350 + PreLtfu_200250 + PreLtfu_100200 + PreLtfu_50100 + PreLtfu_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50 + Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Ltfu_500 + Ltfu_350500 + Ltfu_250350 + Ltfu_200250 + Ltfu_100200 + Ltfu_50100 + Ltfu_50))
     # out <- mutate(out,UNAIDS_909090 = (Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50) / (Tx_A_500 + Tx_A_350500 + Tx_A_250350 + Tx_A_200250 + Tx_A_100200 + Tx_A_50100 + Tx_A_50 + Tx_Na_500 + Tx_Na_350500 + Tx_Na_250350 + Tx_Na_200250 + Tx_Na_100200 + Tx_Na_50100 + Tx_Na_50))
-    
+
     # p_dx <- dx / PLHIV
     # p_tx <- tx / dx
     # p_vs <- vs / tx
@@ -342,24 +342,24 @@ for(i in 1:length(levels(as.factor(Strat.Point.2)))) {
 ggplot(Result,aes(x=ViralSuppression,y=Cost)) +
 geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Strat.Point.2))),size=3) +
 theme_classic() +
-scale_color_discrete(name="Omega",labels = Legend.Labels) + 
-scale_shape_discrete(name="Sigma",labels = Legend.Labels.2) + 
-xlab("% Viral Suppression by 2020") + 
-ylab("Additional cost of care (2013 USD)") + 
+scale_color_discrete(name="Omega",labels = Legend.Labels) +
+scale_shape_discrete(name="Sigma",labels = Legend.Labels.2) +
+xlab("% Viral Suppression by 2020") +
+ylab("Additional cost of care (2013 USD)") +
 guides(colour = guide_legend(override.aes = list(size=4))) +
-geom_vline(xintercept = 0.9^3) + 
+geom_vline(xintercept = 0.9^3) +
 ggtitle("Strategies to achieve 73% viral suppression by 2020")
 
 filter(Result,First_90 >= 0.9)
-filter(Result,First_90 >= 0.9) %>% filter(Second_90 >= 0.9) 
+filter(Result,First_90 >= 0.9) %>% filter(Second_90 >= 0.9)
 filter(Result,First_90 >= 0.9) %>% filter(Second_90 >= 0.9) %>% filter(Third_90 >= 0.9)
 
 test <- mutate(Result, the909090 = 0)
 
 for(i in 1:dim(test)[1]) {
-    if(test$First_90[i] >= 0.9) {
-        if(test$Second_90[i] >= 0.9) {
-            if(test$Third_90[i] >= 0.9) {
+    if (test$First_90[i] >= 0.9) {
+        if (test$Second_90[i] >= 0.9) {
+            if (test$Third_90[i] >= 0.9) {
                 test$the909090[i] <- 1
             }
         }
@@ -368,26 +368,26 @@ for(i in 1:dim(test)[1]) {
 
 ggplot(test,aes(x=ViralSuppression,y=Cost)) +
 geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Strat.Point.2)),size=as.factor(the909090))) +
-scale_size_discrete(name="Achieves 90-90-90",range = c(2,6),labels = c("no","yes")) + 
+scale_size_discrete(name="Achieves 90-90-90",range = c(2,6),labels = c("no","yes")) +
 theme_classic() +
-scale_color_discrete(name="Omega",labels = Legend.Labels) + 
-scale_shape_discrete(name="Sigma",labels = Legend.Labels.2) + 
-xlab("Proportion achieving Viral Suppression by 2020") + 
-ylab("Additional cost of care (2013 USD)") + 
+scale_color_discrete(name="Omega",labels = Legend.Labels) +
+scale_shape_discrete(name="Sigma",labels = Legend.Labels.2) +
+xlab("Proportion achieving Viral Suppression by 2020") +
+ylab("Additional cost of care (2013 USD)") +
 guides(colour = guide_legend(override.aes = list(size=4))) +
-geom_vline(xintercept = 0.9^3) + 
+geom_vline(xintercept = 0.9^3) +
 ggtitle("Strategies to achieve 73% viral suppression and/or 90-90-90 by 2020")
 
 
 ggplot(Result,aes(x=ViralSuppression,y=Cost)) +
 geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Strat.Point.2))),size=3) +
 theme_classic() +
-scale_color_discrete(name="Omega",labels = Legend.Labels) + 
-scale_shape_discrete(name="Rho",labels = Legend.Labels.2) + 
-xlab("% Viral Suppression by 2020") + 
-ylab("Additional cost of care (2013 USD)") + 
+scale_color_discrete(name="Omega",labels = Legend.Labels) +
+scale_shape_discrete(name="Rho",labels = Legend.Labels.2) +
+xlab("% Viral Suppression by 2020") +
+ylab("Additional cost of care (2013 USD)") +
 guides(colour = guide_legend(override.aes = list(size=4))) +
-geom_vline(xintercept = 0.9^3) + 
+geom_vline(xintercept = 0.9^3) +
 ggtitle("Strategies to achieve 73% viral suppression by 2020")
 
 
@@ -395,10 +395,10 @@ ggtitle("Strategies to achieve 73% viral suppression by 2020")
 ggplot(Result,aes(x=Impact,y=Cost)) +
 geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Rho))),size=3) +
 theme_classic() +
-scale_color_discrete(name="Sigma",labels = Legend.Labels) + 
-scale_shape_discrete(name="Rho",labels = Legend.Labels.2) + 
-xlab("DALYs Averted (between 2015 and 2020)") + 
-ylab("Additional cost of care (2013 USD)") + 
+scale_color_discrete(name="Sigma",labels = Legend.Labels) +
+scale_shape_discrete(name="Rho",labels = Legend.Labels.2) +
+xlab("DALYs Averted (between 2015 and 2020)") +
+ylab("Additional cost of care (2013 USD)") +
 guides(colour = guide_legend(override.aes = list(size=4))) +
 ggtitle("Cost and Impact of adjusting rho and sigma, where impact is defined as DALYs averted")
 
@@ -506,9 +506,9 @@ for(i in 1:length(levels(as.factor(Strat.Point)))) {
 ggplot(Result909090,aes(x=Error,y=Cost)) +
 geom_point(aes(color=as.factor(Strat.Point),shape=rev(as.factor(Rho))),size=3) +
 theme_classic() +
-scale_color_discrete(name="Sigma",labels = Legend.Labels) + 
-scale_shape_discrete(name="Rho",labels = Legend.Labels.2) + 
-xlab("MSE between model and achieving 100% viral suppression") + 
-ylab("Additional cost of care (2013 USD)") + 
+scale_color_discrete(name="Sigma",labels = Legend.Labels) +
+scale_shape_discrete(name="Rho",labels = Legend.Labels.2) +
+xlab("MSE between model and achieving 100% viral suppression") +
+ylab("Additional cost of care (2013 USD)") +
 guides(colour = guide_legend(override.aes = list(size=4))) +
 ggtitle("Cost and Impact of adjusting rho and sigma, where impact is defined as\nMSE between model and achieving 100% viral suppression")
