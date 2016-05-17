@@ -210,7 +210,7 @@ RunSimulation <- function(par,target) {
 
 Start.Time <- proc.time()
 theList <- list()
-for(i in 1:dim(ParInput)[1]) {
+for (i in 1:dim(ParInput)[1]) {
     print(paste("Run",i))
     theList[[rownames(ParInput)[i]]] <- RunSimulation(ParInput[i,],1)
 }
@@ -306,7 +306,7 @@ ResultPar_Kappa <- c()
 ResultPar_Gamma <- c()
 ResultPar_Sigma <- c()
 ResultPar_Omega <- c()
-for(i in 1:length(theList)) {
+for (i in 1:length(theList)) {
     print(i)
     Result90[i] <- Calc_909090(theList[[i]])[1]
     Result9090[i] <- Calc_909090(theList[[i]])[2]
@@ -330,12 +330,12 @@ Strat.Point <- Result$Omega
 Strat.Point.2 <- Result$Sigma
 
 Legend.Labels <- c()
-for(i in 1:length(levels(as.factor(Strat.Point)))) {
+for (i in 1:length(levels(as.factor(Strat.Point)))) {
     Legend.Labels[i] <- round(as.double(levels(as.factor(Strat.Point))[i]),3)
 }
 
 Legend.Labels.2 <- c()
-for(i in 1:length(levels(as.factor(Strat.Point.2)))) {
+for (i in 1:length(levels(as.factor(Strat.Point.2)))) {
     Legend.Labels.2[i] <- round(as.double(rev(levels(as.factor(Strat.Point.2)))[i]),3)
 }
 
@@ -356,7 +356,7 @@ filter(Result,First_90 >= 0.9) %>% filter(Second_90 >= 0.9) %>% filter(Third_90 
 
 test <- mutate(Result, the909090 = 0)
 
-for(i in 1:dim(test)[1]) {
+for (i in 1:dim(test)[1]) {
     if (test$First_90[i] >= 0.9) {
         if (test$Second_90[i] >= 0.9) {
             if (test$Third_90[i] >= 0.9) {
@@ -480,7 +480,7 @@ ResultPar_Kappa <- c()
 ResultPar_Gamma <- c()
 ResultPar_Sigma <- c()
 ResultPar_Omega <- c()
-for(i in 1:length(theList)) {
+for (i in 1:length(theList)) {
     print(i)
     Result909090Error[i] <- CalcError_909090(theList[[i]],1)
     Result909090Cost[i] <- Calc_AdditionalCost(theList[[i]],theBaselineCost)
@@ -499,7 +499,7 @@ head(Result909090)
 Strat.Point <- Result$Sigma
 
 Legend.Labels <- c()
-for(i in 1:length(levels(as.factor(Strat.Point)))) {
+for (i in 1:length(levels(as.factor(Strat.Point)))) {
     Legend.Labels[i] <- round(as.double(levels(as.factor(Strat.Point))[i]),2)
 }
 

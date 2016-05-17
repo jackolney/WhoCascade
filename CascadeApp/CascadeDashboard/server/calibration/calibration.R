@@ -89,7 +89,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         v = 0
         selectedRuns <- c()
         error <- c()
-        for(k in 1:dim(lhs)[1]) {
+        for (k in 1:dim(lhs)[1]) {
 
             p[["Rho"]]     <- lhs[,"rho"][k]
             p[["Epsilon"]] <- lhs[,"epsilon"][k]
@@ -122,7 +122,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         ## For the best 10%, update the parameter vector (p), re-run simulations and store results
         # Faster than storing ALL results in the first place (I think)
         CalibOut <<- c()
-        for(l in 1:limit) {
+        for (l in 1:limit) {
 
             p[["Rho"]]     <- lhs[,"rho"][selectedRuns[l]]
             p[["Epsilon"]] <- lhs[,"epsilon"][selectedRuns[l]]

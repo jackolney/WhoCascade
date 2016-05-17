@@ -209,7 +209,7 @@ RunSimulation <- function(par,target) {
 
 Start.Time <- proc.time()
 theList <- list()
-for(i in 1:dim(ParInput)[1]) {
+for (i in 1:dim(ParInput)[1]) {
     print(paste("Run",i))
     theList[[rownames(ParInput)[i]]] <- RunSimulation(ParInput[i,],1)
 }
@@ -267,7 +267,7 @@ CalcError_909090 <- function(outFile,target) {
 
 ResultError <- c()
 ResultCost <- c()
-for(i in 1:length(theList)) {
+for (i in 1:length(theList)) {
     print(i)
     ResultError[i] <- CalcError_909090(theList[[i]],1)
     ResultCost[i] <- Calc_Cost(theList[[i]])
@@ -284,11 +284,11 @@ theme_classic()
 FindResults_909090 <- function(ResultList) {
     theResultList <- list()
     theResultParList <- list()
-    for(i in 1:length(ResultList)) {
+    for (i in 1:length(ResultList)) {
         print(i)
         the909090 <- Calc_909090(ResultList[[i]])
         Test <- c(0,0,0)
-        for(j in 1:length(the909090$results)) {
+        for (j in 1:length(the909090$results)) {
             if (the909090$results[j] > 0.9) {
                 Test[j] <- 1
             } else {
@@ -305,11 +305,11 @@ FindResults_909090 <- function(ResultList) {
 
 FindPar_909090 <- function(ResultList) {
     theResultParList <- list()
-    for(i in 1:length(ResultList)) {
+    for (i in 1:length(ResultList)) {
         print(i)
         the909090 <- Calc_909090(ResultList[[i]])
         Test <- c(0,0,0)
-        for(j in 1:length(the909090$results)) {
+        for (j in 1:length(the909090$results)) {
             if (the909090$results[j] > 0.9) {
                 Test[j] <- 1
             } else {
@@ -334,7 +334,7 @@ ResultPar_Kappa <- c()
 ResultPar_Gamma <- c()
 ResultPar_Sigma <- c()
 ResultPar_Omega <- c()
-for(i in 1:length(Result909090)) {
+for (i in 1:length(Result909090)) {
     print(i)
     ResultError[i] <- CalcError_909090(Result909090[[i]],0.9)
     ResultCost[i] <- Calc_Cost(Result909090[[i]])
@@ -361,7 +361,7 @@ theme_classic()
 # Deprecated. Functionality incorporated into RunSimulation()
 
 # AddDALY <- function(List) {
-#     for(i in 1:length(List)) {
+#     for (i in 1:length(List)) {
 #         print(i)
 #         List[[i]] <- mutate(List[[i]],DALY =
 #             (
@@ -387,7 +387,7 @@ Calc_DALY <- function(outFile) {
 
 ResultImpact <- c()
 ResultCost <- c()
-for(i in 1:length(theList)) {
+for (i in 1:length(theList)) {
     print(i)
     ResultImpact[i] <- Calc_DALY(theList[[i]])
     ResultCost[i] <- Calc_Cost(theList[[i]])
@@ -439,7 +439,7 @@ ResultPar_Kappa <- c()
 ResultPar_Gamma <- c()
 ResultPar_Sigma <- c()
 ResultPar_Omega <- c()
-for(i in 1:length(theList)) {
+for (i in 1:length(theList)) {
     print(i)
     ResultImpact[i] <- Calc_DALYsAverted(theList[[i]],theBaselineDALY)
     ResultCost[i] <- Calc_Cost(theList[[i]])

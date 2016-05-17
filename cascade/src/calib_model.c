@@ -156,7 +156,7 @@ SEXP r_calib_initmod(SEXP rp) {
     parms.t_4 = p[66];
     parms.t_5 = p[67];
 
-    for(int j = 0; j < 7; j++) {
+    for (int j = 0; j < 7; j++) {
         inc.inf[j] = i[j];
     }
 

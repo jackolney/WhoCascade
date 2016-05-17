@@ -60,7 +60,7 @@ GetMarrakechData <- function(uCountry) {
 
     # Add weights to the melted data.frame
     weights <- c()
-    for(i in 1:length(unique(final$indicator))) {
+    for (i in 1:length(unique(final$indicator))) {
         weights[i] <- out[grep("*_score", out$indicator, invert = FALSE),][i,"value"]
     }
     final$weight <- weights

@@ -10,7 +10,7 @@ source("Parameters.R")
 
 # The Model #
 Run.Model <- function(x = 1) {
-    for(i in 1:x) {
+    for (i in 1:x) {
         Time <- seq(0, 5, 0.02)
         Beta <- 0.0275837
         theOut <- ode(times = Time, y = Initial, func = ComplexCascade, parms = Parameters, beta = Beta)

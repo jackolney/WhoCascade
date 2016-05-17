@@ -981,7 +981,7 @@ function(input, output, session) {
             # Need for loop in here {}
             Start.Time <- proc.time()[[1]]
             theList <- list()
-            for(i in 1:dim(ParInput)[1]) {
+            for (i in 1:dim(ParInput)[1]) {
                 setProgress(value = i/dim(ParInput)[1], message = paste(paste('Run ',i,".",sep=''),"Time =",round(proc.time()[[1]] - Start.Time,0),"sec"),detail = "")
                 theList[[rownames(ParInput)[i]]] <- RunSimulation(ParInput[i,],1)
             }
@@ -1068,7 +1068,7 @@ function(input, output, session) {
             ResultPar_Gamma <- c()
             ResultPar_Sigma <- c()
             ResultPar_Omega <- c()
-            for(i in 1:length(theList)) {
+            for (i in 1:length(theList)) {
                 print(i)
                 Result90[i] <- Calc_909090_Result(theList[[i]])[1]
                 Result9090[i] <- Calc_909090_Result(theList[[i]])[2]
@@ -1116,11 +1116,11 @@ function(input, output, session) {
 
             FindResults_909090 <- function(ResultList) {
                 theResultList <- list()
-                for(i in 1:length(ResultList)) {
+                for (i in 1:length(ResultList)) {
                     print(i)
                     the909090 <- Calc_909090(ResultList[[i]])
                     Test <- c(0,0,0)
-                    for(j in 1:length(the909090$results)) {
+                    for (j in 1:length(the909090$results)) {
                         if (the909090$results[j] > 0.9) {
                             Test[j] <- 1
                         } else {
@@ -1136,11 +1136,11 @@ function(input, output, session) {
 
             FindPar_909090 <- function(ResultList) {
                 theResultParList <- list()
-                for(i in 1:length(ResultList)) {
+                for (i in 1:length(ResultList)) {
                     print(i)
                     the909090 <- Calc_909090(ResultList[[i]])
                     Test <- c(0,0,0)
-                    for(j in 1:length(the909090$results)) {
+                    for (j in 1:length(the909090$results)) {
                         if (the909090$results[j] > 0.9) {
                             Test[j] <- 1
                         } else {
@@ -1166,7 +1166,7 @@ function(input, output, session) {
             Result909090Par_Sigma <- c()
             Result909090Par_Omega <- c()
             if (length(theList909090) > 0) {
-                for(i in 1:length(theList909090)) {
+                for (i in 1:length(theList909090)) {
                     print(i)
                     Result909090Impact[i] <- Calc_DALYsAverted(theList909090[[i]],theBaselineDALY)
                     Result909090Cost[i] <- Calc_AdditionalCost(theList909090[[i]],theBaselineCost)
@@ -1209,14 +1209,14 @@ function(input, output, session) {
         input$optimiseInput
 
         Legend.Labels <- c()
-        for(i in 1:length(levels(as.factor(Result_909090[[input$userStratPoint]])))) {
+        for (i in 1:length(levels(as.factor(Result_909090[[input$userStratPoint]])))) {
             Legend.Labels[i] <- round(as.double(levels(as.factor(Result_909090[[input$userStratPoint]]))[i]),2)
         }
 
         # Determining which interventions achieved 90-90-90
         theResult <- mutate(Result_909090, the909090 = 0)
 
-        for(i in 1:dim(theResult)[1]) {
+        for (i in 1:dim(theResult)[1]) {
             if (theResult[i,1] >= 0.9) {
                 if (theResult[i,2] >= 0.9) {
                     if (theResult[i,3] >= 0.9) {
@@ -1253,7 +1253,7 @@ function(input, output, session) {
         input$optimiseInput
 
         Legend.Labels <- c()
-        for(i in 1:length(levels(as.factor(Result_DALYs[[input$userStratPoint]])))) {
+        for (i in 1:length(levels(as.factor(Result_DALYs[[input$userStratPoint]])))) {
             Legend.Labels[i] <- round(as.double(levels(as.factor(Result_DALYs[[input$userStratPoint]]))[i]),2)
         }
         theStratPoint <<- input$userStratPoint
@@ -1282,7 +1282,7 @@ function(input, output, session) {
         input$optimiseInput
 
         Legend.Labels <- c()
-        for(i in 1:length(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]])))) {
+        for (i in 1:length(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]])))) {
             Legend.Labels[i] <- round(as.double(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]]))[i]),2)
         }
         theStratPoint <<- input$userStratPoint

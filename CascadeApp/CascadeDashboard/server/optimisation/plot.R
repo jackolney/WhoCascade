@@ -8,14 +8,14 @@ output$plotOpt909090 <- renderPlot({
     input$optimStart
 
     Legend.Labels <- c()
-    for(i in 1:length(levels(as.factor(Result_909090[[input$userStratPoint]])))) {
+    for (i in 1:length(levels(as.factor(Result_909090[[input$userStratPoint]])))) {
         Legend.Labels[i] <- round(as.double(levels(as.factor(Result_909090[[input$userStratPoint]]))[i]),2)
     }
 
     # Determining which interventions achieved 90-90-90
     theResult <- mutate(Result_909090, the909090 = 0)
 
-    for(i in 1:dim(theResult)[1]) {
+    for (i in 1:dim(theResult)[1]) {
         if (theResult[i,1] >= 0.9) {
             if (theResult[i,2] >= 0.9) {
                 if (theResult[i,3] >= 0.9) {
@@ -58,7 +58,7 @@ output$plotOptDALYs <- renderPlot({
     input$optimStart
 
     Legend.Labels <- c()
-    for(i in 1:length(levels(as.factor(Result_DALYs[[input$userStratPoint]])))) {
+    for (i in 1:length(levels(as.factor(Result_DALYs[[input$userStratPoint]])))) {
         Legend.Labels[i] <- round(as.double(levels(as.factor(Result_DALYs[[input$userStratPoint]]))[i]),2)
     }
 
@@ -93,7 +93,7 @@ output$plotOptDALYs909090 <- renderPlot({
     input$optimStart
 
     Legend.Labels <- c()
-    for(i in 1:length(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]])))) {
+    for (i in 1:length(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]])))) {
         Legend.Labels[i] <- round(as.double(levels(as.factor(Result_DALYs_909090[[input$userStratPoint]]))[i]),2)
     }
 

@@ -32,20 +32,20 @@ extern "C" {
     params * p = new params;
     initial * i = new initial;
     output * o = new output(stop / step);
-    
+
     Euler(i, p, o, start, stop,  step);
 
     // Test Output Vector
-    SEXP sN, sUnDx_500, sUnDx_350500, sUnDx_250350, sUnDx_200250, 
-    sUnDx_100200, sUnDx_50100, sUnDx_50, sDx_500, sDx_350500, sDx_250350, 
-    sDx_200250, sDx_100200, sDx_50100, sDx_50, sCare_500, sCare_350500, sCare_250350, 
-    sCare_200250, sCare_100200, sCare_50100, sCare_50, sPreLtfu_500, sPreLtfu_350500, 
-    sPreLtfu_250350, sPreLtfu_200250, sPreLtfu_100200, sPreLtfu_50100, sPreLtfu_50, sTx_Na_500, 
-    sTx_Na_350500, sTx_Na_250350, sTx_Na_200250, sTx_Na_100200, sTx_Na_50100, sTx_Na_50, sTx_A_500, 
-    sTx_A_350500, sTx_A_250350, sTx_A_200250, sTx_A_100200, sTx_A_50100, sTx_A_50, sLtfu_500, sLtfu_350500, 
-    sLtfu_250350, sLtfu_200250, sLtfu_100200, sLtfu_50100, sLtfu_50, sNewInf, sHivMortality, sNaturalMortality, 
+    SEXP sN, sUnDx_500, sUnDx_350500, sUnDx_250350, sUnDx_200250,
+    sUnDx_100200, sUnDx_50100, sUnDx_50, sDx_500, sDx_350500, sDx_250350,
+    sDx_200250, sDx_100200, sDx_50100, sDx_50, sCare_500, sCare_350500, sCare_250350,
+    sCare_200250, sCare_100200, sCare_50100, sCare_50, sPreLtfu_500, sPreLtfu_350500,
+    sPreLtfu_250350, sPreLtfu_200250, sPreLtfu_100200, sPreLtfu_50100, sPreLtfu_50, sTx_Na_500,
+    sTx_Na_350500, sTx_Na_250350, sTx_Na_200250, sTx_Na_100200, sTx_Na_50100, sTx_Na_50, sTx_A_500,
+    sTx_A_350500, sTx_A_250350, sTx_A_200250, sTx_A_100200, sTx_A_50100, sTx_A_50, sLtfu_500, sLtfu_350500,
+    sLtfu_250350, sLtfu_200250, sLtfu_100200, sLtfu_50100, sLtfu_50, sNewInf, sHivMortality, sNaturalMortality,
     sDx_Cost, sLinkage_Cost, sAnnual_Care_Cost, sAnnual_ART_Cost;
-    
+
     PROTECT(sN = allocVector(REALSXP, stop / step));
     PROTECT(sUnDx_500 = allocVector(REALSXP, stop / step));
     PROTECT(sUnDx_350500 = allocVector(REALSXP, stop / step));
@@ -283,7 +283,7 @@ extern "C" {
     SET_VECTOR_ELT(VectorNames, 56, mkChar("sAnnual_ART_Cost"));
     namesgets(OutputVector,VectorNames);
 
-    for(int i = 0; i < (stop / step); ++i) {
+    for (int i = 0; i < (stop / step); ++i) {
         pN[i] = o->N[i];
         pUnDx_500[i] = o->UnDx_500[i];
         pUnDx_350500[i] = o->UnDx_350500[i];
@@ -355,16 +355,16 @@ extern "C" {
 }
 
 int main() {
-	
+
 	// params * p = new params;
-	
+
 	// initial * i = new initial();
-	
+
 	// Euler(i, p, 0, 10,  0.02);
 
     // delete p;
     // delete i;
-	
+
 	return 0;
 }
 

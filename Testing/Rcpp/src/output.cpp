@@ -10,7 +10,7 @@
 
 output::output(int stop)
 {
-    for(int i = 0; i < stop; ++i) {
+    for (int i = 0; i < stop; ++i) {
         N[i] = 0;
         UnDx_500[i] = 0;
         UnDx_350500[i] = 0;

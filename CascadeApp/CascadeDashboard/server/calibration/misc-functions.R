@@ -50,8 +50,8 @@ AppendMinMaxMean <- function(data) {
     uniqueIndicators <- unique(data$indicator)
     uniqueYear <- unique(data$year)
 
-    for(m in 1:length(uniqueIndicators)) {
-        for(l in 1:length(uniqueYear)) {
+    for (m in 1:length(uniqueIndicators)) {
+        for (l in 1:length(uniqueYear)) {
             data[data$year == uniqueYear[l] & data$indicator == uniqueIndicators[m],"min"]  <-  min(data[data$year == uniqueYear[l] & data$indicator == uniqueIndicators[m],"value"])
             data[data$year == uniqueYear[l] & data$indicator == uniqueIndicators[m],"max"]  <-  max(data[data$year == uniqueYear[l] & data$indicator == uniqueIndicators[m],"value"])
             data[data$year == uniqueYear[l] & data$indicator == uniqueIndicators[m],"mean"] <- mean(data[data$year == uniqueYear[l] & data$indicator == uniqueIndicators[m],"value"])
@@ -69,7 +69,7 @@ FillParValues <- function(samples, positions, limit) {
         out <- data.frame(rho = 0, epsilon = 0, kappa = 0, gamma = 0, theta = 0, omega = 0, mu = 0, p = 0, q = 0)
 
         # Loop through all iterations and fill out data.frame
-        for(l in 1:limit) {
+        for (l in 1:limit) {
             out[l,"rho"]     = samples[,"rho"][positions[l]]
             out[l,"epsilon"] = samples[,"epsilon"][positions[l]]
             out[l,"kappa"]   = samples[,"kappa"][positions[l]]
@@ -87,7 +87,7 @@ FillInitValues <- function(samples, positions, limit) {
         out <- data.frame(plhiv = 0, plhiv_diag = 0, plhiv_care = 0, plhiv_art = 0)
 
         # Loop through all iterations and fill out data.frame
-        for(l in 1:limit) {
+        for (l in 1:limit) {
             out[l,"plhiv"]      = samples[,"plhiv"][positions[l]]
             out[l,"plhiv_diag"] = samples[,"plhiv_diag"][positions[l]]
             out[l,"plhiv_care"] = samples[,"plhiv_care"][positions[l]]

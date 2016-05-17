@@ -13,7 +13,7 @@ system.time(Cascade())
 Cascade()
 
 Run <- function(x = 1) {
-    for(i in 1:x) {
+    for (i in 1:x) {
         Cascade()
     }
 }

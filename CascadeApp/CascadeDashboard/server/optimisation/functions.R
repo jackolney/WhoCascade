@@ -104,11 +104,11 @@ Calc_909090 <- function(out) {
 
 FindResults_909090 <- function(result) {
     res_list <- list()
-    for(i in 1:length(result)) {
+    for (i in 1:length(result)) {
         print(i)
         t_909090 <- Calc_909090(result[[i]])
         test <- c(0,0,0)
-        for(j in 1:length(t_909090$res)) {
+        for (j in 1:length(t_909090$res)) {
             if (t_909090$res[j] > 0.9) {
                 test[j] <- 1
             } else {
@@ -124,11 +124,11 @@ FindResults_909090 <- function(result) {
 
 FindPar_909090 <- function(result, par) {
     res_list <- list()
-    for(i in 1:length(result)) {
+    for (i in 1:length(result)) {
         print(i)
         t_909090 <- Calc_909090(result[[i]])
         Test <- c(0,0,0)
-        for(j in 1:length(t_909090$res)) {
+        for (j in 1:length(t_909090$res)) {
             if (t_909090$res[j] > 0.9) {
                 Test[j] <- 1
             } else {

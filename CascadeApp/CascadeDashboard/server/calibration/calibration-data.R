@@ -39,7 +39,7 @@
 # What folders do I need to search through?
 
 # calib.files.path <- c()
-# for(i in 1:length(calib.files)) {
+# for (i in 1:length(calib.files)) {
 #     print(i)
 #     calib.files.path[i] <- paste0("server/data/calibration/", calib.files[i])
 # }
@@ -83,7 +83,7 @@
 # this will replace which.exist()
 # build.master.df <- function(temp.names, calib.df) {
 #     out <- c()
-#     for(i in 1:length(temp.names)) {
+#     for (i in 1:length(temp.names)) {
 #         if (exists(temp.names[i])) {
 #             out <- rbind(out, get(temp.names[i]))
 #         }
@@ -170,7 +170,7 @@ GetCountryData <- function(uCountry) {
         "temp.previous_data"
         )
 
-    for(i in 1:length(temp.names)) {
+    for (i in 1:length(temp.names)) {
         if (exists(temp.names[i])) {
             rm(list = temp.names[i])
         }
@@ -211,7 +211,7 @@ GetCountryData <- function(uCountry) {
 
         # Need to match PLHIV, if it doesn't exist for a particular year then we delete the value
         if (exists("temp.plhiv") & exists("temp.hiv_awareness_unaids")) {
-            for(i in 1:dim(temp.hiv_awareness_unaids)[1]) {
+            for (i in 1:dim(temp.hiv_awareness_unaids)[1]) {
                 t.plhiv <- dplyr::filter(temp.plhiv, year == temp.hiv_awareness_unaids$year[i])$value
                 temp.hiv_awareness_unaids[[i,"value"]] <- temp.hiv_awareness_unaids[[i,"value"]] * t.plhiv
                 temp.hiv_awareness_unaids$weight <- "green"
@@ -229,7 +229,7 @@ GetCountryData <- function(uCountry) {
     # Assemble master.data.frame
     # master.df <- build.master.df(temp.names, calib.df)
     out <- c()
-    for(i in 1:length(temp.names)) {
+    for (i in 1:length(temp.names)) {
         if (exists(temp.names[i])) {
             out <- rbind(out, get(temp.names[i]))
         }

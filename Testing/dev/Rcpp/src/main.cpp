@@ -18,7 +18,7 @@ List Cascade() {
     params * p = new params;
     initial * i = new initial;
     output * o = new output(stop / step);
-    
+
     Euler(i, p, o, start, stop,  step);
 
     // Create a List
@@ -82,9 +82,9 @@ List Cascade() {
     NumericVector Linkage_Cost(500);
     NumericVector Annual_Care_Cost(500);
     NumericVector Annual_ART_Cost(500);
-    
+
     // Fill up vectors
-    for(int i = 0; i < (stop / step); ++i) {
+    for (int i = 0; i < (stop / step); ++i) {
         N[i] = o->N[i];
         UnDx_500[i] = o->UnDx_500[i];
         UnDx_350500[i] = o->UnDx_350500[i];
