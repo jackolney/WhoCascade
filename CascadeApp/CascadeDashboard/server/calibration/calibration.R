@@ -173,7 +173,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
 
         # Plots
         # Then comment this out and call it elsewhere.
-        setProgress(value = 1, detail = "Building figures.")
+        setProgress(value = 1, detail = "Building figures")
         BuildCalibrationPlots(data = CalibOut, originalData = data)
     })
 
