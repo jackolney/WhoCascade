@@ -85,6 +85,6 @@ tabItem(tabName = "opt-parameter",
             p(" "),
             tableOutput("optIterationTable")
         ),
-        bsButton(inputId = "goToWizard2", label = "Return", style = "primary", size = "large", block = TRUE, icon = icon("backward", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "PREV_optParam", label = "Return", style = "primary", size = "large", block = TRUE, icon = icon("backward", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

@@ -24,6 +24,6 @@ tabItem(tabName = "opt-cost",
             helpText("These costs will be applied to all runs within the optimisation section of this site. Click 'Return' and then run the optimisation to continue."),
             bsButton("resetCost", label = "RESET COST", block = TRUE, style = "danger")
         ),
-        bsButton(inputId = "goToWizard1", label = "Return", style = "primary", size = "large", block = TRUE, icon = icon("backward", class = "fa-lg fa-fw", lib = "font-awesome"))
+        bsButton(inputId = "PREV_optCost", label = "Return", style = "primary", size = "large", block = TRUE, icon = icon("backward", class = "fa-lg fa-fw", lib = "font-awesome"))
     )
 )

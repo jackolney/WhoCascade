@@ -45,8 +45,8 @@ tabItem(tabName = "opt-wizard",
             title = "Optimisation Detail",
             "Click on the following buttons to access further details about the optimisation.",
             br(),
-            bsButton(inputId = "goToInts",  label = "Interventions",  size = "large", style = "primary", block = TRUE, icon = icon("gear", class = "fa-lg fa-fw", lib = "font-awesome")),
-            bsButton(inputId = "goToCost",  label = "Cost",           size = "large", style = "primary", block = TRUE, icon = icon("usd",  class = "fa-lg fa-fw", lib = "font-awesome"))
+            bsButton(inputId = "NEXT_optParam",  label = "Interventions",  size = "large", style = "primary", block = TRUE, icon = icon("gear", class = "fa-lg fa-fw", lib = "font-awesome")),
+            bsButton(inputId = "NEXT_optCost",   label = "Cost",           size = "large", style = "primary", block = TRUE, icon = icon("usd",  class = "fa-lg fa-fw", lib = "font-awesome"))
         )
     ),
     column(width = 4,

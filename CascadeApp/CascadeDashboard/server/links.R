@@ -206,32 +206,8 @@ observeEvent(input$NEXT_optWizard, {
     )
 })
 
-# Not sure on this?
-observeEvent(input$wizardOpt_2, {
-    updateTabItems(session,
-        inputId = "sideBar",
-        selected = "opt-parameter"
-    )
-})
-
-# Not sure on this?
-observeEvent(input$wizardOpt_3, {
-    updateTabItems(session,
-        inputId = "sideBar",
-        selected = "opt-2results"
-    )
-})
-
-# Not sure either?
-observeEvent(input$wizardOpt_4, {
-    updateTabItems(session,
-        inputId = "sideBar",
-        selected = "opt-budget"
-    )
-})
-
 # Optimisation Parameters
-observeEvent(input$goToInts, {
+observeEvent(input$NEXT_optParam, {
     updateTabItems(session,
         inputId = "sideBar",
         selected = "opt-parameter"
@@ -239,15 +215,23 @@ observeEvent(input$goToInts, {
 })
 
 # Optimisation Costs
-observeEvent(input$goToCost, {
+observeEvent(input$NEXT_optCost, {
     updateTabItems(session,
         inputId = "sideBar",
         selected = "opt-cost"
     )
 })
 
+# Optimisation Budget
+observeEvent(input$NEXT_optResult, {
+    updateTabItems(session,
+        inputId = "sideBar",
+        selected = "opt-budget"
+    )
+})
+
 # Not sure?
-observeEvent(input$goToWizard1, {
+observeEvent(input$PREV_optParam, {
     updateTabItems(session,
         inputId = "sideBar",
         selected = "opt-wizard"
@@ -255,7 +239,7 @@ observeEvent(input$goToWizard1, {
 })
 
 # Not sure?
-observeEvent(input$goToWizard2, {
+observeEvent(input$PREV_optCost, {
     updateTabItems(session,
         inputId = "sideBar",
         selected = "opt-wizard"
