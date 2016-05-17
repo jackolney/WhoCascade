@@ -13,8 +13,7 @@ tabItem(tabName = "suppression",
             id = 'viral_panel',
             uiOutput(outputId = "UI_uVIRAL"),
             uiOutput(outputId = "UI_uVIRAL_source"),
-            uiOutput(outputId = "UI_uVIRAL_year"),
-            uiOutput(outputId = "uVIRAL_quality")
+            uiOutput(outputId = "UI_uVIRAL_year")
         )
     ),
     column(width = 4,
@@ -29,6 +28,9 @@ tabItem(tabName = "suppression",
             p(""),
             bsButton(inputId = "resetVIRAL", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
+        bsAlert(anchorId = "uVIRAL_ALERT_green"),
+        bsAlert(anchorId = "uVIRAL_ALERT_amber"),
+        bsAlert(anchorId = "uVIRAL_ALERT_red"),
         bsAlert(anchorId = "uVIRAL_ALERT"),
         fluidRow(
             column(width = 6,

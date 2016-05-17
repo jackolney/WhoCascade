@@ -13,8 +13,7 @@ tabItem(tabName = "treatment",
             id = 'art_panel',
             uiOutput(outputId = "UI_uART"),
             uiOutput(outputId = "UI_uART_source"),
-            uiOutput(outputId = "UI_uART_year"),
-            uiOutput(outputId = "uART_quality")
+            uiOutput(outputId = "UI_uART_year")
         )
     ),
     column(width = 4,
@@ -29,6 +28,9 @@ tabItem(tabName = "treatment",
             p(""),
             bsButton(inputId = "resetART", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
+        bsAlert(anchorId = "uART_ALERT_green"),
+        bsAlert(anchorId = "uART_ALERT_amber"),
+        bsAlert(anchorId = "uART_ALERT_red"),
         bsAlert(anchorId = "uART_ALERT"),
         fluidRow(
             column(width = 6,

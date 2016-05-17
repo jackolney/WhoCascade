@@ -28,7 +28,9 @@ tabItem(tabName = "diagnosis",
             p(""),
             bsButton(inputId = "resetDIAG", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
-        uiOutput(outputId = "uDIAG_quality"),
+        bsAlert(anchorId = "uDIAG_ALERT_green"),
+        bsAlert(anchorId = "uDIAG_ALERT_amber"),
+        bsAlert(anchorId = "uDIAG_ALERT_red"),
         bsAlert(anchorId = "uDIAG_ALERT"),
         fluidRow(
             column(width = 6,

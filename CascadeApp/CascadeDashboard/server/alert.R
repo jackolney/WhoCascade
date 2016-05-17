@@ -102,3 +102,242 @@ observeEvent(input$uVIRAL, {
         shinyBS::closeAlert(session, alertId = "alertId_uVIRAL")
     }
 })
+
+##########################
+# 'Traffic Light' Alerts #
+##########################
+
+observeEvent(input$uPLHIV_source, {
+    if (input$uPLHIV_source != "Please select source...") {
+        if (SourceList$weight[which(SourceList == input$uPLHIV_source)] == "green") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uPLHIV_ALERT_green",
+                alertId = "alertId_uPLHIV_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uPLHIV_source)] == "amber") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uPLHIV_ALERT_amber",
+                alertId = "alertId_uPLHIV_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uPLHIV_source)] == "red") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uPLHIV_ALERT_red",
+                alertId = "alertId_uPLHIV_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
+        }
+    } else {
+        return()
+    }
+})
+
+observeEvent(input$uDIAG_source, {
+    if (input$uDIAG_source != "Please select source...") {
+        if (SourceList$weight[which(SourceList == input$uDIAG_source)] == "green") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uDIAG_ALERT_green",
+                alertId = "alertId_uDIAG_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uDIAG_source)] == "amber") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uDIAG_ALERT_amber",
+                alertId = "alertId_uDIAG_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uDIAG_source)] == "red") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uDIAG_ALERT_red",
+                alertId = "alertId_uDIAG_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
+        }
+    } else {
+        return()
+    }
+})
+
+observeEvent(input$uCARE_source, {
+    if (input$uCARE_source != "Please select source...") {
+        if (SourceList$weight[which(SourceList == input$uCARE_source)] == "green") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uCARE_ALERT_green",
+                alertId = "alertId_uCARE_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uCARE_source)] == "amber") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uCARE_ALERT_amber",
+                alertId = "alertId_uCARE_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uCARE_source)] == "red") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uCARE_ALERT_red",
+                alertId = "alertId_uCARE_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
+        }
+    } else {
+        return()
+    }
+})
+
+observeEvent(input$uART_source, {
+    if (input$uART_source != "Please select source...") {
+        if (SourceList$weight[which(SourceList == input$uART_source)] == "green") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uART_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uART_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uART_ALERT_green",
+                alertId = "alertId_uART_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uART_source)] == "amber") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uART_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uART_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uART_ALERT_amber",
+                alertId = "alertId_uART_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uART_source)] == "red") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uART_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uART_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uART_ALERT_red",
+                alertId = "alertId_uART_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
+        }
+    } else {
+        return()
+    }
+})
+
+observeEvent(input$uVIRAL_source, {
+    if (input$uVIRAL_source != "Please select source...") {
+        if (SourceList$weight[which(SourceList == input$uVIRAL_source)] == "green") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uVIRAL_ALERT_green",
+                alertId = "alertId_uVIRAL_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uVIRAL_source)] == "amber") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uVIRAL_ALERT_amber",
+                alertId = "alertId_uVIRAL_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
+        } else if (SourceList$weight[which(SourceList == input$uVIRAL_source)] == "red") {
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uVIRAL_ALERT_red",
+                alertId = "alertId_uVIRAL_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
+        }
+    } else {
+        return()
+    }
+})

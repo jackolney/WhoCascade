@@ -58,7 +58,7 @@ observeEvent(input$uPLHIV_source, {
             shinyBS::createAlert(session,
                 anchorId = "uPLHIV_ALERT_green",
                 alertId = "alertId_uPLHIV_green",
-                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "Good"),
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
                 content = "Data source is of reliable quality.",
                 style = "success",
                 dismiss = TRUE,
@@ -71,7 +71,7 @@ observeEvent(input$uPLHIV_source, {
             shinyBS::createAlert(session,
                 anchorId = "uPLHIV_ALERT_amber",
                 alertId = "alertId_uPLHIV_amber",
-                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "Use With Caution"),
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
                 content = "Data source is of questionable quality.",
                 style = "warning",
                 dismiss = TRUE,
@@ -84,7 +84,7 @@ observeEvent(input$uPLHIV_source, {
             shinyBS::createAlert(session,
                 anchorId = "uPLHIV_ALERT_red",
                 alertId = "alertId_uPLHIV_red",
-                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "Danger"),
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
                 content = "Data source is of unreliable quality, use with extreme caution.",
                 style = "danger",
                 dismiss = TRUE,
@@ -98,80 +98,188 @@ observeEvent(input$uPLHIV_source, {
 observeEvent(input$uDIAG_source, {
     if (input$uDIAG_source != "Please select source...") {
         if (SourceList$weight[which(SourceList == input$uDIAG_source)] == "green") {
-            output$uDIAG_quality <- renderUI({
-                bsButton(inputId = "_uDIAG_quality_", label = "GOOD", style = "success", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uDIAG_ALERT_green",
+                alertId = "alertId_uDIAG_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uDIAG_source)] == "amber") {
-            output$uDIAG_quality <- renderUI({
-                bsButton(inputId = "_uDIAG_quality_", label = "USE WITH CAUTION", style = "warning", size = "large", block = TRUE, disabled = TRUE)
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uDIAG_ALERT_amber",
+                alertId = "alertId_uDIAG_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uDIAG_source)] == "red") {
-            output$uDIAG_quality <- renderUI({
-                bsButton(inputId = "_uDIAG_quality_", label = "DANGER", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uDIAG_ALERT_red",
+                alertId = "alertId_uDIAG_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
         }
     } else {
-        output$uDIAG_quality <- renderUI({})
+        return()
     }
 })
 
 observeEvent(input$uCARE_source, {
     if (input$uCARE_source != "Please select source...") {
         if (SourceList$weight[which(SourceList == input$uCARE_source)] == "green") {
-            output$uCARE_quality <- renderUI({
-                bsButton(inputId = "_uCARE_quality_", label = "GOOD", style = "success", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uCARE_ALERT_green",
+                alertId = "alertId_uCARE_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uCARE_source)] == "amber") {
-            output$uCARE_quality <- renderUI({
-                bsButton(inputId = "_uCARE_quality_", label = "USE WITH CAUTION", style = "warning", size = "large", block = TRUE, disabled = TRUE)
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uCARE_ALERT_amber",
+                alertId = "alertId_uCARE_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uCARE_source)] == "red") {
-            output$uCARE_quality <- renderUI({
-                bsButton(inputId = "_uCARE_quality_", label = "DANGER", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uCARE_ALERT_red",
+                alertId = "alertId_uCARE_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
         }
     } else {
-        output$uCARE_quality <- renderUI({})
+        return()
     }
 })
 
 observeEvent(input$uART_source, {
     if (input$uART_source != "Please select source...") {
         if (SourceList$weight[which(SourceList == input$uART_source)] == "green") {
-            output$uART_quality <- renderUI({
-                bsButton(inputId = "_uART_quality_", label = "GOOD", style = "success", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uART_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uART_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uART_ALERT_green",
+                alertId = "alertId_uART_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uART_source)] == "amber") {
-            output$uART_quality <- renderUI({
-                bsButton(inputId = "_uART_quality_", label = "USE WITH CAUTION", style = "warning", size = "large", block = TRUE, disabled = TRUE)
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uART_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uART_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uART_ALERT_amber",
+                alertId = "alertId_uART_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uART_source)] == "red") {
-            output$uART_quality <- renderUI({
-                bsButton(inputId = "_uART_quality_", label = "DANGER", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uART_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uART_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uART_ALERT_red",
+                alertId = "alertId_uART_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
         }
     } else {
-        output$uART_quality <- renderUI({})
+        return()
     }
 })
 
 observeEvent(input$uVIRAL_source, {
     if (input$uVIRAL_source != "Please select source...") {
         if (SourceList$weight[which(SourceList == input$uVIRAL_source)] == "green") {
-            output$uVIRAL_quality <- renderUI({
-                bsButton(inputId = "_uVIRAL_quality_", label = "GOOD", style = "success", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uVIRAL_ALERT_green",
+                alertId = "alertId_uVIRAL_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "GOOD"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uVIRAL_source)] == "amber") {
-            output$uVIRAL_quality <- renderUI({
-                bsButton(inputId = "_uVIRAL_quality_", label = "USE WITH CAUTION", style = "warning", size = "large", block = TRUE, disabled = TRUE)
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uVIRAL_ALERT_amber",
+                alertId = "alertId_uVIRAL_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "USE WITH CAUTION"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uVIRAL_source)] == "red") {
-            output$uVIRAL_quality <- renderUI({
-                bsButton(inputId = "_uVIRAL_quality_", label = "DANGER", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uVIRAL_ALERT_red",
+                alertId = "alertId_uVIRAL_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "DANGER"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
         }
     } else {
-        output$uVIRAL_quality <- renderUI({})
+        return()
     }
 })
 

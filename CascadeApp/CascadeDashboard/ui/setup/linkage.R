@@ -13,8 +13,7 @@ tabItem(tabName = "linkage",
             id = 'care_panel',
             uiOutput(outputId = "UI_uCARE"),
             uiOutput(outputId = "UI_uCARE_source"),
-            uiOutput(outputId = "UI_uCARE_year"),
-            uiOutput(outputId = "uCARE_quality")
+            uiOutput(outputId = "UI_uCARE_year")
         )
     ),
     column(width = 4,
@@ -29,6 +28,9 @@ tabItem(tabName = "linkage",
             p(""),
             bsButton(inputId = "resetCARE", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
+        bsAlert(anchorId = "uCARE_ALERT_green"),
+        bsAlert(anchorId = "uCARE_ALERT_amber"),
+        bsAlert(anchorId = "uCARE_ALERT_red"),
         bsAlert(anchorId = "uCARE_ALERT"),
         fluidRow(
             column(width = 6,

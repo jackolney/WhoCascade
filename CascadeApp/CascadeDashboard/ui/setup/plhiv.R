@@ -28,7 +28,6 @@ tabItem(tabName = "plhiv",
             p(""),
             bsButton(inputId = "resetPLHIV", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
-        # uiOutput(outputId = "uPLHIV_quality"),
         bsAlert(anchorId = "uPLHIV_ALERT_green"),
         bsAlert(anchorId = "uPLHIV_ALERT_amber"),
         bsAlert(anchorId = "uPLHIV_ALERT_red"),
