@@ -29,7 +29,7 @@ tabItem(tabName = "suppression",
             p(""),
             bsButton(inputId = "resetVIRAL", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
-        bsAlert("uVIRAL_ALERT"),
+        bsAlert(anchorId = "uVIRAL_ALERT"),
         fluidRow(
             column(width = 6,
                 bsButton(inputId = "PREV_viral", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))

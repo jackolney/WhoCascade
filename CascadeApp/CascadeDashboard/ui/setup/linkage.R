@@ -29,7 +29,7 @@ tabItem(tabName = "linkage",
             p(""),
             bsButton(inputId = "resetCARE", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
-        bsAlert("uCARE_ALERT"),
+        bsAlert(anchorId = "uCARE_ALERT"),
         fluidRow(
             column(width = 6,
                 bsButton(inputId = "PREV_care", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))

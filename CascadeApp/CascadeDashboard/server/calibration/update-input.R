@@ -51,20 +51,47 @@ observeEvent(input$NEXT_viral, {
 observeEvent(input$uPLHIV_source, {
     if (input$uPLHIV_source != "Please select source...") {
         if (SourceList$weight[which(SourceList == input$uPLHIV_source)] == "green") {
-            output$uPLHIV_quality <- renderUI({
-                bsButton(inputId = "_uPLHIV_quality_", label = "GOOD", style = "success", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_amber")
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uPLHIV_ALERT_green",
+                alertId = "alertId_uPLHIV_green",
+                title = paste(icon("thumbs-up", class = "fa-lg fa-fw", lib = "font-awesome"), "Good"),
+                content = "Data source is of reliable quality.",
+                style = "success",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uPLHIV_source)] == "amber") {
-            output$uPLHIV_quality <- renderUI({
-                bsButton(inputId = "_uPLHIV_quality_", label = "AVERAGE", style = "warning", size = "large", block = TRUE, disabled = TRUE)
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_red")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uPLHIV_ALERT_amber",
+                alertId = "alertId_uPLHIV_amber",
+                title = paste(icon("hand-stop-o", class = "fa-lg fa-fw", lib = "font-awesome"), "Use With Caution"),
+                content = "Data source is of questionable quality.",
+                style = "warning",
+                dismiss = TRUE,
+                append = TRUE)
         } else if (SourceList$weight[which(SourceList == input$uPLHIV_source)] == "red") {
-            output$uPLHIV_quality <- renderUI({
-                bsButton(inputId = "_uPLHIV_quality_", label = "POOR", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
-            })
+            # Close any open alerts
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_green")
+            shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_amber")
+            # Create new alert
+            shinyBS::createAlert(session,
+                anchorId = "uPLHIV_ALERT_red",
+                alertId = "alertId_uPLHIV_red",
+                title = paste(icon("warning", class = "fa-lg fa-fw", lib = "font-awesome"), "Danger"),
+                content = "Data source is of unreliable quality, use with extreme caution.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
         }
     } else {
-        output$uPLHIV_quality <- renderUI({})
+        return()
     }
 })
 
@@ -76,11 +103,11 @@ observeEvent(input$uDIAG_source, {
             })
         } else if (SourceList$weight[which(SourceList == input$uDIAG_source)] == "amber") {
             output$uDIAG_quality <- renderUI({
-                bsButton(inputId = "_uDIAG_quality_", label = "AVERAGE", style = "warning", size = "large", block = TRUE, disabled = TRUE)
+                bsButton(inputId = "_uDIAG_quality_", label = "USE WITH CAUTION", style = "warning", size = "large", block = TRUE, disabled = TRUE)
             })
         } else if (SourceList$weight[which(SourceList == input$uDIAG_source)] == "red") {
             output$uDIAG_quality <- renderUI({
-                bsButton(inputId = "_uDIAG_quality_", label = "POOR", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
+                bsButton(inputId = "_uDIAG_quality_", label = "DANGER", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
             })
         }
     } else {
@@ -96,11 +123,11 @@ observeEvent(input$uCARE_source, {
             })
         } else if (SourceList$weight[which(SourceList == input$uCARE_source)] == "amber") {
             output$uCARE_quality <- renderUI({
-                bsButton(inputId = "_uCARE_quality_", label = "AVERAGE", style = "warning", size = "large", block = TRUE, disabled = TRUE)
+                bsButton(inputId = "_uCARE_quality_", label = "USE WITH CAUTION", style = "warning", size = "large", block = TRUE, disabled = TRUE)
             })
         } else if (SourceList$weight[which(SourceList == input$uCARE_source)] == "red") {
             output$uCARE_quality <- renderUI({
-                bsButton(inputId = "_uCARE_quality_", label = "POOR", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
+                bsButton(inputId = "_uCARE_quality_", label = "DANGER", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
             })
         }
     } else {
@@ -116,11 +143,11 @@ observeEvent(input$uART_source, {
             })
         } else if (SourceList$weight[which(SourceList == input$uART_source)] == "amber") {
             output$uART_quality <- renderUI({
-                bsButton(inputId = "_uART_quality_", label = "AVERAGE", style = "warning", size = "large", block = TRUE, disabled = TRUE)
+                bsButton(inputId = "_uART_quality_", label = "USE WITH CAUTION", style = "warning", size = "large", block = TRUE, disabled = TRUE)
             })
         } else if (SourceList$weight[which(SourceList == input$uART_source)] == "red") {
             output$uART_quality <- renderUI({
-                bsButton(inputId = "_uART_quality_", label = "POOR", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
+                bsButton(inputId = "_uART_quality_", label = "DANGER", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
             })
         }
     } else {
@@ -136,11 +163,11 @@ observeEvent(input$uVIRAL_source, {
             })
         } else if (SourceList$weight[which(SourceList == input$uVIRAL_source)] == "amber") {
             output$uVIRAL_quality <- renderUI({
-                bsButton(inputId = "_uVIRAL_quality_", label = "AVERAGE", style = "warning", size = "large", block = TRUE, disabled = TRUE)
+                bsButton(inputId = "_uVIRAL_quality_", label = "USE WITH CAUTION", style = "warning", size = "large", block = TRUE, disabled = TRUE)
             })
         } else if (SourceList$weight[which(SourceList == input$uVIRAL_source)] == "red") {
             output$uVIRAL_quality <- renderUI({
-                bsButton(inputId = "_uVIRAL_quality_", label = "POOR", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
+                bsButton(inputId = "_uVIRAL_quality_", label = "DANGER", style = "danger", size = "large", block = TRUE, disabled = TRUE, icon = icon("thumbs-down", class = "fa-lg fa-fw", lib = "font-awesome"))
             })
         }
     } else {

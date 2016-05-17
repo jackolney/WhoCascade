@@ -128,15 +128,15 @@ shinyUI(
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Quick Start"),
-                helpText("If you want to skip the introduction and get modelling, jump to 'setup' and click on 'DEMO'. 
-                    Data entered can be saved by clicking 'SAVE' on any relevant page. A pdf containing details about 
+                helpText("If you want to skip the introduction and get modelling, jump to 'setup' and click on 'DEMO'.
+                    Data entered can be saved by clicking 'SAVE' on any relevant page. A pdf containing details about
                     the entire model can be found in the 'more' tab along with links to spreadsheets containing data used in the model."),
                 br(),
                 h5("Contributors"),
                 helpText("Jack J Olney, Jeffrey W Eaton, Ellen McRobie & Timothy B Hallett")
                 ),
             mainPanel(
-                bsAlert("startAlert"),
+                bsAlert(anchorId = "startAlert"),
                 p("With the release of the Consolidated Information Guidelines for HIV by the World Health Organization (WHO)
                 in May 2015, a set of indicators have been agreed upon, based on the cascade of HIV services relating to impact in
                 terms of HIV incidence and mortality (see below). These guidelines provide a framework for countries to assess the current state
@@ -146,25 +146,25 @@ shinyUI(
                 countries can be input into a mathematical model and used to estimate future incidence, AIDS-deaths and the ascertainment of the 90-90-90 goals."),
                 img(src="WHO-Guidelines-Front-Crop.png", height = '100%', width = '100%'),
                 h3("Aims"),
-                p("This webpage contains an interactive model that allows data to be entered, parameters to be altered and results to be presented in real-time. 
+                p("This webpage contains an interactive model that allows data to be entered, parameters to be altered and results to be presented in real-time.
                     No specialist software is required as all calculations are completed on a remote server, results are then returned and displayed, along with all visualisations, in the browser."),
                 p("The overarching aims of this model are to:"),
                 tags$ol(
                     tags$li("Provide a simple intuitive tool to document and analyse the current state of HIV care. This mathematical model is able to handle a wide range
                         of data, characterise individuals into discrete care categories, and by building upon a set of assumptions regarding HIV-transmission, duration of
                         infection and progression through care and death, the model can project changes in incidence, mortality and care until 2020."),
-                    tags$li("The model is country-specific. During setup, when a new country is selected from the drop down list, 
+                    tags$li("The model is country-specific. During setup, when a new country is selected from the drop down list,
                         the model adjusts its incidence estimates based on data from the Spectrum software used by UNAIDS."),
                     tags$li("The model can be used to assess the current state of care and ascertain gaps that require immediate attention. Furthermore, the model can identify what
                         future changes need to be made, that differ from what countries have done so far, to be on track to achieve the 90-90-90 goals set out by UNAIDS."),
-                    tags$li("Non-specific interventions can be simulated that broadly illustrate the changes that can be made to care, along with with the costs of doing so, 
+                    tags$li("Non-specific interventions can be simulated that broadly illustrate the changes that can be made to care, along with with the costs of doing so,
                         to identify the most cost-effective strategy for reconciling any deficiencies in care (still in development)."),
                     tags$li("It is hoped that this model will help countries prioritise strategies and estimate the costs required to achieve future targets.")
                 ),
                 h3("The Model"),
-                    p("The simplified structure of the model is shown below. State compartments do not exactly correlate with the indicators in Consolidated Indicator Guidelines, 
-                        as compartments in the model must be discrete and exhaustive, while the indicators listed are not all discrete; for example, 'Knowing HIV status' includes all patients who are in care, 
-                        on treatment, virally suppressed and lost from care as long as they are diagnosed. However, the model is able to reconcile this by taking individual indicators and separating them into their 
+                    p("The simplified structure of the model is shown below. State compartments do not exactly correlate with the indicators in Consolidated Indicator Guidelines,
+                        as compartments in the model must be discrete and exhaustive, while the indicators listed are not all discrete; for example, 'Knowing HIV status' includes all patients who are in care,
+                        on treatment, virally suppressed and lost from care as long as they are diagnosed. However, the model is able to reconcile this by taking individual indicators and separating them into their
                         components to specify the initial conditions for simulations."),
                     helpText("More details on the model can be found in the following pages, along with a detailed description under the 'more' table and 'Model Document'."),
                 img(src="ModelSimple.png", height = '100%', width = '100%'),
@@ -185,8 +185,8 @@ shinyUI(
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Help Panel"),
-                helpText("Please fill in all boxes with relevant data, then hit 'SAVE' and wait for the confirmation below. 
-                    Hit 'RESET' to reset all values to zero, and hit 'DEMO' for a random set of values to be generated. 
+                helpText("Please fill in all boxes with relevant data, then hit 'SAVE' and wait for the confirmation below.
+                    Hit 'RESET' to reset all values to zero, and hit 'DEMO' for a random set of values to be generated.
                     Unchecking the 'HIV incidence' checkbox prevents any new infections occurring in the model."),
                 checkboxInput("incidenceInput","HIV Incidence",value=TRUE),
                 bsButton("saveInput",label="SAVE",style="success"),
@@ -204,7 +204,7 @@ shinyUI(
             mainPanel(
                 shinyjs::useShinyjs(),
                 id = "setup-panel",
-                helpText("Select country and fill in boxes to specify the initial values of the model. 
+                helpText("Select country and fill in boxes to specify the initial values of the model.
                     The boxes correlate with indicators in the Consolidated Information Guidelines (shown below), with numbers in brackets corresponding to numbers on the indicator figure."),
                 img(src="WHOGuidelinesCascade.png", height = '100%', width = '100%'),
                 br(), br(),
@@ -249,7 +249,7 @@ shinyUI(
         sidebarLayout(position="right",
             sidebarPanel(
                 h4("Help Panel"),
-                helpText("It is not neccessary to alter any of these values, but feel free to move the sliders around and see the values in the table change. 
+                helpText("It is not neccessary to alter any of these values, but feel free to move the sliders around and see the values in the table change.
                     Hit 'RESET PARAMETERS' to reset all parameters including the 'ART dropout rate' if specified in the 'Setup' tab."),
                 bsButton("resetParameters",label="RESET PARAMETERS",style="danger"),
                 p(" "),
@@ -259,10 +259,10 @@ shinyUI(
             mainPanel(
                 shinyjs::useShinyjs(),
                 id = "parameter-panel",
-                helpText("Below is a detailed diagram of the model showing the flow of patients through care and the progression of HIV, 
-                    captured by the decline of CD4 counts when not on treatment and the recovery of CD4 counts when on ART. 
-                    A table of parameter values is shown in the 'Help Panel' and several sliders are shown below which can be 
-                    used to manipulate certain parameter values. Parameter values can be manipulated by changing the rate or the inverse of the rate (time to event). 
+                helpText("Below is a detailed diagram of the model showing the flow of patients through care and the progression of HIV,
+                    captured by the decline of CD4 counts when not on treatment and the recovery of CD4 counts when on ART.
+                    A table of parameter values is shown in the 'Help Panel' and several sliders are shown below which can be
+                    used to manipulate certain parameter values. Parameter values can be manipulated by changing the rate or the inverse of the rate (time to event).
                     You only need to change one slider as the other updated auotmatically. Please note that the parameter table is 'live' and will update in real-time."),
                 img(src = "ModelSimple.png",height = "100%",width = "100%"),
                 br(), br(),
@@ -271,11 +271,11 @@ shinyUI(
                     sliderInput('invRho','Average time to diagnosis (years) (1 / rho):',min=0,max=100,value=1/0.205,step=0.001,width=1000)
                     ),
                 wellPanel(
-                    sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):',min=0,max=20,value=16.949,step=0.001,width=1000),    
+                    sliderInput('epsilon','Care seeking rate (persons seeking care/py) (epsilon):',min=0,max=20,value=16.949,step=0.001,width=1000),
                     sliderInput('invEpsilon','Average time to seeking care (years) (1 / epsilon):',min=0,max=100,value=1/16.949,step=0.001,width=1000)
                     ),
                 wellPanel(
-                    sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):',min=0,max=5,value=2.556,step=0.001,width=1000),    
+                    sliderInput('gamma','ART initiation rate (ART initiations/py) (gamma):',min=0,max=5,value=2.556,step=0.001,width=1000),
                     sliderInput('invGamma','Average time to ART initiation (years) (1 / gamma):',min=0,max=100,value=1/2.556,step=0.001,width=1000)
                     ),
                 wellPanel(
@@ -289,10 +289,10 @@ shinyUI(
         tabPanel("Your Cascade",
             h1(textOutput('CountryName')),
             sidebarPanel(
-                tags$b("Number of PLHIV:"), 
+                tags$b("Number of PLHIV:"),
                 p(""),
                 verbatimTextOutput("outPLHIV"),
-                tags$b("Percentage of total PLHIV:"), 
+                tags$b("Percentage of total PLHIV:"),
                 p(""),
                 verbatimTextOutput("outPLHIV_perc"),
                 p(""),
@@ -305,7 +305,7 @@ shinyUI(
                 tags$b("Number of PLHIV who have been diagnosed:"),
                 p(""),
                 verbatimTextOutput("outDIAG"),
-                tags$b("Percentage of PLHIV who have been diagnosed:"), 
+                tags$b("Percentage of PLHIV who have been diagnosed:"),
                 p(""),
                 verbatimTextOutput("outDIAG_perc"),
                 p(""),
@@ -398,7 +398,7 @@ shinyUI(
                         p("These figures illustrate the 'Care Cascade' in 2015 (at baseline), and the projection after 5 years (in 2020)."),
                         helpText("Figures are based on those found in Powers et al. (2015)."),
                         tags$ol(
-                            tags$li("% Undiagnosed = # persons undiagnosed / PLHIV"),                            
+                            tags$li("% Undiagnosed = # persons undiagnosed / PLHIV"),
                             tags$li("% Diagnosed = # persons diagnosed and not in care / PLHIV"),
                             tags$li("% In Care = # persons diagnosed, in care, not on ART / PLHIV"),
                             tags$li("% On Treatment (non-adherent) = # persons diagnosed, in care, on ART, but not adhering and not virally suppressed / PLHIV"),
@@ -412,8 +412,8 @@ shinyUI(
         tabPanel("90-90-90",
             sidebarPanel(
                 h4("UNAIDS 90-90-90"),
-                p("By 2020, this is what the model predicts will be achieved in comparison to the UNAIDS goals of 90% diagnosed, 
-                    90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any 
+                p("By 2020, this is what the model predicts will be achieved in comparison to the UNAIDS goals of 90% diagnosed,
+                    90% on treatment and 90% virally suppressed. If you would like to see what changes can be made to resolve any
                     inefficiencies in care, then click on the 'Optimisation' tab."),
                 tableOutput("table909090")
                 ),
@@ -476,7 +476,7 @@ shinyUI(
                     The parameter values for each intervention are then displayed in the corresponding tables."),
                 bsButton("resetSliders",label="RESET SLIDERS",style="danger"),
                 p(" "),
-                helpText("Below is the number of iterations the model will simulate along with the estimated time to completion. Hit the 'OPTIMISE' button to begin the simulation. Note the progress bar 
+                helpText("Below is the number of iterations the model will simulate along with the estimated time to completion. Hit the 'OPTIMISE' button to begin the simulation. Note the progress bar
                     at the top of the screen, and the run number and elapsed time on the top right. Please wait until the optimisation algorithm has completed the below bar has turned green before proceeding to the results tab."),
                 bsButton("optimiseInput",label="OPTIMISE",style="info"),
                 bsTooltip(id = "optimiseInput", title = "Wait for progress bar to complete before proceeding.", placement = "right", trigger = "hover"),
@@ -536,7 +536,7 @@ shinyUI(
                 h4("Results"),
                 helpText("This section is still under active development."),
                 p("The results of the optimisation simulation are shown in the plot to the right. Hit 'Show Result Table' to view all data points and corresponding parameter values.
-                    Zoom in on data points by drawing a box on the plot with the mouse and double clicking. To view the details of a specific point, draw a box with the mouse over the point and 
+                    Zoom in on data points by drawing a box on the plot with the mouse and double clicking. To view the details of a specific point, draw a box with the mouse over the point and
                     hit 'Show Selected Result Table'"),
                 p(" "),
                 selectInput("userStratPoint","Select parameter to stratify results by:", InterventionList, selected = "Rho"),

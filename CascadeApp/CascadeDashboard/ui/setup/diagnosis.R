@@ -13,8 +13,7 @@ tabItem(tabName = "diagnosis",
             id = 'diag_panel',
             uiOutput(outputId = "UI_uDIAG"),
             uiOutput(outputId = "UI_uDIAG_source"),
-            uiOutput(outputId = "UI_uDIAG_year"),
-            uiOutput(outputId = "uDIAG_quality")
+            uiOutput(outputId = "UI_uDIAG_year")
         )
     ),
     column(width = 4,
@@ -29,7 +28,8 @@ tabItem(tabName = "diagnosis",
             p(""),
             bsButton(inputId = "resetDIAG", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
-        bsAlert("uDIAG_ALERT"),
+        uiOutput(outputId = "uDIAG_quality"),
+        bsAlert(anchorId = "uDIAG_ALERT"),
         fluidRow(
             column(width = 6,
                 bsButton(inputId = "PREV_diag", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))

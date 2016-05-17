@@ -13,8 +13,7 @@ tabItem(tabName = "plhiv",
             id = 'plhiv_panel',
             uiOutput(outputId = "UI_uPLHIV"),
             uiOutput(outputId = "UI_uPLHIV_source"),
-            uiOutput(outputId = "UI_uPLHIV_year"),
-            uiOutput(outputId = "uPLHIV_quality")
+            uiOutput(outputId = "UI_uPLHIV_year")
         )
     ),
     column(width = 4,
@@ -29,6 +28,10 @@ tabItem(tabName = "plhiv",
             p(""),
             bsButton(inputId = "resetPLHIV", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
+        # uiOutput(outputId = "uPLHIV_quality"),
+        bsAlert(anchorId = "uPLHIV_ALERT_green"),
+        bsAlert(anchorId = "uPLHIV_ALERT_amber"),
+        bsAlert(anchorId = "uPLHIV_ALERT_red"),
         fluidRow(
             column(width = 6,
                 bsButton(inputId = "PREV_plhiv", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))

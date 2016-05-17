@@ -6,7 +6,7 @@ tabItem(tabName = "introduction",
             collapsible = TRUE,
             collapsed = FALSE,
             title = "Introduction",
-            bsAlert("startAlert"),
+            bsAlert(anchorId = "startAlert"),
             p("With the release of the Consolidated Information Guidelines for HIV by the World Health Organization (WHO)
             in May 2015, a set of indicators have been agreed upon, based on the cascade of HIV services relating to impact in
             terms of HIV incidence and mortality (see below). These guidelines provide a framework for countries to assess the current state

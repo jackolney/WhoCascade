@@ -29,7 +29,7 @@ tabItem(tabName = "treatment",
             p(""),
             bsButton(inputId = "resetART", label = "RESET", style = "danger", size = "default", block = TRUE)
         ),
-        bsAlert("uART_ALERT"),
+        bsAlert(anchorId = "uART_ALERT"),
         fluidRow(
             column(width = 6,
                 bsButton(inputId = "PREV_art", label = "Back", style = "danger",  size = "large", block = TRUE, icon = icon("arrow-left",  class = "fa-lg fa-fw", lib = "font-awesome"))
