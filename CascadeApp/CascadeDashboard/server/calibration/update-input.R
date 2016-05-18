@@ -83,6 +83,5 @@ observeEvent(input$uCalib_kappa,   { userParRange$kappa   <<- input$uCalib_kappa
 observeEvent(input$uCalib_gamma,   { userParRange$gamma   <<- input$uCalib_gamma })
 observeEvent(input$uCalib_theta,   { userParRange$theta   <<- input$uCalib_theta })
 observeEvent(input$uCalib_omega,   { userParRange$omega   <<- input$uCalib_omega })
-observeEvent(input$uCalib_mu,      { userParRange$mu      <<- input$uCalib_mu })
 observeEvent(input$uCalib_p,       { userParRange$p       <<- input$uCalib_p })
 observeEvent(input$uCalib_q,       { userParRange$q       <<- input$uCalib_q })

@@ -76,19 +76,6 @@ output$UI_calib_omega <- renderUI({
     numericInput("uCalib_omega","Specify exact rate:", value = NULL, min = 0, max = 100, step = 1e-6, width = '100%')
 })
 
-# Natural Mortality Rate = mu
-output$calib_mu_max <- renderUI({
-    numericInput("test_NatMortRate_U","Upper:", value = round(CalibParamMaxMin$mu_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-output$calib_mu_min <- renderUI({
-    numericInput("test_NatMortRate_L","Lower:", value = round(CalibParamMaxMin$mu_MIN, 4), min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
-output$UI_calib_mu <- renderUI({
-    numericInput("uCalib_mu","Specify exact rate:", value = NULL, min = 0, max = 100, step = 1e-6, width = '100%')
-})
-
 # Adherence Proportion = p
 output$calib_p_max <- renderUI({
     numericInput("test_AdhProp_U","Upper:", value = round(CalibParamMaxMin$p_MAX, 4), min = 0, max = 100, step = 1e-6, width = '100%')

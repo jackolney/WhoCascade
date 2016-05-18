@@ -65,7 +65,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         i <- incidence(as.double(data[["incidence"]]))
 
         ## Parameter Sampling
-        setProgress(value = 0 / 1, detail = "Defining parameter space.")
+        setProgress(value = 0 / 1, detail = "Defining parameter space")
         intParRange <- DefineParmRange(param = p, min = 5, max = 0.1)
 
         # Need a function here that over-rides the ranges if a value has been entered by the user.
@@ -96,6 +96,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
 
         ## For each draw, update parameter vector (p), run model, calculate error and store it.
         # Haven't put into a function as probably too many arguements.
+        setProgress(value = 0 / 1, detail = "Running simulations")
         v = 0
         selectedRuns <- c()
         error <- c()
@@ -107,7 +108,6 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
             p[["Gamma"]]   <- lhs[,"gamma"][k]
             p[["Theta"]]   <- lhs[,"theta"][k]
             p[["Omega"]]   <- lhs[,"omega"][k]
-            p[["Mu"]]      <- lhs[,"mu"][k]
             p[["p"]]       <- lhs[,"p"][k]
             p[["q"]]       <- lhs[,"q"][k]
 
@@ -119,14 +119,14 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
             if (error[k] <= maxError) {
                 v <- v + 1
                 selectedRuns[v] <- k
-                setProgress(value = v / 100, detail = paste0(v, "%"))
+                setProgress(value = v / limit, detail = paste0(round((v / limit) * 100, digits = 0), "%"))
                 if (v == limit) break;
             }
             # setProgress(value = k/dim(lhs)[1], detail = paste0((k/dim(lhs)[1])*100,"%"))
         }
 
         # Order sum of total error from lowest to highest and pick the lowest 10%
-        setProgress(value = 0 / 1, detail = "Sampling best runs.")
+        setProgress(value = 0 / 1, detail = "Sampling best runs")
         # bestTenPercent <- order(error)[1:(maxIterations * 0.1)]
 
         ## For the best 10%, update the parameter vector (p), re-run simulations and store results
@@ -140,14 +140,13 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
             p[["Gamma"]]   <- lhs[,"gamma"][selectedRuns[l]]
             p[["Theta"]]   <- lhs[,"theta"][selectedRuns[l]]
             p[["Omega"]]   <- lhs[,"omega"][selectedRuns[l]]
-            p[["Mu"]]      <- lhs[,"mu"][selectedRuns[l]]
             p[["p"]]       <- lhs[,"p"][selectedRuns[l]]
             p[["q"]]       <- lhs[,"q"][selectedRuns[l]]
 
             y <- GetCalibInitial(p, data, init2010 = lhsInitial_Sense[selectedRuns[l],])
             iOut <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
             CalibOut <<- rbind(CalibOut, iOut)
-            setProgress(value = l / limit, detail = paste0("Resample ", l, "%"))
+            setProgress(value = l / limit, detail = paste0("Resample ", round((l / limit) * 100, digits = 0), "%"))
         }
 
         # Create data.frame to hold all parameter values used by top 10%
@@ -175,8 +174,6 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         CalibParamMaxMin$kappa_MIN   <- ParamMaxMin["kappa" , "min"]
         CalibParamMaxMin$omega_MAX   <- ParamMaxMin["omega" , "max"]
         CalibParamMaxMin$omega_MIN   <- ParamMaxMin["omega" , "min"]
-        CalibParamMaxMin$mu_MAX      <- ParamMaxMin["mu"    , "max"]
-        CalibParamMaxMin$mu_MIN      <- ParamMaxMin["mu"    , "min"]
         CalibParamMaxMin$p_MAX       <- ParamMaxMin["p"     , "max"]
         CalibParamMaxMin$p_MIN       <- ParamMaxMin["p"     , "min"]
 

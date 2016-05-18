@@ -7,7 +7,6 @@ DefineParmRange <- function(param, min, max) {
             gamma   = param[["Gamma"]]   * min,
             theta   = param[["Theta"]]   * min,
             omega   = param[["Omega"]]   * min,
-            mu      = param[["Mu"]]      * 1,
             p       = if (param[["p"]] * min > 1) {1} else {param[["p"]] * min},
             q       = if (param[["q"]] * min > 1) {1} else {param[["q"]] * min}
         ),
@@ -18,7 +17,6 @@ DefineParmRange <- function(param, min, max) {
             gamma   = param[["Gamma"]]   * max,
             theta   = param[["Theta"]]   * max,
             omega   = param[["Omega"]]   * max,
-            mu      = param[["Mu"]]      * 1,
             p       = if (param[["p"]] * max > 1) {1} else {param[["p"]] * max},
             q       = if (param[["q"]] * max > 1) {1} else {param[["q"]] * max}
         )
@@ -185,7 +183,6 @@ FillParValues <- function(samples, positions, limit) {
             out[l,"gamma"]   = samples[,"gamma"][positions[l]]
             out[l,"theta"]   = samples[,"theta"][positions[l]]
             out[l,"omega"]   = samples[,"omega"][positions[l]]
-            out[l,"mu"]      = samples[,"mu"][positions[l]]
             out[l,"p"]       = samples[,"p"][positions[l]]
             out[l,"q"]       = samples[,"q"][positions[l]]
         }
@@ -229,10 +226,6 @@ UserOverRide <- function(param) {
     if (!is.na(userParRange$omega) & userParRange$omega >= 0) {
         param[which(row.names(param) == "omega"),"min"]   <- userParRange$omega
         param[which(row.names(param) == "omega"),"max"]   <- userParRange$omega
-    }
-    if (!is.na(userParRange$mu) & userParRange$mu >= 0) {
-        param[which(row.names(param) == "mu"),"min"]      <- userParRange$mu
-        param[which(row.names(param) == "mu"),"max"]      <- userParRange$mu
     }
     if (!is.na(userParRange$p) & userParRange$p >= 0) {
         param[which(row.names(param) == "p"),"min"]       <- userParRange$p
