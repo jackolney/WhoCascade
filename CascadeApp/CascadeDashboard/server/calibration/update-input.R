@@ -1,58 +1,68 @@
 # Update MasterData upon hitting 'NEXT'
 
 observeEvent(input$NEXT_plhiv, {
-    print("MasterData updated.")
     if (input$uPLHIV != 0 & !is.na(input$uPLHIV)) {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV", "value"] <<- input$uPLHIV
+        print(MasterData)
     }
     if (input$uPLHIV_source != "Please select source...") {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uPLHIV_source)])
+        print(MasterData)
     }
-    print(MasterData)
 })
 
 observeEvent(input$NEXT_diag, {
-    print("MasterData updated.")
     if (input$uDIAG != 0 & !is.na(input$uDIAG)) {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uDIAG_year & MasterData[["calib"]]$indicator == "PLHIV Diagnosed", "value"] <<- input$uDIAG
+        print(MasterData)
     }
     if (input$uDIAG_source != "Please select source...") {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uDIAG_year & MasterData[["calib"]]$indicator == "PLHIV Diagnosed", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uDIAG_source)])
+        print(MasterData)
     }
-    print(MasterData)
 })
 
 observeEvent(input$NEXT_care, {
-    print("MasterData updated.")
     if (input$uCARE != 0 & !is.na(input$uCARE)) {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uCARE_year & MasterData[["calib"]]$indicator == "PLHIV in Care", "value"] <<- input$uCARE
+        print(MasterData)
     }
     if (input$uCARE_source != "Please select source...") {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uCARE_year & MasterData[["calib"]]$indicator == "PLHIV in Care", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uCARE_source)])
+        print(MasterData)
     }
-    print(MasterData)
 })
 
 observeEvent(input$NEXT_art, {
-    print("MasterData updated.")
     if (input$uART != 0 & !is.na(input$uART)) {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uART_year & MasterData[["calib"]]$indicator == "PLHIV on ART", "value"] <<- input$uART
+        print(MasterData)
     }
     if (input$uART_source != "Please select source...") {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uART_year & MasterData[["calib"]]$indicator == "PLHIV on ART", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uART_source)])
+        print(MasterData)
     }
-    print(MasterData)
 })
 
 observeEvent(input$NEXT_viral, {
-    print("MasterData updated.")
     if (input$uVIRAL != 0 & !is.na(input$uVIRAL)) {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uVIRAL_year & MasterData[["calib"]]$indicator == "PLHIV Suppressed", "value"] <<- input$uVIRAL
+        print(MasterData)
     }
     if (input$uVIRAL_source != "Please select source...") {
+        print("MasterData updated.")
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uVIRAL_year & MasterData[["calib"]]$indicator == "PLHIV Suppressed", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uVIRAL_source)])
+        print(MasterData)
     }
-    print(MasterData)
 })
 
 ####################
