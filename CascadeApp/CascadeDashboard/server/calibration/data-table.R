@@ -1,21 +1,75 @@
-# Data Table
-# Table illustrating
-output$dataTable <- DT::renderDataTable({
+# Data Table Render Functions
+output$dataTable_PLHIV <- DT::renderDataTable({
     # rely on button press
-    input$viewDataTable
+    input$viewDataTable_PLHIV
 
     return(
         datatable(MasterData$calib,
-            extensions = 'Scroller',
             options = list(
                 pageLength = 100,
-                deferRender = TRUE,
-                scrollY = 500,
-                scroller = TRUE,
                 autoWidth = TRUE,
                 order = list(list(3, 'asc'))
             )
-        )
+        ) %>% formatCurrency("value",'')
     )
 })
-# order = list(list(2, 'asc'), list(4, 'desc'))
+
+output$dataTable_DIAG <- DT::renderDataTable({
+    # rely on button press
+    input$viewDataTable_DIAG
+
+    return(
+        datatable(MasterData$calib,
+            options = list(
+                pageLength = 100,
+                autoWidth = TRUE,
+                order = list(list(3, 'asc'))
+            )
+        ) %>% formatCurrency("value",'')
+    )
+})
+
+output$dataTable_CARE <- DT::renderDataTable({
+    # rely on button press
+    input$viewDataTable_CARE
+
+    return(
+        datatable(MasterData$calib,
+            options = list(
+                pageLength = 100,
+                autoWidth = TRUE,
+                order = list(list(3, 'asc'))
+            )
+        ) %>% formatCurrency("value",'')
+    )
+})
+
+output$dataTable_ART <- DT::renderDataTable({
+    # rely on button press
+    input$viewDataTable_ART
+
+    return(
+        datatable(MasterData$calib,
+            options = list(
+                pageLength = 100,
+                autoWidth = TRUE,
+                order = list(list(3, 'asc'))
+            )
+        ) %>% formatCurrency("value",'')
+    )
+})
+
+output$dataTable_VIRAL <- DT::renderDataTable({
+    # rely on button press
+    input$viewDataTable_VIRAL
+
+    return(
+        datatable(MasterData$calib,
+            options = list(
+                pageLength = 100,
+                autoWidth = TRUE,
+                order = list(list(3, 'asc'))
+            )
+        ) %>% formatCurrency("value",'')
+    )
+})
