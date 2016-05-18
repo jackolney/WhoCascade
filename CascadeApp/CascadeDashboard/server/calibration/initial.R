@@ -32,6 +32,20 @@ GetCalibInitial <- function(p, data, init2010) {
     iCD4_ART_50100  <- data[["cd4"]][1,"prop.On.ART.50100"][[1]]
     iCD4_ART_50     <- data[["cd4"]][1,"prop.On.ART.50"][[1]]
 
+    # System Checks here.
+    # Throw alert if NEGATIVE value encountered.
+    if (i2010_PLHIV - i2010_PLHIV_Diag < 0)
+        warning("\tNegative value in model compartment (UnDx)")
+
+    if (i2010_PLHIV_Diag - i2010_PLHIV_Care < 0)
+        warning("\tNegative value in model compartment (Dx)")
+
+    if (i2010_PLHIV_Care - i2010_PLHIV_ART < 0)
+        warning("\tNegative value in model compartment (Care)")
+
+    if (i2010_PLHIV_ART < 0)
+        warning("\tNegative value in model compartment (Tx)")
+
     default <- initial(
         p,
         UnDx_500 =       (i2010_PLHIV - i2010_PLHIV_Diag) * iCD4_500,

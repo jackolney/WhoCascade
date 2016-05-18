@@ -38,7 +38,7 @@ RunBaselineModel <- function(data) {
 RunCalibration <- function(data, maxIterations, maxError, limit) {
     # limit = 100
     # maxIterations = 1e4
-    # maxError = 1e11
+    # maxError = 1e12
 
     # maxError entered as a string so must be converted
     maxError <- as.numeric(maxError)
@@ -70,7 +70,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
 
         # Need a function here that over-rides the ranges if a value has been entered by the user.
         parRange <- UserOverRide(intParRange)
-        print(parRange)
+        message(parRange)
 
         # Use Latin Hypercube Sampling to randomly sample from parRange n times
         lhs <- FME::Latinhyper(parRange, num = maxIterations)

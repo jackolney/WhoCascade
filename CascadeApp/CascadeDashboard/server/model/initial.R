@@ -25,6 +25,28 @@ GetInitial <- function(p, iterationResult, masterCD4) {
     iCD4_ART_50100  <- masterCD4[1,"prop.On.ART.50100"][[1]]
     iCD4_ART_50     <- masterCD4[1,"prop.On.ART.50"][[1]]
 
+    # Negative checks (to ensure no negative compartment values)
+    if (i2015_PLHIV - i2015_PLHIV_Diag < 0)
+        warning("\tNegative value in model compartment (UnDx)")
+
+    if (i2015_PLHIV_Diag - i2015_PLHIV_Care < 0)
+        warning("\tNegative value in model compartment (Dx)")
+
+    if (i2015_PLHIV_Care - i2015_PLHIV_ART < 0)
+        warning("\tNegative value in model compartment (Care)")
+
+    if (i2015_PLHIV_preLtfu < 0)
+        warning("\tNegative value in model compartment (PreLtfu)")
+
+    if (i2015_PLHIV_ART - i2015_PLHIV_Viral < 0)
+        warning("\tNegative value in model compartment (Tx_Na)")
+
+    if (i2015_PLHIV_Viral < 0)
+        warning("\tNegative value in model compartment (Tx_A)")
+
+    if (i2015_PLHIV_Ltfu < 0)
+        warning("\tNegative value in model compartment (Ltfu)")
+
     default <- initial(
         p,
         UnDx_500 =       (i2015_PLHIV - i2015_PLHIV_Diag) * iCD4_500,
