@@ -99,7 +99,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         v = 0
         selectedRuns <- c()
         error <- c()
-        for (k in 1:dim(lhs)[1]) {
+        for (k in 1:dim(lhsInitial_Sense)[1]) {
 
             p[["Rho"]]     <- lhs[,"rho"][k]
             p[["Epsilon"]] <- lhs[,"epsilon"][k]
@@ -179,7 +179,6 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         CalibParamMaxMin$mu_MIN      <- ParamMaxMin["mu"    , "min"]
         CalibParamMaxMin$p_MAX       <- ParamMaxMin["p"     , "max"]
         CalibParamMaxMin$p_MIN       <- ParamMaxMin["p"     , "min"]
-
 
         # Plots
         # Then comment this out and call it elsewhere.
