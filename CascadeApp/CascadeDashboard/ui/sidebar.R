@@ -5,6 +5,7 @@ dashboardSidebar(
         menuItem("Introduction", tabName = "introduction", icon = icon("home", class = "fa-lg fa-fw", lib = "font-awesome")),
         menuItem("Setup", icon = icon("cogs", class = "fa-lg fa-fw", lib = "font-awesome"),
             menuSubItem("Country",                tabName = "country"),
+            menuSubItem("Data Review",            tabName = "data-review"),
             menuSubItem("People Living with HIV", tabName = "plhiv"),
             menuSubItem("Diagnosed Individuals",  tabName = "diagnosis"),
             menuSubItem("HIV Care Coverage",      tabName = "linkage"),

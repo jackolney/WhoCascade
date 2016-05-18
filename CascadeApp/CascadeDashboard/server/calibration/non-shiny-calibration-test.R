@@ -149,3 +149,26 @@ RunCalibration(1000)
 # --------- #
 
 # How do we weight studies?????
+
+# PLOT FOR DATA REVIEW
+
+data = KenyaData$calib
+
+head(data)
+
+ggOut <- ggplot(data, aes(x = year, y = value))
+ggOut <- ggOut + geom_bar(aes(fill = indicator), stat = "identity", position = "dodge")
+ggOut <- ggOut + theme_classic()
+ggOut <- ggOut + scale_y_continuous(
+    breaks = seq(0, max(data$value), 2e5),
+    labels = scales::comma,
+    expand = c(0, 0))
+ggOut <- ggOut + theme(axis.text.x = element_text(size = 12))
+ggOut <- ggOut + theme(axis.text.y = element_text(size = 12))
+ggOut <- ggOut + theme(axis.title = element_text(size = 12))
+ggOut <- ggOut + theme(axis.line.x = element_line())
+ggOut <- ggOut + theme(axis.line.y = element_line())
+ggOut <- ggOut + theme(axis.title.y = element_blank())
+ggOut <- ggOut + theme(legend.title = element_blank())
+ggOut <- ggOut + xlab("Year")
+ggOut

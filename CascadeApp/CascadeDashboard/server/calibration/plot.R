@@ -4,3 +4,7 @@ output$plotCalibration <- renderPlot({
     input$REPEAT_calib
     RunCalibration(data = MasterData, maxIterations = 1e4, maxError = input$maxError, limit = input$minResults)
 }, height = 800, width = 'auto', bg = 'transparent')
+
+output$plotData <- renderPlot({
+    BuildDataReviewPlot(data = MasterData$calib)
+}, height = 300, width = 'auto', bg = 'transparent')
