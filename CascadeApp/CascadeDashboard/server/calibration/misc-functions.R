@@ -7,7 +7,7 @@ DefineParmRange <- function(param, min, max) {
             gamma   = param[["Gamma"]]   * min,
             theta   = param[["Theta"]]   * min,
             omega   = param[["Omega"]]   * min,
-            mu      = param[["Mu"]]      * 10,
+            mu      = param[["Mu"]]      * 1,
             p       = if (param[["p"]] * min > 1) {1} else {param[["p"]] * min},
             q       = if (param[["q"]] * min > 1) {1} else {param[["q"]] * min}
         ),
@@ -18,7 +18,7 @@ DefineParmRange <- function(param, min, max) {
             gamma   = param[["Gamma"]]   * max,
             theta   = param[["Theta"]]   * max,
             omega   = param[["Omega"]]   * max,
-            mu      = param[["Mu"]]      * 0,
+            mu      = param[["Mu"]]      * 1,
             p       = if (param[["p"]] * max > 1) {1} else {param[["p"]] * max},
             q       = if (param[["q"]] * max > 1) {1} else {param[["q"]] * max}
         )

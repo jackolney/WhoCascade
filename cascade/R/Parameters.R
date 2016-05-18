@@ -47,7 +47,7 @@ parameters <- function(...) {
         Tau_5 = 0.026273,
         Tau_6 = 0.045482,
         Tau_7 = 1.02785,
-        Mu = 0.0374,
+        Mu = 0.005,
         ART_All = 1,
         ART_500 = 1,
         ART_350 = 1,
