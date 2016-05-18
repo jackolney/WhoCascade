@@ -24,82 +24,90 @@ shinyBS::addPopover(session, id = "plotOpt909090",
 # Designed to catch users trying to enter non-sensical data
 
 observeEvent(input$uDIAG, {
-    if (input$uDIAG > input$uPLHIV) {
-        # shinyBS alert
-        shinyBS::createAlert(session,
-            anchorId = "uDIAG_ALERT",
-            alertId = "alertId_uDIAG",
-            title = paste(icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"), "WARNING"),
-            content = "Value entered for 'PLHIV Diagnosed' exceeds the value of 'PLHIV' in this year.",
-            style = "danger",
-            dismiss = TRUE,
-            append = TRUE)
-        # JS alert & disable
-        shinyjs::info(text = "Computer says no.")
-        shinyjs::disable(id = "NEXT_diag")
-    } else {
-        shinyjs::enable(id = "NEXT_diag")
-        shinyBS::closeAlert(session, alertId = "alertId_uDIAG")
+    if (input$uDIAG != 0 & !is.na(input$uDIAG)) {
+        if (input$uDIAG > input$uPLHIV) {
+            # shinyBS alert
+            shinyBS::createAlert(session,
+                anchorId = "uDIAG_ALERT",
+                alertId = "alertId_uDIAG",
+                title = paste(icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"), "WARNING"),
+                content = "Value entered for 'PLHIV Diagnosed' exceeds the value of 'PLHIV' in this year.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
+            # JS alert & disable
+            shinyjs::info(text = "Computer says no.")
+            shinyjs::disable(id = "NEXT_diag")
+        } else {
+            shinyjs::enable(id = "NEXT_diag")
+            shinyBS::closeAlert(session, alertId = "alertId_uDIAG")
+        }
     }
 })
 
 observeEvent(input$uCARE, {
-    if (input$uCARE > input$uDIAG) {
-        # shinyBS alert
-        shinyBS::createAlert(session,
-            anchorId = "uCARE_ALERT",
-            alertId = "alertId_uCARE",
-            title = paste(icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"), "WARNING"),
-            content = "Value entered for 'PLHIV in Care' exceeds the value of 'PLHIV Diagnosed' in this year.",
-            style = "danger",
-            dismiss = TRUE,
-            append = TRUE)
-        # JS alert & disable
-        shinyjs::info(text = "Computer says no.")
-        shinyjs::disable(id = "NEXT_care")
-    } else {
-        shinyjs::enable(id = "NEXT_care")
-        shinyBS::closeAlert(session, alertId = "alertId_uCARE")
+    if (input$uCARE != 0 & !is.na(input$uCARE)) {
+        if (input$uCARE > input$uDIAG) {
+            # shinyBS alert
+            shinyBS::createAlert(session,
+                anchorId = "uCARE_ALERT",
+                alertId = "alertId_uCARE",
+                title = paste(icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"), "WARNING"),
+                content = "Value entered for 'PLHIV in Care' exceeds the value of 'PLHIV Diagnosed' in this year.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
+            # JS alert & disable
+            shinyjs::info(text = "Computer says no.")
+            shinyjs::disable(id = "NEXT_care")
+        } else {
+            shinyjs::enable(id = "NEXT_care")
+            shinyBS::closeAlert(session, alertId = "alertId_uCARE")
+        }
     }
 })
 
 observeEvent(input$uART, {
-    if (input$uART > input$uCARE) {
-        # shinyBS alert
-        shinyBS::createAlert(session,
-            anchorId = "uART_ALERT",
-            alertId = "alertId_uART",
-            title = paste(icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"), "WARNING"),
-            content = "Value entered for 'PLHIV on ART' exceeds the value of 'PLHIV in Care' in this year.",
-            style = "danger",
-            dismiss = TRUE,
-            append = TRUE)
-        # JS alert & disable
-        shinyjs::info(text = "Computer says no.")
-        shinyjs::disable(id = "NEXT_art")
-    } else {
-        shinyjs::enable(id = "NEXT_art")
-        shinyBS::closeAlert(session, alertId = "alertId_uART")
+    if (input$uART != 0 & !is.na(input$uART)) {
+        if (input$uART > input$uCARE) {
+            # shinyBS alert
+            shinyBS::createAlert(session,
+                anchorId = "uART_ALERT",
+                alertId = "alertId_uART",
+                title = paste(icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"), "WARNING"),
+                content = "Value entered for 'PLHIV on ART' exceeds the value of 'PLHIV in Care' in this year.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
+            # JS alert & disable
+            shinyjs::info(text = "Computer says no.")
+            shinyjs::disable(id = "NEXT_art")
+        } else {
+            shinyjs::enable(id = "NEXT_art")
+            shinyBS::closeAlert(session, alertId = "alertId_uART")
+        }
     }
 })
 
 observeEvent(input$uVIRAL, {
-    if (input$uVIRAL > input$uART) {
-        # shinyBS alert
-        shinyBS::createAlert(session,
-            anchorId = "uVIRAL_ALERT",
-            alertId = "alertId_uVIRAL",
-            title = paste(icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"), "WARNING"),
-            content = "Value entered for 'PLHIV Virally Suppressed' exceeds the value of 'PLHIV on ART' in this year.",
-            style = "danger",
-            dismiss = TRUE,
-            append = TRUE)
-        # JS alert & disable
-        shinyjs::info(text = "Computer says no.")
-        shinyjs::disable(id = "NEXT_viral")
-    } else {
-        shinyjs::enable(id = "NEXT_viral")
-        shinyBS::closeAlert(session, alertId = "alertId_uVIRAL")
+    if (input$uVIRAL != 0 & !is.na(input$uVIRAL)) {
+        if (input$uVIRAL > input$uART) {
+            # shinyBS alert
+            shinyBS::createAlert(session,
+                anchorId = "uVIRAL_ALERT",
+                alertId = "alertId_uVIRAL",
+                title = paste(icon("exclamation-triangle", class = "fa-lg fa-fw", lib = "font-awesome"), "WARNING"),
+                content = "Value entered for 'PLHIV Virally Suppressed' exceeds the value of 'PLHIV on ART' in this year.",
+                style = "danger",
+                dismiss = TRUE,
+                append = TRUE)
+            # JS alert & disable
+            shinyjs::info(text = "Computer says no.")
+            shinyjs::disable(id = "NEXT_viral")
+        } else {
+            shinyjs::enable(id = "NEXT_viral")
+            shinyBS::closeAlert(session, alertId = "alertId_uVIRAL")
+        }
     }
 })
 

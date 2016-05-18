@@ -2,7 +2,9 @@
 
 observeEvent(input$NEXT_plhiv, {
     print("MasterData updated.")
-    MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV", "value"] <<- input$uPLHIV
+    if (input$uPLHIV != 0 & !is.na(input$uPLHIV)) {
+        MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV", "value"] <<- input$uPLHIV
+    }
     if (input$uPLHIV_source != "Please select source...") {
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uPLHIV_source)])
     }
@@ -11,7 +13,9 @@ observeEvent(input$NEXT_plhiv, {
 
 observeEvent(input$NEXT_diag, {
     print("MasterData updated.")
-    MasterData[["calib"]][MasterData[["calib"]]$year == input$uDIAG_year & MasterData[["calib"]]$indicator == "PLHIV Diagnosed", "value"] <<- input$uDIAG
+    if (input$uDIAG != 0 & !is.na(input$uDIAG)) {
+        MasterData[["calib"]][MasterData[["calib"]]$year == input$uDIAG_year & MasterData[["calib"]]$indicator == "PLHIV Diagnosed", "value"] <<- input$uDIAG
+    }
     if (input$uDIAG_source != "Please select source...") {
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uDIAG_year & MasterData[["calib"]]$indicator == "PLHIV Diagnosed", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uDIAG_source)])
     }
@@ -20,7 +24,9 @@ observeEvent(input$NEXT_diag, {
 
 observeEvent(input$NEXT_care, {
     print("MasterData updated.")
-    MasterData[["calib"]][MasterData[["calib"]]$year == input$uCARE_year & MasterData[["calib"]]$indicator == "PLHIV in Care", "value"] <<- input$uCARE
+    if (input$uCARE != 0 & !is.na(input$uCARE)) {
+        MasterData[["calib"]][MasterData[["calib"]]$year == input$uCARE_year & MasterData[["calib"]]$indicator == "PLHIV in Care", "value"] <<- input$uCARE
+    }
     if (input$uCARE_source != "Please select source...") {
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uCARE_year & MasterData[["calib"]]$indicator == "PLHIV in Care", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uCARE_source)])
     }
@@ -29,7 +35,9 @@ observeEvent(input$NEXT_care, {
 
 observeEvent(input$NEXT_art, {
     print("MasterData updated.")
-    MasterData[["calib"]][MasterData[["calib"]]$year == input$uART_year & MasterData[["calib"]]$indicator == "PLHIV on ART", "value"] <<- input$uART
+    if (input$uART != 0 & !is.na(input$uART)) {
+        MasterData[["calib"]][MasterData[["calib"]]$year == input$uART_year & MasterData[["calib"]]$indicator == "PLHIV on ART", "value"] <<- input$uART
+    }
     if (input$uART_source != "Please select source...") {
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uART_year & MasterData[["calib"]]$indicator == "PLHIV on ART", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uART_source)])
     }
@@ -38,7 +46,9 @@ observeEvent(input$NEXT_art, {
 
 observeEvent(input$NEXT_viral, {
     print("MasterData updated.")
-    MasterData[["calib"]][MasterData[["calib"]]$year == input$uVIRAL_year & MasterData[["calib"]]$indicator == "PLHIV Suppressed", "value"] <<- input$uVIRAL
+    if (input$uVIRAL != 0 & !is.na(input$uVIRAL)) {
+        MasterData[["calib"]][MasterData[["calib"]]$year == input$uVIRAL_year & MasterData[["calib"]]$indicator == "PLHIV Suppressed", "value"] <<- input$uVIRAL
+    }
     if (input$uVIRAL_source != "Please select source...") {
         MasterData[["calib"]][MasterData[["calib"]]$year == input$uVIRAL_year & MasterData[["calib"]]$indicator == "PLHIV Suppressed", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uVIRAL_source)])
     }

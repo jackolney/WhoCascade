@@ -2,35 +2,35 @@
 
 output$UI_uPLHIV <- renderUI({
     numericInput("uPLHIV", "Number of people living with HIV:",
-        value = round(MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV", "value"], digits = 0),
+        value = NA,
         min = 0,
         width = '100%')
 })
 
 output$UI_uDIAG <- renderUI({
     numericInput("uDIAG", "Number of people diagnosed with HIV:",
-        value = round(MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV Diagnosed", "value"], digits = 0),
+        value = NA,
         min = 0,
         width = '100%')
 })
 
 output$UI_uCARE <- renderUI({
     numericInput("uCARE", "Number of people in HIV care:",
-        value = round(MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV in Care", "value"], digits = 0),
+        value = NA,
         min = 0,
         width = '100%')
 })
 
 output$UI_uART <- renderUI({
     numericInput("uART", "Number of people on ART:",
-        value = round(MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV on ART", "value"], digits = 0),
+        value = NA,
         min = 0,
         width = '100%')
 })
 
 output$UI_uVIRAL <- renderUI({
     numericInput("uVIRAL", "Number of people on ART and Virally Suppressed:",
-        value = round(MasterData[["calib"]][MasterData[["calib"]]$year == 2015 & MasterData[["calib"]]$indicator == "PLHIV Suppressed", "value"], digits = 0),
+        value = NA,
         min = 0,
         width = '100%')
 })
