@@ -125,6 +125,36 @@ DefineInitRange <- function(data, min, max) {
     initRange
 }
 
+FindSense <- function(samples) {
+
+    # Create output matrix
+    sensicalSamples <- matrix(data = 0, nrow = 0, ncol = 4)
+    colnames(sensicalSamples) <- c("plhiv", "plhiv_diag", "plhiv_care", "plhiv_art")
+
+    # Loop through each row of samples
+    # Maybe translate to apply - later.
+    for (l in 1:dim(samples)[1]) {
+            test <- 0
+
+        if (samples[[l,1]] - samples[[l,2]] >= 0) {
+            test <- test + 1L
+        }
+
+        if (samples[[l,2]] - samples[[l,3]] >= 0) {
+            test <- test + 1L
+        }
+
+        if (samples[[l,3]] - samples[[l,4]] >= 0) {
+            test <- test + 1L
+        }
+
+        if (test == 3) {
+            sensicalSamples <- rbind(sensicalSamples, samples[l,])
+        }
+    }
+    sensicalSamples
+}
+
 AppendMinMaxMean <- function(data) {
     uniqueIndicators <- unique(data$indicator)
     uniqueYear <- unique(data$year)

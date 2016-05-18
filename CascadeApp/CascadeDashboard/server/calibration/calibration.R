@@ -85,22 +85,14 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         # Scope to modify this to pick normally distributed values with a mean of 2010, sd = ??
         lhsInitial <- FME::Latinhyper(initRange, num = maxIterations)
 
-## HERE (TUESDAY EVENING)
-# We now need to take check that ALL samples make sense.
-# Throw away any that do not, resample.
-# ONLY SIMULATE samples that are SENSICAL (n = 1e4) of those
+        # We now need to take check that ALL samples make sense.
+        # Sense = bar-1 > bar-2 > bar-3
+        # Throw away any samples that do not.
+        # Perhaps resample if we find that we get less than ~2e3 sensical samples?
+        lhsInitial_Sense <- FindSense(samples = lhsInitial)
 
-        head(lhsInitial)
-
-# Create a function like the below.
-        # FindSense(samples = lhsInitial)
-# Should return all sensical results.
-
-        lhsInitial[1,]
-
-        lhsInitial[[1,1]] - lhsInitial[[1,2]]
-        lhsInitial[[1,2]] - lhsInitial[[1,3]]
-        lhsInitial[[1,3]] - lhsInitial[[1,4]]
+        # Garbage collection (lhsInitial is deprecated at this point)
+        rm(lhsInitial)
 
         ## For each draw, update parameter vector (p), run model, calculate error and store it.
         # Haven't put into a function as probably too many arguements.
@@ -119,7 +111,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
             p[["p"]]       <- lhs[,"p"][k]
             p[["q"]]       <- lhs[,"q"][k]
 
-            y <- GetCalibInitial(p, data, init2010 = lhsInitial[k,])
+            y <- GetCalibInitial(p, data, init2010 = lhsInitial_Sense[k,])
             out <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
             error[k] <- sum(out[out$source == "error", "value"])
 
@@ -152,7 +144,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
             p[["p"]]       <- lhs[,"p"][selectedRuns[l]]
             p[["q"]]       <- lhs[,"q"][selectedRuns[l]]
 
-            y <- GetCalibInitial(p, data, init2010 = lhsInitial[selectedRuns[l],])
+            y <- GetCalibInitial(p, data, init2010 = lhsInitial_Sense[selectedRuns[l],])
             iOut <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
             CalibOut <<- rbind(CalibOut, iOut)
             setProgress(value = l / limit, detail = paste0("Resample ", l, "%"))
@@ -162,7 +154,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         CalibParamOut <<- FillParValues(samples = lhs, positions = selectedRuns, limit = limit)
 
         # Will need a CalibInitOut
-        CalibInitOut <<- FillInitValues(samples = lhsInitial, positions = selectedRuns, limit = limit)
+        CalibInitOut <<- FillInitValues(samples = lhsInitial_Sense, positions = selectedRuns, limit = limit)
 
         # Calculate min and max values used by parameter set
         ParamMaxMin <<- data.frame(
