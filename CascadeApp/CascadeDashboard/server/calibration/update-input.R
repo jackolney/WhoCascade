@@ -2,6 +2,27 @@
 # Update bug happens if no value is already there to REPLACE.
 # Need to run a check... that will rbind() if nothing there.
 
+observeEvent(input$PREV_plhiv, {
+    if (input$uPLHIV != 0 & !is.na(input$uPLHIV) & input$uPLHIV_source != "Please select source...") {
+        if (isEmpty(MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV", "value"])) {
+            country <- input$selectCountry
+            indicator <- "PLHIV"
+            year <- input$uPLHIV_year
+            value <- input$uPLHIV
+            weight <- as.vector(SourceList$weight[which(SourceList == input$uPLHIV_source)])
+            newData <- data.frame(country, indicator, year, value, weight)
+            MasterData[["calib"]] <<- rbind(MasterData[["calib"]], newData)
+            message(paste("MasterData, row added for uPLHIV =", value, "in", year, "with weight", weight))
+            print(MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV",])
+        } else {
+            MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV", "value"] <<- input$uPLHIV
+            MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV", "weight"] <<- as.vector(SourceList$weight[which(SourceList == input$uPLHIV_source)])
+            message(paste("MasterData updated with uPLHIV =", input$uPLHIV, "in", input$uPLHIV_year, "with weight", input$uPLHIV_source))
+            print(MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV",])
+        }
+    }
+})
+
 observeEvent(input$NEXT_plhiv, {
     if (input$uPLHIV != 0 & !is.na(input$uPLHIV) & input$uPLHIV_source != "Please select source...") {
         if (isEmpty(MasterData[["calib"]][MasterData[["calib"]]$year == input$uPLHIV_year & MasterData[["calib"]]$indicator == "PLHIV", "value"])) {
