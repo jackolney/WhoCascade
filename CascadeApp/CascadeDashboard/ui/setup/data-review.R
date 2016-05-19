@@ -22,9 +22,11 @@ tabItem(tabName = "data-review",
             status = "warning",
             solidHeader = TRUE,
             title = "Help Panel",
-            helpText("Please fill in the boxes with details regarding each of the strategic information indicators,
-                then select the source of the data from the drop-down menu below.
-                Once entered hit 'Next' to proceed. For further details please see:"),
+            helpText("Please review the data that will be used to calibrate the model.
+                This data has already been pre-loaded from various sources. Hit 'VIEW DATA',
+                to view each data point in detail. If you have additional data click 'Enter Data' to
+                begin adding new data for calibration, but if you are happy with the data presented
+                click 'Calibrate' to begin model calibration."),
             bsButton(inputId = "viewData_DATA",   label = "VIEW DATA", style = "primary", size = "default", block = TRUE)
         ),
         fluidRow(

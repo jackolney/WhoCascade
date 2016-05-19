@@ -20,15 +20,31 @@ observeEvent(input$PREV_country, {
 observeEvent(input$NEXT_country, {
     updateTabItems(session,
         inputId = "sideBar",
+        selected = "data-review"
+    )
+})
+
+# Data-Review
+observeEvent(input$NEXT_data, {
+    updateTabItems(session,
+        inputId = "sideBar",
         selected = "plhiv"
     )
 })
+
+observeEvent(input$CALIB_data, {
+    updateTabItems(session,
+        inputId = "sideBar",
+        selected = "calibration"
+    )
+})
+
 
 # PLHIV
 observeEvent(input$PREV_plhiv, {
     updateTabItems(session,
         inputId = "sideBar",
-        selected = "country"
+        selected = "data-review"
     )
 })
 
@@ -95,7 +111,7 @@ observeEvent(input$PREV_viral, {
 observeEvent(input$NEXT_viral, {
     updateTabItems(session,
         inputId = "sideBar",
-        selected = "calibration"
+        selected = "data-review"
     )
 })
 
