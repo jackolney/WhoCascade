@@ -173,34 +173,34 @@ ggColorHue <- function(n) {
 }
 
 FillParValues <- function(samples, positions, limit) {
-        out <- data.frame(rho = 0, epsilon = 0, kappa = 0, gamma = 0, theta = 0, omega = 0, mu = 0, p = 0, q = 0)
+    out <- data.frame(rho = 0, epsilon = 0, kappa = 0, gamma = 0, theta = 0, omega = 0, p = 0, q = 0)
 
-        # Loop through all iterations and fill out data.frame
-        for (l in 1:limit) {
-            out[l,"rho"]     = samples[,"rho"][positions[l]]
-            out[l,"epsilon"] = samples[,"epsilon"][positions[l]]
-            out[l,"kappa"]   = samples[,"kappa"][positions[l]]
-            out[l,"gamma"]   = samples[,"gamma"][positions[l]]
-            out[l,"theta"]   = samples[,"theta"][positions[l]]
-            out[l,"omega"]   = samples[,"omega"][positions[l]]
-            out[l,"p"]       = samples[,"p"][positions[l]]
-            out[l,"q"]       = samples[,"q"][positions[l]]
-        }
-        out
+    # Loop through all iterations and fill out data.frame
+    for (l in 1:limit) {
+        out[l,"rho"]     = samples[,"rho"][positions[l]]
+        out[l,"epsilon"] = samples[,"epsilon"][positions[l]]
+        out[l,"kappa"]   = samples[,"kappa"][positions[l]]
+        out[l,"gamma"]   = samples[,"gamma"][positions[l]]
+        out[l,"theta"]   = samples[,"theta"][positions[l]]
+        out[l,"omega"]   = samples[,"omega"][positions[l]]
+        out[l,"p"]       = samples[,"p"][positions[l]]
+        out[l,"q"]       = samples[,"q"][positions[l]]
     }
+    out
+}
 
 FillInitValues <- function(samples, positions, limit) {
-        out <- data.frame(plhiv = 0, plhiv_diag = 0, plhiv_care = 0, plhiv_art = 0)
+    out <- data.frame(plhiv = 0, plhiv_diag = 0, plhiv_care = 0, plhiv_art = 0)
 
-        # Loop through all iterations and fill out data.frame
-        for (l in 1:limit) {
-            out[l,"plhiv"]      = samples[,"plhiv"][positions[l]]
-            out[l,"plhiv_diag"] = samples[,"plhiv_diag"][positions[l]]
-            out[l,"plhiv_care"] = samples[,"plhiv_care"][positions[l]]
-            out[l,"plhiv_art"]  = samples[,"plhiv_art"][positions[l]]
-        }
-        out
+    # Loop through all iterations and fill out data.frame
+    for (l in 1:limit) {
+        out[l,"plhiv"]      = samples[,"plhiv"][positions[l]]
+        out[l,"plhiv_diag"] = samples[,"plhiv_diag"][positions[l]]
+        out[l,"plhiv_care"] = samples[,"plhiv_care"][positions[l]]
+        out[l,"plhiv_art"]  = samples[,"plhiv_art"][positions[l]]
     }
+    out
+}
 
 UserOverRide <- function(param) {
     if (!is.na(userParRange$rho) & userParRange$rho >= 0) {
