@@ -70,7 +70,6 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
 
         # Need a function here that over-rides the ranges if a value has been entered by the user.
         parRange <- UserOverRide(intParRange)
-        message(parRange)
 
         # Use Latin Hypercube Sampling to randomly sample from parRange n times
         lhs <- FME::Latinhyper(parRange, num = maxIterations)
@@ -99,7 +98,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         setProgress(value = 0 / 1, detail = "Running simulations")
         v = 0
         selectedRuns <- c()
-        error <- c()
+        runError <<- c()
         for (k in 1:dim(lhsInitial_Sense)[1]) {
 
             p[["Rho"]]     <- lhs[,"rho"][k]
@@ -113,10 +112,10 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
 
             y <- GetCalibInitial(p, data, init2010 = lhsInitial_Sense[k,])
             out <- SSE(AssembleComparisonDataFrame(country = "Kenya", model = CallCalibModel(time, y, p, i), data = data))
-            error[k] <- sum(out[out$source == "error", "value"])
+            runError[k] <<- sum(out[out$source == "error", "value"])
 
             # If error <= maxError then store value of k
-            if (error[k] <= maxError) {
+            if (runError[k] <= maxError) {
                 v <- v + 1
                 selectedRuns[v] <- k
                 setProgress(value = v / limit, detail = paste0(round((v / limit) * 100, digits = 0), "%"))
@@ -129,7 +128,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         setProgress(value = 0 / 1, detail = "Sampling best runs")
         # bestTenPercent <- order(error)[1:(maxIterations * 0.1)]
 
-        ## For the best 10%, update the parameter vector (p), re-run simulations and store results
+        ## For the runs that had error less than maxError, re-run simulations and store results
         # Faster than storing ALL results in the first place (I think)
         CalibOut <<- c()
         for (l in 1:limit) {
@@ -181,6 +180,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
         # Then comment this out and call it elsewhere.
         setProgress(value = 1, detail = "Building figures")
         BuildCalibrationPlots(data = CalibOut, originalData = data)
+        BuildCalibrationHistogram(runError = runError, maxError = maxError)
     })
 
     # Return min and max values used for all parameters.
