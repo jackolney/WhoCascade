@@ -183,5 +183,6 @@ BuildCalibrationHistogram <- function(runError, maxError) {
     ggOut <- ggOut + theme(axis.line.x = element_line())
     ggOut <- ggOut + theme(axis.line.y = element_line())
     ggOut <- ggOut + ylab("frequency")
+    ggOut <- ggOut + xlab("error")
     ggOut
 }

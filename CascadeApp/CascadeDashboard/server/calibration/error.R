@@ -104,8 +104,7 @@ SSE <- function(df) {
 
             iModel <- iYr[iYr$source == "model","value"]
 
-            # value <- (iData - iModel)^2 * w
-            value <- ((iData - iModel)^2 * w) / N
+            value <- ((abs(iData - iModel) / iData) * w) / N
 
             year <- uniqueYears[j]
 

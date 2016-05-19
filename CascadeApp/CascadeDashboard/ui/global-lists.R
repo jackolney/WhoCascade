@@ -94,30 +94,7 @@ SourceList <- data.frame(
 
 YearList <- seq(2010, 2015, 1)
 
-ErrorList <- c(
-    "1e1",
-    "1e2",
-    "1e3",
-    "1e4",
-    "1e5",
-    "1e6",
-    "1e7",
-    "1e8",
-    "1e9",
-    "1e10",
-    "1e11",
-    "2e11",
-    "3e11",
-    "4e11",
-    "5e11",
-    "6e11",
-    "7e11",
-    "8e11",
-    "9e11",
-    "1e12",
-    "1e13",
-    "1e14",
-    "1e15")
+ErrorList <- as.character(seq(from = 0.1, to = 5, by = 0.1))
 
 VariableNames <- c(
     "UnDx_500",
