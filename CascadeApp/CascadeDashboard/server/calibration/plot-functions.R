@@ -150,12 +150,13 @@ BuildDataReviewPlot <- function(data) {
     ggOut <- ggOut + geom_bar(aes(fill = indicator), stat = "identity", position = "dodge")
     ggOut <- ggOut + theme_classic()
     ggOut <- ggOut + scale_y_continuous(
-        breaks = seq(0, max(data$value), 2e5),
+        breaks = base::pretty(seq(0, round(max(data$value), digits = 0)), n = 5),
         labels = scales::comma,
         expand = c(0, 0))
-    ggOut <- ggOut + theme(axis.text.x = element_text(size = 12))
-    ggOut <- ggOut + theme(axis.text.y = element_text(size = 12))
-    ggOut <- ggOut + theme(axis.title = element_text(size = 12))
+    ggOut <- ggOut + theme(axis.text.x = element_text(size = 14))
+    ggOut <- ggOut + theme(axis.text.y = element_text(size = 14))
+    ggOut <- ggOut + theme(axis.title = element_text(size = 14))
+    ggOut <- ggOut + theme(legend.text = element_text(size = 13))
     ggOut <- ggOut + theme(axis.line.x = element_line())
     ggOut <- ggOut + theme(axis.line.y = element_line())
     ggOut <- ggOut + theme(axis.title.y = element_blank())
