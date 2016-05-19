@@ -22,9 +22,9 @@ shinyBS::addPopover(session, id = "plotOpt909090",
 
 ## Setup Alerts
 # Designed to catch users trying to enter non-sensical data
-
+# Error if we don't enter ALL data - urgh.
 observeEvent(input$uDIAG, {
-    if (input$uDIAG != 0 & !is.na(input$uDIAG)) {
+    if (input$uDIAG != 0 & !is.na(input$uDIAG) & input$uPLHIV != 0 & !is.na(input$uPLHIV)) {
         if (input$uDIAG > input$uPLHIV) {
             # shinyBS alert
             shinyBS::createAlert(session,
@@ -46,7 +46,7 @@ observeEvent(input$uDIAG, {
 })
 
 observeEvent(input$uCARE, {
-    if (input$uCARE != 0 & !is.na(input$uCARE)) {
+    if (input$uCARE != 0 & !is.na(input$uCARE) & input$uDIAG != 0 & !is.na(input$uDIAG)) {
         if (input$uCARE > input$uDIAG) {
             # shinyBS alert
             shinyBS::createAlert(session,
@@ -68,7 +68,7 @@ observeEvent(input$uCARE, {
 })
 
 observeEvent(input$uART, {
-    if (input$uART != 0 & !is.na(input$uART)) {
+    if (input$uART != 0 & !is.na(input$uART) & input$uCARE != 0 & !is.na(input$uCARE)) {
         if (input$uART > input$uCARE) {
             # shinyBS alert
             shinyBS::createAlert(session,
@@ -90,7 +90,7 @@ observeEvent(input$uART, {
 })
 
 observeEvent(input$uVIRAL, {
-    if (input$uVIRAL != 0 & !is.na(input$uVIRAL)) {
+    if (input$uVIRAL != 0 & !is.na(input$uVIRAL) & input$uART != 0 & !is.na(input$uART)) {
         if (input$uVIRAL > input$uART) {
             # shinyBS alert
             shinyBS::createAlert(session,
@@ -158,7 +158,9 @@ observeEvent(input$uPLHIV_source, {
                 append = TRUE)
         }
     } else {
-        return()
+        shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_green")
+        shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_amber")
+        shinyBS::closeAlert(session, alertId = "alertId_uPLHIV_red")
     }
 })
 
@@ -205,7 +207,9 @@ observeEvent(input$uDIAG_source, {
                 append = TRUE)
         }
     } else {
-        return()
+        shinyBS::closeAlert(session, alertId = "alertId_uDIAG_green")
+        shinyBS::closeAlert(session, alertId = "alertId_uDIAG_amber")
+        shinyBS::closeAlert(session, alertId = "alertId_uDIAG_red")
     }
 })
 
@@ -252,7 +256,9 @@ observeEvent(input$uCARE_source, {
                 append = TRUE)
         }
     } else {
-        return()
+        shinyBS::closeAlert(session, alertId = "alertId_uCARE_green")
+        shinyBS::closeAlert(session, alertId = "alertId_uCARE_amber")
+        shinyBS::closeAlert(session, alertId = "alertId_uCARE_red")
     }
 })
 
@@ -299,7 +305,9 @@ observeEvent(input$uART_source, {
                 append = TRUE)
         }
     } else {
-        return()
+        shinyBS::closeAlert(session, alertId = "alertId_uART_green")
+        shinyBS::closeAlert(session, alertId = "alertId_uART_amber")
+        shinyBS::closeAlert(session, alertId = "alertId_uART_red")
     }
 })
 
@@ -346,6 +354,8 @@ observeEvent(input$uVIRAL_source, {
                 append = TRUE)
         }
     } else {
-        return()
+        shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_green")
+        shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_amber")
+        shinyBS::closeAlert(session, alertId = "alertId_uVIRAL_red")
     }
 })
