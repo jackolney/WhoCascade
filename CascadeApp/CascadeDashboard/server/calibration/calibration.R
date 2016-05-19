@@ -38,7 +38,7 @@ RunBaselineModel <- function(data) {
 RunCalibration <- function(data, maxIterations, maxError, limit) {
     # limit = 100
     # maxIterations = 1e4
-    # maxError = 1e12
+    # maxError = 2
 
     # maxError entered as a string so must be converted
     maxError <- as.numeric(maxError)
@@ -66,7 +66,7 @@ RunCalibration <- function(data, maxIterations, maxError, limit) {
 
         ## Parameter Sampling
         setProgress(value = 0 / 1, detail = "Defining parameter space")
-        intParRange <- DefineParmRange(param = p, min = 5, max = 0.1)
+        intParRange <- DefineParmRange(param = p, min = 0.01, max = 5)
 
         # Need a function here that over-rides the ranges if a value has been entered by the user.
         parRange <- UserOverRide(intParRange)

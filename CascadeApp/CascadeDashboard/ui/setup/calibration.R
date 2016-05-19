@@ -121,7 +121,7 @@ tabItem(tabName = "calibration",
             title = "Calibration Detail",
             collapsible = TRUE,
             collapsed = TRUE,
-            helpText("In the current setup, 100 results are returned from roughly 2k simulations, no simulations are returned with an error of < 1e10."),
+            helpText("Consider the distribution of model error seen in the figure below and adjust the 'maximum tolerated error' accordingly. Also, for higher resolution, increase the number of iterations."),
             selectInput( inputId = "maxError",   label = "Maximum tolerated total error per simulation:", choices = ErrorList, selected = "2"),
             numericInput(inputId = "minResults", label = "Number of simulations required under max error:", value = 100,  min = 0, step = 1,   width = '100%'),
             plotOutput('plotCalibHist', height = 'auto', width = 'auto')
