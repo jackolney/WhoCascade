@@ -28,7 +28,6 @@ GetParameters <- function(masterCD4, data, iterationParam) {
             Gamma = iterationParam[["gamma"]],
             Theta = iterationParam[["theta"]],
             Omega = iterationParam[["omega"]],
-            Mu = iterationParam[["mu"]],
             p = iterationParam[["p"]],
             q = iterationParam[["q"]]
       )
