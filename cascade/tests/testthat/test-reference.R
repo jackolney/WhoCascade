@@ -100,3 +100,22 @@ test_that("Constant Population Test", {
     result[["Ltfu_500"]] + result[["Ltfu_350500"]] + result[["Ltfu_250350"]] + result[["Ltfu_200250"]] + result[["Ltfu_100200"]] + result[["Ltfu_50100"]] + result[["Ltfu_50"]]
     expect_equal(ref_size, result_size, check.attributes = FALSE, tolerance = 1e-16, info = "Population not constant with zero mortality and zero incidence.")
 })
+
+test_that("Treatment Guidelines Test", {
+    source("TheModel-Calib.R", local = TRUE)
+    p <- parameters(
+        t_1 = 1,
+        t_2 = 0,
+        t_3 = 0,
+        t_4 = 0,
+        t_5 = 1
+        )
+    y <- initial(p)
+    i <- incidence(rep(0,7))
+    time <- seq(0, 5, 1)
+    plist <- list(p, i)
+    names(plist) <- c("r_par", "r_inc")
+    theref <- as.data.frame(deSolve::ode(times = time, y = y, func = ComplexCascadeCalib, parms = p, inc = i))
+    result <- as.data.frame(deSolve::ode(times = time, y = y, func = "calib_derivs", parms = plist, initfunc = "calib_initmod", dllname = "cascade"))
+    expect_equal(theref, result, check.attributes = FALSE, tolerance = 1e-16, info = "Treatment guidelines error.")
+})
