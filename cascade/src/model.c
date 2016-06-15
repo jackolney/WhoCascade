@@ -129,10 +129,16 @@ static struct myparms parms;
 #define NewInf 49
 #define HivMortality 50
 #define NaturalMortality 51
-#define Dx_Cost 52
-#define Linkage_Cost 53
-#define Annual_Care_Cost 54
-#define Annual_ART_Cost 55
+#define CumDiag 52
+#define CumLink 53
+#define CumPreL 54
+#define CumInit 55
+#define CumAdhr 56
+#define CumLoss 57
+#define Dx_Cost 58
+#define Linkage_Cost 59
+#define Annual_Care_Cost 60
+#define Annual_ART_Cost 61
 
 SEXP r_initmod(SEXP rp) {
     if (LENGTH(rp) != 68) {
@@ -298,9 +304,16 @@ void derivs(int *neq, double *t, double *y, double *ydot, double *yout, int *ip)
     ydot[50] = parms.Alpha_1 * (y[UnDx_500] + y[Dx_500] + y[Care_500] + y[PreLtfu_500] + y[Tx_Na_500]) + parms.Alpha_2 * (y[UnDx_350500] + y[Dx_350500] + y[Care_350500] + y[PreLtfu_350500] + y[Tx_Na_350500]) + parms.Alpha_3 * (y[UnDx_250350] + y[Dx_250350] + y[Care_250350] + y[PreLtfu_250350] + y[Tx_Na_250350]) + parms.Alpha_4 * (y[UnDx_200250] + y[Dx_200250] + y[Care_200250] + y[PreLtfu_200250] + y[Tx_Na_200250]) + parms.Alpha_5 * (y[UnDx_100200] + y[Dx_100200] + y[Care_100200] + y[PreLtfu_100200] + y[Tx_Na_100200]) + parms.Alpha_6 * (y[UnDx_50100] + y[Dx_50100] + y[Care_50100] + y[PreLtfu_50100] + y[Tx_Na_50100]) + parms.Alpha_7 * (y[UnDx_50] + y[Dx_50] + y[Care_50] + y[PreLtfu_50] + y[Tx_Na_50]) + parms.Tau_1 * y[Tx_A_500] + parms.Tau_2 * y[Tx_A_350500] + parms.Tau_3 * y[Tx_A_250350] + parms.Tau_4 * y[Tx_A_200250] + parms.Tau_5 * y[Tx_A_100200] + parms.Tau_6 * y[Tx_A_50100] + parms.Tau_7 * y[Tx_A_50];
     ydot[51] = parms.Mu * (y[UnDx_500] + y[UnDx_350500] + y[UnDx_250350] + y[UnDx_200250] + y[UnDx_100200] + y[UnDx_50100] + y[UnDx_50] + y[Dx_500] + y[Dx_350500] + y[Dx_250350] + y[Dx_200250] + y[Dx_100200] + y[Dx_50100] + y[Dx_50] + y[Care_500] + y[Care_350500] + y[Care_250350] + y[Care_200250] + y[Care_100200] + y[Care_50100] + y[Care_50] + y[PreLtfu_500] + y[PreLtfu_350500] + y[PreLtfu_250350] + y[PreLtfu_200250] + y[PreLtfu_100200] + y[PreLtfu_50100] + y[PreLtfu_50] + y[Tx_Na_500] + y[Tx_Na_350500] + y[Tx_Na_250350] + y[Tx_Na_200250] + y[Tx_Na_100200] + y[Tx_Na_50100] + y[Tx_Na_50] + y[Tx_A_500] + y[Tx_A_350500] + y[Tx_A_250350] + y[Tx_A_200250] + y[Tx_A_100200] + y[Tx_A_50100] + y[Tx_A_50] + y[Ltfu_500] + y[Ltfu_350500] + y[Ltfu_250350] + y[Ltfu_200250] + y[Ltfu_100200] + y[Ltfu_50100] + y[Ltfu_50]);
 
-    ydot[52] = (parms.Rho * (y[UnDx_500] + y[UnDx_350500] + y[UnDx_250350] + y[UnDx_200250] + y[UnDx_100200] + y[UnDx_50100] + y[UnDx_50])) * parms.Dx_unitCost;
-    ydot[53] = ((parms.q * parms.Epsilon) * (y[Dx_500] + y[Dx_350500] + y[Dx_250350] + y[Dx_200250] + y[Dx_100200] + y[Dx_50100] + y[Dx_50])) * parms.Linkage_unitCost;
-    ydot[54] = (y[Care_500] + y[Care_350500] + y[Care_250350] + y[Care_200250] + y[Care_100200] + y[Care_50100] + y[Care_50]) * parms.Annual_Care_unitCost;
-    ydot[55] = (y[Tx_Na_500] + y[Tx_Na_350500] + y[Tx_Na_250350] + y[Tx_Na_200250] + y[Tx_Na_100200] + y[Tx_Na_50100] + y[Tx_Na_50] + y[Tx_A_500] + y[Tx_A_350500] + y[Tx_A_250350] + y[Tx_A_200250] + y[Tx_A_100200] + y[Tx_A_50100] + y[Tx_A_50]) * parms.Annual_ART_unitCost;
+    ydot[52] = (y[UnDx_500] + y[UnDx_350500] + y[UnDx_250350] + y[UnDx_200250] + y[UnDx_100200] + y[UnDx_50100] + y[UnDx_50]) * parms.Rho;
+    ydot[53] = (y[Dx_500]   + y[Dx_350500]   + y[Dx_250350]   + y[Dx_200250]   + y[Dx_100200]   + y[Dx_50100]   + y[Dx_50])   * (parms.Epsilon * parms.q);
+    ydot[54] = (y[Care_500] + y[Care_350500] + y[Care_250350] + y[Care_200250] + y[Care_100200] + y[Care_50100] + y[Care_50]) * parms.Kappa;
+    ydot[55] = (((yr >= parms.t_1) * y[Care_500]) + ((yr >= parms.t_2) * y[Care_350500]) + ((yr >= parms.t_3) * y[Care_250350]) + ((yr >= parms.t_4) * y[Care_200250]) + ((yr >= parms.t_5) * y[Care_100200]) + ((yr >= parms.t_5) * y[Care_50100]) + ((yr >= parms.t_5) * y[Care_50])) * parms.Gamma;
+    ydot[56] = (y[Tx_Na_500] + y[Tx_Na_350500] + y[Tx_Na_250350] + y[Tx_Na_200250] + y[Tx_Na_100200] + y[Tx_Na_50100] + y[Tx_Na_50]) * parms.Sigma;
+    ydot[57] = (y[Tx_Na_500] + y[Tx_Na_350500] + y[Tx_Na_250350] + y[Tx_Na_200250] + y[Tx_Na_100200] + y[Tx_Na_50100] + y[Tx_Na_50] + y[Tx_A_500] + y[Tx_A_350500] + y[Tx_A_250350] + y[Tx_A_200250] + y[Tx_A_100200] + y[Tx_A_50100] + y[Tx_A_50]) * parms.Omega;
+
+    ydot[58] = (parms.Rho * (y[UnDx_500] + y[UnDx_350500] + y[UnDx_250350] + y[UnDx_200250] + y[UnDx_100200] + y[UnDx_50100] + y[UnDx_50])) * parms.Dx_unitCost;
+    ydot[59] = ((parms.q * parms.Epsilon) * (y[Dx_500] + y[Dx_350500] + y[Dx_250350] + y[Dx_200250] + y[Dx_100200] + y[Dx_50100] + y[Dx_50])) * parms.Linkage_unitCost;
+    ydot[60] = (y[Care_500] + y[Care_350500] + y[Care_250350] + y[Care_200250] + y[Care_100200] + y[Care_50100] + y[Care_50]) * parms.Annual_Care_unitCost;
+    ydot[61] = (y[Tx_Na_500] + y[Tx_Na_350500] + y[Tx_Na_250350] + y[Tx_Na_200250] + y[Tx_Na_100200] + y[Tx_Na_50100] + y[Tx_Na_50] + y[Tx_A_500] + y[Tx_A_350500] + y[Tx_A_250350] + y[Tx_A_200250] + y[Tx_A_100200] + y[Tx_A_50100] + y[Tx_A_50]) * parms.Annual_ART_unitCost;
 
 }

@@ -77,6 +77,12 @@ initial <- function(p, ...) {
         NewInf = 0,
         HivMortality = 0,
         NaturalMortality = 0,
+        CumDiag = 0,
+        CumLink = 0,
+        CumPreL = 0,
+        CumInit = 0,
+        CumAdhr = 0,
+        CumLoss = 0,
 
         # Costs
         Dx_Cost = 0,
