@@ -2,6 +2,8 @@ Package: cascade
 Title: Cascade Model
 Version: 0.0.0.9000
 Authors@R: person("Jack", "Olney", email = "jack.olney11@imperial.ac.uk", role = c("aut", "cre"))
+Author: Jack Olney
+Maintainer: Jack Olney <jack.olney11@imperial.ac.uk>
 Description: Simple HIV cascade model consisting of 49 ordinary differential
     equations. Two versions of the model exist in this package: a simulation and a
     calibration version.
