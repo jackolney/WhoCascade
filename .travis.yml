@@ -11,7 +11,12 @@ before_install:
 install:
   - ./travis-tool.sh install_deps
 
-script: ./travis-tool.sh run_tests
+script:
+  - ./travis-tool.sh run_tests
+  - cd ..
+  - Rscript -e 'options(repos=c(CRAN="'"${CRAN}"'")); install.packages("dplyr"); install.packages("FME"); install.packages("reshape2")'
+  - Rscript -e 'testthat::test_dir("CascadeDashboard/tests")'
+
 
 after_failure:
   - ./travis-tool.sh dump_logs
