@@ -14,8 +14,8 @@ install:
 script:
   - ./travis-tool.sh run_tests
   - cd ..
-  - Rscript -e 'options(repos=c(CRAN="'"${CRAN}"'")); install.packages("dplyr"); install.packages("FME"); install.packages("reshape2")'
-  - Rscript -e 'testthat::test_dir("CascadeDashboard/tests")'
+  - Rscript -e 'options(repos=c(CRAN="'"${CRAN}"'")); install.packages("dplyr"); install.packages("FME"); install.packages("reshape2"); install.packages("readr")'
+  - Rscript -e 'library(FME); library(FME); testthat::test_dir("CascadeDashboard/tests")'
 
 
 after_failure:
